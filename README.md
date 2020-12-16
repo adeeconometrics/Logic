@@ -1,4 +1,4 @@
-# Math, Logic and Programming
+# Project Gamma 
 ****
 **Rationale:**
 
