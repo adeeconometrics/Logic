@@ -8,9 +8,10 @@ except Exception as e:
     print("some modules are missing {}".format(e))
 
 '''
-test statistic is used in hypotheses tests.This module contains a collection of
-test statistic implementations. The probabilityDist module shall interact with 
-this module for computing p-values. 
+test statistic is used in hypotheses tests. This module contains a collection of
+test statistic implementations. The modules for distirbutions shall interact with 
+this module for computing p-values. Functions must be independent of their own, while
+classes can interact with their subroutines, avoid unnecessary dependencies.
 '''
 
 def z_transformation(samp_mean, pop_mean, std):
