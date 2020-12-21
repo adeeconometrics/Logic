@@ -12,7 +12,6 @@ except Exception as e:
 '''
 TODO:
 - add a feature for generating numbers from a given distribution
-- find a way to inteface with base class for plotting pdf and cdf 
 '''
 
 
@@ -20,7 +19,9 @@ class Base:
     def __init__(self, data):
         self.data = data
 
-    def scatter(self, x, y, xlim=None, xlabel=None, ylabel=None):
+    def scatter(self, x, y, xlim=None, ylim=None, xlabel=None, ylabel=None):
+        if ylim is not None:
+            plt.ylim(0, ylim)  # scales from 0 to ylim
         if xlim is not None:
             plt.xlim(-xlim, xlim)
         if xlabel is not None:
@@ -44,10 +45,14 @@ class Uniform(Base):
     def __init__(self, data):
         self.data = np.ones(data)
 
-    def pmf(self, plot=False):
+    def pmf(self, plot=False, xlim=None, ylim=None, xlabel=None, ylabel=None):
         '''
         Args:
             plot (bool): returns scatter plot if true. 
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
 
         Returns:
             either probability mass value of Uniform distirbution or scatter plot
@@ -56,16 +61,29 @@ class Uniform(Base):
             x = np.array([i for i in range(0, len(self.data))])
             y = np.array(
                 [1 / len(self.data) for i in range(0, len(self.data))])
-            super().scatter(x, y)
+            super().scatter(x, y, xlim, ylim, xlabel, ylabel)
         return 1 / len(self.data)
 
-    def cdf(self, a, b, point=0, plot=False):
+    def cdf(self,
+            a,
+            b,
+            point=0,
+            plot=False,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
         '''
         Args:
             a(int): lower limit of the distirbution
             b(int): upper limit of the distribution
             point(int): point at which cumulative value is evaluated. Optional. 
             plot(bool): returns plot if true.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
 
         Retruns:
             either cumulative distribution evaluation at some point or scatter plot.
@@ -75,7 +93,7 @@ class Uniform(Base):
         if plot == True:
             x = np.array([i + 1 for i in range(a, b)])
             y = np.array([cdf_function(i, a, b) for i in x])
-            super().scatter(x, y)
+            super().scatter(x, y, xlim, ylim, xlabel, ylabel)
         return cdf_function(point, a, b)
 
 
@@ -86,7 +104,6 @@ class Binomial(Base):
     cumulative distribution function for binomial distirbution. 
 
     Args:
-        data(int): sample points for the scatterplot
         n(int): number  of trials 
         p(float ∈ [0,1]): success probability for each trial
         k(int): number of successes 
@@ -95,18 +112,29 @@ class Binomial(Base):
         - pmf for probability mass function
         - cdf for cumulative distribution function
     '''
-    def __init__(self, data, n, p, k):
-        super().__init__(data)
+    def __init__(self, n, p, k):
         self.n = n
         self.p = p
         self.k = k
 
-    def pmf(self, interval=None, threshold=100, plot=False):
+    def pmf(self,
+            interval=None,
+            threshold=100,
+            plot=False,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
         '''
         Args:
             interval(int): defaults to none. Only necessary for defining scatter plot.
             threshold(int): defaults to 100. Defines the sample points in scatter plot.
             plot(bool): if true, returns scatter plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
         
         Returns: 
             either probability mass evaluation for some point or scatter plot of binomial distribution.
@@ -127,16 +155,29 @@ class Binomial(Base):
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
             y = generator(n, p, x)
-            super().scatter(x, y)
+            super().scatter(x, y, xlim, ylim, xlabel, ylabel)
 
         return generator(n, p, k)
 
-    def cdf(self, interval=0, point=0, threshold=100, plot=False):
+    def cdf(self,
+            interval=0,
+            point=0,
+            threshold=100,
+            plot=False,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
         '''
         Args:
             interval(int): defaults to none. Only necessary for defining scatter plot.
             threshold(int): defaults to 100. Defines the sample points in scatter plot.
             plot(bool): if true, returns scatter plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
         
         Returns: 
             either cumulative distirbution evaluation for some point or scatter plot of binomial distribution.
@@ -155,7 +196,7 @@ class Binomial(Base):
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
             y = generator(n, p, len(x))
-            super().scatter(x, y)
+            super().scatter(x, y, xlim, ylim, xlabel, ylabel)
 
         return generator(n, p, point)[
             point -
@@ -178,7 +219,7 @@ class Multinomial(Base):
         - cdf for cumulative distribution function
     '''
     def __init__(self, data):
-        super().__init__(data)
+        super(Multinomial, self).__init__(data)
 
     def pmf(self):
         pass
@@ -196,7 +237,6 @@ class Geometric(Base):
     Y=X-1 of failures before the first success, supported on the set {0,1,2,3,...}. 
 
     Args:
-        data(int): sample points for the scatterplot
         p(float ∈ [0,1]): success probability for each trial
         k(int): number of successes 
 
@@ -204,18 +244,30 @@ class Geometric(Base):
         - pmf for probability mass function
         - cdf for cumulative distribution function
     '''
-    def __init__(self, data, p, k):
-        super().__init__(data)
+    def __init__(self, p, k):
         self.p = p
         self.k = k
 
-    def pmf(self, interval=None, threshold=100, plot=False, type=first):
+    def pmf(self,
+            interval=None,
+            threshold=100,
+            plot=False,
+            type=first,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
         '''
         Args: 
             interval(int): defaults to none. Only necessary for defining scatter plot.
             threshold(int): defaults to 100. Defines the sample points in scatter plot.
             plot(bool): if true, returns scatter plot.           
             type(keyvalue ∈[fist, second]): defaults to first. Reconfigures the type of distribution.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
             Reference: https://en.wikipedia.org/wiki/Geometric_distribution
 
         Returns: 
@@ -235,17 +287,30 @@ class Geometric(Base):
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([generator(p, k_i) for k_i in x])
-            super().scatter(x, y)
+            super().scatter(x, y, xlim, ylim, xlabel, ylabel)
 
         return generator(p, k)
 
-    def cdf(self, interval=None, threshold=100, plot=False, type=first):
+    def cdf(self,
+            interval=None,
+            threshold=100,
+            plot=False,
+            type=first,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
         '''
         Args: 
             interval(int): defaults to none. Only necessary for defining scatter plot.
             threshold(int): defaults to 100. Defines the sample points in scatter plot.
             plot(bool): if true, returns scatter plot.           
             type(keyvalue ∈[fist, second]): defaults to first. Reconfigures the type of distribution.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
             for context see: https://en.wikipedia.org/wiki/Geometric_distribution
 
         Returns: 
@@ -265,33 +330,53 @@ class Geometric(Base):
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([generator(p, k_i) for k_i in x])
-            super().scatter(x, y)
+            super().scatter(x, y, xlim, ylim, xlabel, ylabel)
 
         return generator(p, k)
 
 
 class Hypergeometric(Base):
     '''
+    This class contains methods concerning pmf and cdf evaluation of the hypergeometric distribution. 
+    Describes the probability if k successes (random draws for which the objsect drawn has specified deature)
+    in n draws, without replacement, from a finite population size N that contains exactly K objects with that
+    feature, wherein each draw is either a success or a failure. 
+
     Args:
         N(int): population size
         K(int): number of success states in the population
         k(int): number of observed successes
         n(int): number of draws 
+    
+    Methods: 
+        - pmf for probability mass function
+        - cdf for cumulative distribution function
     '''
-    def __init__(self, data, N, K, k, n):
-        super().__init__(data)
+    def __init__(self, N, K, k, n):
         self.N = N
         self.K = K
         self.k = k
         self.n = n
 
-    def pmf(self, interval=None, threshold=100, plot=False):
+    def pmf(self,
+            interval=None,
+            threshold=100,
+            plot=False,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
         '''
         Args:
             interval(int): defaults to none. Only necessary for defining scatter plot.
             threshold(int): defaults to 100. Defines the sample points in scatter plot.
             plot(bool): if true, returns scatter plot.
-        
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+            Reference: https://en.wikipedia.org/wiki/Hypergeometric_distribution
         Returns: 
             either probability mass evaluation for some point or scatter plot of hypergeometric distribution.
         '''
@@ -307,7 +392,7 @@ class Hypergeometric(Base):
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array(
                 [generator(N, n, K, x_temp) for x_temp in range(0, len(x))])
-            super().scatter(x, y)
+            super().scatter(x, y, xlim, ylim, xlabel, ylabel)
 
         return generator(N, n, K, k)
 
@@ -316,11 +401,85 @@ class Hypergeometric(Base):
 
 
 class Poisson(Base):
-    def __init__(self, data):
-        super().__init__(data)
+    '''
+    This class contains methods for evaluating some properties of the poisson distribution. 
+    As lambda increases to sufficiently large values, the normal distribution (λ, λ) may be used to 
+    approximate the Poisson distribution.
 
-    def pmf(self):
-        pass
+    Use the Poisson distribution to describe the number of times an event occurs in a finite observation space.
+    
+    References: Minitab (2019). Poisson Distribution. https://bityl.co/4uYc
 
-    def cdf(self):
-        pass
+    Args: 
+        λ(float): expected rate if occurrences.
+        k(int): number of occurrences.
+    '''
+    def __init__(self, λ, k):
+        self.k = k
+        self.λ = λ
+
+    def pmf(self,
+            interval=None,
+            threshold=100,
+            plot=False,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        '''
+        Args:
+            interval(int): defaults to none. Only necessary for defining scatter plot.
+            threshold(int): defaults to 100. Defines the sample points in scatter plot.
+            plot(bool): if true, returns scatter plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+            Reference: https://en.wikipedia.org/wiki/Poisson_distribution
+        
+        Returns: 
+            either probability mass evaluation for some point or scatter plot of poisson distribution.
+        '''
+        k = self.k
+        λ = self.λ
+        generator = lambda k, λ: (np.power(λ, k) * np.exp(-λ)
+                                  ) / np.math.factorial(k)
+        if plot == True:
+            x = np.linspace(1, interval, threshold)
+            y = np.array([generator(x_temp, λ) for x_temp in x])
+            super().scatter(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(k, λ)
+
+    def cdf(self,
+            interval=None,
+            threshold=100,
+            plot=False,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        '''
+        Args:
+            interval(int): defaults to none. Only necessary for defining scatter plot.
+            threshold(int): defaults to 100. Defines the sample points in scatter plot.
+            plot(bool): if true, returns scatter plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+            Reference: https://en.wikipedia.org/wiki/Poisson_distribution
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or scatter plot of poisson distribution.
+        '''
+        k = self.k
+        λ = self.λ
+        generator = lambda k, λ: ss.gammaic(np.floor(k + 1), λ
+                                            ) / np.math.factorial(np.floor(k))
+        if plot == True:
+            x = np.linspace(1, interval, threshold)
+            y = np.array([generator(x_temp, λ) for x_temp in x])
+            super().scatter(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(k, λ)
