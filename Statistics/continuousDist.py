@@ -105,7 +105,6 @@ class Uniform:
         return generator(a, b, threshold)  # what does it really say?
 
 
-# add method for confidence intervals
 class Normal(Base):
     '''
     This class contains methods concerning the Standard Normal Distribution.
@@ -868,6 +867,7 @@ class Pareto(Base):
 
         scale(float): scale parameter.
         shape(float): shape parameter.
+        x(float): random variable.
 
     Methods
 
@@ -906,7 +906,7 @@ class Pareto(Base):
 
         
         Returns: 
-            either probability density evaluation for some point or plot of Pareto-distribution.
+            either probability density evaluation for some point or plot of Pareto distribution.
         '''
         x_m = self.scale
         alpha = self.shape
@@ -943,18 +943,80 @@ class Pareto(Base):
 
         
         Returns: 
-            either cumulative distribution evaluation for some point or plot of Pareto-distribution.
+            either cumulative distribution evaluation for some point or plot of Pareto distribution.
         '''
+        x_m = self.scale
+        alpha = self.shape
 
-        pass
+        def generator(x, x_m, alpha):
+            if x >= x_m:
+                return 1 - np.power(x_m / x, alpha)
+            return 0
 
-    def p_value(self):
-        pass
+        if plot == True:
+            x = np.linspace(-interval, interval, int(threshold))
+            y = np.array([generator(i, x_m, alpha) for i in x])
+            super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.x, x_m, alpha)
+
+    def p_value(self, x_lower=0, x_upper=None):
+        '''
+        Args:
+
+            x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+            x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+            Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+            Otherwise, the default random variable is x.
+
+        Returns:
+            p-value of the Pareto distribution evaluated at some random variable.
+        '''
+        x_m = self.scale
+        alpha = self.shape
+        if x_lower < 0:
+            x_lower = 0
+        if x_upper is None:
+            x_upper = self.x
+
+        def generator(x_m, alpha, x):
+            if x >= x_m:
+                return (alpha * x_m**alpha) / np.power(x, alpha + 1)
+            return 0
+
+        return sci.integrate.quad(generator,
+                                  x_lower,
+                                  x_upper,
+                                  args=(x_m, alpha))[0]
 
 
+# resolve p_value
 class Log_normal(Base):
-    def __init__(self):
-        pass
+    '''
+    This class contains methods concerning the Log Normal Distribution. 
+
+    Args:
+        
+        x(float): random variable
+        mean(float): mean parameter
+        std(float): standard deviation
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - p_value for p-values.
+
+    References:
+    - Weisstein, Eric W. "Log Normal Distribution." From MathWorld--A Wolfram Web Resource. 
+    https://mathworld.wolfram.com/LogNormalDistribution.html
+    - Wikipedia contributors. (2020, December 18). Log-normal distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 06:49, December 23, 2020, from https://en.wikipedia.org/w/index.php?title=Log-normal_distribution&oldid=994919804
+    '''
+    def __init__(self, x, mean, std):
+        self.x = x
+        self.mean = mean
+        self.std = std
 
     def pdf(self,
             plot=False,
@@ -964,8 +1026,31 @@ class Log_normal(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
+        '''
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
 
-        pass
+        
+        Returns: 
+            either probability density evaluation for some point or plot of Log Normal-distribution.
+        '''
+        randvar = self.x
+        mean = self.mean
+        std = self.std
+        generator = lambda mean, std, x: (1 / (x * std * np.sqrt(
+            2 * np.pi))) * np.exp(-(np.log(x - mean)**2) / (2 * std**2))
+        if plot == True:
+            x = np.linspace(-interval, interval, int(threshold))
+            y = np.array([generator(mean, std, i) for i in x])
+            super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(mean, std, randvar)
 
     def cdf(self,
             plot=False,
@@ -975,7 +1060,46 @@ class Log_normal(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
+        '''
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
 
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or plot of Log Normal-distribution.
+        '''
+        randvar = self.x
+        mean = self.mean
+        std = self.std
+        generator = lambda mean, std, x: 1 / 2 * ss.erfc(-(np.log(x - mean) /
+                                                           (std * np.sqrt(2))))
+        if plot == True:
+            x = np.linspace(-interval, interval, int(threshold))
+            y = np.array([generator(mean, std, i) for i in x])
+            super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(mean, std, randvar)
+
+    # resolve error of integrate.quad
+    def p_value(self):
+        '''
+        Args:
+
+            x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+            x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+            Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+            Otherwise, the default random variable is x.
+
+        Returns:
+            p-value of the Pareto distribution evaluated at some random variable.
+        '''
         pass
 
 
