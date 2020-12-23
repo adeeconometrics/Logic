@@ -560,7 +560,7 @@ class F_distribution(Base):
 
         
         Returns: 
-            either probability density evaluation for some point or plot of F-distribution.
+            either cumulative distribution evaluation for some point or plot of F-distribution.
         '''
         pass
 
@@ -665,7 +665,7 @@ class Chisq_distribution(Base):
 
         
         Returns: 
-            either probability density evaluation for some point or plot of Chi square-distribution.
+            either cumulative distribution evaluation for some point or plot of Chi square-distribution.
         '''
         df = self.df
         randvar = self.x
@@ -764,7 +764,7 @@ class Explonential_distribution(Base):
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([generator(_lambda, x_i) for x_i in x])
-            super().scatter(x, y, xlim, ylim, xlabel, ylabel)
+            super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(_lambda, x)
 
     def cdf(self,
@@ -777,7 +777,7 @@ class Explonential_distribution(Base):
             ylabel=None):
         '''
         Args:
-
+        
             interval(int): defaults to none. Only necessary for defining plot.
             threshold(int): defaults to 1000. Defines the sample points in plot.
             plot(bool): if true, returns plot.
@@ -788,7 +788,7 @@ class Explonential_distribution(Base):
 
         
         Returns: 
-            either probability density evaluation for some point or plot of exponential-distribution.
+            either cumulative distribution evaluation for some point or plot of  exponential distribution.
         '''
         _lambda = self._lambda
         x = self.x
@@ -801,7 +801,7 @@ class Explonential_distribution(Base):
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([generator(x_i, _lambda) for x_i in x])
-            super().scatter(x, y, xlim, ylim, xlabel, ylabel)
+            super().plto(x, y, xlim, ylim, xlabel, ylabel)
         return generator(x, _lambda)
 
     def p_value(self, x_lower=0, x_upper=None):
@@ -880,9 +880,10 @@ class Pareto(Base):
     - Wikipedia contributors. (2020, December 1). Pareto distribution. In Wikipedia, The Free Encyclopedia. 
     Retrieved 05:00, December 23, 2020, from https://en.wikipedia.org/w/index.php?title=Pareto_distribution&oldid=991727349
     '''
-    def __init__(self, shape, scale):
+    def __init__(self, shape, scale, x):
         self.shape = shape
         self.scale = scale
+        self.x = x
 
     def pdf(self,
             plot=False,
@@ -892,8 +893,34 @@ class Pareto(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
+        '''
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
 
-        pass
+        
+        Returns: 
+            either probability density evaluation for some point or plot of Pareto-distribution.
+        '''
+        x_m = self.scale
+        alpha = self.shape
+
+        def generator(x, x_m, alpha):
+            if x >= x_m:
+                return (alpha * x_m**alpha) / np.power(x, alpha + 1)
+            return 0
+
+        if plot == True:
+            x = np.linspace(-interval, interval, int(threshold))
+            y = np.array([generator(i, x_m, alpha) for i in x])
+            super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.x, x_m, alpha)
 
     def cdf(self,
             plot=False,
@@ -903,7 +930,25 @@ class Pareto(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
+        '''
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
 
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or plot of Pareto-distribution.
+        '''
+
+        pass
+
+    def p_value(self):
         pass
 
 
