@@ -37,10 +37,12 @@ class Uniform(Base):
     cumulative distirbution function of Uniform distribution. Incudes scatter plot. 
 
     Args: 
+
         data (int): sample size
     Methods
-        - pmf for probability mass function
-        - cdf for cumulative distribution function
+
+        - pmf for probability mass function.
+        - cdf for cumulative distribution function.
     '''
     def __init__(self, data):
         self.data = np.ones(data)
@@ -48,6 +50,7 @@ class Uniform(Base):
     def pmf(self, plot=False, xlim=None, ylim=None, xlabel=None, ylabel=None):
         '''
         Args:
+
             plot (bool): returns scatter plot if true. 
             xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
             ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
@@ -75,6 +78,7 @@ class Uniform(Base):
             ylabel=None):
         '''
         Args:
+
             a(int): lower limit of the distirbution
             b(int): upper limit of the distribution
             point(int): point at which cumulative value is evaluated. Optional. 
@@ -104,13 +108,15 @@ class Binomial(Base):
     cumulative distribution function for binomial distirbution. 
 
     Args:
+
         n(int): number  of trials 
         p(float ∈ [0,1]): success probability for each trial
         k(int): number of successes 
 
     Methods: 
-        - pmf for probability mass function
-        - cdf for cumulative distribution function
+
+        - pmf for probability mass function.
+        - cdf for cumulative distribution function.
     '''
     def __init__(self, n, p, k):
         self.n = n
@@ -127,6 +133,7 @@ class Binomial(Base):
             ylabel=None):
         '''
         Args:
+
             interval(int): defaults to none. Only necessary for defining scatter plot.
             threshold(int): defaults to 100. Defines the sample points in scatter plot.
             plot(bool): if true, returns scatter plot.
@@ -170,6 +177,7 @@ class Binomial(Base):
             ylabel=None):
         '''
         Args:
+
             interval(int): defaults to none. Only necessary for defining scatter plot.
             threshold(int): defaults to 100. Defines the sample points in scatter plot.
             plot(bool): if true, returns scatter plot.
@@ -209,14 +217,16 @@ class Multinomial(Base):
     cumulative distribution function for mutlinomial distirbution. 
 
     Args:
+
         data(int): sample points for the scatterplot
-        n(int): number  of trials 
+        n(int): number  of trials
         p(float ∈ [0,1]): success probability for each trial
         k(int): number of successes 
 
     Methods: 
-        - pmf for probability mass function
-        - cdf for cumulative distribution function
+
+        - pmf for probability mass function.
+        - cdf for cumulative distribution function.
     '''
     def __init__(self, data):
         super(Multinomial, self).__init__(data)
@@ -237,10 +247,12 @@ class Geometric(Base):
     Y=X-1 of failures before the first success, supported on the set {0,1,2,3,...}. 
 
     Args:
+
         p(float ∈ [0,1]): success probability for each trial
         k(int): number of successes 
 
     Methods: 
+
         - pmf for probability mass function
         - cdf for cumulative distribution function
     '''
@@ -259,6 +271,7 @@ class Geometric(Base):
             ylabel=None):
         '''
         Args: 
+
             interval(int): defaults to none. Only necessary for defining scatter plot.
             threshold(int): defaults to 100. Defines the sample points in scatter plot.
             plot(bool): if true, returns scatter plot.           
@@ -302,6 +315,7 @@ class Geometric(Base):
             ylabel=None):
         '''
         Args: 
+
             interval(int): defaults to none. Only necessary for defining scatter plot.
             threshold(int): defaults to 100. Defines the sample points in scatter plot.
             plot(bool): if true, returns scatter plot.           
@@ -343,12 +357,14 @@ class Hypergeometric(Base):
     feature, wherein each draw is either a success or a failure. 
 
     Args:
+
         N(int): population size
         K(int): number of success states in the population
         k(int): number of observed successes
         n(int): number of draws 
     
     Methods: 
+
         - pmf for probability mass function
         - cdf for cumulative distribution function
     '''
@@ -368,6 +384,7 @@ class Hypergeometric(Base):
             ylabel=None):
         '''
         Args:
+
             interval(int): defaults to none. Only necessary for defining scatter plot.
             threshold(int): defaults to 100. Defines the sample points in scatter plot.
             plot(bool): if true, returns scatter plot.
@@ -411,6 +428,7 @@ class Poisson(Base):
     References: Minitab (2019). Poisson Distribution. https://bityl.co/4uYc
 
     Args: 
+
         λ(float): expected rate if occurrences.
         k(int): number of occurrences.
     '''
@@ -428,6 +446,7 @@ class Poisson(Base):
             ylabel=None):
         '''
         Args:
+
             interval(int): defaults to none. Only necessary for defining scatter plot.
             threshold(int): defaults to 100. Defines the sample points in scatter plot.
             plot(bool): if true, returns scatter plot.
@@ -461,6 +480,7 @@ class Poisson(Base):
             ylabel=None):
         '''
         Args:
+        
             interval(int): defaults to none. Only necessary for defining scatter plot.
             threshold(int): defaults to 100. Defines the sample points in scatter plot.
             plot(bool): if true, returns scatter plot.
