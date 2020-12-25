@@ -19,6 +19,7 @@ def z_transformation(samp_mean, pop_mean, std):
     a function for transforming all normally distributed variables to standard distribution of variables (mean=0, std=1).
     
     Args:
+
         samp_mean(float): sample mean
         pop_mean(float): population mean
         std (float): standard deviation
@@ -29,11 +30,13 @@ def z_transformation(samp_mean, pop_mean, std):
 def z_score(samp_mean, pop_mean, std):
     '''
     Args:
+
         samp_mean (float): sample mean 
         pop_mean (float): population mean
         std (float): population standard deviation
 
     Assumptions:
+    
         - test statistic should follow a normal distribution. If the variation is strongly non-normal, a z-test should not be used.
         - nuisance parameters (e.g. std in one-sample location test) should be known or estimated with high accuracy
     
@@ -46,12 +49,14 @@ def z_score(samp_mean, pop_mean, std):
 def z_score_smean(samp_mean, pop_mean, std, n):
     '''
     Args:
+
         n (int): sample size
         samp_mean (float): sample mean 
         pop_mean (float): population mean
         std (float): standard deviation
 
     assumptions:
+    
         - test statistic should follow a normal distribution. If the variation is strongly non-normal, a z-test should not be used.
         - nuisance parameters (e.g. std in one-sample location test) should be known or estimated with high accuracy
         - the mean of the population is known 
@@ -72,7 +77,8 @@ def z_score_dmean(samp_mean1,
                   pop_mean1=None,
                   pop_mean2=None):
     '''
-    Args: 
+    Args:
+
         samp_mean1(float): sample mean of the first distirbution.
         samp_mean2(float): sample mean of the second distribution.
         std1(float): standard deviation of first distribution.
@@ -83,6 +89,7 @@ def z_score_dmean(samp_mean1,
         pop_mean2(float): population mean of second distribution. This is optional.
     
     assumptions:
+    
         - test statistic should follow a normal distribution. If the variation is strongly non-normal, a z-test should not be used.
         - nuisance parameters (e.g. std in one-sample location test) should be known or estimated with high accuracy
         - the mean of the population is known 
@@ -102,6 +109,7 @@ def z_score_dmean(samp_mean1,
 def t_test(samp_mean, pop_mean, samp_std, n):
     '''
     Args:
+
         samp_mean(float): sample mean.
         pop_mean(float): population mean.
         samp_std(float): sample standard deviation
@@ -128,7 +136,8 @@ def t_test_dmean_uneq(samp_mean1,
                       n2):
     '''
     also known as Welch's t-test.
-    Args: 
+    Args:
+
         samp_mean1(float): sample mean of the first distirbution.
         samp_mean2(float): sample mean of the second distribution.
         std1(float): standard deviation of first distribution.
@@ -163,7 +172,8 @@ def t_test_dmean_eq(samp_mean1,
                     n1,
                     n2):
     '''
-    Args: 
+    Args:
+
         samp_mean1(float): sample mean of the first distirbution.
         samp_mean2(float): sample mean of the second distribution.
         std1(float): standard deviation of first distribution.
@@ -173,7 +183,8 @@ def t_test_dmean_eq(samp_mean1,
         pop_mean1(float): population mean of first distribution. This is optional.
         pop_mean2(float): population mean of second distribution. This is optional.
 
-    asusmptions:
+    assumptions:
+    
         - sample size is small n<=30
         - population standard deviation is not known
         - the population is normally or approximately normally distributed
@@ -195,10 +206,12 @@ def paired_t_test(data_set1, data_set2): # test functionality
     '''
     this is appropriate for compairing two samples where it is impossible to control important variables.
     Args:
+
         data_set1(list): contains pre-test data set
         data_set2(list): contains post-test data set
     
-    assumption:
+    assumptions:
+    
         -  standard deviation is unknown
         -  len(data_set1)==len(data_set2)
     Returns:

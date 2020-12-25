@@ -15,7 +15,7 @@ TODO:
 '''
 
 
-class Base:
+class Base:  # add histograms
     def __init__(self, data):
         self.data = data
 

@@ -21,9 +21,12 @@ Module:
 New distributions:
 - discrete
     - univariate with finite support
-        - Bean Machine
         - Bernoulli Distribution
         - Beta Binomial Distribution
+        - Negative Binomial Distirbution
+        - Zeta Distribution
+        - Log-Series Distribution
+        - Mean Distribution
         - Benford Distribution
         - Rademacher
         - Zipf
