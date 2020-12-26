@@ -40,6 +40,12 @@ class Uniform:
 
         - pmf for probability density function
         - cdf for cumulative distribution function
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
 
     Referene:
     - Weisstein, Eric W. "Uniform Distribution." From MathWorld--A Wolfram Web Resource. 
@@ -70,7 +76,7 @@ class Uniform:
         if plot == True:
             x = np.linspace(a, b, threshold)
             y = np.array([generator(a, b, i) for i in x])
-            super().plot(x, y, xlim, ylim, xlabel, ylabel)
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(a, b, np.abs(b - a))
 
     def cdf(self, plot=False, xlim=None, ylim=None, xlabel=None, ylabel=None):
@@ -101,8 +107,52 @@ class Uniform:
         if plot == True:
             x = np.linspace(a, b, threshold)
             y = np.array([generator(a, b, i) for i in x])
-            super().plot(x, y, xlim, ylim, xlabel, ylabel)
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(a, b, threshold)  # what does it really say?
+
+    def mean(self):
+        '''
+        Returns:
+            Mean of the Uniform distribution
+        '''
+        return 1 / 2 * (self.a + self.b)
+
+    def median(self):
+        '''
+        Returns:
+            Median of the Uniform distribution
+        '''
+        return 1 / 2 * (self.a + self.b)
+
+    def mode(self):
+        '''
+        Returns:
+            Mode of the Uniform distribution. 
+
+        Note that the mode is any value in (a,b)
+        '''
+        return (self.a, self.b)
+
+    def var(self):
+        '''
+        Returns:
+            Variance of the Uniform distribution
+        '''
+        return (1 / 12) * (self.b - self.a)**2
+
+    def skewness(self):
+        '''
+        Returns:
+            Skewness of the Uniform distribution
+        '''
+        return 0
+
+    def kurtosis(self):
+        '''
+        Returns:
+            Kurtosis of the Uniform distribution
+        '''
+        return -6 / 5
 
 
 class Normal(Base):
@@ -117,9 +167,15 @@ class Normal(Base):
 
     Methods:
 
-        pdf - returns either plot of the distribution or evaluation at randvar.
-        cdf - returns either plot of the distirbution or evaluation at randvar.
-        p_value - returns p-value at randvar.
+        - pdf for evaluating or plotting probability density function
+        - cdf for evaluating or plotting cumulative distribution function
+        - p_value returns p-value at randvar.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
 
     References:
     - Wikipedia contributors. (2020, December 19). Normal distribution. In Wikipedia, The Free Encyclopedia. Retrieved 10:44, 
@@ -161,7 +217,7 @@ class Normal(Base):
         if plot == True:
             x = np.linspace(-interval, interval, threshold)
             y = np.array([generator(x_temp, mean, std) for x_temp in x])
-            super().plot(x, y, xlim, ylim, xlabel, ylabel)
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
 
         return generator(self.randvar, mean, std)
 
@@ -192,7 +248,7 @@ class Normal(Base):
         if plot == True:
             x = np.linspace(-interval, interval, threshold)
             y = np.array([generator(x_temp) for x_temp in x])
-            super().plot(x, y, xlim, ylim, xlabel, ylabel)
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(randvar)
 
     def p_value(self, x_lower=-np.inf, x_upper=None):
@@ -222,6 +278,48 @@ class Normal(Base):
         # find critical values for a given p-value
         pass
 
+    def mean(self):
+        '''
+        Returns:
+            Mean of the Normal distribution
+        '''
+        return self.mean
+
+    def median(self):
+        '''
+        Returns:
+            Median of the Normal distribution
+        '''
+        return self.mean
+
+    def mode(self):
+        '''
+        Returns:
+            Mode of the Normal distribution
+        '''
+        return self.mean
+
+    def var(self):
+        '''
+        Returns:
+            Variance of the Normal distribution
+        '''
+        return (self.std)**2
+
+    def skewness(self):
+        '''
+        Returns:
+            Skewness of the Normal distribution
+        '''
+        return 0
+
+    def kurtosis(self):
+        '''
+        Returns:
+            Kurtosis of the Normal distribution
+        '''
+        return 0
+
 
 class T_distribution(Base):
     '''
@@ -235,9 +333,16 @@ class T_distribution(Base):
         randvar(float): random variable. 
     
     Methods:
-        - pdf for probability density function.
-        - cdf for cumulative distirbution function.
+
+        - pdf for plotting or evaluating probability density function.
+        - cdf for plotting or evaluating cumulative distirbution function.
         - p_value for p value given a random variable x.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
 
     References: 
 
@@ -279,7 +384,7 @@ class T_distribution(Base):
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([generator(i, df) for i in x])
-            super().plot(x, y, xlim, ylim, xlabel, ylabel)
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
 
         return generator(randvar, df)
 
@@ -317,7 +422,7 @@ class T_distribution(Base):
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([generator(i, df) for i in x])
-            super().plot(x, y, xlim, ylim, xlabel, ylabel)
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
 
         return generator(randvar, df)
 
@@ -346,6 +451,75 @@ class T_distribution(Base):
     def confidence_interval(self):  # for single means and multiple means
         pass
 
+    def mean(self):
+        '''
+        Returns:
+            Mean of the T-distribution.
+        
+        	0 for df > 1, otherwise undefined
+        '''
+        df = self.df
+        if df > 1:
+            return 0
+        return None
+
+    def median(self):
+        '''
+        Returns:
+            Median of the T-distribution
+        '''
+        return 0
+
+    def mode(self):
+        '''
+        Returns:
+            Mode of the T-distribution
+        '''
+        return 0
+
+    def var(self):
+        '''
+        Returns:
+            Variance of the T-distribution
+
+        Note:
+            returns none if it is the case that it is undefined.
+        '''
+        df = self.df
+        if df > 2:
+            return df / (df - 2)
+        if df > 1 and df <= 2:
+            return np.inf
+        return None
+
+    def skewness(self):
+        '''
+        Returns:
+            Skewness of the T-distribution
+
+        Note:
+            returns none if it is the case that it is undefined.
+        '''
+        df = self.df
+        if df > 3:
+            return 0
+        return None
+
+    def kurtosis(self):
+        '''
+        Returns:
+            Kurtosis of the T-distribution
+
+        Note: 
+            returns none if it is undefined. 
+        '''
+        df = self.df
+        if df > 4:
+            return 6 / (df - 4)
+        if df > 2 and df <= 4:
+            return np.inf
+        return None
+
 
 class Cauchy(Base):
     '''
@@ -359,9 +533,15 @@ class Cauchy(Base):
 
     Methods:
 
-        - pdf for probability density function
-        - cdf for cumulative distribution function
+        - pdf for plotting or evaluating probability density function
+        - cdf for plotting or evaluating cumulative distribution function
         - p_value for p value
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
 
     References:
     - Wikipedia contributors. (2020, November 29). Cauchy distribution. In Wikipedia, The Free Encyclopedia. 
@@ -404,7 +584,7 @@ class Cauchy(Base):
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([generator(i, location, scale) for i in x])
-            super().plot(x, y, xlim, ylim, xlabel, ylabel)
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
 
         return generator(x, location, scale)
 
@@ -439,7 +619,7 @@ class Cauchy(Base):
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([generator(i, location, scale) for i in x])
-            super().plot(x, y, xlim, ylim, xlabel, ylabel)
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
 
         return generator(x, location, scale)
 
@@ -473,6 +653,48 @@ class Cauchy(Base):
     def confidence_interval(self):
         pass
 
+    def mean(self):
+        '''
+        Returns:
+            Mean of the Cauchy distribution. Mean is Undefined.
+        '''
+        return None
+
+    def median(self):
+        '''
+        Returns:
+            Median of the Cauchy distribution.
+        '''
+        return self.location
+
+    def mode(self):
+        '''
+        Returns:
+            Mode of the Cauchy distribution
+        '''
+        return self.location
+
+    def var(self):
+        '''
+        Returns:
+            Variance of the Cauchy distribution. Undefined.
+        '''
+        return None
+
+    def skewness(self):
+        '''
+        Returns:
+            Skewness of the Cauchy distribution. Undefined.
+        '''
+        return None
+
+    def kurtosis(self):
+        '''
+        Returns:
+            Kurtosis of the Cauchy distribution
+        '''
+        return np.log(4 * np.pi * self.scale)
+
 
 class F_distribution(Base):
     '''
@@ -486,15 +708,22 @@ class F_distribution(Base):
 
     Methods:
 
-        - pdf for probability density function
-        - cdf for cumulative distribution function
+        - pdf for plotting or evaluating probability density function
+        - cdf for plotting or evaluating cumulative distribution function
         - p_value for p value
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
     
     References:
     - Mood, Alexander; Franklin A. Graybill; Duane C. Boes (1974). 
     Introduction to the Theory of Statistics (Third ed.). McGraw-Hill. pp. 246–249. ISBN 0-07-042864-6.
 
     - Weisstein, Eric W. "F-Distribution." From MathWorld--A Wolfram Web Resource. https://mathworld.wolfram.com/F-Distribution.html
+    - NIST SemaTech (n.d.). F-Distribution. Retrived from https://www.itl.nist.gov/div898/handbook/eda/section3/eda3665.htm
     '''
     def __init__(self, x, df1, df2):
         self.x = x
@@ -535,7 +764,7 @@ class F_distribution(Base):
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([generator(i, df1, df2) for i in x])
-            super().plot(x, y, xlim, ylim, xlabel, ylabel)
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(randvar, df1, df2)
 
     def cdf(self,
@@ -593,10 +822,85 @@ class F_distribution(Base):
     def confidence_interval(self):
         pass
 
+    def mean(self):
+        '''
+        Returns:
+            Mean of the F-distribution. Returns None if the evaluation is currently unsupported.
+        '''
+        if self.df3 > 2:
+            return self.df2 / (self.df2 - 2)
+        return None
+
+    def median(self):
+        '''
+        Returns:
+            Median of the F-distribution. Returns None if the evaluation is currently unsupported.
+        '''
+        return None
+
+    def mode(self):
+        '''
+        Returns:
+            Mode of the F-distribution. Returns None if undefined.
+        '''
+        df1 = self.df1
+        df2 = self.df2
+        if df1 > 2:
+            return (df2 * (df1 - 2)) / (df1 * (df2 + 2))
+        return None
+
+    def var(self):
+        '''
+        Returns:
+            Variance of the F-distribution. Returns None if undefined.
+        '''
+        df1 = self.df1
+        df2 = self.df2
+        if df2 > 4:
+            return (2 * (df2**2) * (df1 + df2 - 2)) / (df1 * ((df2 - 2)**2) *
+                                                       (df2 - 4))
+        return None
+
+    def skewness(self):
+        '''
+        Returns:
+            Skewness of the F-distribution. Returns None if undefined.
+        '''
+        df1 = self.df1
+        df2 = self.df2
+        if df2 > 6:
+            return ((2 * df1 + df2 - 2) * np.sqrt(8 * (df2 - 4))) / (
+                (df2 - 6) * np.sqrt(df1 * (df1 + df2 - 2)))
+        return None
+
+    def kurtosis(self):
+        '''
+        Returns:
+            Kurtosis of the F-distribution. Returns None if currently unsupported.
+        '''
+        return FileNotFoundError
+
 
 class Chisq_distribution(Base):
     '''
     This class contains methods concerning the Chi-square distribution.
+
+    Args:
+
+        x(float): random variable.
+        df(int): degrees of freedom.
+
+    Methods:
+    
+        - pdf for evaluating or plotting probability density function.
+        - cdf for evaluating or plotting cumulative distribution function.
+        - p_value for p value.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
 
     References:
     - Weisstein, Eric W. "Chi-Squared Distribution." From MathWorld--A Wolfram Web Resource. 
@@ -639,7 +943,7 @@ class Chisq_distribution(Base):
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([generator(i, df) for i in x])
-            super().plot(x, y, xlim, ylim, xlabel, ylabel)
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
 
         return generator(randvar, df)
 
@@ -674,7 +978,7 @@ class Chisq_distribution(Base):
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([generator(i, df) for i in x])
-            super().plot(x, y, xlim, ylim, xlabel, ylabel)
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(randvar, df)
 
     def p_val(self, x_lower=0, x_upper=None):
@@ -702,6 +1006,48 @@ class Chisq_distribution(Base):
 
         return sci.integrate.quad(pdf_func, x_lower, x_upper, args=(df))[0] / 2
 
+    def mean(self):
+        '''
+        Returns:
+            Mean of the Chi-square distribution.
+        '''
+        return self.df
+
+    def median(self):
+        '''
+        Returns:
+            Median of the Chi-square distribution.
+        '''
+        return self.k * (1 - 2 / (9 * self.k))**3
+
+    def mode(self):
+        '''
+        Returns:
+            Mode of the Chi-square distribution. Returns None if currently unsupported.
+        '''
+        return None
+
+    def var(self):
+        '''
+        Returns:
+            Variance of the Chi-square distribution.
+        '''
+        return 2 * self.df
+
+    def skewness(self):
+        '''
+        Returns:
+            Skewness of the Chi-square distribution.
+        '''
+        return np.sqrt(8 / self.df)
+
+    def kurtosis(self):
+        '''
+        Returns:
+            Kurtosis of the Chi-square distribution.
+        '''
+        return 12 / self.df
+
 
 # check plotting function
 class Explonential_distribution(Base):
@@ -718,6 +1064,12 @@ class Explonential_distribution(Base):
         - pdf for proability density function.
         - cdf for cumulative distribution function.
         - p_value for p value.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
     
     References:
     - Weisstein, Eric W. "Exponential Distribution." From MathWorld--A Wolfram Web Resource. 
@@ -763,7 +1115,7 @@ class Explonential_distribution(Base):
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([generator(_lambda, x_i) for x_i in x])
-            super().plot(x, y, xlim, ylim, xlabel, ylabel)
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(_lambda, x)
 
     def cdf(self,
@@ -800,7 +1152,7 @@ class Explonential_distribution(Base):
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([generator(x_i, _lambda) for x_i in x])
-            super().plto(x, y, xlim, ylim, xlabel, ylabel)
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(x, _lambda)
 
     def p_value(self, x_lower=0, x_upper=None):
@@ -831,6 +1183,48 @@ class Explonential_distribution(Base):
         return sci.integrate.quad(pdf_func, x_lower, x_upper,
                                   args=(_lambda))[0]
 
+    def mean(self):
+        '''
+        Returns:
+            Mean of the Exponential distribution
+        '''
+        return 1 / self._lambda
+
+    def median(self):
+        '''
+        Returns:
+            Median of the Exponential distribution
+        '''
+        return np.log(2) / self._lambda
+
+    def mode(self):
+        '''
+        Returns:
+            Mode of the Exponential distribution
+        '''
+        return 0
+
+    def var(self):
+        '''
+        Returns:
+            Variance of the Exponential distribution
+        '''
+        return 1 / (self._lambda**2)
+
+    def skewness(self):
+        '''
+        Returns:
+            Skewness of the Exponential distribution
+        '''
+        return 2
+
+    def kurtosis(self):
+        '''
+        Returns:
+            Kurtosis of the Exponential distribution
+        '''
+        return 6
+
 
 class Gamma_distribution(Base):
     def __init__(self):
@@ -858,6 +1252,48 @@ class Gamma_distribution(Base):
 
         pass
 
+    def mean(self):
+        '''
+        Returns:
+            Mean of the Gamma distribution
+        '''
+        pass
+
+    def median(self):
+        '''
+        Returns:
+            Median of the Gamma distribution
+        '''
+        pass
+
+    def mode(self):
+        '''
+        Returns:
+            Mode of the Gamma distribution
+        '''
+        pass
+
+    def var(self):
+        '''
+        Returns:
+            Variance of the Gamma distribution
+        '''
+        pass
+
+    def skewness(self):
+        '''
+        Returns:
+            Skewness of the Gamma distribution
+        '''
+        pass
+
+    def kurtosis(self):
+        '''
+        Returns:
+            Kurtosis of the Gamma distribution
+        '''
+        pass
+
 
 class Pareto(Base):
     '''
@@ -874,7 +1310,13 @@ class Pareto(Base):
         - pdf for probability density function.
         - cdf for cumulative distribution function.
         - p_value for p values at some random variable x.
-    
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        
     References:
     - Barry C. Arnold (1983). Pareto Distributions. International Co-operative Publishing House. ISBN 978-0-89974-012-6.
     - Wikipedia contributors. (2020, December 1). Pareto distribution. In Wikipedia, The Free Encyclopedia. 
@@ -919,7 +1361,7 @@ class Pareto(Base):
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([generator(i, x_m, alpha) for i in x])
-            super().plot(x, y, xlim, ylim, xlabel, ylabel)
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.x, x_m, alpha)
 
     def cdf(self,
@@ -956,7 +1398,7 @@ class Pareto(Base):
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([generator(i, x_m, alpha) for i in x])
-            super().plot(x, y, xlim, ylim, xlabel, ylabel)
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.x, x_m, alpha)
 
     def p_value(self, x_lower=0, x_upper=None):
@@ -988,6 +1430,68 @@ class Pareto(Base):
                                   x_lower,
                                   x_upper,
                                   args=(x_m, alpha))[0]
+
+    def mean(self):
+        '''
+        Returns:
+            Mean of the Pareto distribution.
+        '''
+        a = self.shape
+        x_m = self.scale
+
+        if a <= 1:
+            return np.inf
+        return (a * x_m) / (a - 1)
+
+    def median(self):
+        '''
+        Returns:
+            Median of the Pareto distribution.
+        '''
+        a = self.shape
+        x_m = self.scale
+        return x_m * np.power(2, 1 / a)
+
+    def mode(self):
+        '''
+        Returns:
+            Mode of the Pareto distribution.
+        '''
+        return self.scale
+
+    def var(self):
+        '''
+        Returns:
+            Variance of the Pareto distribution.
+        '''
+        a = self.shape
+        x_m = self.scale
+        if a <= 2:
+            return np.inf
+        return ((x_m**2) * a) / (((a - 1)**2) * (a - 2))
+
+    def skewness(self):
+        '''
+        Returns:
+            Skewness of the Pareto distribution. Returns None if currently undefined.
+        '''
+        a = self.shape
+        x_m = self.scale
+        if a > 3:
+            scale = (2 * (1 + a)) / (a - 3)
+            return scale * np.sqrt((a - 2) / a)
+        return None
+
+    def kurtosis(self):
+        '''
+        Returns:
+            Kurtosis of the Pareto distribution. Returns None if currently undefined.
+        '''
+        a = self.shape
+        x_m = self.scale
+        if a > 4:
+            return (6 * (a**3 + a**2 - 6 * a - 2)) / (a * (a - 3) * (a - 4))
+        return None
 
 
 # resolve p_value
@@ -1049,7 +1553,7 @@ class Log_normal(Base):
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([generator(mean, std, i) for i in x])
-            super().plot(x, y, xlim, ylim, xlabel, ylabel)
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(mean, std, randvar)
 
     def cdf(self,
@@ -1083,7 +1587,7 @@ class Log_normal(Base):
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([generator(mean, std, i) for i in x])
-            super().plot(x, y, xlim, ylim, xlabel, ylabel)
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(mean, std, randvar)
 
     # resolve error of integrate.quad
@@ -1099,6 +1603,48 @@ class Log_normal(Base):
 
         Returns:
             p-value of the Pareto distribution evaluated at some random variable.
+        '''
+        pass
+
+    def mean(self):
+        '''
+        Returns:
+            Mean of the log normal distribution.
+        '''
+        pass
+
+    def median(self):
+        '''
+        Returns:
+            Median of the log normal distribution.
+        '''
+        pass
+
+    def mode(self):
+        '''
+        Returns:
+            Mode of the log normal distribution.
+        '''
+        pass
+
+    def var(self):
+        '''
+        Returns:
+            Variance of the log normal distribution.
+        '''
+        pass
+
+    def skewness(self):
+        '''
+        Returns:
+            Skewness of the log normal distribution.
+        '''
+        pass
+
+    def kurtosis(self):
+        '''
+        Returns:
+            Kurtosis of the log normal distribution.
         '''
         pass
 
@@ -1127,4 +1673,46 @@ class Non_central_chi(Base):
             xlabel=None,
             ylabel=None):
 
+        pass
+
+    def mean(self):
+        '''
+        Returns:
+            Mean of the Non-Central Chi distribution.
+        '''
+        pass
+
+    def median(self):
+        '''
+        Returns:
+            Median of the Non-Central Chi distribution.
+        '''
+        pass
+
+    def mode(self):
+        '''
+        Returns:
+            Mode of the Non-Central Chi distribution.
+        '''
+        pass
+
+    def var(self):
+        '''
+        Returns:
+            Variance of the Non-Central Chi distribution.
+        '''
+        pass
+
+    def skewness(self):
+        '''
+        Returns:
+            Skewness of the Non-Central Chi distribution.
+        '''
+        pass
+
+    def kurtosis(self):
+        '''
+        Returns:
+            Kurtosis of the Non-Central Chi distribution.
+        '''
         pass

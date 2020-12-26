@@ -64,7 +64,7 @@ class Uniform(Base):
             x = np.array([i for i in range(0, len(self.data))])
             y = np.array(
                 [1 / len(self.data) for i in range(0, len(self.data))])
-            super().scatter(x, y, xlim, ylim, xlabel, ylabel)
+            return super().scatter(x, y, xlim, ylim, xlabel, ylabel)
         return 1 / len(self.data)
 
     def cdf(self,
@@ -97,7 +97,7 @@ class Uniform(Base):
         if plot == True:
             x = np.array([i + 1 for i in range(a, b)])
             y = np.array([cdf_function(i, a, b) for i in x])
-            super().scatter(x, y, xlim, ylim, xlabel, ylabel)
+            return super().scatter(x, y, xlim, ylim, xlabel, ylabel)
         return cdf_function(point, a, b)
 
 
@@ -162,7 +162,7 @@ class Binomial(Base):
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
             y = generator(n, p, x)
-            super().scatter(x, y, xlim, ylim, xlabel, ylabel)
+            return super().scatter(x, y, xlim, ylim, xlabel, ylabel)
 
         return generator(n, p, k)
 
@@ -204,7 +204,7 @@ class Binomial(Base):
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
             y = generator(n, p, len(x))
-            super().scatter(x, y, xlim, ylim, xlabel, ylabel)
+            return super().scatter(x, y, xlim, ylim, xlabel, ylabel)
 
         return generator(n, p, point)[
             point -
@@ -300,7 +300,7 @@ class Geometric(Base):
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([generator(p, k_i) for k_i in x])
-            super().scatter(x, y, xlim, ylim, xlabel, ylabel)
+            return super().scatter(x, y, xlim, ylim, xlabel, ylabel)
 
         return generator(p, k)
 
@@ -344,7 +344,7 @@ class Geometric(Base):
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([generator(p, k_i) for k_i in x])
-            super().scatter(x, y, xlim, ylim, xlabel, ylabel)
+            return super().scatter(x, y, xlim, ylim, xlabel, ylabel)
 
         return generator(p, k)
 
@@ -409,7 +409,7 @@ class Hypergeometric(Base):
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array(
                 [generator(N, n, K, x_temp) for x_temp in range(0, len(x))])
-            super().scatter(x, y, xlim, ylim, xlabel, ylabel)
+            return super().scatter(x, y, xlim, ylim, xlabel, ylabel)
 
         return generator(N, n, K, k)
 
@@ -467,7 +467,7 @@ class Poisson(Base):
         if plot == True:
             x = np.linspace(1, interval, threshold)
             y = np.array([generator(x_temp, λ) for x_temp in x])
-            super().scatter(x, y, xlim, ylim, xlabel, ylabel)
+            return super().scatter(x, y, xlim, ylim, xlabel, ylabel)
         return generator(k, λ)
 
     def cdf(self,
@@ -501,5 +501,5 @@ class Poisson(Base):
         if plot == True:
             x = np.linspace(1, interval, threshold)
             y = np.array([generator(x_temp, λ) for x_temp in x])
-            super().scatter(x, y, xlim, ylim, xlabel, ylabel)
+            return super().scatter(x, y, xlim, ylim, xlabel, ylabel)
         return generator(k, λ)
