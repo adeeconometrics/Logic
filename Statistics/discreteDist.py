@@ -7,8 +7,6 @@ try:
 
 except Exception as e:
     print("some modules are missing {}".format(e))
-
-# Current freatures: PDF, PMF, CDF generation with plotting (scatter plot, continous plotting)
 '''
 TODO:
 - add a feature for generating numbers from a given distribution
@@ -39,10 +37,20 @@ class Uniform(Base):
     Args: 
 
         data (int): sample size
+
     Methods
 
-        - pmf for probability mass function.
-        - cdf for cumulative distribution function.
+        - pdf for evaluating or plotting probability mass function
+        - cdf for evaluating or plotting cumulative distribution function
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+
+    Reference:
+    - NIST/SEMATECH e-Handbook of Statistical Methods (2012). Uniform Distribution. Retrieved from http://www.itl.nist.gov/div898/handbook/, December 26, 2020.
     '''
     def __init__(self, data):
         self.data = np.ones(data)
@@ -100,6 +108,42 @@ class Uniform(Base):
             return super().scatter(x, y, xlim, ylim, xlabel, ylabel)
         return cdf_function(point, a, b)
 
+    def mean(self):
+        '''
+        Returns the mean of Uniform Distribution.
+        '''
+        return (self.a + self.b) / 2
+
+    def median(self):
+        '''
+        Returns the median of Uniform Distribution.
+        '''
+        return (self.a + self.b) / 2
+
+    def mode(self):
+        '''
+        Returns the mode of Uniform Distribution.
+        '''
+        return (self.a, self.b)
+
+    def var(self):
+        '''
+        Returns the variance of Uniform Distribution.
+        '''
+        return (self.b - self.a)**2 / 12
+
+    def skewness(self):
+        '''
+        Returns the skewness of Uniform Distribution.
+        '''
+        return 0
+
+    def kurtosis(self):
+        '''
+        Returns the kurtosis of Uniform Distribution.
+        '''
+        return -6 / 5
+
 
 # resolve issue on CDF
 class Binomial(Base):
@@ -117,6 +161,20 @@ class Binomial(Base):
 
         - pmf for probability mass function.
         - cdf for cumulative distribution function.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+
+    References:
+    - NIST/SEMATECH e-Handbook of Statistical Methods (2012). Binomial Distribution. 
+    Retrieved at http://www.itl.nist.gov/div898/handbook/, December 26, 2000.
+    - Wikipedia contributors. (2020, December 19). Binomial distribution. 
+    In Wikipedia, The Free Encyclopedia. Retrieved 07:24, December 26, 2020, from https://en.wikipedia.org/w/index.php?title=Binomial_distribution&oldid=995095096
+    - Weisstein, Eric W. "Binomial Distribution." From MathWorld--A Wolfram Web Resource. 
+    https://mathworld.wolfram.com/BinomialDistribution.html
     '''
     def __init__(self, n, p, k):
         self.n = n
@@ -210,32 +268,117 @@ class Binomial(Base):
             point -
             1]  # will this output the cumulative sum at point requested?
 
+    def mean(self):
+        '''
+        Returns the mean of Binomial Distribution.
+        '''
+        return self.n * self.p
 
-class Multinomial(Base):
-    '''
-    This class contains functions for finding the probability mass function and 
-    cumulative distribution function for mutlinomial distirbution. 
+    def median(self):
+        '''
+        Returns the median of Binomial Distribution. Either one defined in the tuple of result.
+        '''
+        n = self.n
+        p = self.p
+        return np.floor(n * p), np.ciel(n * p)
 
-    Args:
+    def mode(self):
+        '''
+        Returns the mode of Binomial Distribution. Either one defined in the tuple of result.
+        '''
+        n = self.n
+        p = self.p
+        return np.floor((n + 1) * p), np.ceil((n + 1) * p) - 1
 
-        data(int): sample points for the scatterplot
-        n(int): number  of trials
-        p(float ∈ [0,1]): success probability for each trial
-        k(int): number of successes 
+    def var(self):
+        '''
+        Returns the variance of Binomial Distribution.
+        '''
+        n = self.n
+        p = self.p
+        q = 1 - p
+        return n * p * q
 
-    Methods: 
+    def skewness(self):
+        '''
+        Returns the skewness of Binomial Distribution.
+        '''
+        n = self.n
+        p = self.p
+        q = 1 - p
+        return (q - p) / np.sqrt(n * p * q)
 
-        - pmf for probability mass function.
-        - cdf for cumulative distribution function.
-    '''
-    def __init__(self, data):
-        super(Multinomial, self).__init__(data)
+    def kurtosis(self):
+        '''
+        Returns the kurtosis of Binomial Distribution.
+        '''
+        n = self.n
+        p = self.p
+        q = 1 - p
+        return (1 - 6 * p * q) / (n * p * q)
 
-    def pmf(self):
-        pass
 
-    def cdf(self):
-        pass
+# class Multinomial(Base):
+#     '''
+#     This class contains functions for finding the probability mass function and
+#     cumulative distribution function for mutlinomial distirbution.
+
+#     Args:
+
+#         data(int): sample points for the scatterplot
+#         n(int): number  of trials
+#         p(float ∈ [0,1]): success probability for each trial
+#         k(int): number of successes
+
+#     Methods:
+
+#         - pmf for probability mass function.
+#         - cdf for cumulative distribution function.
+#     '''
+#     def __init__(self, data):
+#         super(Multinomial, self).__init__(data)
+
+#     def pmf(self):
+#         pass
+
+#     def cdf(self):
+#         pass
+
+#     def mean(self):
+#         '''
+#         Returns the mean of Multinomial Distribution.
+#         '''
+#         pass
+
+#     def median(self):
+#         '''
+#         Returns the median of Multinomial Distribution.
+#         '''
+#         pass
+
+#     def mode(self):
+#         '''
+#         Returns the mode of Multinomial Distribution.
+#         '''
+#         pass
+
+#     def var(self):
+#         '''
+#         Returns the variance of Multinomial Distribution.
+#         '''
+#         pass
+
+#     def skewness(self):
+#         '''
+#         Returns the skewness of Multinomial Distribution.
+#         '''
+#         pass
+
+#     def kurtosis(self):
+#         '''
+#         Returns the kurtosis of Multinomial Distribution.
+#         '''
+#         pass
 
 
 class Geometric(Base):
@@ -253,8 +396,17 @@ class Geometric(Base):
 
     Methods: 
 
-        - pmf for probability mass function
-        - cdf for cumulative distribution function
+        - pmf for probability mass function.
+        - cdf for cumulative distribution function.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+
+    References:
+    - Weisstein, Eric W. "Geometric Distribution." From MathWorld--A Wolfram Web Resource. https://mathworld.wolfram.com/GeometricDistribution.html
     '''
     def __init__(self, p, k):
         self.p = p
@@ -348,6 +500,42 @@ class Geometric(Base):
 
         return generator(p, k)
 
+    def mean(self):
+        '''
+        Returns the mean of Geometric Distribution.
+        '''
+        pass
+
+    def median(self):
+        '''
+        Returns the median of Geometric Distribution.
+        '''
+        pass
+
+    def mode(self):
+        '''
+        Returns the mode of Geometric Distribution.
+        '''
+        pass
+
+    def var(self):
+        '''
+        Returns the variance of Geometric Distribution.
+        '''
+        pass
+
+    def skewness(self):
+        '''
+        Returns the skewness of Geometric Distribution.
+        '''
+        pass
+
+    def kurtosis(self):
+        '''
+        Returns the kurtosis of Geometric Distribution.
+        '''
+        pass
+
 
 class Hypergeometric(Base):
     '''
@@ -365,8 +553,21 @@ class Hypergeometric(Base):
     
     Methods: 
 
-        - pmf for probability mass function
-        - cdf for cumulative distribution function
+        - pmf for probability mass function.
+        - cdf for cumulative distribution function.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+
+    References:
+    - Weisstein, Eric W. "Hypergeometric Distribution." From MathWorld--A Wolfram Web Resource. 
+    https://mathworld.wolfram.com/HypergeometricDistribution.html
+    - Wikipedia contributors. (2020, December 22). Hypergeometric distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 08:38, December 26, 2020, from https://en.wikipedia.org/w/index.php?title=Hypergeometric_distribution&oldid=995715954
+
     '''
     def __init__(self, N, K, k, n):
         self.N = N
@@ -393,7 +594,6 @@ class Hypergeometric(Base):
             xlabel(string): sets label in x axis. Only relevant when plot is true. 
             ylabel(string): sets label in y axis. Only relevant when plot is true. 
 
-            Reference: https://en.wikipedia.org/wiki/Hypergeometric_distribution
         Returns: 
             either probability mass evaluation for some point or scatter plot of hypergeometric distribution.
         '''
@@ -416,6 +616,63 @@ class Hypergeometric(Base):
     def cdf(self):  # np.cumsum()
         pass
 
+    def mean(self):
+        '''
+        Returns the mean of Hypergeometric Distribution.
+        '''
+        return self.n * (self.K / self.N)
+
+    def median(self):
+        '''
+        Returns the median of Hypergeometric Distribution. Currently unsupported or undefined.
+        '''
+        return None
+
+    def mode(self):
+        '''
+        Returns the mode of Hypergeometric Distribution.
+        '''
+        n = self.n
+        N = self.N
+        k = self.k
+        K = self.K
+        return np.ceil(((n + 1) * (K + 1)) / (N + 2)) - 1, np.floor(
+            ((n + 1) * (K + 1)) / (N + 2))
+
+    def var(self):
+        '''
+        Returns the variance of Hypergeometric Distribution.
+        '''
+        n = self.n
+        N = self.N
+        k = self.k
+        K = self.K
+        return n * (K / N) * ((N - K) / N) * ((N - n) / (N - 1))
+
+    def skewness(self):
+        '''
+        Returns the skewness of Hypergeometric Distribution.
+        '''
+        n = self.n
+        N = self.N
+        k = self.k
+        K = self.K
+        return ((N - 2 * K) * np.power(N - 1, 1 / 2) *
+                (N - 2 * n)) / (np.sqrt(n * K * (N - K) * (N - n)) * (N - 2))
+
+    def kurtosis(self):
+        '''
+        Returns the kurtosis of Hypergeometric Distribution.
+        '''
+        n = self.n
+        N = self.N
+        k = self.k
+        K = self.K
+        scale = 1 / (n * k(N - K) * (N - n) * (N - 2) * (N - 3))
+        return scale * ((N - 1) * N**2 * (N * (N + 1) - (6 * K * (N - K)) -
+                                          (6 * n * (N - n))) +
+                        (6 * n * K(N - K) * (N - n) * (5 * N - 6)))
+
 
 class Poisson(Base):
     '''
@@ -425,12 +682,29 @@ class Poisson(Base):
 
     Use the Poisson distribution to describe the number of times an event occurs in a finite observation space.
     
-    References: Minitab (2019). Poisson Distribution. https://bityl.co/4uYc
 
     Args: 
 
         λ(float): expected rate if occurrences.
         k(int): number of occurrences.
+
+    Methods:
+
+        - pmf for probability mass function.
+        - cdf for cumulative distribution function.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+
+    References:
+        -  Minitab (2019). Poisson Distribution. https://bityl.co/4uYc
+        - Weisstein, Eric W. "Poisson Distribution." From MathWorld--A Wolfram Web Resource. 
+        https://mathworld.wolfram.com/PoissonDistribution.html
+        - Wikipedia contributors. (2020, December 16). Poisson distribution. In Wikipedia, The Free Encyclopedia.
+         Retrieved 08:53, December 26, 2020, from https://en.wikipedia.org/w/index.php?title=Poisson_distribution&oldid=994605766
     '''
     def __init__(self, λ, k):
         self.k = k
@@ -503,3 +777,538 @@ class Poisson(Base):
             y = np.array([generator(x_temp, λ) for x_temp in x])
             return super().scatter(x, y, xlim, ylim, xlabel, ylabel)
         return generator(k, λ)
+
+    def mean(self):
+        '''
+        Returns the mean of Poisson Distribution.
+        '''
+        return self.λ
+
+    def median(self):
+        '''
+        Returns the median of Poisson Distribution.
+        '''
+        λ = self.λ
+        return λ + 1 / 3 - (0.02 / λ)
+
+    def mode(self):
+        '''
+        Returns the mode of Poisson Distribution.
+        '''
+        λ = self.λ
+        return np.ceil(λ) - 1, np.floor(λ)
+
+    def var(self):
+        '''
+        Returns the variance of Poisson Distribution.
+        '''
+        return self.λ
+
+    def skewness(self):
+        '''
+        Returns the skewness of Poisson Distribution.
+        '''
+        return np.power(self.λ, -1 / 2)
+
+    def kurtosis(self):
+        '''
+        Returns the kurtosis of Poisson Distribution.
+        '''
+        return np.power(self.λ, -1)
+
+
+# class Beta_binomial(Base):
+#     '''
+#     Args:
+
+#     Methods:
+
+#         - pmf for evaluating or plotting probability mass function
+#         - cdf for evaluating or plotting cumulative distribution function
+#         - mean for evaluating the mean of the distribution.
+#         - median for evaluating the median of the distribution.
+#         - mode for evaluating the mode of the distribution.
+#         - var for evaluating the variance of the distribution.
+#         - skewness for evaluating the skewness of the distribution.
+#         - kurtosis for evaluating the kurtosis of the distribution.
+
+#     '''
+#     def __init__(self):
+#         pass
+
+#     def pmf(self,
+#             interval=None,
+#             threshold=100,
+#             plot=False,
+#             xlim=None,
+#             ylim=None,
+#             xlabel=None,
+#             ylabel=None):
+#         '''
+#         Args:
+
+#             interval(int): defaults to none. Only necessary for defining scatter plot.
+#             threshold(int): defaults to 100. Defines the sample points in scatter plot.
+#             plot(bool): if true, returns scatter plot.
+#             xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+#             ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true.
+#             xlabel(string): sets label in x axis. Only relevant when plot is true.
+#             ylabel(string): sets label in y axis. Only relevant when plot is true.
+
+#         Returns:
+#             either probability mass evaluation for some point or scatter plot of Beta Binomial distribution.
+#         '''
+#         pass
+
+#     def cdf(self,
+#             interval=None,
+#             threshold=100,
+#             plot=False,
+#             xlim=None,
+#             ylim=None,
+#             xlabel=None,
+#             ylabel=None):
+#         '''
+#         Args:
+
+#             interval(int): defaults to none. Only necessary for defining scatter plot.
+#             threshold(int): defaults to 100. Defines the sample points in scatter plot.
+#             plot(bool): if true, returns scatter plot.
+#             xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+#             ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true.
+#             xlabel(string): sets label in x axis. Only relevant when plot is true.
+#             ylabel(string): sets label in y axis. Only relevant when plot is true.
+
+#         Returns:
+#             either cumulative distribution evaluation for some point or scatter plot of Beta Binomial distribution.
+#         '''
+#         pass
+
+#     def mean(self):
+#         '''
+#         Returns the mean of Beta Binomial Distribution.
+#         '''
+#         pass
+
+#     def median(self):
+#         '''
+#         Returns the median of Beta Binomial Distribution.
+#         '''
+#         pass
+
+#     def mode(self):
+#         '''
+#         Returns the mode of Beta Binomial Distribution.
+#         '''
+#         pass
+
+#     def var(self):
+#         '''
+#         Returns the variance of Beta Binomial Distribution.
+#         '''
+#         pass
+
+#     def skewness(self):
+#         '''
+#         Returns the skewness of Beta Binomial Distribution.
+#         '''
+#         pass
+
+#     def kurtosis(self):
+#         '''
+#         Returns the kurtosis of Beta Binomial Distribution.
+#         '''
+#         pass
+
+
+class Bernoulli(Base):
+    '''
+    This class contains methods concerning the Bernoulli Distribution. Bernoulli Distirbution is a special
+    case of Binomial Distirbution. 
+    Args:
+
+        - p(int): event of success. 
+        - k(float ∈[0,1]): possible outcomes
+    Methods:
+
+        - pmf for evaluating or plotting probability mass function
+        - cdf for evaluating or plotting cumulative distribution function
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+
+    References:
+        - Weisstein, Eric W. "Bernoulli Distribution." From MathWorld--A Wolfram Web Resource. 
+        https://mathworld.wolfram.com/BernoulliDistribution.html
+        - Wikipedia contributors. (2020, December 26). Bernoulli distribution. In Wikipedia, The Free Encyclopedia. 
+        Retrieved 10:18, December 26, 2020, from https://en.wikipedia.org/w/index.php?title=Bernoulli_distribution&oldid=996380822
+    '''
+    def __init__(self, p, k):
+        self.p = p
+        self.k = k
+
+    def pmf(self,
+            interval=None,
+            threshold=100,
+            plot=False,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        '''
+        Args:
+
+            interval(int): defaults to none. Only necessary for defining scatter plot.
+            threshold(int): defaults to 100. Defines the sample points in scatter plot.
+            plot(bool): if true, returns scatter plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability mass evaluation for some point or scatter plot of Bernoulli distribution.
+        '''
+        p = self.p
+        k = self.k
+        generator = lambda p, k: p**k * np.power(1 - p, 1 - k)
+        if plot == True:
+            x = np.linspace(-interval, interval, int(threshold))
+            y = np.array([generator(p, i) for i in x])
+            return super().scatter(x, y, xlim, ylim, xlabel, ylabel)
+
+        return generator(p, k)
+
+    def cdf(self,
+            interval=None,
+            threshold=100,
+            plot=False,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        '''
+        Args:
+
+            interval(int): defaults to none. Only necessary for defining scatter plot.
+            threshold(int): defaults to 100. Defines the sample points in scatter plot.
+            plot(bool): if true, returns scatter plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or scatter plot of Bernoulli distribution.
+        '''
+        p = self.p
+        k = self.k
+
+        def generator(k, p):
+            if k < 0:
+                return 0
+            elif k >= 0 and k < 1:
+                return 1 - p
+            elif k >= 1:
+                return 1
+
+        if plot == True:
+            x = np.linspace(-interval, interval, int(threshold))
+            y = np.array([generator(p, i) for i in x])
+            return super().scatter(x, y, xlim, ylim, xlabel, ylabel)
+
+        return generator(p, k)
+
+    def mean(self):
+        '''
+        Returns the mean of Bernoulli Distribution.
+        '''
+        return self.p
+
+    def median(self):
+        '''
+        Returns the median of Bernoulli Distribution.
+        '''
+        p = self.p
+        if p < 1 / 2:
+            return 0
+        if p == 1 / 2:
+            return [0, 1]
+        if p > 1 / 2:
+            return 1
+
+    def mode(self):
+        '''
+        Returns the mode of Bernoulli Distribution.
+        '''
+        p = self.p
+        if p < 1 / 2:
+            return 0
+        if p == 1 / 2:
+            return 0, 1
+        if p > 1 / 2:
+            return 1
+
+    def var(self):
+        '''
+        Returns the variance of Bernoulli Distribution.
+        '''
+        p = self.p
+        q = 1 - p
+        return p * q
+
+    def skewness(self):
+        '''
+        Returns the skewness of Bernoulli Distribution.
+        '''
+        p = self.p
+        q = 1 - p
+        return (q - p) / np.sqrt(p * q)
+
+    def kurtosis(self):
+        '''
+        Returns the kurtosis of Bernoulli Distribution.
+        '''
+        p = self.p
+        q = 1 - p
+        return (1 - 6 * p * q) / (p * q)
+
+
+# class Negative_binomial(Base):
+#     '''
+#     This class contains methods concerning the Negative Binomial Distribution.
+
+#     Args:
+
+#     Methods:
+
+#         - pmf for evaluating or plotting probability mass function
+#         - cdf for evaluating or plotting cumulative distribution function
+#         - mean for evaluating the mean of the distribution.
+#         - median for evaluating the median of the distribution.
+#         - mode for evaluating the mode of the distribution.
+#         - var for evaluating the variance of the distribution.
+#         - skewness for evaluating the skewness of the distribution.
+#         - kurtosis for evaluating the kurtosis of the distribution.
+
+#     '''
+#     def __init__(self):
+#         pass
+
+#     def pmf(self,
+#             interval=None,
+#             threshold=100,
+#             plot=False,
+#             xlim=None,
+#             ylim=None,
+#             xlabel=None,
+#             ylabel=None):
+#         '''
+#         Args:
+
+#             interval(int): defaults to none. Only necessary for defining scatter plot.
+#             threshold(int): defaults to 100. Defines the sample points in scatter plot.
+#             plot(bool): if true, returns scatter plot.
+#             xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+#             ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true.
+#             xlabel(string): sets label in x axis. Only relevant when plot is true.
+#             ylabel(string): sets label in y axis. Only relevant when plot is true.
+
+#         Returns:
+#             either probability mass evaluation for some point or scatter plot of Negative Binomial distribution.
+#         '''
+#         pass
+
+#     def cdf(self,
+#             interval=None,
+#             threshold=100,
+#             plot=False,
+#             xlim=None,
+#             ylim=None,
+#             xlabel=None,
+#             ylabel=None):
+#         '''
+#         Args:
+
+#             interval(int): defaults to none. Only necessary for defining scatter plot.
+#             threshold(int): defaults to 100. Defines the sample points in scatter plot.
+#             plot(bool): if true, returns scatter plot.
+#             xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+#             ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true.
+#             xlabel(string): sets label in x axis. Only relevant when plot is true.
+#             ylabel(string): sets label in y axis. Only relevant when plot is true.
+
+#         Returns:
+#             either cumulative distribution evaluation for some point or scatter plot of Negative Binomial distribution.
+#         '''
+#         pass
+
+#     def mean(self):
+#         '''
+#         Returns the mean of Negative Binomial Distribution.
+#         '''
+#         pass
+
+#     def median(self):
+#         '''
+#         Returns the median of Negative Binomial Distribution.
+#         '''
+#         pass
+
+#     def mode(self):
+#         '''
+#         Returns the mode of Negative Binomial Distribution.
+#         '''
+#         pass
+
+#     def var(self):
+#         '''
+#         Returns the variance of Negative Binomial Distribution.
+#         '''
+#         pass
+
+#     def skewness(self):
+#         '''
+#         Returns the skewness ofNegative Binomial Distribution.
+#         '''
+#         pass
+
+#     def kurtosis(self):
+#         '''
+#         Returns the kurtosis of Negative Binomial Distribution.
+#         '''
+#         pass
+
+
+# issue: cdf
+class Zeta(Base):
+    '''
+    This class contains methods concerning the Zeta Distribution.
+
+    Args:
+        - s(float): main parameter
+        - k(int): support parameter
+    Methods:
+
+        - pmf for evaluating or plotting probability mass function
+        - cdf for evaluating or plotting cumulative distribution function
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+
+    References:
+        - Wikipedia contributors. (2020, November 6). Zeta distribution. In Wikipedia, The Free Encyclopedia. 
+        Retrieved 10:24, December 26, 2020, from https://en.wikipedia.org/w/index.php?title=Zeta_distribution&oldid=987351423
+    '''
+    def __init__(self, s, k):
+        s = self.s
+        k = self.k
+
+    def pmf(self,
+            interval=None,
+            threshold=100,
+            plot=False,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        '''
+        Args:
+
+            interval(int): defaults to none. Only necessary for defining scatter plot.
+            threshold(int): defaults to 100. Defines the sample points in scatter plot.
+            plot(bool): if true, returns scatter plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability mass evaluation for some point or scatter plot of Zeta distribution.
+        '''
+        s = self.s
+        k = self.k
+        generator = lambda s, k: (1 / k**6) / ss.zeta(s)
+        if plot == True:
+            x = np.linspace(-interval, interval, int(threshold))
+            y = np.array([generator(s, i) for i in x])
+            return super().scatter(x, y, xlim, ylim, xlabel, ylabel)
+
+        return generator(s, k)
+
+    def cdf(self,
+            interval=None,
+            threshold=100,
+            plot=False,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        '''
+        Args:
+
+            interval(int): defaults to none. Only necessary for defining scatter plot.
+            threshold(int): defaults to 100. Defines the sample points in scatter plot.
+            plot(bool): if true, returns scatter plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or scatter plot of Zeta distribution.
+        '''
+        pass
+
+    def mean(self):
+        '''
+        Returns the mean of Zeta Distribution. Returns None if undefined.
+        '''
+        s = self.s
+        if s > 2:
+            return ss.zeta(s - 1) / ss.zeta(s)
+        return None
+
+    def median(self):
+        '''
+        Returns the median of Zeta Distribution. Retruns None if undefined.
+        '''
+        return None
+
+    def mode(self):
+        '''
+        Returns the mode of Zeta Distribution.
+        '''
+        return 1
+
+    def var(self):
+        '''
+        Returns the variance of Zeta Distribution. Returns None if undefined.
+        '''
+        s = self.s
+        if s > 3:
+            return (ss.zeta(s) * ss.zeta(s - 1) -
+                    ss.zeta(s - 1)**2) / ss / zeta(s)**2
+        return None
+
+    def skewness(self):
+        '''
+        Returns the skewness of Zeta Distribution. Currently unsupported.
+        '''
+        return None
+
+    def kurtosis(self):
+        '''
+        Returns the kurtosis of Zeta Distribution. Currently unsupported.
+        '''
+        return None
