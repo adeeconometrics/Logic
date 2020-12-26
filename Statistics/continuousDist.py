@@ -1510,6 +1510,12 @@ class Log_normal(Base):
         - pdf for probability density function.
         - cdf for cumulative distribution function.
         - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
 
     References:
     - Weisstein, Eric W. "Log Normal Distribution." From MathWorld--A Wolfram Web Resource. 
@@ -1611,42 +1617,48 @@ class Log_normal(Base):
         Returns:
             Mean of the log normal distribution.
         '''
-        pass
+        return np.exp(self.mean + (self.std**2 / 2))
 
     def median(self):
         '''
         Returns:
             Median of the log normal distribution.
         '''
-        pass
+        return np.exp(self.mean)
 
     def mode(self):
         '''
         Returns:
             Mode of the log normal distribution.
         '''
-        pass
+        return np.exp(self.mean - self.std**2)
 
     def var(self):
         '''
         Returns:
             Variance of the log normal distribution.
         '''
-        pass
+        std = self.std
+        mean = self.mean
+        return (np.exp(std**2) - 1) * np.exp(2 * mean + std**2)
 
     def skewness(self):
         '''
         Returns:
             Skewness of the log normal distribution.
         '''
-        pass
+        std = self.std
+        mean = self.mean
+        return (np.exp(std**2) + 2) * np.sqrt(np.exp(std**2) - 1)
 
     def kurtosis(self):
         '''
         Returns:
             Kurtosis of the log normal distribution.
         '''
-        pass
+        std = self.std
+        return np.exp(
+            4 * std**2) + 2 * np.exp(3 * std**2) + 3 * np.exp(2 * std**2) - 6
 
 
 class Non_central_chi(Base):
