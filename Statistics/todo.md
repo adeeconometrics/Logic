@@ -3,8 +3,9 @@
 Module:
 - continousDist
     - Distributions to improve:
-        - gamma
         - non-central chi
+        - beta distribution
+        - non-central chi-square
         
     - construction of confidence intervals(method)
     - p_values(method)

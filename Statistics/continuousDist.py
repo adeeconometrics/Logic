@@ -26,7 +26,6 @@ class Base:
         plt.plot(x, y)
 
 
-# check for quality assessment
 class Uniform:
     '''
     This class contains methods concerning the Continuous Uniform Distribution.
@@ -1226,9 +1225,37 @@ class Explonential_distribution(Base):
         return 6
 
 
+# check. add p_value method.
 class Gamma_distribution(Base):
-    def __init__(self):
-        pass
+    '''
+    This class contains methods concerning a variant of Gamma distribution. 
+
+    Args:
+
+        a(float): shape
+        b(float): scale
+        x(floar): random variable
+
+    Methods:
+
+        - pdf for proability density function.
+        - cdf for cumulative distribution function.
+        - p_value for p value.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+    
+    References:
+    - Matlab(2020). Gamma Distribution. 
+    Retrieved from: https://www.mathworks.com/help/stats/gamma-distribution.html?searchHighlight=gamma%20distribution&s_tid=srchtitle
+    '''
+    def __init__(self, a, b, x):
+        self.a = a
+        self.b = b
+        self.x = x
 
     def pdf(self,
             plot=False,
@@ -1238,8 +1265,30 @@ class Gamma_distribution(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
+        '''
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
 
-        pass
+        
+        Returns: 
+            either probability density evaluation for some point or plot of Gamma-distribution.
+        '''
+        a = self.a
+        b = self.b
+        generator = lambda a, b, x: (1 / (b**a * ss.gamma(a))) * np.power(
+            x, a - 1) * np.exp(-x / b)
+        if plot == True:
+            x = np.linspace(-interval, interval, threshold)
+            y = np.array([generator(a, b, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(a, b, self.x)
 
     def cdf(self,
             plot=False,
@@ -1249,50 +1298,73 @@ class Gamma_distribution(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
+        '''
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
 
-        pass
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or plot of Gamma-distribution.
+        '''
+        a = self.a
+        b = self.b
+        generator = lambda a, b, x: 1 - ss.gammainc(
+            a, x / b
+        )  # there is no apparent explanation for reversing gammainc's parameter, but it works perfectly in my prototype
+        if plot == True:
+            x = np.linspace(-interval, interval, threshold)
+            y = np.array([generator(a, b, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(a, b, self.x)
 
     def mean(self):
         '''
         Returns:
             Mean of the Gamma distribution
         '''
-        pass
+        return self.a * self.b
 
     def median(self):
         '''
         Returns:
-            Median of the Gamma distribution
+            Median of the Gamma distribution. No simple closed form. Currently unsupported.
         '''
-        pass
+        return None
 
     def mode(self):
         '''
         Returns:
             Mode of the Gamma distribution
         '''
-        pass
+        return (self.a - 1) * self.b
 
     def var(self):
         '''
         Returns:
             Variance of the Gamma distribution
         '''
-        pass
+        return self.a * self.b**2
 
     def skewness(self):
         '''
         Returns:
             Skewness of the Gamma distribution
         '''
-        pass
+        return 2 / np.sqrt(self.a)
 
     def kurtosis(self):
         '''
         Returns:
             Kurtosis of the Gamma distribution
         '''
-        pass
+        return 6 / self.a
 
 
 class Pareto(Base):
