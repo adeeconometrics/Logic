@@ -13,7 +13,8 @@ class ungroupedStatistics:
     '''
     The ungroupedStatistics object contains methods for ungrouped statistics summary that describes the distribution.
 
-    Args: 
+    Args:
+
         data(list): raw data set
     '''
     def __init__(self, data):
@@ -29,6 +30,7 @@ class ungroupedStatistics:
     def median(self):
         '''
         Returns:
+        
             ungrouped median
         '''
         data = self.data
@@ -54,6 +56,7 @@ class ungroupedStatistics:
     def range(self):
         '''
         Returns:
+        
             range = max - min
         '''
         return max(self.data) - min(self.data)
@@ -61,6 +64,7 @@ class ungroupedStatistics:
     def pop_variance(self):
         '''
         Returns:
+        
             population variance
         '''
         mean = self.mean()
@@ -70,6 +74,7 @@ class ungroupedStatistics:
     def pop_std(self):
         '''
         Returns:
+        
             population standard deviation
         '''
         mean = self.mean()
@@ -79,6 +84,7 @@ class ungroupedStatistics:
     def samp_variance(self):
         '''
         Returns:
+        
             sample variance
         '''
         mean = self.mean()
@@ -88,6 +94,7 @@ class ungroupedStatistics:
     def samp_std(self):
         '''
         Returns:
+        
             sample standard deviation
         '''
         mean = self.mean()
@@ -97,12 +104,14 @@ class ungroupedStatistics:
     def skewness(self, mean=None, median=None, samp_std=None, return_sk=False):
         '''
         Args:
+
             mean (float): if the mean value is given. This is optional
             median (float): if the median value is given. This is optional
             samp_std (float): if the sample standard deviation given. This is optional
             return_sk (bool): should the skewness value be returned or not. This is optional.
 
         Returns:
+        
             skewness: either description or value
         '''
         if mean == None:
@@ -130,13 +139,17 @@ class ungroupedStatistics:
                  samp_std=None,
                  return_ku=False):
         '''
-        Args: 
+        Args:
+
             samp_mean (float): if the sample mean is given. This is optional.
             samp_size (int): if the sample size is given. This is optional
             samp_std (float): is the sample standard deviation is given. This is optional.
-            return_ku (bool): defaults to False (returns description of ku),returns ku value is True
+            return_ku (bool): defaults to False (returns 
+            description of ku),returns 
+            ku value is True
         
         Returns:
+        
             Kurtosis: either description of value
         '''
         if samp_mean == None:
@@ -162,6 +175,7 @@ class ungroupedStatistics:
     def print_summary(self):
         '''
         Returns:
+        
             prints summary statistics.
         '''
         pass
@@ -171,7 +185,8 @@ class centralTendency:
     '''
     The centralTendency object contains methods for cental tendencies i.e. mean, median, and mode.
 
-    Args: 
+    Args:
+
         data(list): raw data set
     '''
     def __init__(self, data):
@@ -180,6 +195,7 @@ class centralTendency:
     def arithmetic_mean(self):
         '''
         Returns:
+        
             arithmetic mean
         '''
         return np.sum(self.data) / len(self.data)
@@ -187,6 +203,7 @@ class centralTendency:
     def geometric_mean(self):
         '''
         Returns:
+        
             geometric mean
         '''
         return np.power(np.prod(self.data), 1 / len(self.data))
@@ -194,6 +211,7 @@ class centralTendency:
     def harmonic_mean(self):
         '''
         Returns:
+        
             harmonic mean
         '''
         return len(self.data) * np.power(
@@ -201,7 +219,8 @@ class centralTendency:
 
     def root_mean_square(self):
         '''
-        Returns: 
+        Returns:
+         
             root mean square or quadratic mean.
         '''
         return np.sqrt(
@@ -211,8 +230,10 @@ class centralTendency:
     def weigthed_mean(self, weights):
         '''
         Args:
+
             weights(list of integers): necessary.
         Returns:
+        
             weigthed mean.
         '''
         if (len(self.data) == len(weights)):
@@ -225,6 +246,7 @@ class centralTendency:
     def interquartile_mean(self):
         '''
         Returns:
+        
             interquartile mean
         '''
         scale = 1 / len(self.data)
@@ -236,8 +258,10 @@ class centralTendency:
     def generalized_mean(self, m):
         '''
         Args:
+
             m (float)
         Returns:
+        
             root mean square - when m = 2
             arithmetic mean - when m=1
             geometric mean - when m approaches to 0
@@ -248,6 +272,7 @@ class centralTendency:
     def median(self):
         '''
         Returns:
+        
             median
         '''
         data = self.data
@@ -278,6 +303,7 @@ class Dispersion:
     def range(self):
         '''
         Returns:
+        
             range = max - min 
         '''
         return max(self.data) - min(self.data)
@@ -285,6 +311,7 @@ class Dispersion:
     def pop_variance(self):
         '''
         Returns:
+        
             population variance
         '''
         mean = self.mean()
@@ -294,6 +321,7 @@ class Dispersion:
     def pop_std(self):
         '''
         Returns:
+        
             population standard deviation
         '''
         mean = self.mean()
@@ -303,6 +331,7 @@ class Dispersion:
     def samp_variance(self):
         '''
         Returns:
+        
             sample variance
         '''
         mean = self.mean()
@@ -312,6 +341,7 @@ class Dispersion:
     def samp_std(self):
         '''
         Returns:
+        
             sample standard deviation
         '''
         mean = self.mean()
@@ -321,6 +351,7 @@ class Dispersion:
     def coef_variation(self):
         '''
         Returns:
+        
             coefficient of variation
         '''
         std = np.std(self.data)

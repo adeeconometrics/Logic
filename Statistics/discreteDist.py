@@ -407,6 +407,8 @@ class Geometric(Base):
 
     References:
     - Weisstein, Eric W. "Geometric Distribution." From MathWorld--A Wolfram Web Resource. https://mathworld.wolfram.com/GeometricDistribution.html
+    - Wikipedia contributors. (2020, December 27). Geometric distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 12:05, December 27, 2020, from https://en.wikipedia.org/w/index.php?title=Geometric_distribution&oldid=996517676
     '''
     def __init__(self, p, k):
         self.p = p
@@ -500,43 +502,69 @@ class Geometric(Base):
 
         return generator(p, k)
 
-    def mean(self):
+    def mean(self, type=first):
         '''
+        Args:
+
+            type(string): defaults to first type. Valid types: "first", "second".
         Returns the mean of Geometric Distribution.
         '''
-        pass
+        p = self.p
+        if type == "first":
+            return 1 / p
+        elif type == "second":
+            return (1 - p) / p
+        else:  # supposed to raise exception when failed
+            print("Invalid argument. Type is either 'first' or 'second'.")
 
-    def median(self):
+    def median(self, type=first):
         '''
+        Args:
+
+            type(string): defaults to first type. Valid types: "first", "second".
         Returns the median of Geometric Distribution.
         '''
-        pass
+        if type == "first":
+            return np.ciel(1 / (np.log2(1 - self.p)))
+        elif type == "second":
+            return np.ciel(1 / (np.log2(1 - self.p))) - 1
+        else:  # supposed to raise exception when failed
+            print("Invalid argument. Type is either 'first' or 'second'.")
 
-    def mode(self):
+    def mode(self, type=first):
         '''
+        Args:
+
+            type(string): defaults to first type. Valid types: "first", "second".
         Returns the mode of Geometric Distribution.
         '''
-        pass
+        if type == "first":
+            return 1
+        elif type == "second":
+            return 0
+        else:  # supposed to raise exception when failed
+            print("Invalid argument. Type is either 'first' or 'second'.")
 
     def var(self):
         '''
         Returns the variance of Geometric Distribution.
         '''
-        pass
+        return (1 - self.p) / self.p**2
 
     def skewness(self):
         '''
         Returns the skewness of Geometric Distribution.
         '''
-        pass
+        return (2 - self.p) / np.sqrt(1 - self.p)
 
     def kurtosis(self):
         '''
         Returns the kurtosis of Geometric Distribution.
         '''
-        pass
+        return 6 + (self.p**2 / (1 - self.p))
 
 
+# possible issue needs to be fixed with parameters
 class Hypergeometric(Base):
     '''
     This class contains methods concerning pmf and cdf evaluation of the hypergeometric distribution. 
@@ -613,8 +641,42 @@ class Hypergeometric(Base):
 
         return generator(N, n, K, k)
 
-    def cdf(self):  # np.cumsum()
-        pass
+    def cdf(self,
+            interval=None,
+            threshold=100,
+            plot=False,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):  # np.cumsum()
+        '''
+        Args:
+
+            interval(int): defaults to none. Only necessary for defining scatter plot.
+            threshold(int): defaults to 100. Defines the sample points in scatter plot.
+            plot(bool): if true, returns scatter plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        Returns: 
+            either cumulative distribution evaluation for some point or scatter plot of hypergeometric distribution.
+        '''
+        n = self.n
+        k = self.k
+        N = self.N
+        K = self.K
+
+        generator = lambda N, n, K, k: (ss.binom(n, k) * ss.binom(
+            N - K, n - k)) / ss.binom(N, n)  # assumes n>k
+
+        if plot == True:
+            x = np.linspace(-interval, interval, int(threshold))
+            y = np.cumsum(
+                [generator(N, n, K, x_temp) for x_temp in range(0, len(x))])
+            return super().scatter(x, y, xlim, ylim, xlabel, ylabel)
+        return np.cumsum(generator(N, n, K, k))[k - 1]
 
     def mean(self):
         '''

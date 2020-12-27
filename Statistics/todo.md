@@ -2,33 +2,26 @@
 
 Module:
 - continousDist
+    - Distributions to improve:
+        - gamma
+        - non-central chi
+        
     - construction of confidence intervals(method)
     - p_values(method)
-    - mean, median, mode(method)
-    - variance(method)
-    - skewness(method)
-    - kurtosis (method)
+    - print summary
 
-- discteteDist
-    - mean, median, mode
-    - variance
-    - skewness
-    - kurtosis 
 
 - grouped statistics
+    - print summary
+    - mean, median, mode
+    - skewness, kurtosis
 ----
 
 New distributions:
 - discrete
     - univariate with finite support
-        - Bernoulli Distribution
         - Beta Binomial Distribution
         - Negative Binomial Distirbution
-        - Zeta Distribution
-        - Log-Series Distribution
-        - Mean Distribution
-        - Benford Distribution
-        - Rademacher
         - Zipf
         - Zipf-Mandelbrot
         - categorical distribution
@@ -39,4 +32,12 @@ New distributions:
         - Conway-Maxwell-Poisson
         - Logarithmic
         - Negative Binomial
-        - Zeta
+
+- EDA module
+    - Bihistogram
+    - Blockplot
+    - Bootstrap plot
+    - Box-Cox linearity plot
+    - Box-Cox Normality plot
+    - Box Plot
+    - Contour Plot

@@ -17,7 +17,7 @@ class groupedStatistics:
     def __init__(self, data, k, initial=None):
         self.data = data
         self.k = k
-        if initial ==None:
+        if initial is None:
             self.initial = 0
         self.initial = initial
         # derived value
