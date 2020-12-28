@@ -6,6 +6,9 @@ Module:
         - non-central chi
         - beta distribution
         - non-central chi-square
+        - Laplace Distribution
+        - Logistic Distribution
+        - Weillbull Distribution
         
     - construction of confidence intervals(method)
     - p_values(method)

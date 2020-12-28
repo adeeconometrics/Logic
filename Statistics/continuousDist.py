@@ -1733,9 +1733,36 @@ class Log_normal(Base):
             4 * std**2) + 2 * np.exp(3 * std**2) + 3 * np.exp(2 * std**2) - 6
 
 
-class Non_central_chi(Base):
-    def __init__(self):
-        pass
+# add p_value method, check on ipynb
+class Laplace(Base):
+    '''
+    This class contains methods concerning Laplace Distirbution. 
+    Args:
+    
+        location(float): mean parameter
+        scale(float>0): standard deviation
+        randvar(float): random variable
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+
+    Reference:
+        - Wikipedia contributors. (2020, December 21). Laplace distribution. In Wikipedia, The Free Encyclopedia. 
+        Retrieved 10:53, December 28, 2020, from https://en.wikipedia.org/w/index.php?title=Laplace_distribution&oldid=995563221
+    '''
+    def __init__(self, location, scale, randvar):
+        self.scale = scale
+        self.location = location
+        self.randvar = randvar
 
     def pdf(self,
             plot=False,
@@ -1745,8 +1772,27 @@ class Non_central_chi(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
+        '''
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
 
-        pass
+        
+        Returns: 
+            either probability density evaluation for some point or plot of Laplace distribution.
+        '''
+        generator = lambda mu, b, x: (1 / (2 * b)) * np.exp(abs(x - mu) / b)
+        if plot == True:
+            x = np.linspace(-interval, interval, int(threshold))
+            y = np.array([generator(self.location, self.scale, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.location, self.scale, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -1756,47 +1802,347 @@ class Non_central_chi(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
+        '''
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
 
-        pass
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or plot of Laplace distribution.
+        '''
+        generator = lambda mu, b, x: 1 / 2 + ((1 / 2) * np.sign(x - mu) *
+                                              (1 - np.exp(abs(x - mu) / b)))
+        if plot == True:
+            x = np.linspace(-interval, interval, int(threshold))
+            y = np.array([generator(self.location, self.scale, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.location, self.scale, self.randvar)
 
     def mean(self):
         '''
         Returns:
-            Mean of the Non-Central Chi distribution.
+            Mean of the Laplace distribution.
         '''
-        pass
+        return self.location
 
     def median(self):
         '''
         Returns:
-            Median of the Non-Central Chi distribution.
+            Median of the Laplace distribution.
         '''
-        pass
+        return self.location
 
     def mode(self):
         '''
         Returns:
-            Mode of the Non-Central Chi distribution.
+            Mode of the Laplace distribution.
         '''
-        pass
+        return self.location
 
     def var(self):
         '''
         Returns:
-            Variance of the Non-Central Chi distribution.
+            Variance of the Laplace distribution.
         '''
-        pass
+        return 2 * self.scale**2
 
     def skewness(self):
         '''
         Returns:
-            Skewness of the Non-Central Chi distribution.
+            Skewness of the Laplace distribution.
         '''
-        pass
+        return 0
 
     def kurtosis(self):
         '''
         Returns:
-            Kurtosis of the Non-Central Chi distribution.
+            Kurtosis of the Laplace distribution.
         '''
-        pass
+        return 3
+
+
+class Logistic(Base):
+    '''
+    This class contains methods concerning Logistic Distirbution. 
+    Args:
+    
+        location(float): mean parameter
+        scale(float>0): standard deviation
+        randvar(float): random variable
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+
+    Reference:
+    - Wikipedia contributors. (2020, December 12). Logistic distribution. In Wikipedia, The Free Encyclopedia.
+     Retrieved 11:14, December 28, 2020, from https://en.wikipedia.org/w/index.php?title=Logistic_distribution&oldid=993793195
+    '''
+    def __init__(self, location, scale, randvar):
+        self.scale = scale
+        self.location = location
+        self.randvar = randvar
+
+    def pdf(self,
+            plot=False,
+            interval=1,
+            threshold=1000,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        '''
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability density evaluation for some point or plot of Logistic distribution.
+        '''
+        generator = lambda mu, s, x: np.exp(-(x - mu) / s) / (s * (1 + np.exp(
+            -(x - mu) / s))**2)
+        if plot == True:
+            x = np.linspace(-interval, interval, int(threshold))
+            y = np.array([generator(self.location, self.scale, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.location, self.scale, self.randvar)
+
+    def cdf(self,
+            plot=False,
+            interval=1,
+            threshold=1000,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        '''
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or plot of Logistic distribution.
+        '''
+        generator = lambda mu, s, x: 1 / (1 + np.exp(-(x - mu) / s))
+        if plot == True:
+            x = np.linspace(-interval, interval, int(threshold))
+            y = np.array([generator(self.location, self.scale, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.location, self.scale, self.randvar)
+
+    def mean(self):
+        '''
+        Returns:
+            Mean of the Logistic distribution.
+        '''
+        return self.location
+
+    def median(self):
+        '''
+        Returns:
+            Median of the Logistic distribution.
+        '''
+        return self.location
+
+    def mode(self):
+        '''
+        Returns:
+            Mode of the Logistic distribution.
+        '''
+        return self.location
+
+    def var(self):
+        '''
+        Returns:
+            Variance of the Logistic distribution.
+        '''
+        return (self.scale**2 * np.pi**2) / 3
+
+    def skewness(self):
+        '''
+        Returns:
+            Skewness of the Logistic distribution.
+        '''
+        return 0
+
+    def kurtosis(self):
+        '''
+        Returns:
+            Kurtosis of the Logistic distribution.
+        '''
+        return 6 / 5
+
+
+class Weibull(Base):
+    '''
+    This class contains methods concerning Weibull Distirbution. 
+    Args:
+    
+        shape(float): mean parameter
+        scale(float): standard deviation
+        randvar(float): random variable
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+
+    Reference:
+    - Wikipedia contributors. (2020, December 13). Weibull distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 11:32, December 28, 2020, from https://en.wikipedia.org/w/index.php?title=Weibull_distribution&oldid=993879185
+    '''
+    def __init__(self, shape, scale, randvar):
+        self.scale = scale
+        self.shape = shape
+        self.randvar = randvar
+
+    def pdf(self,
+            plot=False,
+            interval=1,
+            threshold=1000,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        '''
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability density evaluation for some point or plot of Weibull distribution.
+        '''
+        def generator(_lamnda, k, x):
+            if x<0:
+                return 0
+            if x>=0:
+                return (k/_lambda)*(x/_lambda)**(k-1)*np.exp(-(x/_lambda)**k)
+        if plot == True:
+            x = np.linspace(-interval, interval, int(threshold))
+            y = np.array([generator(self.scale, self.shape, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.scale, self.shape, self.randvar)
+
+    def cdf(self,
+            plot=False,
+            interval=1,
+            threshold=1000,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        '''
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or plot of Weibull distribution.
+        '''
+        def generator(_lamnda, k, x):
+            if x<0:
+                return 0
+            if x>=0:
+                return 1-np.exp(-(x/_lambda)**k)
+        if plot == True:
+            x = np.linspace(-interval, interval, int(threshold))
+            y = np.array([generator(self.scale, self.shape, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.scale, self.shape, self.randvar)
+
+    def mean(self):
+        '''
+        Returns:
+            Mean of the Weibull distribution.
+        '''
+        return self.scale*ss.gamma(1+(1/self.shape)
+
+    def median(self):
+        '''
+        Returns:
+            Median of the Weibull distribution.
+        '''
+        return self.scale*np.power(np.log(2), 1/self.shape)
+
+    def mode(self):
+        '''
+        Returns:
+            Mode of the Weibull distribution.
+        '''
+        k = self.shape
+        if k>1:
+            return self.scale*np.power((k-1)/k, 1/k)
+        return 0
+
+    def var(self):
+        '''
+        Returns:
+            Variance of the Weibull distribution.
+        '''
+        _lambda = self.scale
+        k = self.shape
+        return _lambda**2*(((ss.gamma(1+2/k)- ss.gamma(1+1/k)))**2)
+
+    def skewness(self):
+        '''
+        Returns:
+            Skewness of the Weibull distribution. Returns None i.e. Unsupported.
+        '''
+        return None
+
+    def kurtosis(self):
+        '''
+        Returns:
+            Kurtosis of the Weibull distribution. Returns None i.e. Unsupported.
+        '''
+        return None
