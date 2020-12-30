@@ -6,13 +6,10 @@ Module:
         - non-central chi
         - beta distribution
         - non-central chi-square
-        - Tukey-Lmabda Distribution
-        - Double Exponential Distirbution
         - Power Norma Distribution
         
     - construction of confidence intervals(method)
     - p_values(method)
-    - print summary
 
 
 - grouped statistics
