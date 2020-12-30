@@ -59,6 +59,7 @@ class Uniform(Base):
         - var for evaluating the variance of the distribution.
         - skewness for evaluating the skewness of the distribution.
         - kurtosis for evaluating the kurtosis of the distribution.
+        - print_summary for printing summary statistics.
 
     Reference:
     - NIST/SEMATECH e-Handbook of Statistical Methods (2012). Uniform Distribution. Retrieved from http://www.itl.nist.gov/div898/handbook/, December 26, 2020.
@@ -155,6 +156,22 @@ class Uniform(Base):
         '''
         return -6 / 5
 
+    def print_summary(self):
+        '''
+        Returns: Summary statistic regarding the distribution
+        '''
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = "summary statistic"
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode,
+                     "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ",
+                     kurtosis)
+
 
 # resolve issue on CDF
 class Binomial(Base):
@@ -178,6 +195,7 @@ class Binomial(Base):
         - var for evaluating the variance of the distribution.
         - skewness for evaluating the skewness of the distribution.
         - kurtosis for evaluating the kurtosis of the distribution.
+        - print_summary for printing summary statistics.
 
     References:
     - NIST/SEMATECH e-Handbook of Statistical Methods (2012). Binomial Distribution. 
@@ -328,6 +346,22 @@ class Binomial(Base):
         q = 1 - p
         return (1 - 6 * p * q) / (n * p * q)
 
+    def print_summary(self):
+        '''
+        Returns: Summary statistic regarding the distribution
+        '''
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = "summary statistic"
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode,
+                     "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ",
+                     kurtosis)
+
 
 # class Multinomial(Base):
 #     '''
@@ -345,6 +379,13 @@ class Binomial(Base):
 
 #         - pmf for probability mass function.
 #         - cdf for cumulative distribution function.
+#         - mean for evaluating the mean of the distribution.
+#         - median for evaluating the median of the distribution.
+#         - mode for evaluating the mode of the distribution.
+#         - var for evaluating the variance of the distribution.
+#         - skewness for evaluating the skewness of the distribution.
+#         - kurtosis for evaluating the kurtosis of the distribution.
+#         - print_summary for printing summary statistics.
 #     '''
 #     def __init__(self, data):
 #         super(Multinomial, self).__init__(data)
@@ -391,6 +432,20 @@ class Binomial(Base):
 #         '''
 #         pass
 
+#     def print_summary(self):
+#         '''
+#         Returns: Summary statistic regarding the distribution
+#         '''
+#         mean = self.mean()
+#         median = self.median()
+#         mode = self.mode()
+#         var = self.var()
+#         skewness = self.skewness()
+#         kurtosis = self.kurtosis()
+#         cstr = "summary statistic"
+#         print(cstr.center(40, "="))
+#         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
 
 class Geometric(Base):
     '''
@@ -415,6 +470,7 @@ class Geometric(Base):
         - var for evaluating the variance of the distribution.
         - skewness for evaluating the skewness of the distribution.
         - kurtosis for evaluating the kurtosis of the distribution.
+        - print_summary for printing summary statistics.
 
     References:
     - Weisstein, Eric W. "Geometric Distribution." From MathWorld--A Wolfram Web Resource. https://mathworld.wolfram.com/GeometricDistribution.html
@@ -578,6 +634,22 @@ class Geometric(Base):
         '''
         return 6 + (self.p**2 / (1 - self.p))
 
+    def print_summary(self):
+        '''
+        Returns: Summary statistic regarding the distribution
+        '''
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = "summary statistic"
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode,
+                     "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ",
+                     kurtosis)
+
 
 # possible issue needs to be fixed with parameters
 class Hypergeometric(Base):
@@ -604,6 +676,7 @@ class Hypergeometric(Base):
         - var for evaluating the variance of the distribution.
         - skewness for evaluating the skewness of the distribution.
         - kurtosis for evaluating the kurtosis of the distribution.
+        - print_summary for printing summary statistics.
 
     References:
     - Weisstein, Eric W. "Hypergeometric Distribution." From MathWorld--A Wolfram Web Resource. 
@@ -703,7 +776,7 @@ class Hypergeometric(Base):
         '''
         Returns the median of Hypergeometric Distribution. Currently unsupported or undefined.
         '''
-        return None
+        return "undefined"
 
     def mode(self):
         '''
@@ -750,6 +823,22 @@ class Hypergeometric(Base):
                                           (6 * n * (N - n))) +
                         (6 * n * K(N - K) * (N - n) * (5 * N - 6)))
 
+    def print_summary(self):
+        '''
+        Returns: Summary statistic regarding the distribution
+        '''
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = "summary statistic"
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode,
+                     "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ",
+                     kurtosis)
+
 
 class Poisson(Base):
     '''
@@ -775,6 +864,7 @@ class Poisson(Base):
         - var for evaluating the variance of the distribution.
         - skewness for evaluating the skewness of the distribution.
         - kurtosis for evaluating the kurtosis of the distribution.
+        - print_summary for printing summary statistics.
 
     References:
         -  Minitab (2019). Poisson Distribution. https://bityl.co/4uYc
@@ -893,6 +983,22 @@ class Poisson(Base):
         '''
         return np.power(self.λ, -1)
 
+    def print_summary(self):
+        '''
+        Returns: Summary statistic regarding the distribution
+        '''
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = "summary statistic"
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode,
+                     "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ",
+                     kurtosis)
+
 
 # class Beta_binomial(Base):
 #     '''
@@ -908,6 +1014,7 @@ class Poisson(Base):
 #         - var for evaluating the variance of the distribution.
 #         - skewness for evaluating the skewness of the distribution.
 #         - kurtosis for evaluating the kurtosis of the distribution.
+#         - print_summary for printing summary statistics.
 
 #     '''
 #     def __init__(self):
@@ -997,6 +1104,20 @@ class Poisson(Base):
 #         '''
 #         pass
 
+#     def print_summary(self):
+#         '''
+#         Returns: Summary statistic regarding the distribution
+#         '''
+#         mean = self.mean()
+#         median = self.median()
+#         mode = self.mode()
+#         var = self.var()
+#         skewness = self.skewness()
+#         kurtosis = self.kurtosis()
+#         cstr = "summary statistic"
+#         print(cstr.center(40, "="))
+#         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
 
 class Bernoulli(Base):
     '''
@@ -1016,6 +1137,7 @@ class Bernoulli(Base):
         - var for evaluating the variance of the distribution.
         - skewness for evaluating the skewness of the distribution.
         - kurtosis for evaluating the kurtosis of the distribution.
+        - print_summary for printing summary statistics.
 
     References:
         - Weisstein, Eric W. "Bernoulli Distribution." From MathWorld--A Wolfram Web Resource. 
@@ -1155,6 +1277,22 @@ class Bernoulli(Base):
         q = 1 - p
         return (1 - 6 * p * q) / (p * q)
 
+    def print_summary(self):
+        '''
+        Returns: Summary statistic regarding the distribution
+        '''
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = "summary statistic"
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode,
+                     "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ",
+                     kurtosis)
+
 
 # class Negative_binomial(Base):
 #     '''
@@ -1172,6 +1310,7 @@ class Bernoulli(Base):
 #         - var for evaluating the variance of the distribution.
 #         - skewness for evaluating the skewness of the distribution.
 #         - kurtosis for evaluating the kurtosis of the distribution.
+#         - print_summary for printing summary statistics.
 
 #     '''
 #     def __init__(self):
@@ -1260,6 +1399,19 @@ class Bernoulli(Base):
 #         Returns the kurtosis of Negative Binomial Distribution.
 #         '''
 #         pass
+#     def print_summary(self):
+#         '''
+#         Returns: Summary statistic regarding the distribution
+#         '''
+#         mean = self.mean()
+#         median = self.median()
+#         mode = self.mode()
+#         var = self.var()
+#         skewness = self.skewness()
+#         kurtosis = self.kurtosis()
+#         cstr = "summary statistic"
+#         print(cstr.center(40, "="))
+#         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
 
 # issue: cdf
@@ -1280,6 +1432,7 @@ class Zeta(Base):
         - var for evaluating the variance of the distribution.
         - skewness for evaluating the skewness of the distribution.
         - kurtosis for evaluating the kurtosis of the distribution.
+        - print_summary for printing summary statistics.
 
     References:
         - Wikipedia contributors. (2020, November 6). Zeta distribution. In Wikipedia, The Free Encyclopedia. 
@@ -1389,3 +1542,19 @@ class Zeta(Base):
         Returns the kurtosis of Zeta Distribution. Currently unsupported.
         '''
         return "unsupported"
+
+    def print_summary(self):
+        '''
+        Returns: Summary statistic regarding the distribution
+        '''
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = "summary statistic"
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode,
+                     "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ",
+                     kurtosis)
