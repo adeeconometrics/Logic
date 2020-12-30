@@ -28,6 +28,17 @@ class Base:  # add histograms
             plt.ylabel(ylabel)
         plt.scatter(x, y)
 
+    # def hist(self, x, y, xlim=None, ylim=None, xlabel=None, ylabel=None):
+    #     if ylim is not None:
+    #         plt.ylim(0, ylim)  # scales from 0 to ylim
+    #     if xlim is not None:
+    #         plt.xlim(-xlim, xlim)
+    #     if xlabel is not None:
+    #         plt.xlabel(xlabel)
+    #     if ylabel is not None:
+    #         plt.ylabel(ylabel)
+    #     plt.scatter(x, y)
+
 
 class Uniform(Base):
     '''
@@ -493,7 +504,8 @@ class Geometric(Base):
         elif type == "second":
             generator = lambda p, k: 1 - np.power(1 - p, k + 1)
         else:  # supposed to raise exception when failed
-            print("Invalid argument. Type is either 'first' or 'second'.")
+            return print(
+                "Invalid argument. Type is either 'first' or 'second'.")
 
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
@@ -515,7 +527,8 @@ class Geometric(Base):
         elif type == "second":
             return (1 - p) / p
         else:  # supposed to raise exception when failed
-            print("Invalid argument. Type is either 'first' or 'second'.")
+            return print(
+                "Invalid argument. Type is either 'first' or 'second'.")
 
     def median(self, type=first):
         '''
@@ -529,7 +542,8 @@ class Geometric(Base):
         elif type == "second":
             return np.ciel(1 / (np.log2(1 - self.p))) - 1
         else:  # supposed to raise exception when failed
-            print("Invalid argument. Type is either 'first' or 'second'.")
+            return print(
+                "Invalid argument. Type is either 'first' or 'second'.")
 
     def mode(self, type=first):
         '''
@@ -543,7 +557,8 @@ class Geometric(Base):
         elif type == "second":
             return 0
         else:  # supposed to raise exception when failed
-            print("Invalid argument. Type is either 'first' or 'second'.")
+            return print(
+                "Invalid argument. Type is either 'first' or 'second'.")
 
     def var(self):
         '''
@@ -1339,13 +1354,13 @@ class Zeta(Base):
         s = self.s
         if s > 2:
             return ss.zeta(s - 1) / ss.zeta(s)
-        return None
+        return "undefined"
 
     def median(self):
         '''
         Returns the median of Zeta Distribution. Retruns None if undefined.
         '''
-        return None
+        return "undefined"
 
     def mode(self):
         '''
@@ -1361,16 +1376,16 @@ class Zeta(Base):
         if s > 3:
             return (ss.zeta(s) * ss.zeta(s - 1) -
                     ss.zeta(s - 1)**2) / ss / zeta(s)**2
-        return None
+        return "undefined"
 
     def skewness(self):
         '''
         Returns the skewness of Zeta Distribution. Currently unsupported.
         '''
-        return None
+        return "unsupported"
 
     def kurtosis(self):
         '''
         Returns the kurtosis of Zeta Distribution. Currently unsupported.
         '''
-        return None
+        return "unsupported"

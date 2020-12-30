@@ -1,1 +1,3 @@
 # GLM
+class Leastsq:
+    pass
