@@ -33,7 +33,8 @@ New distributions:
         - Conway-Maxwell-Poisson
         - Logarithmic
         - Negative Binomial
-
+----
+New Module
 - EDA module
     - Bihistogram
     - Blockplot
@@ -76,30 +77,3 @@ New distributions:
         - multiple correlation
         - scheffe's method
 
-    - Diagnostics for regression models
-        - regression model validation
-        - studentized residual
-        - Cook's distance
-        - Variance inflation factor
-        - DFFITS
-        - Partial residual plot
-        - Partial regression plot
-        - Leverage
-        - Durbin-Watson Statistic
-        
-        - Challenges to regression modeling 
-            - autocorrelation
-            - cointegration
-            - multicollinearity 
-            - homoscedasticity 
-            - heteroscedasticity
-            - lack of fit
-            - non-normality of errors
-            - outliers
-
-    - Formal aids to model selection
-        - Mallow's C_p
-        - Akaike information criterion
-        - Bayesian Information criterion
-        - Hannan-Quinn information criterion
-        - cross-validation

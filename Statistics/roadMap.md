@@ -1,0 +1,253 @@
+# Road Map of Statistics (outline)
+
+## Describing data 
+---
+- Descriptive statistics
+- Average
+    - Mean
+    - Median
+    - Mode
+- Measures of scale
+    - Variance
+    - Standard deviation
+    - Median absolute deviation
+- Correlation
+- Outlier
+- Statistical graphics
+    - Histogram
+    - Frequency distribution
+    - Quantile
+    - Survival function
+    - Failure rate
+
+### Analysing Data 
+----
+- Regression analysis
+    - Regression Module
+        -  general methods
+            - least squares
+            - linear least squares 
+            - Non-linear least squares
+            - least absolute deviations
+            - curve fitting
+        - linear regression based on least squares
+            - general linear model
+            - ordinary least squares
+            - generalized least squares
+            - simple linear regression
+            - trend estimation
+            - ridge regression
+            - polynomial regression
+            - segmented regression
+            - non-linear regression
+        - generalized linear models
+            - logistic regression
+                - multinomial logit
+                - ordered logit
+            - probit model
+                - multinomial probit
+                - ordered probit
+            - poisson regression
+            - maximum likelihood
+        - Inference for regression models
+            - F-test
+            - t-test
+            - lack-of-fit sum of squares
+            - coefficient determination
+            - multiple correlation
+            - scheffe's method
+
+        - Diagnostics for regression models
+            - regression model validation
+            - studentized residual
+            - Cook's distance
+            - Variance inflation factor
+            - DFFITS
+            - Partial residual plot
+            - Partial regression plot
+            - Leverage
+            - Durbin-Watson Statistic
+            
+            - Challenges to regression modeling 
+                - autocorrelation
+                - cointegration
+                - multicollinearity 
+                - homoscedasticity 
+                - heteroscedasticity
+                - lack of fit
+                - non-normality of errors
+                - outliers
+
+        - Formal aids to model selection
+            - Mallow's C_p
+            - Akaike information criterion
+            - Bayesian Information criterion
+            - Hannan-Quinn information criterion
+            - cross-validation
+        - Analysis of variance (ANOVA)
+        - General linear model
+        - Generalized linear model
+- Density estimation
+    - Kernel density estimation
+    - Multivariate kernel density estimation
+- Time series
+    - Time series analysis
+    - Box–Jenkins method
+    - Frequency domain
+    - Time domain
+- Multivariate analysis
+    - Principal component analysis (PCA)
+    - Factor analysis
+    - Cluster analysis
+- Robust statistics
+
+### Filtering Data 
+----
+- Recursive Bayesian estimation
+    - Kalman filter
+    - Particle filter
+- Moving average
+
+### Statistical Inference 
+----
+- Statistical inference
+- Mathematical statistics
+    - Likelihood function
+    - Exponential family
+- Bayesian inference
+    - Bayes' theorem
+    - Bayes estimator
+    - Prior distribution
+    - Posterior distribution
+    - Conjugate prior
+- Frequentist inference
+    - Statistical hypothesis testing
+        - Null hypothesis
+        - Alternative hypothesis
+        - P-value
+        - Significance level
+        - Statistical power
+    - Likelihood-ratio test
+    - Confidence interval
+- Decision theory
+    - Optimal decision
+    - Type I and type II errors
+- Estimation theory
+    - Estimator
+    - Bayes estimator
+    - Maximum likelihood
+    - Trimmed estimator
+    - M-estimator
+- Non-parametric statistics
+    - Nonparametric regression
+    - Kernels
+
+### Probability Distirbutions
+----
+- symmetric probability distribution
+- unimodal probability distribution
+- components
+    - MGF
+    - CDF
+    - PDF
+    - Central Moments
+    - Dispersion
+    - Skewness
+    - Kurtosis
+
+#### Supported Probability distributions:
+- Continuous univariate 
+    - bounded interval
+        - ARGUS
+        - Balding-Nichols
+        - Bates
+        - beta
+        - beta rectangular
+        - continuous bernoulli
+        <!-- - logit normal -->
+        - non-central beta
+        <!-- - uniform -->
+        - Wigner semicircle
+    - semi-infinite interval
+        - Benini
+        - Benkatender 
+        - Beta prime
+        - Burr
+        <!-- - chi-squared -->
+        - chi
+        - Dagum
+        - Davis
+        - Exponential-logarithmic
+        - Erlang
+        - exponential F
+        - Folded normal
+        - Frechet
+        <!-- - gamma -->
+        - generalized gamma
+        - generalized inverse gamma
+        - generalized inverse Gaussian
+        - Gompertz
+        - half-logistic
+        - half-normal
+        - Hotelling's T-squared
+        - hyper-Erlang
+        - hyperexponential
+        - hypoexponential
+        - inverse chi-squared scaled inverse chi-squared
+        - inverse Gaussian
+        - inverse gamma
+        - Kolmogorov
+        - Lévylog-Cauchylog-Laplacelog-logistic
+        - log-normal
+        - Lomaxmatrix-exponential
+        - Maxwell–Boltzmann
+        - Maxwell–Jüttner
+        - Mittag-Leffler
+        - Nakagaminoncentral chi-squared
+        - noncentral F
+        - Paretophase-type
+        - poly-Weibull
+        - Rayleighrelativistic
+        -  Breit–WignerRiceshifted 
+        - Gompertz
+        - truncated normal type-2 
+        - GumbelWeibull discrete Weibull
+        - Wilks's lambda
+    - supported on the whole real line 
+        - Cauchy
+        - exponential power
+        - Fisher's z
+        - Gaussian q
+        - generalized normal
+        - generalized hyperbolic
+        - geometric stable
+        - Gumbel
+        - Holtsmark
+        - hyperbolic secant
+        - Johnson's SU
+        - Landau
+        - Laplace
+        - asymmetric Laplace
+        - logistic
+        - noncentral t
+        - normal (Gaussian)
+        - normal-inverse Gaussian
+        - skew normal
+        - slash
+        - stable
+        - Student's t
+        - type-1 Gumbel
+        - Tracy–Widom
+        - variance-gamma
+        - Voigt
+    - varying types supported
+        - generalized chi-squared
+        - generalized extreme value
+        - generalized Pareto
+        - Marchenko–Pastur
+        - q-exponential
+        - q-Gaussian
+        - q-Weibull
+        - shifted log-logistic
+        - Tukey lambda
+

@@ -3338,3 +3338,174 @@ class Trapezoidal(Base):
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
+# class ARGUS(Base):
+#     '''
+#     This class contains methods concerning ARGUS Distirbution. 
+#     Args:
+    
+#         a(float|a<b): supported parameters
+#         b(float): supported parameters
+#         randvar(float | [a,b]): random variable
+
+#     Methods:
+
+#         - pdf for probability density function.
+#         - cdf for cumulative distribution function.
+#         - p_value for p-values.
+#         - mean for evaluating the mean of the distribution.
+#         - median for evaluating the median of the distribution.
+#         - mode for evaluating the mode of the distribution.
+#         - var for evaluating the variance of the distribution.
+#         - skewness for evaluating the skewness of the distribution.
+#         - kurtosis for evaluating the kurtosis of the distribution.
+#         - print_summary for printing the summary statistics of the distribution. 
+
+#     Reference:
+#     - Wikipedia contributors. (2020, April 11). Trapezoidal distribution. In Wikipedia, The Free Encyclopedia. 
+#     Retrieved 06:06, December 30, 2020, from https://en.wikipedia.org/w/index.php?title=Trapezoidal_distribution&oldid=950241388
+#     '''
+#     def __init__(self, a,b, randvar):
+#         if a>b:
+#             raise Exception('lower bound(a) should be less than upper bound(b).')
+#         self.a = a
+#         self.b = b
+#         self.randvar = randvar
+
+#     def pdf(self,
+#             plot=False,
+#             interval=1,
+#             threshold=1000,
+#             xlim=None,
+#             ylim=None,
+#             xlabel=None,
+#             ylabel=None):
+#         '''
+#         Args:
+        
+#             interval(int): defaults to none. Only necessary for defining plot.
+#             threshold(int): defaults to 1000. Defines the sample points in plot.
+#             plot(bool): if true, returns plot.
+#             xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+#             ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+#             xlabel(string): sets label in x axis. Only relevant when plot is true. 
+#             ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+#         Returns: 
+#             either probability density evaluation for some point or plot of ARGUS distribution.
+#         '''
+#         def generator(a,b,c,d,x):
+#             if a<=x and x<b:
+#                 return (2/(d+c-a-b))*(x-a)/(b-a)
+#             if b<=x and x<c:
+#                 return (2/(d+c-a-b))
+#             if c<=x and x<=d:
+#                 return (2/(d+c-a-b))*(d-x)/(d-c)
+
+#         if plot == True:
+#             x = np.linspace(-interval, interval, int(threshold))
+#             y = np.array([generator(self.a, self.b, self.c, self.d, i) for i in x])
+#             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+#         return generator(self.a, self.b, self.c, self.d, self.randvar)
+
+#     def cdf(self,
+#             plot=False,
+#             interval=1,
+#             threshold=1000,
+#             xlim=None,
+#             ylim=None,
+#             xlabel=None,
+#             ylabel=None):
+#         '''
+#         Args:
+        
+#             interval(int): defaults to none. Only necessary for defining plot.
+#             threshold(int): defaults to 1000. Defines the sample points in plot.
+#             plot(bool): if true, returns plot.
+#             xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+#             ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+#             xlabel(string): sets label in x axis. Only relevant when plot is true. 
+#             ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+#         Returns: 
+#             either cumulative distribution evaluation for some point or plot of ARGUS distribution.
+#         '''
+#         def generator(a,b,c,d,x):
+#             if a<=x and x<b:
+#                 return (x-a)**2/((b-a)*(d+c-a-b))
+#             if b<=x and x<c:
+#                 return (2*x-a-b)/(d+c-a-b)
+#             if c<=x and x<=d:
+#                 return 1- (d-x)**2/((d+c-a-b)*(d-c))
+                
+#         if plot == True:
+#             x = np.linspace(-interval, interval, int(threshold))
+#             y = np.array([generator(self.a, self.b, self.c, self.d, i) for i in x])
+#             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+#         return generator(self.a, self.b, self.c, self.d, self.randvar)
+
+#     def p_value(self):
+#         '''
+#         Args:
+
+#             x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+#             x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+#             Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+#             Otherwise, the default random variable is x.
+
+#         Returns:
+#             p-value of the Pareto distribution evaluated at some random variable.
+#         '''
+#         return "currently unsupported"
+
+#     def mean(self):
+#         '''
+#         Returns: Mean of the ARGUS distribution.
+#         '''
+#         return (self.a+self.b+self.c)/3
+
+#     def median(self):
+#         '''
+#         Returns: Median of the ARGUS distribution. Currently Unsupported.
+#         '''
+#         return "currently unssuported."
+
+#     def mode(self):
+#         '''
+#         Returns: Mode of the ARGUS distribution. Currently Unsupported.
+#         '''
+#         return "currently unssuported."
+
+#     def var(self):
+#         '''
+#         Returns: Variance of the ARGUS distribution. Currently Unsupported. 
+#         '''
+#         return "currently unssuported."
+
+#     def skewness(self):
+#         '''
+#         Returns: Skewness of the ARGUS distribution. 
+#         '''
+#         # return 
+
+#     def kurtosis(self):
+#         '''
+#         Returns: Kurtosis of the ARGUS distribution. Currently Unsupported.
+#         '''
+#         return "currently unssuported."
+
+#     def print_summary(self):
+#         '''
+#         Returns: Summary statistic regarding the ARGUS distribution
+#         '''
+#         mean = self.mean()
+#         median = self.median()
+#         mode = self.mode()
+#         var = self.var()
+#         skewness = self.skewness()
+#         kurtosis = self.kurtosis()
+#         cstr = "summary statistic"
+#         print(cstr.center(40, "="))
+#         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)

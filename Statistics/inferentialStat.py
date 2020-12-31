@@ -218,7 +218,7 @@ def paired_t_test(data_set1, data_set2): # test functionality
         test value based on t-statistic for paired samples. 
     '''
     if len(data_set1)!=len(data_set2): 
-        print("data sets must have equal size.")
+        return print("data sets must have equal size.")
     sum_diff = sum([(x-y) for x in data_set1 for y in data_set2])
     ss_diff = sum([(x-y)**2 for x in data_set1 for y in data_set2])
     size = len(data_set1)
