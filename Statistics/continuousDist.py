@@ -161,8 +161,8 @@ class Normal(Base):
     Args: 
 
         mean(float): mean of the distribution
-        std(float): standard deviation of the distribution
-        randvar(float∈[0,1]): random variable
+        std(float | x>0): standard deviation of the distribution
+        randvar(float): random variable
 
     Methods:
 
@@ -329,7 +329,7 @@ class T_distribution(Base):
     of T(Student's) distribution is defined by beta-functions. 
 
     Args:
-        df(int): degrees of freedom. Defined as d.f. = n-1 where n is the sample size.
+        df(int): degrees of freedom. 
         randvar(float): random variable. 
     
     Methods:
@@ -352,6 +352,8 @@ class T_distribution(Base):
 
     '''
     def __init__(self, df, randvar):
+        if isinstance(df, int) == False or df<0:
+            raise Exception('degrees of freedom(df) should be a whole number. Entered value for df: {}'.format(df))
         self.df = df
         self.randvar = randvar
 
@@ -533,7 +535,7 @@ class Cauchy(Base):
     
     Args:
 
-        scale(float): pertains to  the scale parameter
+        scale(float | x>0): pertains to  the scale parameter
         location(float): pertains to the location parameter or median
         x(float): random variable
 
@@ -556,6 +558,8 @@ class Cauchy(Base):
     - Weisstein, Eric W. "Cauchy Distribution." From MathWorld--A Wolfram Web Resource. https://mathworld.wolfram.com/CauchyDistribution.html
     '''
     def __init__(self, x, location, scale):
+        if scale<0:
+            raise Exception('scale should be greater than 0. Entered value for scale:{}'.format(scale))
         self.scale = scale
         self.location = location
         self.x = x
@@ -710,9 +714,9 @@ class F_distribution(Base):
 
     Args:
 
-        x(float): random variable
-        df1(float): first degrees of freedom
-        df2(float): second degrees of freedom
+        x(float | [0,infty)): random variable
+        df1(int | x>0): first degrees of freedom
+        df2(int | x>0): second degrees of freedom
 
     Methods:
 
@@ -726,6 +730,7 @@ class F_distribution(Base):
         - skewness for evaluating the skewness of the distribution.
         - kurtosis for evaluating the kurtosis of the distribution.
         - print_summary for printing the summary statistics of the distribution. 
+
     References:
     - Mood, Alexander; Franklin A. Graybill; Duane C. Boes (1974). 
     Introduction to the Theory of Statistics (Third ed.). McGraw-Hill. pp. 246–249. ISBN 0-07-042864-6.
@@ -734,6 +739,13 @@ class F_distribution(Base):
     - NIST SemaTech (n.d.). F-Distribution. Retrived from https://www.itl.nist.gov/div898/handbook/eda/section3/eda3665.htm
     '''
     def __init__(self, x, df1, df2):
+        if isinstance(df1, int) == False or df1<0:
+            raise Exception('degrees of freedom(df) should be a whole number. Entered value for df1: {}'.format(df1))
+        if isinstance(df2, int) == False or df2<0:
+            raise Exception('degrees of freedom(df) should be a whole number. Entered value for df2: {}'.format(df2))
+        if x<0:
+            raise Exception('random variable should be greater than 0. Entered value for x:{}'.format(x))
+
         self.x = x
         self.df1 = df1
         self.df2
@@ -926,6 +938,8 @@ class Chisq_distribution(Base):
     Retrieved 04:37, December 23, 2020, from https://en.wikipedia.org/w/index.php?title=Chi-square_distribution&oldid=994056539
     '''
     def __init__(self, df, x):
+        if isinstance(df, int) == False:
+            raise Exception('degrees of freedom(df) should be a whole number. Entered value for df: {}'.format(df))
         self.x = x
         self.df = df
 
@@ -1080,8 +1094,8 @@ class Explonential_distribution(Base):
 
     Args:
 
-        - _lambda(float): rate parameter. 
-        - x(float): random variable. 
+        - _lambda(float | x>0): rate parameter. 
+        - x(float | x>0): random variable. 
 
     Methods:
 
@@ -1103,6 +1117,10 @@ class Explonential_distribution(Base):
     Retrieved 04:38, December 23, 2020, from https://en.wikipedia.org/w/index.php?title=Exponential_distribution&oldid=994779060
     '''
     def __init__(self, _lambda, x):
+        if _lambda<0:
+            raise Exception('lambda parameter should be greater than 0. Entered value for _lambda:{}'.format(_lambda))
+        if x<0:
+            raise Exception('random variable should be greater than 0. Entered value for x:{}'.format(x))
         self._lambda = _lambda
         self.x = x
 
@@ -1264,9 +1282,9 @@ class Gamma_distribution(Base):
 
     Args:
 
-        a(float): shape
-        b(float): scale
-        x(floar): random variable
+        a(float | [0, infty)): shape
+        b(float | [0, infty)): scale
+        x(float | [0, infty)): random variable
 
     Methods:
 
@@ -1286,6 +1304,12 @@ class Gamma_distribution(Base):
     Retrieved from: https://www.mathworks.com/help/stats/gamma-distribution.html?searchHighlight=gamma%20distribution&s_tid=srchtitle
     '''
     def __init__(self, a, b, x):
+        if a<0:
+            raise Exception('shape should be greater than 0. Entered value for a:{}'.format(a))
+        if b<0:
+            raise Exception('scale should be greater than 0. Entered value for b:{}'.format(b))
+        if x<0:
+            raise Exception('random variable should be greater than 0. Entered value for x:{}'.format(x))
         self.a = a
         self.b = b
         self.x = x
@@ -1313,15 +1337,13 @@ class Gamma_distribution(Base):
         Returns: 
             either probability density evaluation for some point or plot of Gamma-distribution.
         '''
-        a = self.a
-        b = self.b
         generator = lambda a, b, x: (1 / (b**a * ss.gamma(a))) * np.power(
             x, a - 1) * np.exp(-x / b)
         if plot == True:
             x = np.linspace(-interval, interval, threshold)
-            y = np.array([generator(a, b, i) for i in x])
+            y = np.array([generator(self.a, self.b, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(a, b, self.x)
+        return generator(self.a, self.b, self.x)
 
     def cdf(self,
             plot=False,
@@ -1346,16 +1368,15 @@ class Gamma_distribution(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Gamma-distribution.
         '''
-        a = self.a
-        b = self.b
+
         generator = lambda a, b, x: 1 - ss.gammainc(
             a, x / b
         )  # there is no apparent explanation for reversing gammainc's parameter, but it works quite perfectly in my prototype
         if plot == True:
             x = np.linspace(-interval, interval, threshold)
-            y = np.array([generator(a, b, i) for i in x])
+            y = np.array([generator(self.a, self.b, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(a, b, self.x)
+        return generator(self.a, self.b, self.x)
 
     def mean(self):
         '''
@@ -1365,9 +1386,9 @@ class Gamma_distribution(Base):
 
     def median(self):
         '''
-        Returns: Median of the Gamma distribution. No simple closed form. Currently unsupported.
+        Returns: Median of the Gamma distribution. 
         '''
-        return None
+        return "No simple closed form."
 
     def mode(self):
         '''
@@ -1409,13 +1430,13 @@ class Gamma_distribution(Base):
 
 class Pareto(Base):
     '''
-    This class contains methods concerning the Pareto Distribution. 
+    This class contains methods concerning the Pareto Distribution Type 1. 
 
     Args:
 
-        scale(float): scale parameter.
-        shape(float): shape parameter.
-        x(float): random variable.
+        scale(float | x>0): scale parameter.
+        shape(float | x>0): shape parameter.
+        x(float | [shape, infty]): random variable.
 
     Methods
 
@@ -1436,6 +1457,13 @@ class Pareto(Base):
     Retrieved 05:00, December 23, 2020, from https://en.wikipedia.org/w/index.php?title=Pareto_distribution&oldid=991727349
     '''
     def __init__(self, shape, scale, x):
+        if scale<0:
+            raise Exception('scale should be greater than 0. Entered value for scale:{}'.format(scale))
+        if shape<0:
+            raise Exception('shape should be greater than 0. Entered value for shape:{}'.format(shape))
+        if x>shape:
+            raise Exception('random variable x should be greater than or equal to shape. Entered value for x:{}'.format(x))
+        
         self.shape = shape
         self.scale = scale
         self.x = x
@@ -1622,9 +1650,9 @@ class Log_normal(Base):
 
     Args:
         
-        x(float): random variable
+        randvar(float | [0, infty)): random variable
         mean(float): mean parameter
-        std(float): standard deviation
+        std(float | x>0): standard deviation
 
     Methods:
 
@@ -1645,8 +1673,12 @@ class Log_normal(Base):
     - Wikipedia contributors. (2020, December 18). Log-normal distribution. In Wikipedia, The Free Encyclopedia. 
     Retrieved 06:49, December 23, 2020, from https://en.wikipedia.org/w/index.php?title=Log-normal_distribution&oldid=994919804
     '''
-    def __init__(self, x, mean, std):
-        self.x = x
+    def __init__(self, randvar, mean, std):
+        if randvar<0:
+            raise Exception('random variable should be greater than 0. Entered value for randvar:{}'.format(randvar))
+        if std<0:
+            raise Exception('random variable should be greater than 0. Entered value for std:{}'.format(std))
+        self.randvar = randvar
         self.mean = mean
         self.std = std
 
@@ -1673,16 +1705,13 @@ class Log_normal(Base):
         Returns: 
             either probability density evaluation for some point or plot of Log Normal-distribution.
         '''
-        randvar = self.x
-        mean = self.mean
-        std = self.std
         generator = lambda mean, std, x: (1 / (x * std * np.sqrt(
             2 * np.pi))) * np.exp(-(np.log(x - mean)**2) / (2 * std**2))
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(mean, std, i) for i in x])
+            y = np.array([generator(self.mean, self.std, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(mean, std, randvar)
+        return generator(self.mean, self.std, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -1707,16 +1736,13 @@ class Log_normal(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Log Normal-distribution.
         '''
-        randvar = self.x
-        mean = self.mean
-        std = self.std
         generator = lambda mean, std, x: 1 / 2 * ss.erfc(-(np.log(x - mean) /
                                                            (std * np.sqrt(2))))
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(mean, std, i) for i in x])
+            y = np.array([generator(self.mean, self.std, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(mean, std, randvar)
+        return generator(self.mean, self.std, self.randvar)
 
     # resolve error of integrate.quad
     def p_value(self):
@@ -1797,7 +1823,7 @@ class Laplace(Base):
     Args:
     
         location(float): mean parameter
-        scale(float>0): standard deviation
+        scale(float| x>0): standard deviation
         randvar(float): random variable
 
     Methods:
@@ -1818,6 +1844,8 @@ class Laplace(Base):
         Retrieved 10:53, December 28, 2020, from https://en.wikipedia.org/w/index.php?title=Laplace_distribution&oldid=995563221
     '''
     def __init__(self, location, scale, randvar):
+        if scale<0:
+            raise Exception('scale should be greater than 0. Entered value for Scale:{}'.format(scale))
         self.scale = scale
         self.location = location
         self.randvar = randvar
@@ -1954,7 +1982,7 @@ class Logistic(Base):
     Args:
     
         location(float): mean parameter
-        scale(float>0): standard deviation
+        scale(float | x>0): standard deviation
         randvar(float): random variable
 
     Methods:
@@ -1975,6 +2003,8 @@ class Logistic(Base):
      Retrieved 11:14, December 28, 2020, from https://en.wikipedia.org/w/index.php?title=Logistic_distribution&oldid=993793195
     '''
     def __init__(self, location, scale, randvar):
+        if scale<0:
+            raise Exception('scale should be greater than 0. Entered value for Scale:{}'.format(scale))
         self.scale = scale
         self.location = location
         self.randvar = randvar
@@ -2132,6 +2162,8 @@ class Logit_normal(Base):
     Retrieved 07:44, December 30, 2020, from https://en.wikipedia.org/w/index.php?title=Logit-normal_distribution&oldid=993237113
     '''
     def __init__(self, sq_scale, location, randvar):
+        if randvar<0 or randvar>1:
+            raise Exception('random variable should only be in between (0,1). Entered value: randvar:{}'.format(randvar))
         self.sq_scale = sq_scale
         self.location = location
         self.randvar = randvar
@@ -2270,9 +2302,9 @@ class Weibull(Base):
     This class contains methods concerning Weibull Distirbution. Also known as Fréchet distribution.
     Args:
     
-        shape(float): mean parameter
-        scale(float): standard deviation
-        randvar(float): random variable
+        shape(float | [0, infty)): mean parameter
+        scale(float | [0, infty)): standard deviation
+        randvar(float | [0, infty)): random variable
 
     Methods:
 
@@ -2292,6 +2324,8 @@ class Weibull(Base):
     Retrieved 11:32, December 28, 2020, from https://en.wikipedia.org/w/index.php?title=Weibull_distribution&oldid=993879185
     '''
     def __init__(self, shape, scale, randvar):
+        if shape<0 or scale<0 or randvar<0:
+            raise Exception('Parameters should not be less than 0. Entered values: shape: {0}, scale{1}, randvar{2}'.format(shape, scale, randvar))
         self.scale = scale
         self.shape = shape
         self.randvar = randvar
@@ -2462,6 +2496,10 @@ class Weilbull_inv(Base):
     Retrieved 07:28, December 30, 2020, from https://en.wikipedia.org/w/index.php?title=Fr%C3%A9chet_distribution&oldid=992938143
     '''
     def __init__(self,  shape, scale, location, randvar):
+        if shape<0 or scale<0:
+            raise Exception('the value of scale and shape should be greater than 0. Entered values scale was:{0}, shape:{1}'.format(scale, shape))
+        if randvar<location:
+            raise Exception('random variable should be greater than the location parameter. Entered values: randvar: {0}, location:{1}'.format(randvar, location))
         self.shape = shape
         self.scale = scale
         self.location = location
@@ -2634,6 +2672,9 @@ class Gumbell(Base):
     Retrieved 09:22, December 29, 2020, from https://en.wikipedia.org/w/index.php?title=Gumbel_distribution&oldid=990718796
     '''
     def __init__(self, location, scale, randvar):
+        if scale<0:
+            raise Exception('scale parameter should be greater than 0. The value of the scale parameter is: {}'.format(scale))
+
         self.location = location
         self.scale = scale
         self.randvar = randvar
@@ -2792,6 +2833,8 @@ class Arcsine(Base):
     Retrieved 05:19, December 30, 2020, from https://en.wikipedia.org/w/index.php?title=Arcsine_distribution&oldid=986131091
     '''
     def __init__(self, randvar):
+        if randvar>0 or randvar>1:
+            raise Exception('random variable should have values between [0,1]. The value of randvar was: {}'.format(randvar))
         self.randvar = randvar
 
     def pdf(self,
@@ -2946,6 +2989,10 @@ class Triangular(Base):
     Retrieved 05:41, December 30, 2020, from https://en.wikipedia.org/w/index.php?title=Triangular_distribution&oldid=995101682
     '''
     def __init__(self, a,b,c, randvar):
+        if a>b:
+            raise Exception('lower limit(a) should be less than upper limit(b).')
+        if a>c and c>b:
+            raise Exception('lower limit(a) should be less than or equal to mode(c) where c is less than or equal to upper limit(b).')
         self.a = a
         self.b = b
         self.c = c
@@ -3137,6 +3184,15 @@ class Trapezoidal(Base):
     Retrieved 06:06, December 30, 2020, from https://en.wikipedia.org/w/index.php?title=Trapezoidal_distribution&oldid=950241388
     '''
     def __init__(self, a,b,c,d, randvar):
+        if a>d:
+            raise Exception('lower bound(a) should be less than upper bound(d).')
+        if a>b or b>=c:
+            raise Exception('lower bound(a) should be less then or equal to level start (b) where (b) is less than level end(c).')
+        if b>=c or c>d:
+            raise Exception('level start(b) should be less then level end(c) where (c) is less then or equal to upper bound (d).')
+        if c>d:
+            raise Exception('level end(c) should be less than or equal to upper bound(d)')
+
         self.a = a
         self.b = b
         self.c = c
