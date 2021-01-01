@@ -2,14 +2,21 @@
 
 Module:
 - continousDist
+
     - Distributions to improve:
         - non-central chi
         - beta distribution
         - non-central chi-square
+        - non-central chi
+        - inverse chi
         - Power Norma Distribution
+        - Generalized Pareto Distribution
+        - Inverse Gamma
+        - generalized gamma 
         
-    - construction of confidence intervals(method)
+    <!-- - construction of confidence intervals(method) -->
     - p_values(method)
+    - rvs generation
 
 
 - grouped statistics

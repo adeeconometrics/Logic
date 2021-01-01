@@ -251,3 +251,21 @@
         - shifted log-logistic
         - Tukey lambda
 
+- Continuous Multivariate
+ 
+    - Dirichlet
+    - generalized Dirichlet
+    - multivariate Laplace
+    - multivariate normal
+    - multivariate stable
+    - multivariate t
+    - normal-inverse-gamma
+    - normal-gamma
+    - Matrix-valued 
+        - inverse matrix 
+        - gammainverse-Wishartmatrix normal
+        - matrix t
+        - matrix gamma
+        - normal-inverse-Wishart
+        - normal-Wishart
+        - Wishart
