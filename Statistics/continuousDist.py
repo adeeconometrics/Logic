@@ -250,22 +250,25 @@ class Normal(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.mean, self.std, self.randvar)
 
-    def p_value(self, x_lower=-np.inf, x_upper=None):
+    def p_val(self, x_lower=-np.inf, x_upper=None):
         '''
         Args:
 
-            x_lower(float): defaults to infinity.
-            x_upper(float): defaults to None. 
+            x_lower(float): defaults to -np.inf. Defines the lower value of the distribution. Optional.
+            x_upper(float | x_upper>x_lower): defaults to None. If not defined defaults to random variable x. Optional.
+
+            Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+            Otherwise, the default random variable is x.
 
         Returns:
-            p-value drawn from normal distirbution between x_lower and x_upper.
+            p-value of the Normal distribution evaluated at some random variable.
         '''
-        if x_upper is None:
-            x_upper = self.randvar
-        cdf = lambda mu, sig, x: 1/2*(1+ss.erf((x-mu)/(sig*np.sqrt(2))))
-        lower_v = cdf(self.mean, self.std, x_lower)
-        upper_v = cdf(self.mean, self.std, x_upper)
-        return abs(x_upper - x_lower)
+        cdf_func = lambda mu, sig, x: 1/2*(1+ss.erf((x-mu)/(sig*np.sqrt(2))))
+        if x_upper != None:
+            if x_lower>x_upper:
+                raise Exception('x_lower should be less than x_upper.')
+            return cdf_func(self.mean, self.std, x_upper) - cdf_func(self.mean, self.std, x_lower)
+        return cdf_func(self.mean, self.std, self.randvar)
 
     def confidence_interval(self):
         # find critical values for a given p-value
@@ -433,7 +436,7 @@ class T_distribution(Base):
         '''
         Args:
 
-            x_lower(float): defaults to -∞. Defines the lower value of the distribution. Optional.
+            x_lower(float): defaults to -np.inf. Defines the lower value of the distribution. Optional.
             x_upper(float): defaults to None. Defines the upper value of the distribution. Optional.
 
             Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
@@ -441,7 +444,7 @@ class T_distribution(Base):
             
         Returns:
             p-value of the T distribution evaluated at some random variable.
-        '''
+        ''' # normallyt this would be implemented as cdf function from the generalized hypergeometric function
         df = self.df
         if x_upper == None:
             x_upper = self.randvar
@@ -638,8 +641,8 @@ class Cauchy(Base):
         '''
         Args:
 
-            x_lower(float): defaults to None. Defines the lower value of the distribution. Optional.
-            x_upper(float): defaults to None. Defines the upper value of the distribution. Optional.
+            x_lower(float): defaults to -np.inf. Defines the lower value of the distribution. Optional.
+            x_upper(float | x_upper>x_lower): defaults to None. Defines the upper value of the distribution. Optional.
 
             Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
             Otherwise, the default random variable is x.
@@ -647,13 +650,12 @@ class Cauchy(Base):
         Returns:
             p-value of the Cauchy distribution evaluated at some random variable.
         '''
-        if x_upper is None:
-            x_upper = self.x
-        cdf = lambda x, location, scale: (1 / np.pi) * np.arctan(
-            (x - location) / scale) + 1 / 2
-        lower_v = cdf(x_lower,self.location, self.scale)
-        upper_v = cdf(x_upper,self.location, self.scale)
-        return abs(upper_v, lower_v)
+        cdf_func =lambda x, location, scale: (1 / np.pi) * np.arctan((x - location) / scale) + 1 / 2
+        if x_upper != None:
+            if x_lower>x_upper:
+                raise Exception('x_lower should be less than x_upper.')
+            return cdf_func(x_upper, self.location, self.scale) - cdf_func(x_lower, self.location, self.scale)
+        return cdf_func(self.x, self.location, self.scale)
 
     def confidence_interval(self):
         pass
@@ -908,7 +910,7 @@ class F_distribution(Base):
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
-# p value and cdf
+
 class Chisq_distribution(Base):
     '''
     This class contains methods concerning the Chi-square distribution.
@@ -1001,23 +1003,20 @@ class Chisq_distribution(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Chi square-distribution.
         '''
-        df = self.df
-        randvar = self.x
-
-        generator = lambda x, df: (1 / ss.gamma(df / 2)) * ss.gammainc(
-            df / 2, x / 2) * 2
+        generator = lambda x, df:ss.gammainc(df / 2, x / 2)
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(i, df) for i in x])
+            y = np.array([generator(i, self.df) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(randvar, df)
+        return generator(self.randvar, self.df)
 
-    def p_val(self, x_lower=0, x_upper=None):
+    def p_val(self, x_lower=-np.inf, x_upper=None):
         '''
         Args:
 
-            x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
-            x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+            x_lower(float): defaults to -np.inf. Defines the lower value of the distribution. Optional.
+            x_upper(float | x_upper>x_lower): defaults to None. If not defined defaults to random variable x. Optional.
+            args(list of float): p_values of each elements from the list
 
             Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
             Otherwise, the default random variable is x.
@@ -1025,17 +1024,12 @@ class Chisq_distribution(Base):
         Returns:
             p-value of the Chi square distribution evaluated at some random variable.
         '''
-        x = self.x
-        df = self.df
-        if x_lower < 0:
-            x_lower = 0
-        if x_upper is None:
-            x_upper = self.x
-
-        pdf_func = lambda x, df: (1 / (np.power(2, df / 2))) * np.power(
-            x, df / 2 - 1) * np.exp(-x / 2)
-
-        return sci.integrate.quad(pdf_func, x_lower, x_upper, args=(df))[0] / 2
+        cdf_func = lambda x, df:ss.gammainc(df / 2, x / 2)
+        if x_upper != None:
+            if x_lower>x_upper:
+                raise Exception('x_lower should be less than x_upper.')
+            return cdf_func(x_upper, self.df) - cdf_func(x_lower, self.df)
+        return cdf_func(self.randvar, self.df)
 
     def mean(self):
         '''
@@ -1053,7 +1047,7 @@ class Chisq_distribution(Base):
         '''
         Returns: Mode of the Chi-square distribution. Returns None if currently unsupported.
         '''
-        return None
+        return "unsupported"
 
     def var(self):
         '''
@@ -1076,6 +1070,182 @@ class Chisq_distribution(Base):
     def print_summary(self):
         '''
         Returns: Summary statistic regarding the Chi-square distribution
+        '''
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = "summary statistic"
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
+class Chi_distribution(Base):
+    '''
+    This class contains methods concerning the Chi distribution.
+
+    Args:
+
+        x(float): random variable.
+        df(int | x>0): degrees of freedom.
+
+    Methods:
+    
+        - pdf for evaluating or plotting probability density function.
+        - cdf for evaluating or plotting cumulative distribution function.
+        - p_value for p value.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - print_summary for printing the summary statistics of the distribution. 
+
+    References:
+    - Weisstein, Eric W. "Chi Distribution." From MathWorld--A Wolfram Web Resource. 
+    https://mathworld.wolfram.com/ChiDistribution.html
+    - Wikipedia contributors. (2020, October 16). Chi distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 10:35, January 2, 2021, from https://en.wikipedia.org/w/index.php?title=Chi_distribution&oldid=983750392
+    '''
+    def __init__(self, df, x):
+        if isinstance(df, int) == False:
+            raise Exception('degrees of freedom(df) should be a whole number. Entered value for df: {}'.format(df))
+        self.x = x
+        self.df = df
+
+    def pdf(self,
+            plot=False,
+            interval=1,
+            threshold=1000,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        '''
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability density evaluation for some point or plot of Chi-distribution.
+    
+        '''
+        df = self.df
+        randvar = self.x
+        generator = lambda x, df: (1 / (np.power(2, (df / 2) - 1) * ss.gamma(
+            df / 2))) * np.power(x, df - 1) * np.exp(-x**2 / 2)
+        if plot == True:
+            x = np.linspace(-interval, interval, int(threshold))
+            y = np.array([generator(i, df) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+
+        return generator(randvar, df)
+
+    def cdf(self,
+            plot=False,
+            interval=1,
+            threshold=1000,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        '''
+        Args:
+
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or plot of Chi-distribution.
+        '''
+        generator = lambda x, df:ss.gammainc(df/2, x**2/2)
+        if plot == True:
+            x = np.linspace(-interval, interval, int(threshold))
+            y = np.array([generator(i, self.df) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.randvar, self.df)
+
+    def p_val(self, x_lower=-np.inf, x_upper=None):
+        '''
+        Args:
+
+            x_lower(float): defaults to -np.inf. Defines the lower value of the distribution. Optional.
+            x_upper(float | x_upper>x_lower): defaults to None. If not defined defaults to random variable x. Optional.
+            args(list of float): p_values of each elements from the list
+
+            Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+            Otherwise, the default random variable is x.
+
+        Returns:
+            p-value of the Chi distribution evaluated at some random variable.
+        '''
+        cdf_func = lambda x, df:ss.gammainc(df/2, x**2/2)
+        if x_upper != None:
+            if x_lower>x_upper:
+                raise Exception('x_lower should be less than x_upper.')
+            return cdf_func(x_upper, self.df) - cdf_func(x_lower, self.df)
+        return cdf_func(self.randvar, self.df)
+
+    def mean(self):
+        '''
+        Returns: Mean of the Chi distribution.
+        '''
+        return np.sqrt(2)*ss.gamma((self.df+1)/2)/ss.gamma(self.df/2)
+
+    def median(self):
+        '''
+        Returns: Median of the Chi distribution.
+        '''
+        return np.power(self.df*(1-(2/(1*self.df))), 3/2)
+
+    def mode(self):
+        '''
+        Returns: Mode of the Chi distribution.
+        '''
+        if self.df>=1:
+            return np.sqrt(self.df-1)
+        return "undefined"
+
+    def var(self):
+        '''
+        Returns: Variance of the Chi distribution.
+        '''
+        return self.df-self.mean()**2
+
+    def skewness(self):
+        '''
+        Returns: Skewness of the Chi distribution.
+        '''
+        std = np.sqrt(self.var())
+        return (self.mean()-2*self.mean()*std**2)/std**3
+
+    def kurtosis(self):
+        '''
+        Returns: Kurtosis of the Chi distribution.
+        '''
+        sk = self.skewness()
+        var = self.var()
+        mean = self.mean()
+        return 2*(1-mean*np.sqrt(var)*sk-var)/var
+
+    def print_summary(self):
+        '''
+        Returns: Summary statistic regarding the Chi distribution
         '''
         mean = self.mean()
         median = self.median()
@@ -1214,17 +1384,15 @@ class Explonential_distribution(Base):
         _lambda = self._lambda
         x = self.x
         if x_lower < 0:
-            x_lower = 0
+            raise Exception('x_lower cannot be lower than 0. Entered value: {}'.format(x_lower))
         if x_upper is None:
             x_upper = x
 
-        def pdf_func(x, _lambda):
-            if x >= 0:
-                return _lambda * np.exp(-(_lambda * x))
+        def cdf_func(x, _lambda):
+            if x > 0:
+                return 1 - np.exp(-_lambda * x)
             return 0
-
-        return sci.integrate.quad(pdf_func, x_lower, x_upper,
-                                  args=(_lambda))[0]
+        return cdf_func(x_upper, _lambda) - cdf_func(x_lower, _lambda)
 
     def mean(self):
         '''
@@ -1368,15 +1536,35 @@ class Gamma_distribution(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Gamma-distribution.
         '''
-
-        generator = lambda a, b, x: 1 - ss.gammainc(
-            a, x / b
-        )  # there is no apparent explanation for reversing gammainc's parameter, but it works quite perfectly in my prototype
+        # there is no apparent explanation for reversing gammainc's parameter, but it works quite perfectly in my prototype
+        generator = lambda a, b, x: 1 - ss.gammainc(a, x / b)  
+        
         if plot == True:
             x = np.linspace(-interval, interval, threshold)
             y = np.array([generator(self.a, self.b, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.a, self.b, self.x)
+        return generator(self.a, self.b, self.x)    
+
+    def p_value(self, x_lower=0, x_upper=None):
+        '''
+        Args:
+
+            x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+            x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+            Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+            Otherwise, the default random variable is x.
+
+        Returns:
+            p-value of the Gamma distribution evaluated at some random variable.
+        '''
+        if x_lower < 0:
+            raise Exception('x_lower cannot be lower than 0. Entered value: {}'.format(x_lower))
+        if x_upper is None:
+            x_upper = self.x
+        cdf_func = lambda a, b, x: 1 - ss.gammainc(a, x / b) 
+
+        return cdf_func(self.a, self.b, x_upper, self._lambda) - cdf_func(self.a, self.b, x_lower, self._lambda)
 
     def mean(self):
         '''
@@ -1555,22 +1743,16 @@ class Pareto(Base):
         Returns:
             p-value of the Pareto distribution evaluated at some random variable.
         '''
-        x_m = self.scale
-        alpha = self.shape
         if x_lower < 0:
             x_lower = 0
         if x_upper is None:
             x_upper = self.x
 
-        def generator(x_m, alpha, x):
+        def cdf_func(x, x_m, alpha):
             if x >= x_m:
-                return (alpha * x_m**alpha) / np.power(x, alpha + 1)
+                return 1 - np.power(x_m / x, alpha)
             return 0
-
-        return sci.integrate.quad(generator,
-                                  x_lower,
-                                  x_upper,
-                                  args=(x_m, alpha))[0]
+        return cdf_func(x_upper, self.scale, self.alpha)+cdf_func(x_lower, self.scale, self.alpha)
 
     def mean(self):
         '''
@@ -1736,7 +1918,7 @@ class Log_normal(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Log Normal-distribution.
         '''
-        generator = lambda mean, std, x: 1 / 2 * ss.erfc(-(np.log(x - mean) /
+        generator = lambda mean, std, x:0.5+ 0.5*ss.erfc(-(np.log(x - mean) /
                                                            (std * np.sqrt(2))))
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
@@ -1744,8 +1926,7 @@ class Log_normal(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.mean, self.std, self.randvar)
 
-    # resolve error of integrate.quad
-    def p_value(self):
+    def p_value(self, x_lower=0, x_upper=None):
         '''
         Args:
 
@@ -1758,7 +1939,14 @@ class Log_normal(Base):
         Returns:
             p-value of the Pareto distribution evaluated at some random variable.
         '''
-        return "currently unsupported"
+        cdf_func = lambda mean, std, x:0.5+ 0.5*ss.erfc(-(np.log(x - mean) /
+                                                           (std * np.sqrt(2))))
+        if x_lower <0:
+            raise Exception('x_lower should not be less then 0. X_lower: {}'.format(x_lower))
+        if x_upper == None:
+            x_upper = self.randvar
+
+        return cdf_func(self.mean, self.std, x_upper)-cdf_func(self.mean, self.std, x_lower)
 
     def mean(self):
         '''
@@ -1911,7 +2099,7 @@ class Laplace(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.location, self.scale, self.randvar)
 
-    def p_value(self):
+    def p_value(self, x_lower=-np.inf, x_upper=None):
         '''
         Args:
 
@@ -1924,7 +2112,13 @@ class Laplace(Base):
         Returns:
             p-value of the Pareto distribution evaluated at some random variable.
         '''
-        return "currently unsupported"
+        if x_upper == None:
+            x_upper = self.randvar
+        if x_lower>x_upper:
+            raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        cdf_func = lambda mu, b, x: 1 / 2 + ((1 / 2) * np.sign(x - mu) * (1 - np.exp(abs(x - mu) / b)))
+        
+        return cdf_func(self.location, self.scale, x_upper)-cdf_func(self.location, self.scale, x_lower)
 
     def mean(self):
         '''
@@ -2070,7 +2264,7 @@ class Logistic(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.location, self.scale, self.randvar)
 
-    def p_value(self):
+    def p_value(self, x_lower=-np.inf, x_upper=None):
         '''
         Args:
 
@@ -2081,9 +2275,14 @@ class Logistic(Base):
             Otherwise, the default random variable is x.
 
         Returns:
-            p-value of the Pareto distribution evaluated at some random variable.
+            p-value of the Logistic distribution evaluated at some random variable.
         '''
-        return "currently unsupported"
+        if x_upper == None:
+            x_upper = self.randvar
+        if x_lower>x_upper:
+            raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        cdf_func = lambda mu, s, x: 1 / (1 + np.exp(-(x - mu) / s))
+        return cdf_func(self.location, self.scale, x_upper)- cdf_func(self.location, self.scale, x_lower)
 
     def mean(self):
         '''
@@ -2230,7 +2429,7 @@ class Logit_normal(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.location, self.sq_scale, self.randvar)
 
-    def p_value(self):
+    def p_value(self, x_lower=0, x_upper=None):
         '''
         Args:
 
@@ -2241,9 +2440,16 @@ class Logit_normal(Base):
             Otherwise, the default random variable is x.
 
         Returns:
-            p-value of the Pareto distribution evaluated at some random variable.
+            p-value of the Logit distribution evaluated at some random variable.
         '''
-        return "currently unsupported"
+        if x_lower<0:
+            raise Exception('x_lower should not be less than 0. X_lower:{}'.format(x_lower))
+        if x_upper == None:
+            x_upper = self.randvar
+        if x_lower>x_upper:
+            raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        cdf_func = lambda mu, sig, x: 1/2*(1+ss.erf((ss.logit(x)-mu)/(np.sqrt(2*sig**2))))
+        return cdf_func(self.location, self.sq_scale, x_upper)-cdf_func(self.location, self.sq_scale, x_lower)
 
     def mean(self):
         '''
@@ -2398,7 +2604,7 @@ class Weibull(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.scale, self.shape, self.randvar)
 
-    def p_value(self):
+    def p_value(self, x_lower=0, x_upper=None):
         '''
         Args:
 
@@ -2409,9 +2615,20 @@ class Weibull(Base):
             Otherwise, the default random variable is x.
 
         Returns:
-            p-value of the Pareto distribution evaluated at some random variable.
+            p-value of the Weilbull distribution evaluated at some random variable.
         '''
-        return "currently unsupported"
+        if x_lower<0:
+            raise Exception('x_lower should not be less than 0. X_lower:{}'.format(x_lower))
+        if x_upper == None:
+            x_upper = self.randvar
+        if x_lower>x_upper:
+            raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        def cdf_func(_lamnda, k, x):
+            if x<0:
+                return 0
+            if x>=0:
+                return 1-np.exp(-(x/_lambda)**k)
+        return cdf_func(self.location, self.shape, x_upper)-cdf_func(self.location, self.shape, x_lower)
 
     def mean(self):
         '''
@@ -2567,7 +2784,7 @@ class Weilbull_inv(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.shape, self.scale, self.location, self.randvar)
 
-    def p_value(self):
+    def p_value(self, x_lower=0, x_upper=None):
         '''
         Args:
 
@@ -2578,9 +2795,16 @@ class Weilbull_inv(Base):
             Otherwise, the default random variable is x.
 
         Returns:
-            p-value of the Pareto distribution evaluated at some random variable.
+            p-value of the Logit distribution evaluated at some random variable.
         '''
-        return "currently unsupported"
+        if x_lower<0:
+            raise Exception('x_lower should not be less than 0. X_lower:{}'.format(x_lower))
+        if x_upper == None:
+            x_upper = self.randvar
+        if x_lower>x_upper:
+            raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        cdf_func = lambda a,s,m,x: np.exp(-((x-m)/s)**-a)
+        return cdf_func(self.shape, self.scale, self.location, x_upper)-cdf_func(self.shape, self.scale, self.location, x_lower)
 
     def mean(self):
         '''
@@ -2754,7 +2978,7 @@ class Gumbell(Base):
             Otherwise, the default random variable is x.
 
         Returns:
-            p-value of the Pareto distribution evaluated at some random variable.
+            p-value of the Gumbell distribution evaluated at some random variable.
         '''
         return "currently unsupported"
 
@@ -2898,7 +3122,7 @@ class Arcsine(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.location, self.scale, self.randvar)
 
-    def p_value(self):
+    def p_value(self, x_lower=0, x_upper=None):
         '''
         Args:
 
@@ -2909,9 +3133,16 @@ class Arcsine(Base):
             Otherwise, the default random variable is x.
 
         Returns:
-            p-value of the Pareto distribution evaluated at some random variable.
+            p-value of the Arcsine distribution evaluated at some random variable.
         '''
-        return "currently unsupported"
+        if x_lower<0 or x>1:
+            raise Exception('x_lower should not be less than 0 or greater than 1. X_lower:{}'.format(x_lower))
+        if x_upper == None:
+            x_upper = self.randvar
+        if x_lower>x_upper:
+            raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        cdf_func = lambda x: (2/np.pi)*np.arcsin(np.sqrt(x))
+        return cdf_func(self.location, self.scale, x_upper)-cdf_func(self.location, self.scale, x_lower)
 
     def mean(self):
         '''
@@ -3078,7 +3309,7 @@ class Triangular(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.a, self.b, self.c, self.randvar)
 
-    def p_value(self):
+    def p_value(self, x_lower=0, x_upper=None):
         '''
         Args:
 
@@ -3089,9 +3320,22 @@ class Triangular(Base):
             Otherwise, the default random variable is x.
 
         Returns:
-            p-value of the Pareto distribution evaluated at some random variable.
+            p-value of the Triangular distribution evaluated at some random variable.
         '''
-        return "currently unsupported"
+        if x_upper == None:
+            x_upper = self.randvar
+        if x_lower>x_upper:
+            raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        def cdf_func(a,b,c,x):
+            if x<=a:
+                return 0
+            if a<x and x<=c:
+                return ((x-a)**2)/((b-a)*(c-a))
+            if c<x and x<b:
+                return 1 - ((b-x)**2)/((b-c)*(b-c))
+            if b<=x:
+                return 1
+        return cdf_func(self.a, self.b, self.c, x_upper)-cdf_func(self.a, self.b, self.c, x_lower)
 
     def mean(self):
         '''
@@ -3284,7 +3528,7 @@ class Trapezoidal(Base):
             Otherwise, the default random variable is x.
 
         Returns:
-            p-value of the Pareto distribution evaluated at some random variable.
+            p-value of the Trapezoidal distribution evaluated at some random variable.
         '''
         return "currently unsupported"
 
