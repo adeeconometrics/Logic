@@ -1,9 +1,9 @@
 try:
     import numpy as np
-    import scipy as sci
-    # import scipy.special as ss
+    # import scipy as sci
+    import scipy.special as ss
     import math as m
-    import matplotlib.pyplot as plt
+    # import matplotlib.pyplot as plt
 
 except Exception as e:
     print("some modules are missing {}".format(e))
@@ -13,41 +13,43 @@ class BaseAnova:
     def __init__(self, independent, dependent, adjust=True):
         self.dependent = dependent
         self.independent = independent
-        self.keys_d = dependent.keys()
-        self.keys_ind = independent.keys()
+        self.keys_d = list(dependent.keys())
+        self.keys_ind = list(independent.keys())
         self.factor = len(self.keys_d) + len(self.keys_ind)
 
-        if adjust ==False:
+        if adjust == False:
             pass
         self.adjust_set()
 
     def adjust_set(self):
-        self.max_len_d =self.max_len_ind = 0
-        for var in self.keys_d:
+        self.max_len_d = self.max_len_ind = 0
+        for var in range(0, len(self.keys_d)):
             # find max lenght in dependent dict
-            if self.max_len_d < len(self.keys_d[var]):
-                self.max_len_d = len(self.keys_d[var])
-        for var in self.keys_d:
+            if self.max_len_d < len(self.dependent[self.keys_d[var]]):
+                self.max_len_d = len(self.dependent[self.keys_d[var]])
+
+        for var in range(0, len(self.keys_d)):
             # fill 0
-            if self.max_len_d - len(self.keys_d[var]) != 0:
-                diff = self.max_len_d - len(self.keys_d[var])
+            if self.max_len_d - len(self.dependent[self.keys_d[var]]) != 0:
+                diff = self.max_len_d - len(self.dependent[self.keys_d[var]])
+                update_d = self.dependent[self.keys_d[var]] + [0] * diff
 
-                update_d = self.keys_d[var]+[0] * diff
-                self.dependent.update(self.keys_d[var]=update_d)
+                self.dependent.update([(self.keys_d[var], update_d)])
 
-        for var in self.keys_ind:
+        for var in range(0, len(self.keys_ind)):
             # find max lenght in independent dict
-            if self.max_len_ind < len(self.keys_ind[var]):
-                self.max_len_ind = len(self.keys_ind[var])
-        for var in self.keys_ind:
+            if self.max_len_ind < len(self.independent[self.keys_ind[var]]):
+                self.max_len_ind = len(self.independent[self.keys_ind[var]])
+
+        for var in range(0, len(self.keys_ind)):
             # fill 0
-            if self.max_len_ind - len(self.keys_ind[var]) != 0:
-                diff = self.max_len_ind - len(self.keys_ind[var])
-                self.keys_ind[var]+= [0] * diff
+            if self.max_len_ind - len(
+                    self.independent[self.keys_ind[var]]) != 0:
+                diff = self.max_len_ind - len(
+                    self.independent[self.keys_ind[var]])
+                update_ind = self.independent[self.keys_ind[var]] + [0] * diff
 
-                update_ind = self.keys_ind[var]+[0] * diff
-                self.independent.update(self.keys_ind[var]=update_ind)
-
+                self.independent.update([(self.keys_ind[var], update_ind)])
 
 
 class Anova1(BaseAnova):
