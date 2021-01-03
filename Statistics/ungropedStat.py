@@ -8,14 +8,11 @@ except Exception as e:
 
 # todo: assesing mode for bimodality and multimodality
 
-
 class ungroupedStatistics:
     '''
     The ungroupedStatistics object contains methods for ungrouped statistics summary that describes the distribution.
 
-    Args:
-
-        data(list): raw data set
+    Args: data(list): raw data set
     '''
     def __init__(self, data):
         self.data = data
@@ -29,9 +26,7 @@ class ungroupedStatistics:
 
     def median(self):
         '''
-        Returns:
-        
-            ungrouped median
+        Returns: ungrouped median
         '''
         data = self.data
         if (len(data) % 2 == 0):
@@ -55,17 +50,13 @@ class ungroupedStatistics:
 
     def range(self):
         '''
-        Returns:
-        
-            range = max - min
+        Returns: range = max - min
         '''
         return max(self.data) - min(self.data)
 
     def pop_variance(self):
         '''
-        Returns:
-        
-            population variance
+        Returns: population variance
         '''
         mean = self.mean()
         size = len(self.data)
@@ -73,9 +64,7 @@ class ungroupedStatistics:
 
     def pop_std(self):
         '''
-        Returns:
-        
-            population standard deviation
+        Returns:  population standard deviation
         '''
         mean = self.mean()
         var = self.pop_variance()
@@ -83,9 +72,7 @@ class ungroupedStatistics:
 
     def samp_variance(self):
         '''
-        Returns:
-        
-            sample variance
+        Returns: sample variance
         '''
         mean = self.mean()
         size = len(self.data)
@@ -93,9 +80,7 @@ class ungroupedStatistics:
 
     def samp_std(self):
         '''
-        Returns:
-        
-            sample standard deviation
+        Returns: sample standard deviation
         '''
         mean = self.mean()
         var = self.samp_variance()
@@ -110,9 +95,7 @@ class ungroupedStatistics:
             samp_std (float): if the sample standard deviation given. This is optional
             return_sk (bool): should the skewness value be returned or not. This is optional.
 
-        Returns:
-        
-            skewness: either description or value
+        Returns: skewness: either description or value
         '''
         if mean == None:
             mean = self.mean()
@@ -148,9 +131,7 @@ class ungroupedStatistics:
             description of ku),returns 
             ku value is True
         
-        Returns:
-        
-            Kurtosis: either description of value
+        Returns: Kurtosis: either description of value
         '''
         if samp_mean == None:
             samp_mean = self.mean()
@@ -174,54 +155,52 @@ class ungroupedStatistics:
 
     def print_summary(self):
         '''
-        Returns:
-        
-            prints summary statistics.
+        Returns: prints summary statistics.
         '''
-        pass
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.samp_variance()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = "summary statistic"
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode,
+                     "\nsample var: ", var, "\nskewness: ", skewness, "\nkurtosis: ",
+                     kurtosis)
 
 
 class centralTendency:
     '''
     The centralTendency object contains methods for cental tendencies i.e. mean, median, and mode.
 
-    Args:
-
-        data(list): raw data set
+    Args: data(list): raw data set
     '''
     def __init__(self, data):
         self.data = data
 
     def arithmetic_mean(self):
         '''
-        Returns:
-        
-            arithmetic mean
+        Returns: arithmetic mean
         '''
         return np.sum(self.data) / len(self.data)
 
     def geometric_mean(self):
         '''
-        Returns:
-        
-            geometric mean
+        Returns: geometric mean
         '''
         return np.power(np.prod(self.data), 1 / len(self.data))
 
     def harmonic_mean(self):
         '''
-        Returns:
-        
-            harmonic mean
+        Returns: harmonic mean
         '''
         return len(self.data) * np.power(
             np.sum([1 / self.data[i] for i in range(0, len(self.data))]), -1)
 
     def root_mean_square(self):
         '''
-        Returns:
-         
-            root mean square or quadratic mean.
+        Returns: root mean square or quadratic mean.
         '''
         return np.sqrt(
             (1 / len(self.data)) *
@@ -232,9 +211,7 @@ class centralTendency:
         Args:
 
             weights(list of integers): necessary.
-        Returns:
-        
-            weigthed mean.
+        Returns: weigthed mean.
         '''
         if (len(self.data) == len(weights)):
             return (np.sum(
@@ -245,9 +222,7 @@ class centralTendency:
 
     def interquartile_mean(self):
         '''
-        Returns:
-        
-            interquartile mean
+        Returns: interquartile mean
         '''
         scale = 1 / len(self.data)
         upper_limit = np.ceil(3 / 4 * len(self.data))
@@ -271,9 +246,7 @@ class centralTendency:
 
     def median(self):
         '''
-        Returns:
-        
-            median
+        Returns: median
         '''
         data = self.data
         if (len(data) % 2 == 0):
@@ -302,17 +275,13 @@ class Dispersion:
 
     def range(self):
         '''
-        Returns:
-        
-            range = max - min 
+        Returns: range = max - min 
         '''
         return max(self.data) - min(self.data)
 
     def pop_variance(self):
         '''
-        Returns:
-        
-            population variance
+        Returns: population variance
         '''
         mean = self.mean()
         size = len(self.data)
@@ -320,9 +289,7 @@ class Dispersion:
 
     def pop_std(self):
         '''
-        Returns:
-        
-            population standard deviation
+        Returns: population standard deviation
         '''
         mean = self.mean()
         var = self.pop_variance()
@@ -330,9 +297,7 @@ class Dispersion:
 
     def samp_variance(self):
         '''
-        Returns:
-        
-            sample variance
+        Returns: sample variance
         '''
         mean = self.mean()
         size = len(self.data)
@@ -340,9 +305,7 @@ class Dispersion:
 
     def samp_std(self):
         '''
-        Returns:
-        
-            sample standard deviation
+        Returns: sample standard deviation
         '''
         mean = self.mean()
         var = self.samp_variance()
@@ -350,9 +313,7 @@ class Dispersion:
 
     def coef_variation(self):
         '''
-        Returns:
-        
-            coefficient of variation
+        Returns: coefficient of variation
         '''
         std = np.std(self.data)
         samp_mean = np.mean(self.data)
