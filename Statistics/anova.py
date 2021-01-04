@@ -10,46 +10,89 @@ except Exception as e:
 
 
 class BaseAnova:
-    def __init__(self, independent, dependent, adjust=True):
+    '''
+    Base class architecture of ANOVA Data structure: Dictionaries of independent and dependent variables.
+    '''
+    def __init__(self,
+                 independent=None,
+                 dependent=None,
+                 covariance=None,
+                 adjust=True):
+        if isinstance(dependent, (dict, type(None))) and isinstance(
+                independent,
+            (dict, type(None))) and isinstance(covariance,
+                                               (dict, type(None))) is False:
+            if isinstance(dependent, dict) == False:
+                raise TypeError('dependent variable should be a dictionary.')
+            if isinstance(independent, dict) == False:
+                raise TypeError('independent variable should be a dictionary.')
+            raise TypeError('covariance variable should be a dictionary.')
+
+        # this can be improved to pre-compare lengths
+        self.factor = self.temp_max = 0
         self.dependent = dependent
         self.independent = independent
-        self.keys_d = list(dependent.keys())
-        self.keys_ind = list(independent.keys())
-        self.factor = len(self.keys_d) + len(self.keys_ind)
+        self.covariance = covariance
+
+        if dependent is not None:
+            self.keys_d = list(dependent.keys())
+            self.factor += len(self.keys_d)
+
+        if independent is not None:
+            self.keys_ind = list(independent.keys())
+            self.factor += len(self.keys_ind)
+
+        if covariance is not None:
+            self.keys_cov = list(covariance.keys())
+            self.factor += len(self.keys_cov)
 
         if adjust == False:
             pass
         self.adjust_set()
 
     def adjust_set(self):
-        self.max_len_d = self.max_len_ind = 0
-        for var in range(0, len(self.keys_d)):
-            # find max lenght in dependent dict
-            if self.max_len_d < len(self.dependent[self.keys_d[var]]):
-                self.max_len_d = len(self.dependent[self.keys_d[var]])
+        _max_d = _max_ind = _max_cov = 0
+        # find max
+        if self.dependent is not None:
+            for var in range(0, len(self.keys_d)):
+                if _max_d < len(self.dependent[self.keys_d[var]]):
+                    _max_d = len(self.dependent[self.keys_d[var]])
 
-        for var in range(0, len(self.keys_d)):
-            # fill 0
-            if self.max_len_d - len(self.dependent[self.keys_d[var]]) != 0:
-                diff = self.max_len_d - len(self.dependent[self.keys_d[var]])
-                update_d = self.dependent[self.keys_d[var]] + [0] * diff
+        if self.independent is not None:
+            for var in range(0, len(self.keys_ind)):
+                if _max_ind < len(self.independent[self.keys_ind[var]]):
+                    _max_ind = len(self.independent[self.keys_ind[var]])
 
-                self.dependent.update([(self.keys_d[var], update_d)])
+        if self.covariance is not None:
+            for var in range(0, len(self.keys_cov)):
+                if _max_cov < len(self.covariance[self.keys_cov[var]]):
+                    _max_cov = len(self.covariance[self.keys_cov[var]])
+        # update values
+        self.temp_max = max([_max_cov, _max_d, _max_ind])
+        _max_d = _max_ind = _max_cov = self.temp_max
 
-        for var in range(0, len(self.keys_ind)):
-            # find max lenght in independent dict
-            if self.max_len_ind < len(self.independent[self.keys_ind[var]]):
-                self.max_len_ind = len(self.independent[self.keys_ind[var]])
+        if self.dependent is not None:
+            for var in range(0, len(self.keys_d)):
+                if _max_d - len(self.dependent[self.keys_d[var]]) != 0:
+                    diff = _max_d - len(self.dependent[self.keys_d[var]])
+                    update_d = self.dependent[self.keys_d[var]] + [0] * diff
+                    self.dependent.update([(self.keys_d[var], update_d)])
 
-        for var in range(0, len(self.keys_ind)):
-            # fill 0
-            if self.max_len_ind - len(
-                    self.independent[self.keys_ind[var]]) != 0:
-                diff = self.max_len_ind - len(
-                    self.independent[self.keys_ind[var]])
-                update_ind = self.independent[self.keys_ind[var]] + [0] * diff
+        if self.independent is not None:
+            for var in range(0, len(self.keys_ind)):
+                if _max_ind - len(self.independent[self.keys_ind[var]]) != 0:
+                    diff = _max_ind - len(self.independent[self.keys_ind[var]])
+                    update_ind = self.independent[
+                        self.keys_ind[var]] + [0] * diff
+                    self.independent.update([(self.keys_ind[var], update_ind)])
 
-                self.independent.update([(self.keys_ind[var], update_ind)])
+        if self.covariance is not None:
+            for var in range(0, len(self.keys_cov)):
+                if _max_cov - len(self.covariance[self.keys_cov[var]]) != 0:
+                    diff = _max_cov - len(self.covariance[self.keys_cov[var]])
+                    update_cov = self.covariance[
+                        self.keys_cov[var]] + [0] * diff
+                    self.covariance.update([(self.keys_cov[var], update_cov)])
 
 
 class Anova1(BaseAnova):
@@ -59,6 +102,7 @@ class Anova1(BaseAnova):
     '''
     def __init__(self, independent, dependent, adjust=True):
         super(Anova1, self).__init__(independent, dependent, adjust)
+        # test dataset if it follows the fundamental assumtption with one-way ANOVA
 
     def sum_squares(self):
         '''
@@ -104,7 +148,20 @@ class Anova1(BaseAnova):
         pass
 
     def print_summary(self):
-        pass
+        sum_squares = self.sum_squares()
+        mean_sq = self.mean_sq()
+        mean_sq_err = self.mean_sq_err()
+        between_group_var = self.between_group_var()
+        within_group_var = self.within_group_var()
+        f_val = self.f_val()
+        p_val = self.p_val()
+        r_sq = self.r_square()
+        adj_r = self.adjusted_r_square()
+        cstr = "summary statistic"
+        print(cstr.center(40, "="))
+        # return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode,
+        #              "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ",
+        #              kurtosis)
 
     pass
 

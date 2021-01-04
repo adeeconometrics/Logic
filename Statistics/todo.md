@@ -15,7 +15,7 @@ Module:
         - generalized gamma 
         
     <!-- - construction of confidence intervals(method) -->
-    - p_values(method)
+    <!-- - p_values(method) -->
     - rvs generation
 
 
@@ -23,6 +23,14 @@ Module:
     - print summary
     - mean, median, mode
     - skewness, kurtosis
+
+- Regression
+    - GLM
+
+- ANOVA
+    - Basic methods
+    - post-hoc analyses
+
 ----
 
 New distributions:
