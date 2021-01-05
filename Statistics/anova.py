@@ -107,7 +107,7 @@ class Anova1(BaseAnova):
     This class contains methods concerning One-way ANOVA which concerns itself to determine
     whether data from several groups(levels) have a common mean.
 
-    note: one-way ANOVA is used when you have a categorica factor and a continuous response.
+    One-way ANOVA is used when you have a categorical factor and a continuous response.
     It is ideal for determining whether the means of two or more groups differ and for obtaining
     a range of values for the difference between the means for each pair of the group(1). Also, it is 
     important to realize that one-way ANOVA is an omnibus test statistic which cannot tell you which
@@ -120,7 +120,8 @@ class Anova1(BaseAnova):
         - independent variable must be categorical (nominal). Must have two or more.
         - no significant outliers.
         - there needs to be homogeneity of variances.
-        - dependent variable.
+        - dependent variable should be approximately normally distirbuted for each combination of the groups of 
+        two independent variables. 
         - independence of observation i.e. there is no relationship between the observation in each group or between
         the groups themselves
 
@@ -246,11 +247,52 @@ class Anova1(BaseAnova):
     pass
 
 
-class Anova2(BaseAnova
-             ):  # include model assumptions, when is it appropriately used.
+class Anova2(BaseAnova):
+    # include model assumptions, when is it appropriately used.
     '''
     This class contains methods concerning two-way ANOVA which concerns itself to determine
     whether data from several groups(levels) have a common mean.
+
+    Two-way ANOVA is used to determine whether group means are different when you have two categorical factors.
+
+    Assumptions:
+
+        - dependent variable are continuous (e.g. ratio and interval).
+        - two independent variable must be categorical (nominal). Independent variables should each consist
+         of two or more categorical, independent groups.  
+        - no significant outliers.
+        - there needs to be homogeneity of variance for each combination of the gorups of the two independent variables.
+        - dependent variable should be approximately normally distirbuted for each combination of the groups of 
+        two independent variables. 
+        - independence of observation i.e. there is no relationship between the observation in each group or between
+        the groups themselves
+    
+    This class provides you with a set of methods for two-way ANOVA. Note that assessing the data is not provided in this class.
+
+    Args:
+    
+    Methods:
+
+        - sum_squares
+        - mean_sq
+        - mean_sq_err
+        - between_group_var
+        - within_group_var
+        - f_valueue
+        - p_value
+        - residuals
+        - r_square
+        - adjusted_r_sq
+        - print_summary
+
+    References:
+
+        (1) Laerd Statistics (2018). Two-way ANOVA in SPSS Statistics. Retrieved at: 
+        https://statistics.laerd.com/spss-tutorials/two-way-anova-using-spss-statistics.php
+        (2) MathWorks [Matlab] (n.d.). Two-way ANOVA. Retrieved at: 
+        https://www.mathworks.com/help/stats/two-way-anova.html?searchHighlight=two%20way%20anova&s_tid=srchtitle
+        (3) Minitab (2019). Overview for Two-Way ANOVA. Retrieved at: 
+        https://support.minitab.com/en-us/minitab-express/1/help-and-how-to/modeling-statistics/anova/how-to/two-way-anova/before-you-start/overview/
     '''
     def __init__(self, independent, dependent, adjust=True):
         super(Anova2, self).__init__(independent, dependent, adjust)
