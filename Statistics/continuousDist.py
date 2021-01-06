@@ -812,7 +812,14 @@ class F_distribution(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of F-distribution.
         '''
-        pass
+        k = self.df2/(self.df2+self.df1*self.x)
+        generator = lambda x, df1, df2: 1-ss.betainc(df1/2, df2/2, x)
+
+        if plot == True:
+            x = np.linspace(-interval, interval, int(threshold))
+            y = np.array([generator(i,self.df1, self.df2) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(k,self.df1, self.df2)
 
     def p_value(self, x_lower=0, x_upper=None):
         '''
@@ -833,13 +840,10 @@ class F_distribution(Base):
             x_lower = 0
         if x_upper is None:
             x_upper = self.x
-        pdf_func = lambda x, df1, df2: (1 / ss.beta(
-            df1 / 2, df2 / 2)) * np.power(df1 / df2, df1 / 2) * np.power(
-                x, df1 / 2 - 1) * np.power(1 +
-                                           (df1 / df2) * x, -((df1 + df2) / 2))
 
-        return sci.integrate.quad(pdf_func, x_lower, x_upper,
-                                  args=(df1, df2))[0]
+        cdf_func = lambda x, df1, df2: 1-ss.betainc(df1/2, df2/2, self.df2/(self.df2+self.df1*self.x))
+
+        return cdf_func(x_upper, df1, df2) - cdf_func(x_lower, df1, df2)
 
     def confidence_interval(self):
         pass
