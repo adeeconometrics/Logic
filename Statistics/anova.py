@@ -95,6 +95,20 @@ class BaseAnova:
                         self.keys_cov[var]] + [0] * diff
                     self.covariance.update([(self.keys_cov[var], update_cov)])
 
+    def p_value(self, df1, df2, x):
+        '''
+        Args:
+
+            - df1(int) - degress of freedom.
+            - df2(int) - degress of freedom.
+        Returns: p-value of F-statistic.
+        '''
+        if isinstance(df1, int) and isinstance(df2, int) == False:
+            raise TypeError('df1 and df2 should be integers.')
+        p = lambda x, df1, df2: lambda x, df1, df2: 1 - ss.betainc(
+            df1 / 2, df2 / 2, df2 / (df2 + df1 * x))
+        return p(x, df1, df2)
+
 
 class PostHoc(BaseAnova):
     '''
@@ -167,8 +181,8 @@ class Anova1(BaseAnova):
         Also refered to as sum of squares between treatments. 
         Returns: sum of squares. 
         '''
-        self.mean_obs = ([np.mean(self.independent[i]) for i in self.keys_ind])
-        self.mean_all = np.mean(mean_obs)
+        mean_obs = [np.mean(self.independent[i]) for i in self.keys_ind]
+        mean_all = np.mean(mean_obs)
         n_i = self.factor * len(self.independent[self.keys_ind[0]])
         return sum([n * (mean_obs - mean_all)**2 for n in n_i])
 
@@ -215,7 +229,10 @@ class Anova1(BaseAnova):
         '''
         Returns: p value for One-way ANOVA.
         '''
-        pass
+        f_val = self.f_value()
+        df1 = self.factor
+        df2 = len(self.independent[self.keys_ind[0]])
+        return 1 - super().p_value(df1, df2, f_val)
 
     def residuals(self):  # this can be improved
         '''
@@ -241,7 +258,10 @@ class Anova1(BaseAnova):
         return 1 - (self.mean_sq_err() / (self.ss_total() / (df_total)))
 
     def std(self):
-        pass
+        '''
+        Returns: Standard Deviation per factor.
+        '''
+        return [np.std(self.independent[i]) for i in self.keys_ind]
 
     def print_summary(self):
         '''
@@ -251,21 +271,25 @@ class Anova1(BaseAnova):
         mean_sq = self.mean_sq()
         mean_sq_err = self.mean_sq_err()
         f_value = self.f_value()
-        p_val = self.p_val()
+        p_val = self.p_value()
         r_sq = self.r_square()
         adj_r = self.adjusted_r_sq()
         cstr = "summary statistic"
-        print(cstr.center(40, "="))
-        # return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode,
-        #              "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ",
-        #              kurtosis)
 
-    def model_summar(self):
+    def model_summary(self):
         # S, R-sq, R-sq(adj), R-sq(pred)
+        S = np.sqrt(self.mean_sq())
+        r_sq = self.r_square()
+        r_sq_adj = self.adjusted_r_sq()
+
         pass
 
     def means(self):
+        '''
+        Returns: summary of means. 
+        '''
         # factor, N, Mean, stdDev, CI
+        factor = self.factor - 1
         pass
 
     pass
@@ -384,7 +408,7 @@ class Anova2(BaseAnova):
         mean_sq = self.mean_sq()
         mean_sq_err = self.mean_sq_err()
         f_value = self.f_value()
-        p_val = self.p_val()
+        p_val = self.p_value()
         r_sq = self.r_square()
         adj_r = self.adjusted_r_sq()
         cstr = "summary statistic"

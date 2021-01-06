@@ -2,13 +2,12 @@ try:
     import numpy as np
     import scipy as sci
     import scipy.special as ss
-    # import sympy as sp
     import matplotlib.pyplot as plt
 
 except Exception as e:
     print("some modules are missing {}".format(e))
 
-
+# todo = Base: fill between method, implement name mangling 
 class Base:
     def __init__(self, data):
         self.data = data
@@ -23,7 +22,7 @@ class Base:
             plt.xlabel(xlabel)
         if ylabel is not None:
             plt.ylabel(ylabel)
-        plt.plot(x, y)
+        plt.plot(x, y, "black", alpha=0.5)
 
 
 class Uniform:
@@ -324,6 +323,7 @@ class Normal(Base):
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
+
 class T_distribution(Base):
     '''
     This class contains implementation of the Student's Distribution for calculating the
@@ -532,6 +532,7 @@ class T_distribution(Base):
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
+
 class Cauchy(Base):
     '''
     This class contains methods concerning the Cauchy Distribution.
@@ -710,6 +711,7 @@ class Cauchy(Base):
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
+
 class F_distribution(Base):
     '''
     This class contains methods concerning the F-distribution. 
@@ -834,16 +836,14 @@ class F_distribution(Base):
         Returns:
             p-value of the F-distribution evaluated at some random variable.
         '''
-        df1 = self.df1
-        df2 = self.df2
         if x_lower < 0:
             x_lower = 0
         if x_upper is None:
             x_upper = self.x
 
-        cdf_func = lambda x, df1, df2: 1-ss.betainc(df1/2, df2/2, self.df2/(self.df2+self.df1*self.x))
+        cdf_func = lambda x, df1, df2: 1-ss.betainc(df1/2, df2/2, df2/(df2+df1*x))
 
-        return cdf_func(x_upper, df1, df2) - cdf_func(x_lower, df1, df2)
+        return cdf_func(x_upper, self.df1, self.df2) - cdf_func(x_lower, self.df1, self.df2)
 
     def confidence_interval(self):
         pass
@@ -1084,6 +1084,7 @@ class Chisq_distribution(Base):
         cstr = "summary statistic"
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
 
 class Chi_distribution(Base):
     '''
@@ -1619,6 +1620,7 @@ class Gamma_distribution(Base):
         cstr = "summary statistic"
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
 
 class Pareto(Base):
     '''
@@ -2174,6 +2176,7 @@ class Laplace(Base):
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
+
 class Logistic(Base):
     '''
     This class contains methods concerning Logistic Distirbution. 
@@ -2337,6 +2340,7 @@ class Logistic(Base):
         cstr = "summary statistic"
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
 
 class Logit_normal(Base):
     '''
@@ -2689,6 +2693,7 @@ class Weibull(Base):
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
+
 class Weilbull_inv(Base):
     '''
     This class contains methods concerning inverse Weilbull or the Fréchet Distirbution. 
@@ -3036,6 +3041,7 @@ class Gumbell(Base):
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
+
 class Arcsine(Base):
     '''
     This class contains methods concerning Arcsine Distirbution. 
@@ -3195,6 +3201,7 @@ class Arcsine(Base):
         cstr = "summary statistic"
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
 
 class Triangular(Base):
     '''
@@ -3403,6 +3410,7 @@ class Triangular(Base):
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
+
 class Trapezoidal(Base):
     '''
     This class contains methods concerning Trapezoidal Distirbution. 
@@ -3585,6 +3593,7 @@ class Trapezoidal(Base):
         cstr = "summary statistic"
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
 
 # class ARGUS(Base):
 #     '''
