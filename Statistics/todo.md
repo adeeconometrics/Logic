@@ -1,8 +1,38 @@
 # Thing to Improve
 
-Module:
-- continousDist
+### Research 
 
+- read
+    - One-Way ANOVA
+        - pairwise comparison
+        - post-hoc analyses 
+            - Tukey's 
+            - Fisher
+            - Dunnett
+            - HSU's MCB
+    - Two-way ANOVA
+    - MANOVA
+        - assumption, usecases and data structure
+        - functions 
+
+### Feature Engineering 
+- requirement 
+- functionalities 
+    - Baseclass 
+        - means_viz: plots means between groups
+        - f_dist_viz: plots the region of the f-value to the f-distribution
+        - deviations_viz: plots the std±mean 
+    - Two-way ANOVA
+        - ANOVA summary 
+        - Model summary 
+        - means 
+    
+### Implementation
+- for testing 
+- for validating results
+----
+Modules pending:
+- continousDist
     - Distributions to improve:
         - non-central chi
         - beta distribution
@@ -17,78 +47,8 @@ Module:
     <!-- - construction of confidence intervals(method) -->
     <!-- - p_values(method) -->
     - rvs generation
-
-
-- grouped statistics
-    - print summary
-    - mean, median, mode
-    - skewness, kurtosis
-
-- Regression
-    - GLM
-
-- ANOVA
-    - Basic methods
-    - post-hoc analyses
-
-----
-
-New distributions:
-- discrete
-    - univariate with finite support
-        - Beta Binomial Distribution
-        - Negative Binomial Distirbution
-        - Zipf
-        - Zipf-Mandelbrot
-        - categorical distribution
-
-    - univariate with infinite support
-        - beta-negative binomial
-        - Borel
-        - Conway-Maxwell-Poisson
-        - Logarithmic
-        - Negative Binomial
-----
-New Module
-- EDA module
-    - Bihistogram
-    - Blockplot
-    - Bootstrap plot
-    - Box-Cox linearity plot
-    - Box-Cox Normality plot
-    - Box Plot
-
-- Regression Module
-    -   general methods
-        - least squares
-        - linear least squares 
-        - Non-linear least squares
-        - least absolute deviations
-        - curve fitting
-    - linear regression based on least squares
-        - general linear model
-        - ordinary least squares
-        - generalized least squares
-        - simple linear regression
-        - trend estimation
-        - ridge regression
-        - polynomial regression
-        - segmented regression
-        - non-linear regression
-    - generalized linear models
-        - logistic regression
-            - multinomial logit
-            - ordered logit
-        - probit model
-            - multinomial probit
-            - ordered probit
-        - poisson regression
-        - maximum likelihood
-    - Inference for regression models
-        - F-test
-        - t-test
-        - lack-of-fit sum of squares
-        - coefficient determination
-        - multiple correlation
-        - scheffe's method
-
+    
+- discreteDist:
+    - Baseclass
+        - plotting format
+    - method::p-value
