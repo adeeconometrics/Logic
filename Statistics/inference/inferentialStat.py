@@ -1,11 +1,11 @@
 try:
     import numpy as np
-    # import scipy as sci
-    # import scipy.special as ss
-    # import matplotlib.pyplot as plt
+    from math import sqrt
 
 except Exception as e:
     print("some modules are missing {}".format(e))
+
+# RENAME THIS FILE SOON
 
 '''
 test statistic is used in hypotheses tests. This module contains a collection of
@@ -98,7 +98,7 @@ def z_score_dmean(samp_mean1,
     Returns:
         test value based on z-statistic for two means
     '''
-    if (pop_mean1 == None and pop_mean2 == None):
+    if pop_mean1 is None and pop_mean2 is None:
         return (samp_mean1 - samp_mean2) / (np.power((np.power(std1, 2) / n1) +
                                                      (np.power(std2, 2) / n2)))
     return ((samp_mean1 - samp_mean2) -
