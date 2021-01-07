@@ -1,5 +1,6 @@
 try:
     import numpy as np
+    from math import sqrt
     import scipy as sci
     import scipy.special as ss
     import matplotlib.pyplot as plt

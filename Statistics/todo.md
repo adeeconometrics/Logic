@@ -12,7 +12,7 @@
             - HSU's MCB
     - Two-way ANOVA
     - MANOVA
-        - assumption, usecases and data structure
+        - assumption, use-cases and data structure
         - functions 
 
 ### Feature Engineering 
@@ -31,24 +31,7 @@
 - for testing 
 - for validating results
 ----
-Modules pending:
-- continousDist
-    - Distributions to improve:
-        - non-central chi
-        - beta distribution
-        - non-central chi-square
-        - non-central chi
-        - inverse chi
-        - Power Norma Distribution
-        - Generalized Pareto Distribution
-        - Inverse Gamma
-        - generalized gamma 
-        
-    <!-- - construction of confidence intervals(method) -->
-    <!-- - p_values(method) -->
-    - rvs generation
-    
-- discreteDist:
-    - Baseclass
-        - plotting format
-    - method::p-value
+
+features to be developed:
+- plotting 
+- confidence interval

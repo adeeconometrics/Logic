@@ -6,13 +6,13 @@ except Exception as e:
     print("some modules are missing {}".format(e))
 
 # RENAME THIS FILE SOON
-
 '''
 test statistic is used in hypotheses tests. This module contains a collection of
 test statistic implementations. The modules for distirbutions shall interact with 
 this module for computing p-values. Functions must be independent of their own, while
 classes can interact with their subroutines, avoid unnecessary dependencies.
 '''
+
 
 def z_transformation(samp_mean, pop_mean, std):
     '''
@@ -65,7 +65,7 @@ def z_score_smean(samp_mean, pop_mean, std, n):
     Returns: 
         test value based on z-statistic for single mean
     '''
-    return (samp_mean - pop_mean) / (std / np.sqrt(n))
+    return (samp_mean - pop_mean) / (std / sqrt(n))
 
 
 def z_score_dmean(samp_mean1,
@@ -123,7 +123,7 @@ def t_test(samp_mean, pop_mean, samp_std, n):
     Returns:
         test value based on t-statistic
     '''
-    return (samp_mean - pop_mean) / (samp_std / np.sqrt(n))
+    return (samp_mean - pop_mean) / (samp_std / sqrt(n))
 
 
 def t_test_dmean_uneq(samp_mean1,
@@ -156,11 +156,10 @@ def t_test_dmean_uneq(samp_mean1,
         test value based on t-statistic between two means for unequal variance 
     '''
     if (pop_mean1 == None and pop_mean2 == None):
-        return (samp_mean1 - samp_mean2) / (np.sqrt((std1**2 / n1) +
-                                                    (std2**2 / n2)))
+        return (samp_mean1 - samp_mean2) / (sqrt((std1**2 / n1) +
+                                                 (std2**2 / n2)))
     return ((samp_mean1 - samp_mean2) -
-            (pop_mean1 - pop_mean2)) / (np.sqrt((std1**2 / n1) +
-                                                (std2**2 / n2)))
+            (pop_mean1 - pop_mean2)) / (sqrt((std1**2 / n1) + (std2**2 / n2)))
 
 
 def t_test_dmean_eq(samp_mean1,
@@ -194,15 +193,14 @@ def t_test_dmean_eq(samp_mean1,
     '''
     if (pop_mean1 != None and pop_mean2 !=
             None):  # is there really a case where pop_mean1 is only given?
-        return ((samp_mean1 - samp_mean2) -
-                (pop_mean1 - pop_mean2)) / (np.sqrt(((n1 - 1) * std1**2) +
-                                                    ((n2 - 1) * std2**2) /
-                                                    (n1 + n2 - 2)) *
-                                            np.sqrt(1 / n1 + 1 / n2))
-    return (samp_mean1 - samp_mean2) / (np.sqrt(((n1 - 1) * std1**2) + (
-        (n2 - 1) * std2**2) / (n1 + n2 - 2)) * np.sqrt(1 / n1 + 1 / n2))
+        return ((samp_mean1 - samp_mean2) - (pop_mean1 - pop_mean2)) / (sqrt((
+            (n1 - 1) * std1**2) + (
+                (n2 - 1) * std2**2) / (n1 + n2 - 2)) * sqrt(1 / n1 + 1 / n2))
+    return (samp_mean1 - samp_mean2) / (sqrt(((n1 - 1) * std1**2) + (
+        (n2 - 1) * std2**2) / (n1 + n2 - 2)) * sqrt(1 / n1 + 1 / n2))
 
-def paired_t_test(data_set1, data_set2): # test functionality
+
+def paired_t_test(data_set1, data_set2):  # test functionality
     '''
     this is appropriate for compairing two samples where it is impossible to control important variables.
     Args:
@@ -217,23 +215,28 @@ def paired_t_test(data_set1, data_set2): # test functionality
     Returns:
         test value based on t-statistic for paired samples. 
     '''
-    if len(data_set1)!=len(data_set2): 
+    if len(data_set1) != len(data_set2):
         return print("data sets must have equal size.")
-    sum_diff = sum([(x-y) for x in data_set1 for y in data_set2])
-    ss_diff = sum([(x-y)**2 for x in data_set1 for y in data_set2])
+    sum_diff = sum([(x - y) for x in data_set1 for y in data_set2])
+    ss_diff = sum([(x - y)**2 for x in data_set1 for y in data_set2])
     size = len(data_set1)
-    df = size-1
-    t_value = (sum_diff/size)/np.sqrt((ss_diff-(sum_diff**2)/size)/(df*size)
+    df = size - 1
+    t_value = (sum_diff / size) / np.sqrt(
+        (ss_diff - (sum_diff**2) / size) / (df * size))
     return t_value
+
 
 def regression_t_test():
     pass
 
+
 def chi_squared_test():
-    pass 
+    pass
+
 
 def chi_squared_test_independence():
     pass
+
 
 def chi_squared_test_goodnessfit():
     pass
