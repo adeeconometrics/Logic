@@ -9,6 +9,7 @@ except Exception as e:
     print("some modules are missing {}".format(e))
 
 # todo = Base: fill between method, implement name mangling 
+
 class Base:
     def __init__(self, data):
         self.data = data
@@ -152,21 +153,11 @@ class Uniform:
     def entropy(self):
         '''
         Returns: entropy of uniform Distirbution.
+        
+        Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
+        link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
         '''
         return np.log(self.b-self-a)
-
-    # def mgf(self, t):
-    #     '''
-    #     Args:
-
-    #         t(int): order of moment. 
-    #     Returns: Moment Generating Function of uniform distribution.
-    #     '''
-    #     if isinstance(t, int) == False:
-    #         return TypeError('order of moment (t) must be an integer.')
-    #     if t==0:
-    #         return 1
-    #     pass
 
     def print_summary(self):
         '''
@@ -341,6 +332,12 @@ class Normal(Base):
         return 0
 
     def entropy(self):
+        '''
+        Returns: differential entropy of the Normal distribution
+
+        Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
+        link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
+        '''
         return np.log(self.std*sqrt(2*np.pi*np.e))
 
     def print_summary(self):
@@ -556,6 +553,9 @@ class T_distribution(Base):
     def entropy(self):
         '''
         Returns: differential entropy of T-distribution
+
+        Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
+        link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
         '''
         df = self.df
         return ((df+1)/2)*(ss.digamma((df+1)/2)-ss.digamma(df/2))+np.log(sqrt(df)*ss.beta(df/2, 1/2))
@@ -743,6 +743,9 @@ class Cauchy(Base):
     def entropy(self):
         '''
         Returns: differential entropy of the Cauchy distribution
+
+        Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
+        link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
         '''
         return np.log10(4*np.pi*self.scale)
 
@@ -1134,6 +1137,9 @@ class Chisq_distribution(Base):
     def entropy(self):
         '''
         Returns: differential entropy of Chi-square distribution.
+
+        Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
+        link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
         '''
         df = self.df
         return df/2+np.log(2*ss.gamma(df/2))+(1-df/2)*ss.digamma(df/2)
@@ -1319,6 +1325,9 @@ class Chi_distribution(Base):
     def entropy(self):
         '''
         Returns: differential entropy of Chi distribution.
+
+        Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
+        link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
         '''
         df = self.df
         return np.log(ss.gamma(df/2)/sqrt(2))-(df-1)/2*ss.digamma(df/2)+df/2 
@@ -1514,6 +1523,9 @@ class Explonential_distribution(Base):
     def entorpy(self):
         '''
         Returns: differential entropy of the Exponential distribution
+
+        Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
+        link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
         '''
         return 1-np.log(self._lambda)
 
@@ -1693,6 +1705,9 @@ class Gamma_distribution(Base):
     def entropy(self):
         '''
         Returns: differential entropy of the Gamma distribution
+
+        Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
+        link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
         '''
         k = self.a; theta = self.b
         return k +np.log(theta)+np.log(ss.gamma(k))-(1-k)*ss.digamma(k)
@@ -1910,6 +1925,9 @@ class Pareto(Base):
     def entropy(self):
         '''
         Returns: differential entropy of the Pareto distribution.
+
+        Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
+        link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
         '''
         a = self.shape
         x_m = self.scale
@@ -2099,6 +2117,9 @@ class Log_normal(Base):
     def entropy(self):
         '''
         Returns: differential entropy of the log normal distribution.
+
+        Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
+        link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
         '''
         return self.mean+0.5*np.log(2*np.pi*np.e*self.std**2)
 
@@ -2272,6 +2293,9 @@ class Laplace(Base):
     def entropy(self):
         '''
         Returns: differential entropy of the Laplace distribution.
+
+        Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
+        link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
         '''
         return 1+np.log(2*self.scale)
 
@@ -2444,6 +2468,9 @@ class Logistic(Base):
         def entropy(self):
         '''
         Returns: differential entropy of the Logistic distribution.
+
+        Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
+        link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
         '''
         return 2
 
@@ -2620,6 +2647,9 @@ class Logit_normal(Base):
     def entropy(self):
         '''
         Returns: differential entropy of Logit Normal distribution.
+
+        Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
+        link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
         '''
         return "unsupported"
 
@@ -3915,3 +3945,1115 @@ class Trapezoidal(Base):
 #         cstr = "summary statistic"
 #         print(cstr.center(40, "="))
 #         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
+# to be reviewed
+class Beta(Base):
+    '''
+    This class contains methods concerning Beta Distirbution. 
+    Args:
+    
+        alpha(float | x>0): shape
+        beta(float | x>0): shape
+        randvar(float | [0,1]): random variable
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - print_summary for printing the summary statistics of the distribution. 
+
+    Reference:
+    - Wikipedia contributors. (2021, January 8). Beta distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 07:21, January 8, 2021, from https://en.wikipedia.org/w/index.php?title=Beta_distribution&oldid=999043368
+    '''
+    def __init__(self, alpha, beta, randvar):
+        if randvar<0 | randvar>1:
+            raise ValueError('random variable should only be in between 0 and 1. Entered value: {}'.format(randvar))
+        if alpha<0:
+            raise ValueError('alpha parameter(shape) should not be less than 0. Entered value:{}'.format(alpha))
+        if beta<0:
+            raise ValueError('beta parameter(shape) should not be less than 0. Entered value:{}'.format(beta))
+
+        self.alpha = alpha
+        self.beta = beta 
+        self.randvar = randvar
+
+    def pdf(self,
+            plot=False,
+            threshold=1000,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        '''
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability density evaluation for some point or plot of Beta distribution.
+        '''
+        generator = lambda a,b,x: (np.power(x,a-1)*np.power(1-x, b-1))/ss.beta(a,b)
+
+        if plot == True:
+            x = np.linspace(0, 1, int(threshold))
+            y = np.array([generator(self.alpha, self.beta, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.alpha, self.beta, self.randvar)
+
+    def cdf(self,
+            plot=False,
+            threshold=1000,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        '''
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or plot of Beta distribution.
+        '''
+        generator = lambda a,b,x: ss.betainc(a,b,x)
+        if plot == True:
+            x = np.linspace(0, 1, int(threshold))
+            y = np.array([generator(self.a, self.b, self.c, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.a, self.b, self.c, self.randvar)
+
+    def p_value(self, x_lower=0, x_upper=None):
+        '''
+        Args:
+
+            x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+            x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+            Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+            Otherwise, the default random variable is x.
+
+        Returns:
+            p-value of the Beta distribution evaluated at some random variable.
+        '''
+        if x_upper == None:
+            x_upper = self.randvar
+        if x_lower>x_upper:
+            raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        
+        cdf_func  = lambda a,b,x: ss.betainc(a,b,x)
+        return cdf_func(self.alpha, self.beta, x_upper)-cdf_func(self.alpha, self.beta, x_lower)
+
+    def mean(self):
+        '''
+        Returns: Mean of the Beta distribution.
+        '''
+        return "currently unsupported."
+
+    def median(self):
+        '''
+        Returns: Median of the Beta distribution.
+        '''
+        # warning: not yet validated.
+        return ss.betainc(self.alpha, self.beta, 0.5)
+
+    def mode(self):
+        '''
+        Returns: Mode of the Beta distribution.
+        '''
+        return "currently unsupported"
+
+    def var(self):
+        '''
+        Returns: Variance of the Beta distribution.
+        '''
+        return "currently unsupported"
+
+    def skewness(self):
+        '''
+        Returns: Skewness of the Beta distribution. 
+        '''
+        alpha = self.alpha; beta = self.beta
+        return (2*(beta-alpha)*sqrt(alpha+beta+1))/((alpha+beta+2)*sqrt(alpha*beta))
+
+    def kurtosis(self):
+        '''
+        Returns: Kurtosis of the Beta distribution. 
+        '''
+        alpha = self.alpha; beta = self.beta
+        temp_up = 6*((alpha-beta)**2*(alpha+beta+1)-alpha*beta*(alpha+beta+2))
+        return temp_up/(alpha*beta*(alpha+beta+2)*(alpha+beta+3))
+
+    def entropy(self):
+        '''
+        Returns: differential entropy of the Beta distribution.
+
+        Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
+        link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
+        '''
+        alpha = self.alpha; beta = self.beta 
+        return np.log(ss.beta(alpha, beta))-(alpha-1)*(ss.digamma(alpha)-ss.digamma(alpha+beta))-(beta-1)*(ss.digamma(beta)-ss.digamma(alpha+beta))
+
+    def print_summary(self):
+        '''
+        Returns: Summary statistic regarding the Beta distribution
+        '''
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = "summary statistic"
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
+# to be reviewed
+class Beta_prime(Base):
+    '''
+    This class contains methods concerning Beta prime Distirbution. 
+    Args:
+    
+        alpha(float | x>0): shape
+        beta(float | x>0): shape
+        randvar(float | x>=0): random variable
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - print_summary for printing the summary statistics of the distribution. 
+
+    Reference:
+    - Wikipedia contributors. (2020, October 8). Beta prime distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 09:40, January 8, 2021, from https://en.wikipedia.org/w/index.php?title=Beta_prime_distribution&oldid=982458594
+    '''
+    def __init__(self, alpha, beta, randvar):
+        if randvar<0:
+            raise ValueError('random variable should not be less then 0. Entered value: {}'.format(randvar))
+        if alpha<0:
+            raise ValueError('alpha parameter(shape) should not be less than 0. Entered value:{}'.format(alpha))
+        if beta<0:
+            raise ValueError('beta parameter(shape) should not be less than 0. Entered value:{}'.format(beta))
+
+        self.alpha = alpha
+        self.beta = beta 
+        self.randvar = randvar
+
+    def pdf(self,
+            plot=False,
+            interval=0,
+            threshold=1000,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        '''
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability density evaluation for some point or plot of Beta prime distribution.
+        '''
+        generator = lambda a,b,x: (np.power(x,a-1)*np.power(1+x, -a-b))/ss.beta(a,b)
+
+        if plot == True:
+            if interval<0:
+                raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
+            x = np.linspace(0, interval, int(threshold))
+            y = np.array([generator(self.alpha, self.beta, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.alpha, self.beta, self.randvar)
+
+    def cdf(self,
+            plot=False,
+            threshold=1000,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        '''
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or plot of Beta prime distribution.
+        '''
+        generator = lambda a,b,x: ss.betainc(a,b,x/(1+x))
+        if plot == True:
+            x = np.linspace(0, 1, int(threshold))
+            y = np.array([generator(self.alpha, self.beta, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.alpha, self.beta, self.randvar)
+
+    def p_value(self, x_lower=0, x_upper=None):
+        '''
+        Args:
+
+            x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+            x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+            Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+            Otherwise, the default random variable is x.
+
+        Returns:
+            p-value of the Beta prime distribution evaluated at some random variable.
+        '''
+        if x_upper == None:
+            x_upper = self.randvar
+        if x_lower>x_upper:
+            raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        
+        cdf_func  = lambda a,b,x: ss.betainc(a,b,x/(1+x))
+        return cdf_func(self.alpha, self.beta, x_upper)-cdf_func(self.alpha, self.beta, x_lower)
+
+    def mean(self):
+        '''
+        Returns: Mean of the Beta prime distribution.
+        '''
+        if self.beta>1:
+            return self.alpha/(self.beta-1)
+        return "currently unsupported."
+
+    def median(self):
+        '''
+        Returns: Median of the Beta prime distribution.
+        '''
+        # warning: not yet validated.
+        return "unsupported"
+
+    def mode(self):
+        '''
+        Returns: Mode of the Beta prime distribution.
+        '''
+        if self.alpha>=1:
+            return (self.alpha+1)/(self.beta+1)
+        return 0
+
+    def var(self):
+        '''
+        Returns: Variance of the Beta prime distribution.
+        '''
+        alpha = self.alpha
+        beta = self.beta
+        if beta>2:
+            return (alpha*(alpha+beta-1))/((beta-2)*(beta-1)**2)
+        return "currently unsupported"
+
+    def skewness(self):
+        '''
+        Returns: Skewness of the Beta prime distribution. 
+        '''
+        alpha = self.alpha; beta = self.beta
+        if beta>3:
+            scale = (2*(2*alpha+beta-1))/(beta-3)
+            return scale*sqrt((beta-2)/(alpha*(alpha+beta-1)))
+        return "undefined"
+
+    def kurtosis(self):
+        '''
+        Returns: Kurtosis of the Beta prime distribution. 
+        '''
+        return "currently unsupported"
+
+    def entropy(self):
+        '''
+        Returns: differential entropy of the Beta prime distribution.
+
+        Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
+        link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
+        '''
+        return "currently unsupported"
+
+    def print_summary(self):
+        '''
+        Returns: Summary statistic regarding the Beta prime distribution
+        '''
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = "summary statistic"
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
+# class Bates(Base):
+#     '''
+#     This class contains methods concerning Bates Distirbution. Also referred to as the regular mean distribution.
+
+#     Note that the Bates distribution is a probability distribution of the mean of a number of statistically indipendent uniformly
+#     distirbuted random variables on the unit interval. This is often confused with the Irwin-Hall distirbution which is 
+#     the distribution of the sum (not the mean) of n independent random variables. The two distributions are simply versions of 
+#     each other as they only differ in scale.
+#     Args:
+    
+#         a(float): lower bound
+#         b(float |b>a): upper bound
+#         n(int | x>=1)
+#         randvar(float | [a,b]): random variable
+
+#     Methods:
+
+#         - pdf for probability density function.
+#         - cdf for cumulative distribution function.
+#         - p_value for p-values.
+#         - mean for evaluating the mean of the distribution.
+#         - median for evaluating the median of the distribution.
+#         - mode for evaluating the mode of the distribution.
+#         - var for evaluating the variance of the distribution.
+#         - skewness for evaluating the skewness of the distribution.
+#         - kurtosis for evaluating the kurtosis of the distribution.
+#         - entropy for differential entropy of the distribution.
+#         - print_summary for printing the summary statistics of the distribution. 
+
+#     Reference:
+#     - Wikipedia contributors. (2021, January 8). Bates distribution. In Wikipedia, The Free Encyclopedia. 
+#     Retrieved 08:27, January 8, 2021, from https://en.wikipedia.org/w/index.php?title=Bates_distribution&oldid=999042206
+#     '''
+#     def __init__(self, alpha, beta, randvar):
+#         if randvar<0 | randvar>1:
+#             raise ValueError('random variable should only be in between 0 and 1. Entered value: {}'.format(randvar))
+#         if alpha<0:
+#             raise ValueError('alpha parameter(shape) should not be less than 0. Entered value:{}'.format(alpha))
+#         if beta<0:
+#             raise ValueError('beta parameter(shape) should not be less than 0. Entered value:{}'.format(beta))
+
+#         self.alpha = alpha
+#         self.beta = beta 
+#         self.randvar = randvar
+
+#     def pdf(self,
+#             plot=False,
+#             threshold=1000,
+#             xlim=None,
+#             ylim=None,
+#             xlabel=None,
+#             ylabel=None):
+#         '''
+#         Args:
+        
+#             interval(int): defaults to none. Only necessary for defining plot.
+#             threshold(int): defaults to 1000. Defines the sample points in plot.
+#             plot(bool): if true, returns plot.
+#             xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+#             ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+#             xlabel(string): sets label in x axis. Only relevant when plot is true. 
+#             ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+#         Returns: 
+#             either probability density evaluation for some point or plot of Bates distribution.
+#         '''
+#         generator = lambda a,b,x: (np.power(x,a-1)*np.power(1-x, b-1))/ss.beta(a,b)
+
+#         if plot == True:
+#             x = np.linspace(0, 1, int(threshold))
+#             y = np.array([generator(self.alpha, self.beta, i) for i in x])
+#             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+#         return generator(self.alpha, self.beta, self.randvar)
+
+#     def cdf(self,
+#             plot=False,
+#             threshold=1000,
+#             xlim=None,
+#             ylim=None,
+#             xlabel=None,
+#             ylabel=None):
+#         '''
+#         Args:
+        
+#             interval(int): defaults to none. Only necessary for defining plot.
+#             threshold(int): defaults to 1000. Defines the sample points in plot.
+#             plot(bool): if true, returns plot.
+#             xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+#             ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+#             xlabel(string): sets label in x axis. Only relevant when plot is true. 
+#             ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+#         Returns: 
+#             either cumulative distribution evaluation for some point or plot of Bates distribution.
+#         '''
+#         generator = lambda a,b,x: ss.betainc(a,b,x)
+#         if plot == True:
+#             x = np.linspace(0, 1, int(threshold))
+#             y = np.array([generator(self.a, self.b, self.c, i) for i in x])
+#             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+#         return generator(self.a, self.b, self.c, self.randvar)
+
+#     def p_value(self, x_lower=0, x_upper=None):
+#         '''
+#         Args:
+
+#             x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+#             x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+#             Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+#             Otherwise, the default random variable is x.
+
+#         Returns:
+#             p-value of the Bates distribution evaluated at some random variable.
+#         '''
+#         if x_upper == None:
+#             x_upper = self.randvar
+#         if x_lower>x_upper:
+#             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        
+#         cdf_func  = lambda a,b,x: ss.betainc(a,b,x)
+#         return cdf_func(self.alpha, self.beta, x_upper)-cdf_func(self.alpha, self.beta, x_lower)
+
+#     def mean(self):
+#         '''
+#         Returns: Mean of the Bates distribution.
+#         '''
+#         return "currently unsupported."
+
+#     def median(self):
+#         '''
+#         Returns: Median of the Bates distribution.
+#         '''
+#         # warning: not yet validated.
+#         return ss.betainc(self.alpha, self.beta, 0.5)
+
+#     def mode(self):
+#         '''
+#         Returns: Mode of the Bates distribution.
+#         '''
+#         return "currently unsupported"
+
+#     def var(self):
+#         '''
+#         Returns: Variance of the Bates distribution.
+#         '''
+#         return "currently unsupported"
+
+#     def skewness(self):
+#         '''
+#         Returns: Skewness of the Bates distribution. 
+#         '''
+#         alpha = self.alpha; beta = self.beta
+#         return (2*(beta-alpha)*sqrt(alpha+beta+1))/((alpha+beta+2)*sqrt(alpha*beta))
+
+#     def kurtosis(self):
+#         '''
+#         Returns: Kurtosis of the Bates distribution. 
+#         '''
+#         alpha = self.alpha; beta = self.beta
+#         temp_up = 6*((alpha-beta)**2*(alpha+beta+1)-alpha*beta*(alpha+beta+2))
+#         return temp_up/(alpha*beta*(alpha+beta+2)*(alpha+beta+3))
+
+#     def entropy(self):
+#         '''
+#         Returns: differential entropy of the Bates distribution.
+#         '''
+#         return "currently unsupported"
+
+#     def print_summary(self):
+#         '''
+#         Returns: Summary statistic regarding the Bates distribution
+#         '''
+#         mean = self.mean()
+#         median = self.median()
+#         mode = self.mode()
+#         var = self.var()
+#         skewness = self.skewness()
+#         kurtosis = self.kurtosis()
+#         cstr = "summary statistic"
+#         print(cstr.center(40, "="))
+#         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
+# to be reviewed
+class Erlang(Base):
+    '''
+    This class contains methods concerning Erlang Distirbution. 
+    Args:
+    
+        shape(int | x>0): shape
+        rate(float | x>=0): rate
+        randvar(float | x>=0): random variable
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - print_summary for printing the summary statistics of the distribution. 
+
+    Reference:
+    - Wikipedia contributors. (2021, January 6). Erlang distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 09:38, January 8, 2021, from https://en.wikipedia.org/w/index.php?title=Erlang_distribution&oldid=998655107
+    - Weisstein, Eric W. "Erlang Distribution." From MathWorld--A Wolfram Web Resource. 
+    https://mathworld.wolfram.com/ErlangDistribution.html
+    '''
+    def __init__(self, shape, rate, randvar):
+        if randvar<0:
+            raise ValueError('random variable should only be in between 0 and 1. Entered value: {}'.format(randvar))
+        if isinstance(shape,int)==False and shape>0:
+            raise Exception('shape parameter should be an integer greater than 0.')
+        if rate<0:
+            raise ValueError('beta parameter(rate) should not be less than 0. Entered value:{}'.formatrate))
+        
+        self.shape = shape
+        self.rate = rate
+        self.randvar = randvar
+
+    def pdf(self,
+            plot=False,
+            threshold=1000,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        '''
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability density evaluation for some point or plot of Erlang distribution.
+        '''
+        generator = lambda shape, rate, x: (np.power(rate, shape)*np.power(x,shape-1)*np.exp(-rate*x))/np.math.factorial((shape-1))
+
+        if plot == True:
+            if interval<0:
+                raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
+            x = np.linspace(0, 1, int(threshold))
+            y = np.array([generator(self.shape, self.rate, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.shape, self.rate, self.randvar)
+
+    def cdf(self,
+            plot=False,
+            threshold=1000,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        '''
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or plot of Erlang distribution.
+        '''
+        generator = lambda shape, rate, x: ss.gammainc(shape, rate*x)/np.math.factorial(shape-1)
+        if plot == True:
+            x = np.linspace(0, 1, int(threshold))
+            y = np.array([generator(self.shape, self.rate, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.shape, self.rate, self.randvar)
+
+    def p_value(self, x_lower=0, x_upper=None):
+        '''
+        Args:
+
+            x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+            x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+            Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+            Otherwise, the default random variable is x.
+
+        Returns:
+            p-value of the Erlang distribution evaluated at some random variable.
+        '''
+        if x_upper == None:
+            x_upper = self.randvar
+        if x_lower>x_upper:
+            raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        
+        cdf_func  = lambda shape, rate, x: ss.gammainc(shape, rate*x)/np.math.factorial(shape-1)
+        return cdf_func(self.shape, self.rate, x_upper)-cdf_func(self.shape, self.rate, x_lower)
+
+    def mean(self):
+        '''
+        Returns: Mean of the Erlang distribution.
+        '''
+        return self.shape/self.rate
+
+    def median(self):
+        '''
+        Returns: Median of the Erlang distribution.
+        '''
+        return "no simple closed form"
+
+    def mode(self):
+        '''
+        Returns: Mode of the Erlang distribution.
+        '''
+        return (1/self.rate)*(self.shape-1)
+
+    def var(self):
+        '''
+        Returns: Variance of the Erlang distribution.
+        '''
+        return self.shape/(self.rate**2)
+
+    def skewness(self):
+        '''
+        Returns: Skewness of the Erlang distribution. 
+        '''
+        return 2/sqrt(self.shape)
+
+    def kurtosis(self):
+        '''
+        Returns: Kurtosis of the Erlang distribution. 
+        '''
+        return 6/self.shape
+
+    def entropy(self):
+        '''
+        Returns: differential entropy of the Erlang distribution.
+
+        Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
+        link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
+        '''
+        k= self.shape; _lambda = self.rate
+        return (1-k)*ss.digamma(k)+np.log(ss.gamma(k)/_lambda)+k
+
+    def print_summary(self):
+        '''
+        Returns: Summary statistic regarding the Erlang distribution
+        '''
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = "summary statistic"
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
+# to be reviewed
+class Rayleigh(Base):
+    '''
+    This class contains methods concerning Rayleigh Distirbution. 
+    Args:
+    
+        scale(float | x>0): shape
+        randvar(float | x>=0): random variable
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - print_summary for printing the summary statistics of the distribution. 
+
+    Reference:
+    - Wikipedia contributors. (2020, December 30). Rayleigh distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 09:37, January 8, 2021, from https://en.wikipedia.org/w/index.php?title=Rayleigh_distribution&oldid=997166230
+
+    - Weisstein, Eric W. "Rayleigh Distribution." From MathWorld--A Wolfram Web Resource. 
+    https://mathworld.wolfram.com/RayleighDistribution.html
+    '''
+    def __init__(self, scale, randvar):
+        if randvar<0:
+            raise ValueError('random variable should not be less than 0. Entered value: {}'.format(randvar))
+        if scale<0:
+            raise ValueError('shape parameter should be an integer greater than 0.')
+
+        self.scale = scale
+        self.randvar = randvar
+
+    def pdf(self,
+            plot=False,
+            interval = 0,
+            threshold=1000,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        '''
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability density evaluation for some point or plot of Rayleigh distribution.
+        '''
+        generator = lambda sig,x: (x/sig**2)*np.exp(-x**2/(2*sig**2))
+
+        if plot == True:
+            if interval<0:
+                raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
+            x = np.linspace(0, interval, int(threshold))
+            y = np.array([generator(self.scale, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.scale, self.randvar)
+
+    def cdf(self,
+            plot=False,
+            threshold=1000,
+            interval=1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        '''
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or plot of Rayleigh distribution.
+        '''
+        generator = lambda sig,x: 1-np.exp(-x**2/(2*sig**2))
+        if plot == True:
+            x = np.linspace(0, interval, int(threshold))
+            y = np.array([generator(self.scale, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.scale, self.randvar)
+
+    def p_value(self, x_lower=0, x_upper=None):
+        '''
+        Args:
+
+            x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+            x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+            Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+            Otherwise, the default random variable is x.
+
+        Returns:
+            p-value of the Erlang distribution evaluated at some random variable.
+        '''
+        if x_upper == None:
+            x_upper = self.randvar
+        if x_lower>x_upper:
+            raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        
+        cdf_func  = lambda sig,x: 1-np.exp(-x**2/(2*sig**2))
+        return cdf_func(self.scale, x_upper)-cdf_func(self.scale, x_lower)
+
+    def mean(self):
+        '''
+        Returns: Mean of the Rayleigh distribution.
+        '''
+        return self.scale*sqrt(np.pi/2)
+
+    def median(self):
+        '''
+        Returns: Median of the Rayleigh distribution.
+        '''
+        return self.scale*sqrt(2*np.log(2))
+
+    def mode(self):
+        '''
+        Returns: Mode of the Rayleigh distribution.
+        '''
+        return self.scale
+
+    def var(self):
+        '''
+        Returns: Variance of the Rayleigh distribution.
+        '''
+        return  (4-np.pi)/2*np.scale**2
+
+    def skewness(self):
+        '''
+        Returns: Skewness of the Rayleigh distribution. 
+        '''
+        return (2*sqrt(np.pi)*(np.pi-3))/np.power((4-np.pi), 3/2)
+
+    def kurtosis(self):
+        '''
+        Returns: Kurtosis of the Rayleigh distribution. 
+        '''
+        return -(6*np.pi**2-24*np.pi+16)/(4-np.pi)**2
+
+    def entropy(self):
+        '''
+        Returns: differential entropy of the Rayleigh distribution.
+
+        Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
+        link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
+        '''
+        return 1+np.log(self.scale/sqrt(2))+(np.euler_gamma/2)
+
+    def print_summary(self):
+        '''
+        Returns: Summary statistic regarding the Rayleigh distribution
+        '''
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = "summary statistic"
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
+# to be reviewed
+class Maxweel_Boltzmann(Base):
+    '''
+    This class contains methods concerning Maxwell-Boltzmann Distirbution. 
+    Args:
+    
+        a(int | x>0): parameter
+        randvar(float | x>=0): random variable
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - print_summary for printing the summary statistics of the distribution. 
+
+    Reference:
+    - Wikipedia contributors. (2021, January 8). Beta distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 07:21, January 8, 2021, from https://en.wikipedia.org/w/index.php?title=Beta_distribution&oldid=999043368
+    '''
+    def __init__(self, a, randvar):
+        if randvar<0:
+            raise ValueError('random variable should only be in between 0 and 1. Entered value: {}'.format(randvar))
+        if a<0:
+            raise ValueError('parameter a shoould not be less than 0. Entered value:{}'.format(a))
+        
+        self.a = a
+        self.randvar = randvar
+
+    def pdf(self,
+            plot=False,
+            threshold=1000,
+            interval = 1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        '''
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability density evaluation for some point or plot of Maxwell-Boltzmann distribution.
+        '''
+        generator = lambda a, x: sqrt(2/np.pi)*(x**2*np.exp(-x**2/(2*a**2)))/(a**3)
+
+        if plot == True:
+            if interval<0:
+                raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
+            x = np.linspace(0, 1, int(threshold))
+            y = np.array([generator(self.a, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.a, self.randvar)
+
+    def cdf(self,
+            plot=False,
+            threshold=1000,
+            interval = 1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        '''
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or plot of Maxwell-Boltzmann distribution.
+        '''
+        generator = lambda a, x: ss.erf(x/(sqrt(2)*a))-sqrt(2/np.pi)*(x**2*np.exp(-x**2/(2*a**2)))/(a)
+        if plot == True:
+            if interval<0:
+                raise ValueError('interval parameter should not be less than 0. Entered Value {}'.format(interval))
+            x = np.linspace(0, interval, int(threshold))
+            y = np.array([generator(self.a, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.a, self.randvar)
+
+    def p_value(self, x_lower=0, x_upper=None):
+        '''
+        Args:
+
+            x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+            x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+            Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+            Otherwise, the default random variable is x.
+
+        Returns:
+            p-value of the Maxwell-Boltzmann distribution evaluated at some random variable.
+        '''
+        if x_upper == None:
+            x_upper = self.randvar
+        if x_lower>x_upper:
+            raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        
+        cdf_func  = lambda a, x: ss.erf(x/(sqrt(2)*a))-sqrt(2/np.pi)*(x**2*np.exp(-x**2/(2*a**2)))/(a)
+        return cdf_func(self.a, x_upper)-cdf_func(self.a, x_lower)
+
+    def mean(self):
+        '''
+        Returns: Mean of the Maxwell-Boltzmann distribution.
+        '''
+        return 2*self.a*sqrt(2/np.pi)
+
+    def median(self):
+        '''
+        Returns: Median of the Maxwell-Boltzmann distribution.
+        '''
+        return "currently unsupported"
+
+    def mode(self):
+        '''
+        Returns: Mode of the Maxwell-Boltzmann distribution.
+        '''
+        return sqrt(2)*self.a
+
+    def var(self):
+        '''
+        Returns: Variance of the Maxwell-Boltzmann distribution.
+        '''
+        return (self.a**2*(3*np.pi-8))/np.pi
+
+    def skewness(self):
+        '''
+        Returns: Skewness of the Maxwell-Boltzmann distribution. 
+        '''
+        return (2*sqrt(2)*(16-5*np.pi))/np.power((3*np.pi-8), 3/2)
+
+    def kurtosis(self):
+        '''
+        Returns: Kurtosis of the Maxwell-Boltzmann distribution. 
+        '''
+        return 4*((-96+40*np.pi-3*np.pi**2)/(3*np.pi-8)**2)
+
+    def entropy(self):
+        '''
+        Returns: differential entropy of the Maxwell-Boltzmann distribution.
+
+        Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
+        link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
+        '''
+        a= self.a
+        return np.log(a*sqrt(2*np.pi)+np.euler_gamma-0.5)
+
+    def print_summary(self):
+        '''
+        Returns: Summary statistic regarding the Maxwell-Boltzmann distribution
+        '''
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = "summary statistic"
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
