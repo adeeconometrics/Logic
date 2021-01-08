@@ -45,6 +45,8 @@ class Uniform:
         - var for evaluating the variance of the distribution.
         - skewness for evaluating the skewness of the distribution.
         - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - print_summary for printing summary statistic of the distribution.
 
     Referene:
     - Weisstein, Eric W. "Uniform Distribution." From MathWorld--A Wolfram Web Resource. 
@@ -111,22 +113,19 @@ class Uniform:
 
     def mean(self):
         '''
-        Returns:
-            Mean of the Uniform distribution
+        Returns: Mean of the Uniform distribution.
         '''
         return 1 / 2 * (self.a + self.b)
 
     def median(self):
         '''
-        Returns:
-            Median of the Uniform distribution
+        Returns: Median of the Uniform distribution.
         '''
         return 1 / 2 * (self.a + self.b)
 
     def mode(self):
         '''
-        Returns:
-            Mode of the Uniform distribution. 
+        Returns: Mode of the Uniform distribution. 
 
         Note that the mode is any value in (a,b)
         '''
@@ -134,24 +133,54 @@ class Uniform:
 
     def var(self):
         '''
-        Returns:
-            Variance of the Uniform distribution
+        Returns: Variance of the Uniform distribution.
         '''
         return (1 / 12) * (self.b - self.a)**2
 
     def skewness(self):
         '''
-        Returns:
-            Skewness of the Uniform distribution
+        Returns: Skewness of the Uniform distribution.
         '''
         return 0
 
     def kurtosis(self):
         '''
-        Returns:
-            Kurtosis of the Uniform distribution
+        Returns: Kurtosis of the Uniform distribution.
         '''
         return -6 / 5
+
+    def entropy(self):
+        '''
+        Returns: entropy of uniform Distirbution.
+        '''
+        return np.log(self.b-self-a)
+
+    # def mgf(self, t):
+    #     '''
+    #     Args:
+
+    #         t(int): order of moment. 
+    #     Returns: Moment Generating Function of uniform distribution.
+    #     '''
+    #     if isinstance(t, int) == False:
+    #         return TypeError('order of moment (t) must be an integer.')
+    #     if t==0:
+    #         return 1
+    #     pass
+
+    def print_summary(self):
+        '''
+        Returns: Summary statistic regarding the Uniform distribution.
+        '''
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = "summary statistic"
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
 
 class Normal(Base):
@@ -175,6 +204,7 @@ class Normal(Base):
         - var for evaluating the variance of the distribution.
         - skewness for evaluating the skewness of the distribution.
         - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
         - print_summary for printing the summary statistics of the distribution. 
 
     References:
@@ -310,6 +340,9 @@ class Normal(Base):
         '''
         return 0
 
+    def entropy(self):
+        return np.log(self.std*sqrt(2*np.pi*np.e))
+
     def print_summary(self):
         '''
         Returns: Summary statistic regarding the Normal distribution
@@ -347,6 +380,7 @@ class T_distribution(Base):
         - var for evaluating the variance of the distribution.
         - skewness for evaluating the skewness of the distribution.
         - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
         - print_summary for printing the summary statistics of the distribution. 
 
     References: 
@@ -519,6 +553,13 @@ class T_distribution(Base):
             return np.inf
         return None
 
+    def entropy(self):
+        '''
+        Returns: differential entropy of T-distribution
+        '''
+        df = self.df
+        return ((df+1)/2)*(ss.digamma((df+1)/2)-ss.digamma(df/2))+np.log(sqrt(df)*ss.beta(df/2, 1/2))
+
     def print_summary(self):
         '''
         Returns: Summary statistic regarding the T-distribution
@@ -555,6 +596,7 @@ class Cauchy(Base):
         - var for evaluating the variance of the distribution.
         - skewness for evaluating the skewness of the distribution.
         - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
         - print_summary for printing the summary statistics of the distribution. 
 
     References:
@@ -698,6 +740,12 @@ class Cauchy(Base):
         '''
         return np.log(4 * np.pi * self.scale)
 
+    def entropy(self):
+        '''
+        Returns: differential entropy of the Cauchy distribution
+        '''
+        return np.log10(4*np.pi*self.scale)
+
     def print_summary(self):
         '''
         Returns: Summary statistic regarding the Cauchy distribution
@@ -734,6 +782,7 @@ class F_distribution(Base):
         - var for evaluating the variance of the distribution.
         - skewness for evaluating the skewness of the distribution.
         - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
         - print_summary for printing the summary statistics of the distribution. 
 
     References:
@@ -901,6 +950,15 @@ class F_distribution(Base):
         '''
         return "unsupported"
 
+    def entropy(self):
+        '''
+        Returns: differential entropy of F-distribution. 
+
+        Reference: Lazo, A.V.; Rathie, P. (1978). "On the entropy of continuous probability distributions". IEEE Transactions on Information Theory
+        '''
+        df1 = self.df1; df2 = self.df2
+        return np.log(ss.gamma(df1/2))+np.log(ss.gamma(df2/2))-np.log(ss.gamma((df1+df2)/2))+(1-df1/2)*ss.digamma(1+df1/2)-(1-df2/2)*ss.digamma(1+df2/2)+(df1+df2)/2*ss.digamma((df1+df2)/2)+np.log(df1/df2)
+
     def print_summary(self):
         '''
         Returns:  summary statistic regarding the F-distribution
@@ -936,6 +994,7 @@ class Chisq_distribution(Base):
         - var for evaluating the variance of the distribution.
         - skewness for evaluating the skewness of the distribution.
         - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
         - print_summary for printing the summary statistics of the distribution. 
 
     References:
@@ -1072,6 +1131,13 @@ class Chisq_distribution(Base):
         '''
         return 12 / self.df
 
+    def entropy(self):
+        '''
+        Returns: differential entropy of Chi-square distribution.
+        '''
+        df = self.df
+        return df/2+np.log(2*ss.gamma(df/2))+(1-df/2)*ss.digamma(df/2)
+
     def print_summary(self):
         '''
         Returns: Summary statistic regarding the Chi-square distribution
@@ -1107,6 +1173,7 @@ class Chi_distribution(Base):
         - var for evaluating the variance of the distribution.
         - skewness for evaluating the skewness of the distribution.
         - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
         - print_summary for printing the summary statistics of the distribution. 
 
     References:
@@ -1249,6 +1316,13 @@ class Chi_distribution(Base):
         mean = self.mean()
         return 2*(1-mean*np.sqrt(var)*sk-var)/var
 
+    def entropy(self):
+        '''
+        Returns: differential entropy of Chi distribution.
+        '''
+        df = self.df
+        return np.log(ss.gamma(df/2)/sqrt(2))-(df-1)/2*ss.digamma(df/2)+df/2 
+
     def print_summary(self):
         '''
         Returns: Summary statistic regarding the Chi distribution
@@ -1284,6 +1358,7 @@ class Explonential_distribution(Base):
         - var for evaluating the variance of the distribution.
         - skewness for evaluating the skewness of the distribution.
         - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
         - print_summary for printing the summary statistics of the distribution. 
 
     References:
@@ -1402,39 +1477,46 @@ class Explonential_distribution(Base):
 
     def mean(self):
         '''
-        Returns Mean of the Exponential distribution
+        Returns: Mean of the Exponential distribution
         '''
         return 1 / self._lambda
 
     def median(self):
         '''
-        Returns Median of the Exponential distribution
+        Returns: Median of the Exponential distribution
         '''
         return np.log(2) / self._lambda
 
     def mode(self):
         '''
-        Returns Mode of the Exponential distribution
+        Returns: Mode of the Exponential distribution
         '''
         return 0
 
     def var(self):
         '''
-        Returns Variance of the Exponential distribution
+        Returns: Variance of the Exponential distribution
         '''
         return 1 / (self._lambda**2)
 
     def skewness(self):
         '''
-        Returns Skewness of the Exponential distribution
+        Returns: Skewness of the Exponential distribution
         '''
         return 2
 
     def kurtosis(self):
         '''
-        Returns Kurtosis of the Exponential distribution
+        Returns: Kurtosis of the Exponential distribution
         '''
         return 6
+
+    def entorpy(self):
+        '''
+        Returns: differential entropy of the Exponential distribution
+        '''
+        return 1-np.log(self._lambda)
+
     def print_summary(self):
         '''
         Returns: summary statistic regarding the Exponential distribution
@@ -1608,6 +1690,13 @@ class Gamma_distribution(Base):
         '''
         return 6 / self.a
 
+    def entropy(self):
+        '''
+        Returns: differential entropy of the Gamma distribution
+        '''
+        k = self.a; theta = self.b
+        return k +np.log(theta)+np.log(ss.gamma(k))-(1-k)*ss.digamma(k)
+
     def print_summary(self):
         '''
         Returns: summary statistic regarding the Gamma distribution
@@ -1644,6 +1733,7 @@ class Pareto(Base):
         - var for evaluating the variance of the distribution.
         - skewness for evaluating the skewness of the distribution.
         - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
         - print_summary for printing the summary statistics of the distribution. 
 
     References:
@@ -1817,6 +1907,14 @@ class Pareto(Base):
             return (6 * (a**3 + a**2 - 6 * a - 2)) / (a * (a - 3) * (a - 4))
         return "undefined"
 
+    def entropy(self):
+        '''
+        Returns: differential entropy of the Pareto distribution.
+        '''
+        a = self.shape
+        x_m = self.scale
+        return np.log(x_m/a)+1+(1/a)
+
     def print_summary(self):
         '''
         Returns: summary statistic regarding the Pareto distribution
@@ -1854,6 +1952,7 @@ class Log_normal(Base):
         - var for evaluating the variance of the distribution.
         - skewness for evaluating the skewness of the distribution.
         - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
         - print_summary for printing the summary statistics of the distribution. 
 
     References:
@@ -1997,6 +2096,12 @@ class Log_normal(Base):
         return np.exp(
             4 * std**2) + 2 * np.exp(3 * std**2) + 3 * np.exp(2 * std**2) - 6
 
+    def entropy(self):
+        '''
+        Returns: differential entropy of the log normal distribution.
+        '''
+        return self.mean+0.5*np.log(2*np.pi*np.e*self.std**2)
+
     def print_summary(self):
         '''
         Returns: summary statistic regarding the log normal distribution
@@ -2032,6 +2137,7 @@ class Laplace(Base):
         - var for evaluating the variance of the distribution.
         - skewness for evaluating the skewness of the distribution.
         - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
         - print_summary for printing the summary statistics of the distribution. 
 
     Reference:
@@ -2163,6 +2269,12 @@ class Laplace(Base):
         '''
         return 3
 
+    def entropy(self):
+        '''
+        Returns: differential entropy of the Laplace distribution.
+        '''
+        return 1+np.log(2*self.scale)
+
     def print_summary(self):
         '''
         Returns: summary statistic regarding the Laplace distribution
@@ -2198,6 +2310,7 @@ class Logistic(Base):
         - var for evaluating the variance of the distribution.
         - skewness for evaluating the skewness of the distribution.
         - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
         - print_summary for printing the summary statistics of the distribution. 
         
     Reference:
@@ -2328,6 +2441,12 @@ class Logistic(Base):
         '''
         return 6 / 5
 
+        def entropy(self):
+        '''
+        Returns: differential entropy of the Logistic distribution.
+        '''
+        return 2
+
     def print_summary(self):
         '''
         Retruns: summary statistics of the Logistic distribution.
@@ -2363,6 +2482,7 @@ class Logit_normal(Base):
         - var for evaluating the variance of the distribution.
         - skewness for evaluating the skewness of the distribution.
         - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
         - print_summary for printing the summary statistics of the distribution. 
 
     Reference:
@@ -2497,6 +2617,12 @@ class Logit_normal(Base):
         '''
         return "unsupported"
 
+    def entropy(self):
+        '''
+        Returns: differential entropy of Logit Normal distribution.
+        '''
+        return "unsupported"
+
     def print_summary(self):
         '''
         Returns: Summary statistic regarding the Logit Normal distribution
@@ -2532,6 +2658,7 @@ class Weibull(Base):
         - var for evaluating the variance of the distribution.
         - skewness for evaluating the skewness of the distribution.
         - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
         - print_summary for printing the summary statistics of the distribution. 
 
     Reference:
@@ -2679,6 +2806,17 @@ class Weibull(Base):
         Returns: Kurtosis of the Weibull distribution. Returns None i.e. Unsupported.
         '''
         return None
+
+    def entropy(self):
+        '''
+        Returns: differential entropy of the Weilbull distribution.
+
+        Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
+        link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
+        '''
+        _lambda = self.shape
+        k = self.scale
+        return (k+1)*np.euler_gamma/k+np.log(_lambda/k)+1
 
     def print_summary(self):
         '''
@@ -3225,6 +3363,7 @@ class Triangular(Base):
         - var for evaluating the variance of the distribution.
         - skewness for evaluating the skewness of the distribution.
         - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
         - print_summary for printing the summary statistics of the distribution. 
 
     Reference:
@@ -3396,6 +3535,15 @@ class Triangular(Base):
         Returns: Kurtosis of the Triangular distribution. 
         '''
         return -3/5
+
+    def entropy(self):
+        '''
+        Returns: differential entropy of the Triangular distribution.
+
+        Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
+        link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
+        '''
+        return 0.5+np.log((self.b-self.a)*0.5)
 
     def print_summary(self):
         '''
