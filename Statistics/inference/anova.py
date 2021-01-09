@@ -2,8 +2,8 @@ try:
     import numpy as np
     # import scipy as sci
     import scipy.special as ss
-    import math as m
-    from tabulate import tabulate
+    from math import sqrt
+    # from tabulate import tabulate
     # import matplotlib.pyplot as plt
 
 except Exception as e:
@@ -431,20 +431,26 @@ class Anova2(BaseAnova):
 
 class Manova(BaseAnova):
     def __init__(self, independent, dependent, adjust=True):
-        super(Manova, self).__init__(independent, dependent, adjust)
+        super(Manova, self).__init__(independent=independent,
+                                     dependent=dependent,
+                                     adjust=adjust)
 
     pass
 
 
 class Ancova(BaseAnova):
     def __init__(self, independent, dependent, adjust=True):
-        super(Ancova, self).__init__(independent, dependent, adjust)
+        super(Ancova, self).__init__(independent=independent,
+                                     dependent=dependent,
+                                     adjust=adjust)
 
     pass
 
 
 class Mancova(BaseAnova):
     def __init__(self, independent, dependent, adjust=True):
-        super(Mancova, self).__init__(independent, dependent, adjust)
+        super(Mancova, self).__init__(independent=independent,
+                                      dependent=dependent,
+                                      adjust=adjust)
 
     pass
