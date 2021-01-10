@@ -44,9 +44,11 @@
         - http://www.cplusplus.com/doc/tutorial/variables/
 - make libraries
     - helpful documentation(s):
+        - https://docs.microsoft.com/en-us/cpp/build/walkthrough-creating-and-using-a-static-library-cpp?view=msvc-160
 
 - pointers 
     - helpful documentation(s):
+        - http://www.cplusplus.com/doc/tutorial/pointers/
 
 - memory management
     - new
@@ -66,6 +68,8 @@
     - accessing through pointers
     - helpful documentation(s):
         - http://www.cplusplus.com/doc/tutorial/pointers/
+        - http://www.cplusplus.com/doc/tutorial/other_data_types/
+        - http://www.cplusplus.com/doc/tutorial/structures/
 
 - classes:: inherited privately by default 
     - wrapper class 
@@ -80,6 +84,7 @@
     - abstract class 
     - helpful documentation(s):
         - https://www.tutorialspoint.com/cplusplus/cpp_interfaces.htm
+        - http://www.cplusplus.com/doc/tutorial/classes/
 
 - code documentation
 
