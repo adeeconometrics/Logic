@@ -1,0 +1,94 @@
+# review C++ Constructs
+
+- pre-processing directives 
+    - ifndef/define/else/enfif
+    ```
+    #ifndef HEADERFILE_H
+    /* code */
+    #else
+    /* code to include if the token is defined */
+    #endif
+    ```
+    or 
+    ```
+    #ifndef _INCL_GUARD
+    #define _INCL_GUARD
+    #endif
+    ```
+    - pragma once
+
+    - helpful documents:
+        - https://en.wikipedia.org/wiki/Include_guard
+        - https://en.wikipedia.org/wiki/Translation_unit_(programming)
+        - https://docs.microsoft.com/en-us/cpp/preprocessor/preprocessor-directives?view=msvc-160
+        - https://docs.microsoft.com/en-us/cpp/preprocessor/grammar-summary-c-cpp?view=msvc-160
+        - https://stackoverflow.com/questions/1653958/why-are-ifndef-and-define-used-in-c-header-files
+
+- namespaces
+    - aliases - You can use an alias declaration to declare a name to use as a synonym for a previously declared type. (This mechanism is also referred to informally as a type alias). You can also use this mechanism to create an alias template, which can be particularly useful for custom allocators.
+    ```
+    syntax:
+    using <identifier> = <type>;
+    typedef <type> <identifier>;
+    ```
+    - note:
+        - typedef's are useful for providing clarity with the purpose of your code, not only that it improves the readability of your code but it also allows your code to be easily modified. By the same token, however, it abstracts the underlying types for your variables. It is ideal to use typedefs within a given scope. 
+
+    - helpful documentation:
+        - https://docs.microsoft.com/en-us/cpp/cpp/aliases-and-typedefs-cpp?view=msvc-160
+        - https://www.cprogramming.com/tutorial/typedef.html#:~:text=The%20typedef%20keyword%20allows%20the,data%20types%20that%20you%20use.
+
+- variables    
+    - scopes
+    - helpful documentation:
+        - http://www.cplusplus.com/doc/tutorial/variables/
+- make libraries
+    - helpful documentation(s):
+
+- pointers 
+    - helpful documentation(s):
+
+- memory management
+    - new
+    - delete 
+    - helpful documentation(s):
+
+- functions 
+    - type of function 
+    - passing a function 
+    - overriding functions
+    - lambda functions 
+    - polymorphism 
+    - helpful documentation(s):
+        - http://www.cplusplus.com/doc/tutorial/functions2/
+
+- structs:: can also have methods and are inherited publicly by default
+    - accessing through pointers
+    - helpful documentation(s):
+        - http://www.cplusplus.com/doc/tutorial/pointers/
+
+- classes:: inherited privately by default 
+    - wrapper class 
+    - interface class 
+    - inheritance 
+    - polymorphism
+    - constructors
+    - destructors
+    - private 
+    - public 
+    - virtual 
+    - abstract class 
+    - helpful documentation(s):
+        - https://www.tutorialspoint.com/cplusplus/cpp_interfaces.htm
+
+- code documentation
+
+- Template
+    - helpful documentation(s):
+        - http://www.cplusplus.com/doc/tutorial/functions2/
+
+- error handling
+    - helpful documentation(s):
+
+- I/O
+    - helpful documentation(s):

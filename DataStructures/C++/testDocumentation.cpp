@@ -4,7 +4,9 @@
  * @author Dave Arthur D. Amiana
  * @version 0.1 01.07.2021
  */
+#include "static.h"
 #include <iostream>
+
 using namespace std;
 
 /**
