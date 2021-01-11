@@ -8,4 +8,10 @@
 namespace Name{
     /* - adds intger a and b. */
     int add(int a, int b){return a+b;}
+    /* - subtracts integer a and b**/
+    int dif(int a, int b){return a-b;}
+    /* - divides integer a and b**/
+    float div(float a, float b){return a/b;}
+    /* - multiplies integer a and b**/
+    float mult(float a, float b){return a*b;}
 }
