@@ -46,9 +46,18 @@
     - helpful documentation(s):
         - https://docs.microsoft.com/en-us/cpp/build/walkthrough-creating-and-using-a-static-library-cpp?view=msvc-160
 
-- pointers 
+- pointers and referneces 
+    - initialize `<type>*<identifier> = &<var>`
+    - access `*<identifier>`
+        - also called as the dereferencing operator 
+    - reference `<type>& <identifier>=<referenced var>`
+        - you need to declare them upon initialization
     - helpful documentation(s):
         - http://www.cplusplus.com/doc/tutorial/pointers/
+        - https://en.cppreference.com/book/pointers
+        - https://en.cppreference.com/w/cpp/language/reference
+        - pointers https://youtu.be/DTxHyVn0ODg
+        - references https://youtu.be/IzoFn3dfsPA
 
 - memory management
     - new
