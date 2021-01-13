@@ -39,9 +39,12 @@
         - https://www.cprogramming.com/tutorial/typedef.html#:~:text=The%20typedef%20keyword%20allows%20the,data%20types%20that%20you%20use.
 
 - variables    
-    - scopes
+    - scopes - delimits the accessibility of your variables
+    - local (scoped) static variables -  are variables that live for the entirety of program execution; they
+    preserve their value. 
     - helpful documentation:
         - http://www.cplusplus.com/doc/tutorial/variables/
+
 - make libraries
     - helpful documentation(s):
         - https://docs.microsoft.com/en-us/cpp/build/walkthrough-creating-and-using-a-static-library-cpp?view=msvc-160
@@ -74,7 +77,16 @@
         - http://www.cplusplus.com/doc/tutorial/functions2/
 
 - structs:: can also have methods and are inherited publicly by default
+    
+   [When to use Structs over Classes?](https://en.cppreference.com/book/intro/classes)
+    - The only technical different between the two is the Structs are public by default while
+    classes are private, the reason one should use struct over classes is when grouping values 
+    pertaining a set of heterogeneous variables wherein functionalities are only concerned with 
+    those values. It should also be noted that some compilers throws a warning for inheriting structs
+    and adding more complexity therein. 
+
     - accessing through pointers
+    - constructors and destructors 
     - helpful documentation(s):
         - http://www.cplusplus.com/doc/tutorial/pointers/
         - http://www.cplusplus.com/doc/tutorial/other_data_types/
