@@ -96,8 +96,9 @@ class generalMethods:
             - ci(int | [0,100]): Optional. confidence interval
         
         Returns: p-value drawn from student's T distribution
-        '''
-        pass
+        ''' # check this code 
+        p_value = univariate.T_distribution(df, cv).p_value()
+        return p_value
 
     def f_statistic(self, cv, df1, df2, ci=None):
         '''
@@ -109,8 +110,9 @@ class generalMethods:
             - ci(int | [0,100]): Optional. confidence interval
         
         Returns: p-value drawn from F distribution
-        '''
-        pass
+        '''# check this code 
+        p_value = univariate.F_distribution(cv,df1,df2).p_value()
+        return p_value
 
     def wrap_data(self, on=**kwargs):
         '''
@@ -191,7 +193,30 @@ class OLS(generalMethods):
 class General_generalMethods(generalMethods):
     pass
 
+class correlation:
+    '''
+    This class contains implementation concerning correlation analysis which is used to measure the
+    strength and direction between two variables. This class offers two methods of correlation:
+    the Pearson product moment correlation and the Spearman rank order correlation. 
 
+    Methods:
+    - p_value - for t-statistic's p-value
+    - pearson_correlation - for Pearson product moment correlation
+    - spearman_correlation - for Spearman rank order correlation 
+
+    Reference: 
+    - Minitab (2019) Correlation Analysis. Retrieved at: 
+    https://support.minitab.com/en-us/minitab-express/1/help-and-how-to/modeling-statistics/regression/how-to/correlation/methods-and-formulas/
+    '''
+
+    def __init__(self):
+        pass
+    def p_value(self):
+        pass
+    def pearson_correlation(self):
+        pass 
+    def spearman_correlation(self):
+        pass 
 class simpleLinearRegression(generalMethods):
     
     def __init__(self, data_x, data_y):
@@ -220,6 +245,9 @@ class simpleLinearRegression(generalMethods):
             - adjusted(bool): defaults to False. If true, returns adjusted r-square.
         Returns: r-square or adjusted r-square.
         '''
+        sample_mean = sum(self.dependent[self.keys_d[0]])/len(self.dependent[self.keys_d[0]])
+        # rss = sum([])
+        # tss = sum([])
         pass
 
     def std_err(self):
