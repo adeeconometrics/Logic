@@ -1,5 +1,7 @@
 # review C++ Constructs
 
+This contains a list of reference as well as brief annotations regarding the syntax and semantics of C++ constructs. This is intended to serve as a reviewer.
+
 - pre-processing directives 
     - ifndef/define/else/enfif
     ```
@@ -45,7 +47,11 @@
     - helpful documentation:
         - http://www.cplusplus.com/doc/tutorial/variables/
 
-- make libraries
+- libraries
+    - local
+        - dynamic 
+        - static
+    - exporting libraries 
     - helpful documentation(s):
         - https://docs.microsoft.com/en-us/cpp/build/walkthrough-creating-and-using-a-static-library-cpp?view=msvc-160
 
