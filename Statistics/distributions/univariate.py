@@ -5567,7 +5567,7 @@ class Wigner(Base):
     '''
     def __init__(self, radius, randvar):
         if radius<0:
-            raise ValueError('parameter a shoould not be less than 0. Entered value:{}'.format(a))
+            raise ValueError('parameter a shoould not be less than 0. Entered value:{}'.format(radius))
          if randvar<-radius | randvar>radius:
             raise ValueError('random variable should only be in between -radus and radius. Entered value: {}'.format(randvar))
 
@@ -5705,6 +5705,178 @@ class Wigner(Base):
     def print_summary(self):
         '''
         Returns: Summary statistic regarding the Wigner semicricle distribution
+        '''
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = "summary statistic"
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
+class Balding_Nichols(Base):
+    '''
+    This class contains methods concerning Balding Nichols Distirbution. 
+    Args:
+    
+        F(float | 0<=x<=1): F parameter
+        p(float | 0<=x<=1): p parameter
+        randvar(float | 0<=x<=1): random variable
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - print_summary for printing the summary statistics of the distribution. 
+
+    Reference:
+    - Wikipedia contributors. (2020, December 14). Wigner semicircle distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 03:41, January 14, 2021, from https://en.wikipedia.org/w/index.php?title=Wigner_semicircle_distribution&oldid=994143777
+    '''
+    def __init__(self, F, p, randvar):
+        if radius<0 | randvar>1:
+            raise ValueError('random variable shoould only be in between 0 and 1. Entered value:{}'.format(randvar))
+         if p<0 | p>1:
+            raise ValueError('parameter p should only be in between 0 and 1. Entered value: {}'.format(p))
+         if F<0 | F>1:
+            raise ValueError('parameter F should only be in between 0 and 1. Entered value: {}'.format(F))
+
+        self.F = F
+        self.p = p
+        self.alpha = (1-F/F)*p
+        self.beta = (1-F/F)*(1-p)
+        self.randvar = randvar
+
+    def pdf(self,
+            plot=False,
+            threshold=1000,
+            interval = 1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        '''
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability density evaluation for some point or plot of Balding Nichols distribution.
+        '''
+        generator = lambda alpha, beta, x: (x**(alpha-1)*np.power(1-x, beta-1))/ss.beta(alpha, beta)
+        if plot == True:
+            if interval<0:
+                raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
+            x = np.linspace(0, 1, int(threshold))
+            y = np.array([generator(self.alpha, self.beta, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.alpha, self.beta, self.randvar)
+
+    def cdf(self,
+            plot=False,
+            threshold=1000,
+            interval = 1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        '''
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or plot of Balding Nichols distribution.
+        '''
+        generator = lambda alpha, beta, x: ss.betainc(alpha, beta, x)
+        if plot == True:
+            if interval<0:
+                raise ValueError('interval parameter should not be less than 0. Entered Value {}'.format(interval))
+            x = np.linspace(0, interval, int(threshold))
+            y = np.array([generator(self.alpha, self.beta, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.alpha, self.beta, self.randvar)
+
+    def p_value(self, x_lower=0, x_upper=None):
+        '''
+        Args:
+
+            x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+            x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+            Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+            Otherwise, the default random variable is x.
+
+        Returns:
+            p-value of the Balding Nichols distribution evaluated at some random variable.
+        '''
+        if x_upper == None:
+            x_upper = self.randvar
+        if x_lower>x_upper:
+            raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        
+        cdf_func  = lambda alpha, beta, x: ss.betainc(alpha, beta, x)
+        return cdf_func(self.alpha, self.beta, x_upper)-cdf_func(self.alpha, self.beta, x_lower)
+
+    def mean(self):
+        '''
+        Returns: Mean of the Balding Nichols distribution.
+        '''
+        return self.p
+
+    def median(self):
+        '''
+        Returns: Median of the Balding Nichols distribution.
+        '''
+        return "no simple closed form"
+
+    def mode(self):
+        '''
+        Returns: Mode of the Balding Nichols distribution.
+        '''
+        return (self.F-(1-self.F)*self.p)/(3*(self.F-1))
+
+    def var(self):
+        '''
+        Returns: Variance of the Balding Nichols distribution.
+        '''
+        return self.F*self.p*(1-self.p)
+
+    def skewness(self):
+        '''
+        Returns: Skewness of the Balding Nichols distribution. 
+        '''
+        F = self.f
+        p = self.p
+        return (2*F*(1-2*p))/((1+F)*sqrt(F*(1-p)*p))
+
+    def print_summary(self):
+        '''
+        Returns: Summary statistic regarding the Balding Nichols distribution
         '''
         mean = self.mean()
         median = self.median()

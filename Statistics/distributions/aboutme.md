@@ -65,20 +65,26 @@ in progress
 - Erlang distribution
 - Rayleigh distribution
 - Maxwell-Boltzmann distribution
+- Wigner semicircle distribution
+- beta rectangular distribution
+- Bates distribution
+- continuous bernoulli distribution
+- Balding-Nichols distribution
+
 ----
 in progress
 - Continuous univariate 
     - bounded interval
         - ARGUS
-        - Balding-Nichols
-        - Bates
+        <!-- - Balding-Nichols -->
+        <!-- - Bates
         <!-- - beta -->
-        - beta rectangular
-        - continuous bernoulli
+        <!-- - beta rectangular
+        - continuous bernoulli -->
         <!-- - logit normal -->
         - non-central beta
         <!-- - uniform -->
-        - Wigner semicircle
+        <!-- - Wigner semicircle -->
     - semi-infinite interval
         - Benini
         - Benkatender 
