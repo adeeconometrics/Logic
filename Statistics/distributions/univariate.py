@@ -8,7 +8,7 @@ try:
 except Exception as e:
     print("some modules are missing {}".format(e))
 
-# todo = Base: fill between method, implement name mangling 
+# todo = Base: remove unsupported method from class implementation, implement name mangling 
 
 class Base:
     def __init__(self, data):
@@ -25,6 +25,54 @@ class Base:
         if ylabel is not None:
             plt.ylabel(ylabel)
         plt.plot(x, y, "black", alpha=0.5)
+
+    def rvs(self):
+        '''
+        returns random variate samples default (unsupported)
+        '''
+        return "currently unsupported"
+
+    def mean(self):
+        '''
+        returns mean default (unsupported)
+        '''
+        return "unsupported"
+
+    def median(self):
+        '''
+        returns median default (unsupported)
+        '''
+        return "unsupported"
+
+    def mode(self):
+        '''
+        returns mode default (unsupported)
+        '''
+        return "unsupported"
+
+    def var(self):
+        '''
+        returns variance default (unsupported)
+        '''
+        return "unsupported"
+
+    def skewness(self):
+        '''
+        returns skewness default (unsupported)
+        '''
+        return "unsupported"
+
+    def kurtosis(self):
+        '''
+        returns kurtosis default (unsupported)
+        '''
+        return "unsupported"
+    
+    def entropy(self):
+        '''
+        returns entropy default (unsupported)
+        '''
+        return "unsupported"
 
 
 class Uniform:
@@ -516,39 +564,33 @@ class T_distribution(Base):
     def var(self):
         '''
         Returns: Variance of the T-distribution
-
-        Note: returns none if it is the case that it is undefined.
         '''
         df = self.df
         if df > 2:
             return df / (df - 2)
         if df > 1 and df <= 2:
             return np.inf
-        return None
+        return "undefined"
 
     def skewness(self):
         '''
         Returns: Skewness of the T-distribution
-
-        Note: returns none if it is the case that it is undefined.
         '''
         df = self.df
         if df > 3:
             return 0
-        return None
+        return "undefined"
 
     def kurtosis(self):
         '''
         Returns: Kurtosis of the T-distribution
-
-        Note: returns none if it is undefined. 
         '''
         df = self.df
         if df > 4:
             return 6 / (df - 4)
         if df > 2 and df <= 4:
             return np.inf
-        return None
+        return "undefined"
 
     def entropy(self):
         '''
@@ -909,12 +951,6 @@ class F_distribution(Base):
             return self.df2 / (self.df2 - 2)
         return "undefined"
 
-    def median(self):
-        '''
-        Returns: Median of the F-distribution. Returns None if the evaluation is currently unsupported.
-        '''
-        return "unsupported"
-
     def mode(self):
         '''
         Returns: Mode of the F-distribution. Returns None if undefined.
@@ -946,12 +982,6 @@ class F_distribution(Base):
             return ((2 * df1 + df2 - 2) * np.sqrt(8 * (df2 - 4))) / (
                 (df2 - 6) * np.sqrt(df1 * (df1 + df2 - 2)))
         return "undefined"
-
-    def kurtosis(self):
-        '''
-        Returns: Kurtosis of the F-distribution. Returns None if currently unsupported.
-        '''
-        return "unsupported"
 
     def entropy(self):
         '''
@@ -1109,12 +1139,6 @@ class Chisq_distribution(Base):
         Returns: Median of the Chi-square distribution.
         '''
         return self.k * (1 - 2 / (9 * self.k))**3
-
-    def mode(self):
-        '''
-        Returns: Mode of the Chi-square distribution. Returns None if currently unsupported.
-        '''
-        return "unsupported"
 
     def var(self):
         '''
@@ -2613,11 +2637,6 @@ class Logit_normal(Base):
         '''
         return "no analytical solution"
 
-    def median(self):
-        '''
-        Returns: Median of the Logit Normal distribution.
-        '''
-        return "unsupported"
 
     def mode(self):
         '''
@@ -2632,17 +2651,6 @@ class Logit_normal(Base):
 
         return "no analytical solution"
 
-    def skewness(self):
-        '''
-        Returns: Skewness of the Logit Normal distribution. 
-        '''
-        return "unsupported"
-
-    def kurtosis(self):
-        '''
-        Returns: Kurtosis of the Logit Normal distribution. 
-        '''
-        return "unsupported"
 
     def entropy(self):
         '''
@@ -2825,17 +2833,6 @@ class Weibull(Base):
         k = self.shape
         return _lambda**2*(((ss.gamma(1+2/k)- ss.gamma(1+1/k)))**2)
 
-    def skewness(self):
-        '''
-        Returns: Skewness of the Weibull distribution. Returns None i.e. Unsupported.
-        '''
-        return None
-
-    def kurtosis(self):
-        '''
-        Returns: Kurtosis of the Weibull distribution. Returns None i.e. Unsupported.
-        '''
-        return None
 
     def entropy(self):
         '''
@@ -3729,35 +3726,35 @@ class Trapezoidal(Base):
         '''
         return (self.a+self.b+self.c)/3
 
-    def median(self):
-        '''
-        Returns: Median of the Trapezoidal distribution. Currently Unsupported.
-        '''
-        return "currently unssuported."
+    # def median(self):
+    #     '''
+    #     Returns: Median of the Trapezoidal distribution. Currently Unsupported.
+    #     '''
+    #     return "currently unssuported."
 
-    def mode(self):
-        '''
-        Returns: Mode of the Trapezoidal distribution. Currently Unsupported.
-        '''
-        return "currently unssuported."
+    # def mode(self):
+    #     '''
+    #     Returns: Mode of the Trapezoidal distribution. Currently Unsupported.
+    #     '''
+    #     return "currently unssuported."
 
-    def var(self):
-        '''
-        Returns: Variance of the Trapezoidal distribution. Currently Unsupported. 
-        '''
-        return "currently unssuported."
+    # def var(self):
+    #     '''
+    #     Returns: Variance of the Trapezoidal distribution. Currently Unsupported. 
+    #     '''
+    #     return "currently unssuported."
 
-    def skewness(self):
-        '''
-        Returns: Skewness of the Trapezoidal distribution. Currently Unsupported.
-        '''
-        return "currently unssuported."
+    # def skewness(self):
+    #     '''
+    #     Returns: Skewness of the Trapezoidal distribution. Currently Unsupported.
+    #     '''
+    #     return "currently unssuported."
 
-    def kurtosis(self):
-        '''
-        Returns: Kurtosis of the Trapezoidal distribution. Currently Unsupported.
-        '''
-        return "currently unssuported."
+    # def kurtosis(self):
+    #     '''
+    #     Returns: Kurtosis of the Trapezoidal distribution. Currently Unsupported.
+    #     '''
+    #     return "currently unssuported."
 
     def print_summary(self):
         '''
@@ -4900,8 +4897,8 @@ class Maxweel_Boltzmann(Base):
         - print_summary for printing the summary statistics of the distribution. 
 
     Reference:
-    - Wikipedia contributors. (2021, January 8). Beta distribution. In Wikipedia, The Free Encyclopedia. 
-    Retrieved 07:21, January 8, 2021, from https://en.wikipedia.org/w/index.php?title=Beta_distribution&oldid=999043368
+    - Wikipedia contributors. (2021, January 12). Maxwell–Boltzmann distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 01:02, January 14, 2021, from https://en.wikipedia.org/w/index.php?title=Maxwell%E2%80%93Boltzmann_distribution&oldid=999883013
     '''
     def __init__(self, a, randvar):
         if randvar<0:
@@ -5047,6 +5044,340 @@ class Maxweel_Boltzmann(Base):
     def print_summary(self):
         '''
         Returns: Summary statistic regarding the Maxwell-Boltzmann distribution
+        '''
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = "summary statistic"
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
+class Beta_rectangular(Base):
+    '''
+    This class contains methods concerning Beta-rectangular Distirbution. 
+    Thus it is a bounded distribution that allows for outliers to have a greater chance of occurring than does the beta distribution.
+
+    Args:
+    
+        alpha(float): shape parameter
+        beta (float): shape parameter
+        theta(float | 0<x<1): mixture parameter
+        min(float): lower bound
+        max(float): upper bound
+        randvar(float | alpha<=x<=beta): random variable
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - print_summary for printing the summary statistics of the distribution. 
+
+    Reference:
+    - Wikipedia contributors. (2020, December 7). Beta rectangular distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 01:05, January 14, 2021, from https://en.wikipedia.org/w/index.php?title=Beta_rectangular_distribution&oldid=992814814
+    '''
+    def __init__(self, alpha, beta, theta, min, max, randvar):
+        if alpha<0 or beta<0:
+            raise ValueError('alpha and beta parameter should not be less that 0. Entered values: alpha: {}, beta: {}'.format(alpha, beta))
+        if theta<0 or theta>1:
+            raise ValueError('random variable should only be in between 0 and 1. Entered value: {}'.format(theta))
+        if randvar<min and randvar>max: # should only return warning 
+            raise ValueError('random variable should be between alpha and beta shape parameters. Entered value:{}'.format(randvar))
+        
+        self.alpha = alpha
+        self.beta = beta
+        self.theta = theta
+        self.min = min
+        self.max = max
+        self.randvar = randvar
+
+    def pdf(self,
+            plot=False,
+            threshold=1000,
+            interval = 1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        '''
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability density evaluation for some point or plot of Beta-rectangular distribution.
+        '''
+        def generator(a,b, alpha, beta, theta, x):
+            if x>a or x<b:
+                return (theta*ss.gamma(alpha+beta)/(ss.gamma(alpha)*ss.gamma(beta))*(np.power(x-a, alpha-1)*np.power(b-x, beta-1))/(np.power(b-a, alpha+beta+1)))+(1-theta)/(b-a)
+            return 0
+
+        if plot == True:
+            if interval<0:
+                raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
+            x = np.linspace(0, 1, int(threshold))
+            y = np.array([generator(self.min, self.max, self.alpha, self.beta, self.theta, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.min, self.max, self.alpha, self.beta, self.theta, self.randvar)
+
+    def cdf(self,
+            plot=False,
+            threshold=1000,
+            interval = 1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        '''
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or plot of Beta-rectangular distribution.
+        '''
+        def generator(a,b,alpha, beta, theta, x):
+            if x<=a:
+                return 0
+            elif x>a or x<b:
+                z = (b)/(b-a)
+                return theta*ss.betainc(alpha,beta,z)+((1-theta)*(x-a))/(b-a)
+            else:
+                return 1
+
+        if plot == True:
+            if interval<0:
+                raise ValueError('interval parameter should not be less than 0. Entered Value {}'.format(interval))
+            x = np.linspace(0, interval, int(threshold))
+            y = np.array([generator(self.min, self.max, self.alpha, self.beta, self.theta, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.min, self.max, self.alpha, self.beta, self.theta, self.randvar)
+
+    def p_value(self, x_lower=0, x_upper=None):
+        '''
+        Args:
+
+            x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+            x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+            Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+            Otherwise, the default random variable is x.
+
+        Returns:
+            p-value of the Beta-rectangular distribution evaluated at some random variable.
+        '''
+        
+        if x_upper == None:
+            x_upper = self.randvar
+        if x_lower>x_upper:
+            raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        
+        def cdf_func(a,b,alpha, beta, theta, x):
+            if x<=a:
+                return 0
+            elif x>a or x<b:
+                z = (b)/(b-a)
+                return theta*ss.betainc(alpha,beta,z)+((1-theta)*(x-a))/(b-a)
+            else:
+                return 1
+
+        return cdf_func(self.min, self.max, self.alpha, self.beta, self.theta, x_upper)-cdf_func(self.min, self.max, self.alpha, self.beta, self.theta, x_lower)
+
+    def mean(self):
+        '''
+        Returns: Mean of the Beta-rectangular distribution.
+        '''
+        alpha = self.alpha; beta =self.beta; theta=self.theta
+        a = self.min; b=self.max
+        return a+(b-a)*((theta*alpha)/(alpha+beta)+(1-theta)/2)
+
+    def var(self):
+        '''
+        Returns: Variance of the Beta-rectangular distribution.
+        '''
+        alpha = self.alpha; beta =self.beta; theta=self.theta
+        a = self.min; b=self.max
+        k = alpha+beta
+        return (b-a)**2*((theta*alpha*(alpha+1))/(k*(k+1))+(1-theta)/3-(k+theta*(alpha-beta))**2/(4*k**2))
+
+
+    def print_summary(self):
+        '''
+        Returns: Summary statistic regarding the Beta-rectangular distribution
+        '''
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = "summary statistic"
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
+class Bernoulli(Base):
+    '''
+    This class contains methods concerning Continuous Bernoulli Distirbution. 
+    Args:
+    
+        shape(float): parameter
+        randvar(float | x in [0,1]): random variable
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - print_summary for printing the summary statistics of the distribution. 
+
+    Reference:
+    - Wikipedia contributors. (2021, January 8). Beta distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 07:21, January 8, 2021, from https://en.wikipedia.org/w/index.php?title=Beta_distribution&oldid=999043368
+    '''
+    def __init__(self, shape, randvar):
+        if randvar<0 or randvar>1:
+            raise ValueError('random variable should only be in between 0 and 1. Entered value: {}'.format(randvar))
+        if shape<0 or shape>1:
+            raise ValueError('shape parameter a shoould only be in between 0 and 1. Entered value:{}'.format(shape))
+        
+        self.shape = shape
+        self.randvar = randvar
+
+    def pdf(self,
+            plot=False,
+            threshold=1000,
+            interval = 1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        '''
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability density evaluation for some point or plot of Continuous Bernoulli distribution.
+        '''
+        C = lambda shape: (2*np.arctanh(1-2*shape))/(1-2*shape) if shape !=0.5 else 2
+        def generator(shape, x):
+            return C(shape)*np.power(shape, x)*np.power(1-shape, 1-x)
+            
+        if plot == True:
+            if interval<0:
+                raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
+            x = np.linspace(0, 1, int(threshold))
+            y = np.array([generator(self.shape, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.shape, self.randvar)
+
+    def cdf(self,
+            plot=False,
+            threshold=1000,
+            interval = 1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        '''
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or plot of Continuous Bernoulli distribution.
+        '''
+        generator = lambda a, x: ss.erf(x/(sqrt(2)*a))-sqrt(2/np.pi)*(x**2*np.exp(-x**2/(2*a**2)))/(a)
+        if plot == True:
+            if interval<0:
+                raise ValueError('interval parameter should not be less than 0. Entered Value {}'.format(interval))
+            x = np.linspace(0, interval, int(threshold))
+            y = np.array([generator(self.a, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.a, self.randvar)
+
+    def p_value(self, x_lower=0, x_upper=None):
+        '''
+        Args:
+
+            x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+            x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+            Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+            Otherwise, the default random variable is x.
+
+        Returns:
+            p-value of the Maxwell-Boltzmann distribution evaluated at some random variable.
+        '''
+        if x_upper == None:
+            x_upper = self.randvar
+        if x_lower>x_upper:
+            raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        
+        cdf_func  = lambda a, x: ss.erf(x/(sqrt(2)*a))-sqrt(2/np.pi)*(x**2*np.exp(-x**2/(2*a**2)))/(a)
+        return cdf_func(self.a, x_upper)-cdf_func(self.a, x_lower)
+
+    def mean(self):
+        '''
+        Returns: Mean of the Continuous Bernoulli distribution.
+        '''
+        return 2*self.a*sqrt(2/np.pi)
+
+    def var(self):
+        '''
+        Returns: Variance of the Continuous Bernoulli distribution.
+        '''
+        return (self.a**2*(3*np.pi-8))/np.pi
+
+    def print_summary(self):
+        '''
+        Returns: Summary statistic regarding the Continuous Bernoulli distribution
         '''
         mean = self.mean()
         median = self.median()
