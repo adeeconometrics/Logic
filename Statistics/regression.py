@@ -190,8 +190,6 @@ class OLS(generalMethods):
     pass
 
 
-class General_generalMethods(generalMethods):
-    pass
 
 class correlation:
     '''
@@ -211,12 +209,17 @@ class correlation:
 
     def __init__(self):
         pass
+
     def p_value(self):
         pass
+
     def pearson_correlation(self):
         pass 
+
     def spearman_correlation(self):
         pass 
+
+
 class simpleLinearRegression(generalMethods):
     
     def __init__(self, data_x, data_y):

@@ -26,57 +26,66 @@ class Base:
             plt.ylabel(ylabel)
         plt.plot(x, y, "black", alpha=0.5)
 
-    def rvs(self):
-        '''
+    def logpdf(self):
+        pass
+
+    def logcdf(self):
+        pass
+
+    def p_value(self):
+        return "unsupported"
+
+    def rvs(self): # (adaptive) rejection sampling implementation
+        """"
         returns random variate samples default (unsupported)
-        '''
+        """"
         return "currently unsupported"
 
     def mean(self):
-        '''
+        """"
         returns mean default (unsupported)
-        '''
+        """"
         return "unsupported"
 
     def median(self):
-        '''
+        """"
         returns median default (unsupported)
-        '''
+        """"
         return "unsupported"
 
     def mode(self):
-        '''
+        """"
         returns mode default (unsupported)
-        '''
+        """"
         return "unsupported"
 
     def var(self):
-        '''
+        """"
         returns variance default (unsupported)
-        '''
+        """"
         return "unsupported"
 
     def skewness(self):
-        '''
+        """"
         returns skewness default (unsupported)
-        '''
+        """"
         return "unsupported"
 
     def kurtosis(self):
-        '''
+        """"
         returns kurtosis default (unsupported)
-        '''
+        """"
         return "unsupported"
     
     def entropy(self):
-        '''
+        """"
         returns entropy default (unsupported)
-        '''
+        """"
         return "unsupported"
 
 
 class Uniform:
-    '''
+    """"
     This class contains methods concerning the Continuous Uniform Distribution.
 
     Args: 
@@ -100,13 +109,13 @@ class Uniform:
     Referene:
     - Weisstein, Eric W. "Uniform Distribution." From MathWorld--A Wolfram Web Resource. 
     https://mathworld.wolfram.com/UniformDistribution.html
-    '''
+    """"
     def __init__(self, a, b):
         self.a = a
         self.b = b
 
     def pdf(self, plot=False, xlim=None, ylim=None, xlabel=None, ylabel=None):
-        '''
+        """"
         Args:
 
             plot (bool): returns plot if true. 
@@ -117,7 +126,7 @@ class Uniform:
 
         Returns:
             either plot of the distribution or probability density evaluation at a to b.
-        '''
+        """"
         a = self.a
         b = self.b
         threshold = b - a
@@ -130,7 +139,7 @@ class Uniform:
         return generator(a, b, np.abs(b - a))
 
     def cdf(self, plot=False, xlim=None, ylim=None, xlabel=None, ylabel=None):
-        '''
+        """"
         Args:
 
             plot (bool): returns plot if true. 
@@ -141,7 +150,7 @@ class Uniform:
 
         Returns:
             either plot of the distribution or probability density evaluation at a to b.
-        '''
+        """"
         a = self.a
         b = self.b
         threshold = b - a
@@ -161,56 +170,56 @@ class Uniform:
         return generator(a, b, threshold)  # what does it really say?
 
     def mean(self):
-        '''
+        """"
         Returns: Mean of the Uniform distribution.
-        '''
+        """"
         return 1 / 2 * (self.a + self.b)
 
     def median(self):
-        '''
+        """"
         Returns: Median of the Uniform distribution.
-        '''
+        """"
         return 1 / 2 * (self.a + self.b)
 
     def mode(self):
-        '''
+        """"
         Returns: Mode of the Uniform distribution. 
 
         Note that the mode is any value in (a,b)
-        '''
+        """"
         return (self.a, self.b)
 
     def var(self):
-        '''
+        """"
         Returns: Variance of the Uniform distribution.
-        '''
+        """"
         return (1 / 12) * (self.b - self.a)**2
 
     def skewness(self):
-        '''
+        """"
         Returns: Skewness of the Uniform distribution.
-        '''
+        """"
         return 0
 
     def kurtosis(self):
-        '''
+        """"
         Returns: Kurtosis of the Uniform distribution.
-        '''
+        """"
         return -6 / 5
 
     def entropy(self):
-        '''
+        """"
         Returns: entropy of uniform Distirbution.
         
         Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
         link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
-        '''
+        """"
         return np.log(self.b-self-a)
 
     def print_summary(self):
-        '''
+        """"
         Returns: Summary statistic regarding the Uniform distribution.
-        '''
+        """"
         mean = self.mean()
         median = self.median()
         mode = self.mode()
@@ -223,7 +232,7 @@ class Uniform:
 
 
 class Normal(Base):
-    '''
+    """"
     This class contains methods concerning the Standard Normal Distribution.
 
     Args: 
@@ -251,7 +260,7 @@ class Normal(Base):
     December 22, 2020, from https://en.wikipedia.org/w/index.php?title=Normal_distribution&oldid=995237372
     - Weisstein, Eric W. "Normal Distribution." From MathWorld--A Wolfram Web Resource. https://mathworld.wolfram.com/NormalDistribution.html
 
-    '''
+    """"
     def __init__(self, x, mean=0, std=1):
         self.mean = mean
         self.std = std
@@ -265,7 +274,7 @@ class Normal(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
 
             interval(int): defaults to none. Only necessary for defining plot.
@@ -278,7 +287,7 @@ class Normal(Base):
         
         Returns:
             either plot of the distribution or probability density evaluation at randvar.
-        '''
+        """"
         mean = self.mean
         std = self.std
         generator = lambda x, mean, std: np.power(
@@ -298,7 +307,7 @@ class Normal(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):  
-        '''
+        """"
         Args: 
 
             interval(int): defaults to none. Only necessary for defining plot.
@@ -311,7 +320,7 @@ class Normal(Base):
 
         Returns:
             either plot of the distirbution or cumulative density evaluation at randvar.
-        '''
+        """"
         generator = lambda mu, sig, x: 1/2*(1+ss.erf((x-mu)/(sig*np.sqrt(2))))
         if plot == True:
             x = np.linspace(-interval, interval, threshold)
@@ -320,7 +329,7 @@ class Normal(Base):
         return generator(self.mean, self.std, self.randvar)
 
     def p_val(self, x_lower=-np.inf, x_upper=None):
-        '''
+        """"
         Args:
 
             x_lower(float): defaults to -np.inf. Defines the lower value of the distribution. Optional.
@@ -331,7 +340,7 @@ class Normal(Base):
 
         Returns:
             p-value of the Normal distribution evaluated at some random variable.
-        '''
+        """"
         cdf_func = lambda mu, sig, x: 1/2*(1+ss.erf((x-mu)/(sig*np.sqrt(2))))
         if x_upper != None:
             if x_lower>x_upper:
@@ -344,54 +353,54 @@ class Normal(Base):
         pass
 
     def mean(self):
-        '''
+        """"
         Returns: Mean of the Normal distribution
-        '''
+        """"
         return self.mean
 
     def median(self):
-        '''
+        """"
         Returns: Median of the Normal distribution
-        '''
+        """"
         return self.mean
 
     def mode(self):
-        '''
+        """"
         Returns: Mode of the Normal distribution
-        '''
+        """"
         return self.mean
 
     def var(self):
-        '''
+        """"
         Returns: Variance of the Normal distribution
-        '''
+        """"
         return (self.std)**2
 
     def skewness(self):
-        '''
+        """"
         Returns: Skewness of the Normal distribution
-        '''
+        """"
         return 0
 
     def kurtosis(self):
-        '''
+        """"
         Returns: Kurtosis of the Normal distribution
-        '''
+        """"
         return 0
 
     def entropy(self):
-        '''
+        """"
         Returns: differential entropy of the Normal distribution
 
         Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
         link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
-        '''
+        """"
         return np.log(self.std*sqrt(2*np.pi*np.e))
 
     def print_summary(self):
-        '''
+        """"
         Returns: Summary statistic regarding the Normal distribution
-        '''
+        """"
         mean = self.mean()
         median = self.median()
         mode = self.mode()
@@ -404,7 +413,7 @@ class Normal(Base):
 
 
 class T_distribution(Base):
-    '''
+    """"
     This class contains implementation of the Student's Distribution for calculating the
     probablity density function and cumulative distirbution function. Additionally, 
     a t-table generator is also provided by p-value method. Note that the implementation
@@ -433,7 +442,7 @@ class T_distribution(Base):
     - Kruschke JK (2015). Doing Bayesian Data Analysis (2nd ed.). Academic Press. ISBN 9780124058880. OCLC 959632184.
     - Weisstein, Eric W. "Student's t-Distribution." From MathWorld--A Wolfram Web Resource. https://mathworld.wolfram.com/Studentst-Distribution.html
 
-    '''
+    """"
     def __init__(self, df, randvar):
         if isinstance(df, int) == False or df<0:
             raise Exception('degrees of freedom(df) should be a whole number. Entered value for df: {}'.format(df))
@@ -448,7 +457,7 @@ class T_distribution(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
 
             interval(int): defaults to none. Only necessary for defining plot.
@@ -462,7 +471,7 @@ class T_distribution(Base):
         
         Returns: 
             either probability density evaluation for randvar or plot of the T distribution.
-        '''
+        """"
         df = self.df
         randvar = self.randvar
         generator = lambda x, df: (1 / (np.sqrt(df) * ss.beta(
@@ -482,7 +491,7 @@ class T_distribution(Base):
             ylim=None,
             xlabel=None,
             ylabel=None): # cdf definition is not used due to unsupported hypergeometric function 2f1
-        '''
+        """"
         Args:
 
             interval(int): defaults to none. Only necessary for defining plot.
@@ -496,7 +505,7 @@ class T_distribution(Base):
         
         Returns: 
             either cumulative distirbution evaluation for some point or plot of the T distribution.
-        '''
+        """"
         df = self.df
         randvar = self.randvar
 
@@ -513,7 +522,7 @@ class T_distribution(Base):
         return generator(randvar, df)
 
     def p_value(self, x_lower=-np.inf, x_upper=None):
-        '''
+        """"
         Args:
 
             x_lower(float): defaults to -np.inf. Defines the lower value of the distribution. Optional.
@@ -524,7 +533,7 @@ class T_distribution(Base):
             
         Returns:
             p-value of the T distribution evaluated at some random variable.
-        ''' # normallyt this would be implemented as cdf function from the generalized hypergeometric function
+        """" # normallyt this would be implemented as cdf function from the generalized hypergeometric function
         df = self.df
         if x_upper == None:
             x_upper = self.randvar
@@ -538,33 +547,33 @@ class T_distribution(Base):
         pass
 
     def mean(self):
-        '''
+        """"
         Returns:
             Mean of the T-distribution.
         
         	0 for df > 1, otherwise undefined
-        '''
+        """"
         df = self.df
         if df > 1:
             return 0
         return "undefined"
 
     def median(self):
-        '''
+        """"
         Returns: Median of the T-distribution
-        '''
+        """"
         return 0
 
     def mode(self):
-        '''
+        """"
         Returns: Mode of the T-distribution
-        '''
+        """"
         return 0
 
     def var(self):
-        '''
+        """"
         Returns: Variance of the T-distribution
-        '''
+        """"
         df = self.df
         if df > 2:
             return df / (df - 2)
@@ -573,18 +582,18 @@ class T_distribution(Base):
         return "undefined"
 
     def skewness(self):
-        '''
+        """"
         Returns: Skewness of the T-distribution
-        '''
+        """"
         df = self.df
         if df > 3:
             return 0
         return "undefined"
 
     def kurtosis(self):
-        '''
+        """"
         Returns: Kurtosis of the T-distribution
-        '''
+        """"
         df = self.df
         if df > 4:
             return 6 / (df - 4)
@@ -593,19 +602,19 @@ class T_distribution(Base):
         return "undefined"
 
     def entropy(self):
-        '''
+        """"
         Returns: differential entropy of T-distribution
 
         Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
         link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
-        '''
+        """"
         df = self.df
         return ((df+1)/2)*(ss.digamma((df+1)/2)-ss.digamma(df/2))+np.log(sqrt(df)*ss.beta(df/2, 1/2))
 
     def print_summary(self):
-        '''
+        """"
         Returns: Summary statistic regarding the T-distribution
-        '''
+        """"
         mean = self.mean()
         median = self.median()
         mode = self.mode()
@@ -618,7 +627,7 @@ class T_distribution(Base):
 
 
 class Cauchy(Base):
-    '''
+    """"
     This class contains methods concerning the Cauchy Distribution.
     
     Args:
@@ -645,7 +654,7 @@ class Cauchy(Base):
     - Wikipedia contributors. (2020, November 29). Cauchy distribution. In Wikipedia, The Free Encyclopedia. 
     Retrieved 12:01, December 22, 2020, from https://en.wikipedia.org/w/index.php?title=Cauchy_distribution&oldid=991234690
     - Weisstein, Eric W. "Cauchy Distribution." From MathWorld--A Wolfram Web Resource. https://mathworld.wolfram.com/CauchyDistribution.html
-    '''
+    """"
     def __init__(self, x, location, scale):
         if scale<0:
             raise Exception('scale should be greater than 0. Entered value for scale:{}'.format(scale))
@@ -661,7 +670,7 @@ class Cauchy(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
 
             interval(int): defaults to none. Only necessary for defining plot.
@@ -675,7 +684,7 @@ class Cauchy(Base):
         
         Returns: 
             either probability density evaluation for some point or plot of Cauchy distribution.
-        '''
+        """"
         x = self.x
         location = self.location
         scale = self.scale
@@ -696,7 +705,7 @@ class Cauchy(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
 
             interval(int): defaults to none. Only necessary for defining plot.
@@ -710,7 +719,7 @@ class Cauchy(Base):
         
         Returns: 
             either cumulative distirbution evaluation for some point or plot of Cauchy distribution.
-        '''
+        """"
         x = self.x
         location = self.location
         scale = self.scale
@@ -724,7 +733,7 @@ class Cauchy(Base):
         return generator(x, location, scale)
 
     def p_value(self, x_lower=-np.inf, x_upper=None):
-        '''
+        """"
         Args:
 
             x_lower(float): defaults to -np.inf. Defines the lower value of the distribution. Optional.
@@ -735,7 +744,7 @@ class Cauchy(Base):
 
         Returns:
             p-value of the Cauchy distribution evaluated at some random variable.
-        '''
+        """"
         cdf_func =lambda x, location, scale: (1 / np.pi) * np.arctan((x - location) / scale) + 1 / 2
         if x_upper != None:
             if x_lower>x_upper:
@@ -747,54 +756,54 @@ class Cauchy(Base):
         pass
 
     def mean(self):
-        '''
+        """"
         Returns: Mean of the Cauchy distribution. Mean is Undefined.
-        '''
+        """"
         return "undefined"
 
     def median(self):
-        '''
+        """"
         Returns: Median of the Cauchy distribution.
-        '''
+        """"
         return self.location
 
     def mode(self):
-        '''
+        """"
         Returns: Mode of the Cauchy distribution
-        '''
+        """"
         return self.location
 
     def var(self):
-        '''
+        """"
         Returns: Variance of the Cauchy distribution. Undefined.
-        '''
+        """"
         return "undefined"
 
     def skewness(self):
-        '''
+        """"
         Returns: Skewness of the Cauchy distribution. Undefined.
-        '''
+        """"
         return "undefined"
 
     def kurtosis(self):
-        '''
+        """"
         Returns: Kurtosis of the Cauchy distribution
-        '''
+        """"
         return np.log(4 * np.pi * self.scale)
 
     def entropy(self):
-        '''
+        """"
         Returns: differential entropy of the Cauchy distribution
 
         Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
         link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
-        '''
+        """"
         return np.log10(4*np.pi*self.scale)
 
     def print_summary(self):
-        '''
+        """"
         Returns: Summary statistic regarding the Cauchy distribution
-        '''
+        """"
         mean = self.mean()
         median = self.median()
         mode = self.mode()
@@ -807,7 +816,7 @@ class Cauchy(Base):
 
 
 class F_distribution(Base):
-    '''
+    """"
     This class contains methods concerning the F-distribution. 
 
     Args:
@@ -836,7 +845,7 @@ class F_distribution(Base):
 
     - Weisstein, Eric W. "F-Distribution." From MathWorld--A Wolfram Web Resource. https://mathworld.wolfram.com/F-Distribution.html
     - NIST SemaTech (n.d.). F-Distribution. Retrived from https://www.itl.nist.gov/div898/handbook/eda/section3/eda3665.htm
-    '''
+    """"
     def __init__(self, x, df1, df2):
         if isinstance(df1, int) == False or df1<0:
             raise Exception('degrees of freedom(df) should be a whole number. Entered value for df1: {}'.format(df1))
@@ -857,7 +866,7 @@ class F_distribution(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
 
             interval(int): defaults to none. Only necessary for defining plot.
@@ -871,7 +880,7 @@ class F_distribution(Base):
         
         Returns: 
             either probability density evaluation for some point or plot of F-distribution.
-        '''
+        """"
         df1 = self.df1
         df2 = self.df2
         randvar = self.x
@@ -894,7 +903,7 @@ class F_distribution(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
 
             interval(int): defaults to none. Only necessary for defining plot.
@@ -908,7 +917,7 @@ class F_distribution(Base):
         
         Returns: 
             either cumulative distribution evaluation for some point or plot of F-distribution.
-        '''
+        """"
         k = self.df2/(self.df2+self.df1*self.x)
         generator = lambda x, df1, df2: 1-ss.betainc(df1/2, df2/2, x)
 
@@ -919,7 +928,7 @@ class F_distribution(Base):
         return generator(k,self.df1, self.df2)
 
     def p_value(self, x_lower=0, x_upper=None):
-        '''
+        """"
         Args:
 
             x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
@@ -930,7 +939,7 @@ class F_distribution(Base):
 
         Returns:
             p-value of the F-distribution evaluated at some random variable.
-        '''
+        """"
         if x_lower < 0:
             x_lower = 0
         if x_upper is None:
@@ -944,17 +953,17 @@ class F_distribution(Base):
         pass
 
     def mean(self):
-        '''
+        """"
         Returns: Mean of the F-distribution.
-        '''
+        """"
         if self.df3 > 2:
             return self.df2 / (self.df2 - 2)
         return "undefined"
 
     def mode(self):
-        '''
+        """"
         Returns: Mode of the F-distribution. Returns None if undefined.
-        '''
+        """"
         df1 = self.df1
         df2 = self.df2
         if df1 > 2:
@@ -962,9 +971,9 @@ class F_distribution(Base):
         return "undefined"
 
     def var(self):
-        '''
+        """"
         Returns: Variance of the F-distribution. Returns None if undefined.
-        '''
+        """"
         df1 = self.df1
         df2 = self.df2
         if df2 > 4:
@@ -973,9 +982,9 @@ class F_distribution(Base):
         return "undefined"
 
     def skewness(self):
-        '''
+        """"
         Returns: Skewness of the F-distribution. Returns None if undefined.
-        '''
+        """"
         df1 = self.df1
         df2 = self.df2
         if df2 > 6:
@@ -984,18 +993,18 @@ class F_distribution(Base):
         return "undefined"
 
     def entropy(self):
-        '''
+        """"
         Returns: differential entropy of F-distribution. 
 
         Reference: Lazo, A.V.; Rathie, P. (1978). "On the entropy of continuous probability distributions". IEEE Transactions on Information Theory
-        '''
+        """"
         df1 = self.df1; df2 = self.df2
         return np.log(ss.gamma(df1/2))+np.log(ss.gamma(df2/2))-np.log(ss.gamma((df1+df2)/2))+(1-df1/2)*ss.digamma(1+df1/2)-(1-df2/2)*ss.digamma(1+df2/2)+(df1+df2)/2*ss.digamma((df1+df2)/2)+np.log(df1/df2)
 
     def print_summary(self):
-        '''
+        """"
         Returns:  summary statistic regarding the F-distribution
-        '''
+        """"
         mean = self.mean()
         median = self.median()
         mode = self.mode()
@@ -1008,7 +1017,7 @@ class F_distribution(Base):
 
 
 class Chisq_distribution(Base):
-    '''
+    """"
     This class contains methods concerning the Chi-square distribution.
 
     Args:
@@ -1035,7 +1044,7 @@ class Chisq_distribution(Base):
     https://mathworld.wolfram.com/Chi-SquaredDistribution.html
     - Wikipedia contributors. (2020, December 13). Chi-square distribution. In Wikipedia, The Free Encyclopedia. 
     Retrieved 04:37, December 23, 2020, from https://en.wikipedia.org/w/index.php?title=Chi-square_distribution&oldid=994056539
-    '''
+    """"
     def __init__(self, df, x):
         if isinstance(df, int) == False:
             raise Exception('degrees of freedom(df) should be a whole number. Entered value for df: {}'.format(df))
@@ -1050,7 +1059,7 @@ class Chisq_distribution(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -1065,7 +1074,7 @@ class Chisq_distribution(Base):
         Returns: 
             either probability density evaluation for some point or plot of Chi square-distribution.
     
-        '''
+        """"
         df = self.df
         randvar = self.x
         generator = lambda x, df: (1 / (np.power(2, (df / 2) - 1) * ss.gamma(
@@ -1085,7 +1094,7 @@ class Chisq_distribution(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
 
             interval(int): defaults to none. Only necessary for defining plot.
@@ -1099,7 +1108,7 @@ class Chisq_distribution(Base):
         
         Returns: 
             either cumulative distribution evaluation for some point or plot of Chi square-distribution.
-        '''
+        """"
         generator = lambda x, df:ss.gammainc(df / 2, x / 2)
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
@@ -1108,7 +1117,7 @@ class Chisq_distribution(Base):
         return generator(self.randvar, self.df)
 
     def p_val(self, x_lower=-np.inf, x_upper=None):
-        '''
+        """"
         Args:
 
             x_lower(float): defaults to -np.inf. Defines the lower value of the distribution. Optional.
@@ -1120,7 +1129,7 @@ class Chisq_distribution(Base):
 
         Returns:
             p-value of the Chi square distribution evaluated at some random variable.
-        '''
+        """"
         cdf_func = lambda x, df:ss.gammainc(df / 2, x / 2)
         if x_upper != None:
             if x_lower>x_upper:
@@ -1129,49 +1138,49 @@ class Chisq_distribution(Base):
         return cdf_func(self.randvar, self.df)
 
     def mean(self):
-        '''
+        """"
         Returns: Mean of the Chi-square distribution.
-        '''
+        """"
         return self.df
 
     def median(self):
-        '''
+        """"
         Returns: Median of the Chi-square distribution.
-        '''
+        """"
         return self.k * (1 - 2 / (9 * self.k))**3
 
     def var(self):
-        '''
+        """"
         Returns: Variance of the Chi-square distribution.
-        '''
+        """"
         return 2 * self.df
 
     def skewness(self):
-        '''
+        """"
         Returns: Skewness of the Chi-square distribution.
-        '''
+        """"
         return np.sqrt(8 / self.df)
 
     def kurtosis(self):
-        '''
+        """"
         Returns: Kurtosis of the Chi-square distribution.
-        '''
+        """"
         return 12 / self.df
 
     def entropy(self):
-        '''
+        """"
         Returns: differential entropy of Chi-square distribution.
 
         Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
         link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
-        '''
+        """"
         df = self.df
         return df/2+np.log(2*ss.gamma(df/2))+(1-df/2)*ss.digamma(df/2)
 
     def print_summary(self):
-        '''
+        """"
         Returns: Summary statistic regarding the Chi-square distribution
-        '''
+        """"
         mean = self.mean()
         median = self.median()
         mode = self.mode()
@@ -1184,7 +1193,7 @@ class Chisq_distribution(Base):
 
 
 class Chi_distribution(Base):
-    '''
+    """"
     This class contains methods concerning the Chi distribution.
 
     Args:
@@ -1211,7 +1220,7 @@ class Chi_distribution(Base):
     https://mathworld.wolfram.com/ChiDistribution.html
     - Wikipedia contributors. (2020, October 16). Chi distribution. In Wikipedia, The Free Encyclopedia. 
     Retrieved 10:35, January 2, 2021, from https://en.wikipedia.org/w/index.php?title=Chi_distribution&oldid=983750392
-    '''
+    """"
     def __init__(self, df, x):
         if isinstance(df, int) == False:
             raise Exception('degrees of freedom(df) should be a whole number. Entered value for df: {}'.format(df))
@@ -1226,7 +1235,7 @@ class Chi_distribution(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -1241,7 +1250,7 @@ class Chi_distribution(Base):
         Returns: 
             either probability density evaluation for some point or plot of Chi-distribution.
     
-        '''
+        """"
         df = self.df
         randvar = self.x
         generator = lambda x, df: (1 / (np.power(2, (df / 2) - 1) * ss.gamma(
@@ -1261,7 +1270,7 @@ class Chi_distribution(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
 
             interval(int): defaults to none. Only necessary for defining plot.
@@ -1275,7 +1284,7 @@ class Chi_distribution(Base):
         
         Returns: 
             either cumulative distribution evaluation for some point or plot of Chi-distribution.
-        '''
+        """"
         generator = lambda x, df:ss.gammainc(df/2, x**2/2)
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
@@ -1284,7 +1293,7 @@ class Chi_distribution(Base):
         return generator(self.randvar, self.df)
 
     def p_val(self, x_lower=-np.inf, x_upper=None):
-        '''
+        """"
         Args:
 
             x_lower(float): defaults to -np.inf. Defines the lower value of the distribution. Optional.
@@ -1296,7 +1305,7 @@ class Chi_distribution(Base):
 
         Returns:
             p-value of the Chi distribution evaluated at some random variable.
-        '''
+        """"
         cdf_func = lambda x, df:ss.gammainc(df/2, x**2/2)
         if x_upper != None:
             if x_lower>x_upper:
@@ -1305,61 +1314,61 @@ class Chi_distribution(Base):
         return cdf_func(self.randvar, self.df)
 
     def mean(self):
-        '''
+        """"
         Returns: Mean of the Chi distribution.
-        '''
+        """"
         return np.sqrt(2)*ss.gamma((self.df+1)/2)/ss.gamma(self.df/2)
 
     def median(self):
-        '''
+        """"
         Returns: Median of the Chi distribution.
-        '''
+        """"
         return np.power(self.df*(1-(2/(1*self.df))), 3/2)
 
     def mode(self):
-        '''
+        """"
         Returns: Mode of the Chi distribution.
-        '''
+        """"
         if self.df>=1:
             return np.sqrt(self.df-1)
         return "undefined"
 
     def var(self):
-        '''
+        """"
         Returns: Variance of the Chi distribution.
-        '''
+        """"
         return self.df-self.mean()**2
 
     def skewness(self):
-        '''
+        """"
         Returns: Skewness of the Chi distribution.
-        '''
+        """"
         std = np.sqrt(self.var())
         return (self.mean()-2*self.mean()*std**2)/std**3
 
     def kurtosis(self):
-        '''
+        """"
         Returns: Kurtosis of the Chi distribution.
-        '''
+        """"
         sk = self.skewness()
         var = self.var()
         mean = self.mean()
         return 2*(1-mean*np.sqrt(var)*sk-var)/var
 
     def entropy(self):
-        '''
+        """"
         Returns: differential entropy of Chi distribution.
 
         Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
         link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
-        '''
+        """"
         df = self.df
         return np.log(ss.gamma(df/2)/sqrt(2))-(df-1)/2*ss.digamma(df/2)+df/2 
 
     def print_summary(self):
-        '''
+        """"
         Returns: Summary statistic regarding the Chi distribution
-        '''
+        """"
         mean = self.mean()
         median = self.median()
         mode = self.mode()
@@ -1372,7 +1381,7 @@ class Chi_distribution(Base):
 
 # check plotting function
 class Explonential_distribution(Base):
-    '''
+    """"
     This class contans methods for evaluating Exponential Distirbution. 
 
     Args:
@@ -1399,7 +1408,7 @@ class Explonential_distribution(Base):
     https://mathworld.wolfram.com/ExponentialDistribution.html
     - Wikipedia contributors. (2020, December 17). Exponential distribution. In Wikipedia, The Free Encyclopedia. 
     Retrieved 04:38, December 23, 2020, from https://en.wikipedia.org/w/index.php?title=Exponential_distribution&oldid=994779060
-    '''
+    """"
     def __init__(self, _lambda, x):
         if _lambda<0:
             raise Exception('lambda parameter should be greater than 0. Entered value for _lambda:{}'.format(_lambda))
@@ -1416,7 +1425,7 @@ class Explonential_distribution(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -1430,7 +1439,7 @@ class Explonential_distribution(Base):
         
         Returns: 
             either probability density evaluation for some point or plot of exponential-distribution.
-        '''
+        """"
         _lambda = self._lambda
         x = self.x
 
@@ -1453,7 +1462,7 @@ class Explonential_distribution(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -1467,7 +1476,7 @@ class Explonential_distribution(Base):
         
         Returns: 
             either cumulative distribution evaluation for some point or plot of  exponential distribution.
-        '''
+        """"
         _lambda = self._lambda
         x = self.x
 
@@ -1483,7 +1492,7 @@ class Explonential_distribution(Base):
         return generator(x, _lambda)
 
     def p_value(self, x_lower=0, x_upper=None):
-        '''
+        """"
         Args:
 
             x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
@@ -1494,7 +1503,7 @@ class Explonential_distribution(Base):
 
         Returns:
             p-value of the Exponential distribution evaluated at some random variable.
-        '''
+        """"
         _lambda = self._lambda
         x = self.x
         if x_lower < 0:
@@ -1509,54 +1518,54 @@ class Explonential_distribution(Base):
         return cdf_func(x_upper, _lambda) - cdf_func(x_lower, _lambda)
 
     def mean(self):
-        '''
+        """"
         Returns: Mean of the Exponential distribution
-        '''
+        """"
         return 1 / self._lambda
 
     def median(self):
-        '''
+        """"
         Returns: Median of the Exponential distribution
-        '''
+        """"
         return np.log(2) / self._lambda
 
     def mode(self):
-        '''
+        """"
         Returns: Mode of the Exponential distribution
-        '''
+        """"
         return 0
 
     def var(self):
-        '''
+        """"
         Returns: Variance of the Exponential distribution
-        '''
+        """"
         return 1 / (self._lambda**2)
 
     def skewness(self):
-        '''
+        """"
         Returns: Skewness of the Exponential distribution
-        '''
+        """"
         return 2
 
     def kurtosis(self):
-        '''
+        """"
         Returns: Kurtosis of the Exponential distribution
-        '''
+        """"
         return 6
 
     def entorpy(self):
-        '''
+        """"
         Returns: differential entropy of the Exponential distribution
 
         Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
         link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
-        '''
+        """"
         return 1-np.log(self._lambda)
 
     def print_summary(self):
-        '''
+        """"
         Returns: summary statistic regarding the Exponential distribution
-        '''
+        """"
         mean = self.mean()
         median = self.median()
         mode = self.mode()
@@ -1569,7 +1578,7 @@ class Explonential_distribution(Base):
 
 # check. add p_value method.
 class Gamma_distribution(Base):
-    '''
+    """"
     This class contains methods concerning a variant of Gamma distribution. 
 
     Args:
@@ -1594,7 +1603,7 @@ class Gamma_distribution(Base):
     References:
     - Matlab(2020). Gamma Distribution. 
     Retrieved from: https://www.mathworks.com/help/stats/gamma-distribution.html?searchHighlight=gamma%20distribution&s_tid=srchtitle
-    '''
+    """"
     def __init__(self, a, b, x):
         if a<0:
             raise Exception('shape should be greater than 0. Entered value for a:{}'.format(a))
@@ -1614,7 +1623,7 @@ class Gamma_distribution(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -1628,7 +1637,7 @@ class Gamma_distribution(Base):
         
         Returns: 
             either probability density evaluation for some point or plot of Gamma-distribution.
-        '''
+        """"
         generator = lambda a, b, x: (1 / (b**a * ss.gamma(a))) * np.power(
             x, a - 1) * np.exp(-x / b)
         if plot == True:
@@ -1645,7 +1654,7 @@ class Gamma_distribution(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -1659,7 +1668,7 @@ class Gamma_distribution(Base):
         
         Returns: 
             either cumulative distribution evaluation for some point or plot of Gamma-distribution.
-        '''
+        """"
         # there is no apparent explanation for reversing gammainc's parameter, but it works quite perfectly in my prototype
         generator = lambda a, b, x: 1 - ss.gammainc(a, x / b)  
         
@@ -1670,7 +1679,7 @@ class Gamma_distribution(Base):
         return generator(self.a, self.b, self.x)    
 
     def p_value(self, x_lower=0, x_upper=None):
-        '''
+        """"
         Args:
 
             x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
@@ -1681,7 +1690,7 @@ class Gamma_distribution(Base):
 
         Returns:
             p-value of the Gamma distribution evaluated at some random variable.
-        '''
+        """"
         if x_lower < 0:
             raise Exception('x_lower cannot be lower than 0. Entered value: {}'.format(x_lower))
         if x_upper is None:
@@ -1691,55 +1700,55 @@ class Gamma_distribution(Base):
         return cdf_func(self.a, self.b, x_upper, self._lambda) - cdf_func(self.a, self.b, x_lower, self._lambda)
 
     def mean(self):
-        '''
+        """"
         Returns: Mean of the Gamma distribution
-        '''
+        """"
         return self.a * self.b
 
     def median(self):
-        '''
+        """"
         Returns: Median of the Gamma distribution. 
-        '''
+        """"
         return "No simple closed form."
 
     def mode(self):
-        '''
+        """"
         Returns: Mode of the Gamma distribution
-        '''
+        """"
         return (self.a - 1) * self.b
 
     def var(self):
-        '''
+        """"
         Returns: Variance of the Gamma distribution
-        '''
+        """"
         return self.a * self.b**2
 
     def skewness(self):
-        '''
+        """"
         Returns: Skewness of the Gamma distribution
-        '''
+        """"
         return 2 / np.sqrt(self.a)
 
     def kurtosis(self):
-        '''
+        """"
         Returns: Kurtosis of the Gamma distribution
-        '''
+        """"
         return 6 / self.a
 
     def entropy(self):
-        '''
+        """"
         Returns: differential entropy of the Gamma distribution
 
         Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
         link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
-        '''
+        """"
         k = self.a; theta = self.b
         return k +np.log(theta)+np.log(ss.gamma(k))-(1-k)*ss.digamma(k)
 
     def print_summary(self):
-        '''
+        """"
         Returns: summary statistic regarding the Gamma distribution
-        '''
+        """"
         mean = self.mean()
         median = self.median()
         mode = self.mode()
@@ -1752,7 +1761,7 @@ class Gamma_distribution(Base):
 
 
 class Pareto(Base):
-    '''
+    """"
     This class contains methods concerning the Pareto Distribution Type 1. 
 
     Args:
@@ -1779,7 +1788,7 @@ class Pareto(Base):
     - Barry C. Arnold (1983). Pareto Distributions. International Co-operative Publishing House. ISBN 978-0-89974-012-6.
     - Wikipedia contributors. (2020, December 1). Pareto distribution. In Wikipedia, The Free Encyclopedia. 
     Retrieved 05:00, December 23, 2020, from https://en.wikipedia.org/w/index.php?title=Pareto_distribution&oldid=991727349
-    '''
+    """"
     def __init__(self, shape, scale, x):
         if scale<0:
             raise Exception('scale should be greater than 0. Entered value for scale:{}'.format(scale))
@@ -1800,7 +1809,7 @@ class Pareto(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -1814,7 +1823,7 @@ class Pareto(Base):
         
         Returns: 
             either probability density evaluation for some point or plot of Pareto distribution.
-        '''
+        """"
         x_m = self.scale
         alpha = self.shape
 
@@ -1837,7 +1846,7 @@ class Pareto(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -1851,7 +1860,7 @@ class Pareto(Base):
         
         Returns: 
             either cumulative distribution evaluation for some point or plot of Pareto distribution.
-        '''
+        """"
         x_m = self.scale
         alpha = self.shape
 
@@ -1867,7 +1876,7 @@ class Pareto(Base):
         return generator(self.x, x_m, alpha)
 
     def p_value(self, x_lower=0, x_upper=None):
-        '''
+        """"
         Args:
 
             x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
@@ -1878,7 +1887,7 @@ class Pareto(Base):
 
         Returns:
             p-value of the Pareto distribution evaluated at some random variable.
-        '''
+        """"
         if x_lower < 0:
             x_lower = 0
         if x_upper is None:
@@ -1891,9 +1900,9 @@ class Pareto(Base):
         return cdf_func(x_upper, self.scale, self.alpha)+cdf_func(x_lower, self.scale, self.alpha)
 
     def mean(self):
-        '''
+        """"
         Returns: Mean of the Pareto distribution.
-        '''
+        """"
         a = self.shape
         x_m = self.scale
 
@@ -1902,23 +1911,23 @@ class Pareto(Base):
         return (a * x_m) / (a - 1)
 
     def median(self):
-        '''
+        """"
         Returns: Median of the Pareto distribution.
-        '''
+        """"
         a = self.shape
         x_m = self.scale
         return x_m * np.power(2, 1 / a)
 
     def mode(self):
-        '''
+        """"
         Returns: Mode of the Pareto distribution.
-        '''
+        """"
         return self.scale
 
     def var(self):
-        '''
+        """"
         Returns: Variance of the Pareto distribution.
-        '''
+        """"
         a = self.shape
         x_m = self.scale
         if a <= 2:
@@ -1926,9 +1935,9 @@ class Pareto(Base):
         return ((x_m**2) * a) / (((a - 1)**2) * (a - 2))
 
     def skewness(self):
-        '''
+        """"
         Returns: Skewness of the Pareto distribution. 
-        '''
+        """"
         a = self.shape
         x_m = self.scale
         if a > 3:
@@ -1937,9 +1946,9 @@ class Pareto(Base):
         return "undefined"
 
     def kurtosis(self):
-        '''
+        """"
         Returns: Kurtosis of the Pareto distribution. 
-        '''
+        """"
         a = self.shape
         x_m = self.scale
         if a > 4:
@@ -1947,20 +1956,20 @@ class Pareto(Base):
         return "undefined"
 
     def entropy(self):
-        '''
+        """"
         Returns: differential entropy of the Pareto distribution.
 
         Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
         link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
-        '''
+        """"
         a = self.shape
         x_m = self.scale
         return np.log(x_m/a)+1+(1/a)
 
     def print_summary(self):
-        '''
+        """"
         Returns: summary statistic regarding the Pareto distribution
-        '''
+        """"
         mean = self.mean()
         median = self.median()
         mode = self.mode()
@@ -1974,7 +1983,7 @@ class Pareto(Base):
 
 # resolve p_value
 class Log_normal(Base):
-    '''
+    """"
     This class contains methods concerning the Log Normal Distribution. 
 
     Args:
@@ -2002,7 +2011,7 @@ class Log_normal(Base):
     https://mathworld.wolfram.com/LogNormalDistribution.html
     - Wikipedia contributors. (2020, December 18). Log-normal distribution. In Wikipedia, The Free Encyclopedia. 
     Retrieved 06:49, December 23, 2020, from https://en.wikipedia.org/w/index.php?title=Log-normal_distribution&oldid=994919804
-    '''
+    """"
     def __init__(self, randvar, mean, std):
         if randvar<0:
             raise Exception('random variable should be greater than 0. Entered value for randvar:{}'.format(randvar))
@@ -2020,7 +2029,7 @@ class Log_normal(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -2034,7 +2043,7 @@ class Log_normal(Base):
         
         Returns: 
             either probability density evaluation for some point or plot of Log Normal-distribution.
-        '''
+        """"
         generator = lambda mean, std, x: (1 / (x * std * np.sqrt(
             2 * np.pi))) * np.exp(-(np.log(x - mean)**2) / (2 * std**2))
         if plot == True:
@@ -2051,7 +2060,7 @@ class Log_normal(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -2065,7 +2074,7 @@ class Log_normal(Base):
         
         Returns: 
             either cumulative distribution evaluation for some point or plot of Log Normal-distribution.
-        '''
+        """"
         generator = lambda mean, std, x:0.5+ 0.5*ss.erfc(-(np.log(x - mean) /
                                                            (std * np.sqrt(2))))
         if plot == True:
@@ -2075,7 +2084,7 @@ class Log_normal(Base):
         return generator(self.mean, self.std, self.randvar)
 
     def p_value(self, x_lower=0, x_upper=None):
-        '''
+        """"
         Args:
 
             x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
@@ -2086,7 +2095,7 @@ class Log_normal(Base):
 
         Returns:
             p-value of the Pareto distribution evaluated at some random variable.
-        '''
+        """"
         cdf_func = lambda mean, std, x:0.5+ 0.5*ss.erfc(-(np.log(x - mean) /
                                                            (std * np.sqrt(2))))
         if x_lower <0:
@@ -2097,60 +2106,60 @@ class Log_normal(Base):
         return cdf_func(self.mean, self.std, x_upper)-cdf_func(self.mean, self.std, x_lower)
 
     def mean(self):
-        '''
+        """"
         Returns: Mean of the log normal distribution.
-        '''
+        """"
         return np.exp(self.mean + (self.std**2 / 2))
 
     def median(self):
-        '''
+        """"
         Returns: Median of the log normal distribution.
-        '''
+        """"
         return np.exp(self.mean)
 
     def mode(self):
-        '''
+        """"
         Returns: Mode of the log normal distribution.
-        '''
+        """"
         return np.exp(self.mean - self.std**2)
 
     def var(self):
-        '''
+        """"
         Returns: Variance of the log normal distribution.
-        '''
+        """"
         std = self.std
         mean = self.mean
         return (np.exp(std**2) - 1) * np.exp(2 * mean + std**2)
 
     def skewness(self):
-        '''
+        """"
         Returns: Skewness of the log normal distribution.
-        '''
+        """"
         std = self.std
         mean = self.mean
         return (np.exp(std**2) + 2) * np.sqrt(np.exp(std**2) - 1)
 
     def kurtosis(self):
-        '''
+        """"
         Returns: Kurtosis of the log normal distribution.
-        '''
+        """"
         std = self.std
         return np.exp(
             4 * std**2) + 2 * np.exp(3 * std**2) + 3 * np.exp(2 * std**2) - 6
 
     def entropy(self):
-        '''
+        """"
         Returns: differential entropy of the log normal distribution.
 
         Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
         link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
-        '''
+        """"
         return self.mean+0.5*np.log(2*np.pi*np.e*self.std**2)
 
     def print_summary(self):
-        '''
+        """"
         Returns: summary statistic regarding the log normal distribution
-        '''
+        """"
         mean = self.mean()
         median = self.median()
         mode = self.mode()
@@ -2163,7 +2172,7 @@ class Log_normal(Base):
 
 # add p_value method, check on ipynb
 class Laplace(Base):
-    '''
+    """"
     This class contains methods concerning Laplace Distirbution. 
     Args:
     
@@ -2188,7 +2197,7 @@ class Laplace(Base):
     Reference:
         - Wikipedia contributors. (2020, December 21). Laplace distribution. In Wikipedia, The Free Encyclopedia. 
         Retrieved 10:53, December 28, 2020, from https://en.wikipedia.org/w/index.php?title=Laplace_distribution&oldid=995563221
-    '''
+    """"
     def __init__(self, location, scale, randvar):
         if scale<0:
             raise Exception('scale should be greater than 0. Entered value for Scale:{}'.format(scale))
@@ -2204,7 +2213,7 @@ class Laplace(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -2218,7 +2227,7 @@ class Laplace(Base):
         
         Returns: 
             either probability density evaluation for some point or plot of Laplace distribution.
-        '''
+        """"
         generator = lambda mu, b, x: (1 / (2 * b)) * np.exp(abs(x - mu) / b)
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
@@ -2234,7 +2243,7 @@ class Laplace(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -2248,7 +2257,7 @@ class Laplace(Base):
         
         Returns: 
             either cumulative distribution evaluation for some point or plot of Laplace distribution.
-        '''
+        """"
         generator = lambda mu, b, x: 1 / 2 + ((1 / 2) * np.sign(x - mu) *
                                               (1 - np.exp(abs(x - mu) / b)))
         if plot == True:
@@ -2258,7 +2267,7 @@ class Laplace(Base):
         return generator(self.location, self.scale, self.randvar)
 
     def p_value(self, x_lower=-np.inf, x_upper=None):
-        '''
+        """"
         Args:
 
             x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
@@ -2269,7 +2278,7 @@ class Laplace(Base):
 
         Returns:
             p-value of the Pareto distribution evaluated at some random variable.
-        '''
+        """"
         if x_upper == None:
             x_upper = self.randvar
         if x_lower>x_upper:
@@ -2279,54 +2288,54 @@ class Laplace(Base):
         return cdf_func(self.location, self.scale, x_upper)-cdf_func(self.location, self.scale, x_lower)
 
     def mean(self):
-        '''
+        """"
         Returns: Mean of the Laplace distribution.
-        '''
+        """"
         return self.location
 
     def median(self):
-        '''
+        """"
         Returns: Median of the Laplace distribution.
-        '''
+        """"
         return self.location
 
     def mode(self):
-        '''
+        """"
         Returns: Mode of the Laplace distribution.
-        '''
+        """"
         return self.location
 
     def var(self):
-        '''
+        """"
         Returns: Variance of the Laplace distribution.
-        '''
+        """"
         return 2 * self.scale**2
 
     def skewness(self):
-        '''
+        """"
         Returns: Skewness of the Laplace distribution.
-        '''
+        """"
         return 0
 
     def kurtosis(self):
-        '''
+        """"
         Returns: Kurtosis of the Laplace distribution.
-        '''
+        """"
         return 3
 
     def entropy(self):
-        '''
+        """"
         Returns: differential entropy of the Laplace distribution.
 
         Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
         link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
-        '''
+        """"
         return 1+np.log(2*self.scale)
 
     def print_summary(self):
-        '''
+        """"
         Returns: summary statistic regarding the Laplace distribution
-        '''
+        """"
         mean = self.mean()
         median = self.median()
         mode = self.mode()
@@ -2339,7 +2348,7 @@ class Laplace(Base):
 
 
 class Logistic(Base):
-    '''
+    """"
     This class contains methods concerning Logistic Distirbution. 
     Args:
     
@@ -2364,7 +2373,7 @@ class Logistic(Base):
     Reference:
     - Wikipedia contributors. (2020, December 12). Logistic distribution. In Wikipedia, The Free Encyclopedia.
      Retrieved 11:14, December 28, 2020, from https://en.wikipedia.org/w/index.php?title=Logistic_distribution&oldid=993793195
-    '''
+    """"
     def __init__(self, location, scale, randvar):
         if scale<0:
             raise Exception('scale should be greater than 0. Entered value for Scale:{}'.format(scale))
@@ -2380,7 +2389,7 @@ class Logistic(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -2394,7 +2403,7 @@ class Logistic(Base):
         
         Returns: 
             either probability density evaluation for some point or plot of Logistic distribution.
-        '''
+        """"
         generator = lambda mu, s, x: np.exp(-(x - mu) / s) / (s * (1 + np.exp(
             -(x - mu) / s))**2)
         if plot == True:
@@ -2411,7 +2420,7 @@ class Logistic(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -2425,7 +2434,7 @@ class Logistic(Base):
         
         Returns: 
             either cumulative distribution evaluation for some point or plot of Logistic distribution.
-        '''
+        """"
         generator = lambda mu, s, x: 1 / (1 + np.exp(-(x - mu) / s))
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
@@ -2434,7 +2443,7 @@ class Logistic(Base):
         return generator(self.location, self.scale, self.randvar)
 
     def p_value(self, x_lower=-np.inf, x_upper=None):
-        '''
+        """"
         Args:
 
             x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
@@ -2445,7 +2454,7 @@ class Logistic(Base):
 
         Returns:
             p-value of the Logistic distribution evaluated at some random variable.
-        '''
+        """"
         if x_upper == None:
             x_upper = self.randvar
         if x_lower>x_upper:
@@ -2454,54 +2463,54 @@ class Logistic(Base):
         return cdf_func(self.location, self.scale, x_upper)- cdf_func(self.location, self.scale, x_lower)
 
     def mean(self):
-        '''
+        """"
         Returns: Mean of the Logistic distribution.
-        '''
+        """"
         return self.location
 
     def median(self):
-        '''
+        """"
         Returns: Median of the Logistic distribution.
-        '''
+        """"
         return self.location
 
     def mode(self):
-        '''
+        """"
         Returns: Mode of the Logistic distribution.
-        '''
+        """"
         return self.location
 
     def var(self):
-        '''
+        """"
         Returns: Variance of the Logistic distribution.
-        '''
+        """"
         return (self.scale**2 * np.pi**2) / 3
 
     def skewness(self):
-        '''
+        """"
         Returns: Skewness of the Logistic distribution.
-        '''
+        """"
         return 0
 
     def kurtosis(self):
-        '''
+        """"
         Returns: Kurtosis of the Logistic distribution.
-        '''
+        """"
         return 6 / 5
 
         def entropy(self):
-        '''
+        """"
         Returns: differential entropy of the Logistic distribution.
 
         Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
         link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
-        '''
+        """"
         return 2
 
     def print_summary(self):
-        '''
+        """"
         Retruns: summary statistics of the Logistic distribution.
-        '''
+        """"
         mean = self.mean()
         median = self.median()
         mode = self.mode()
@@ -2514,7 +2523,7 @@ class Logistic(Base):
 
 
 class Logit_normal(Base):
-    '''
+    """"
     This class contains methods concerning Logit Normal Distirbution. 
     Args:
     
@@ -2539,7 +2548,7 @@ class Logit_normal(Base):
     Reference:
     - Wikipedia contributors. (2020, December 9). Logit-normal distribution. In Wikipedia, The Free Encyclopedia. 
     Retrieved 07:44, December 30, 2020, from https://en.wikipedia.org/w/index.php?title=Logit-normal_distribution&oldid=993237113
-    '''
+    """"
     def __init__(self, sq_scale, location, randvar):
         if randvar<0 or randvar>1:
             raise Exception('random variable should only be in between (0,1). Entered value: randvar:{}'.format(randvar))
@@ -2555,7 +2564,7 @@ class Logit_normal(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -2569,7 +2578,7 @@ class Logit_normal(Base):
         
         Returns: 
             either probability density evaluation for some point or plot of Logit Normal distribution.
-        '''
+        """"
         generator = lambda mu, sig, x: (1/(sig*np.sqrt(2*np.pi)))*np.exp(-((ss.logit(x)-mu)**2/(2*sig**2)))*(1/(x*(1-x)))
 
         if plot == True:
@@ -2586,7 +2595,7 @@ class Logit_normal(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -2600,7 +2609,7 @@ class Logit_normal(Base):
         
         Returns: 
             either cumulative distribution evaluation for some point or plot of Logit Normal distribution.
-        '''
+        """"
         generator = lambda mu, sig, x: 1/2*(1+ss.erf((ss.logit(x)-mu)/(np.sqrt(2*sig**2))))
                 
         if plot == True:
@@ -2610,7 +2619,7 @@ class Logit_normal(Base):
         return generator(self.location, self.sq_scale, self.randvar)
 
     def p_value(self, x_lower=0, x_upper=None):
-        '''
+        """"
         Args:
 
             x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
@@ -2621,7 +2630,7 @@ class Logit_normal(Base):
 
         Returns:
             p-value of the Logit distribution evaluated at some random variable.
-        '''
+        """"
         if x_lower<0:
             raise Exception('x_lower should not be less than 0. X_lower:{}'.format(x_lower))
         if x_upper == None:
@@ -2632,39 +2641,39 @@ class Logit_normal(Base):
         return cdf_func(self.location, self.sq_scale, x_upper)-cdf_func(self.location, self.sq_scale, x_lower)
 
     def mean(self):
-        '''
+        """"
         Returns: Mean of the Logit Normal distribution.
-        '''
+        """"
         return "no analytical solution"
 
 
     def mode(self):
-        '''
+        """"
         Returns: Mode of the Logit Normal distribution.
-        '''
+        """"
         return "no analytical solution"
 
     def var(self):
-        '''
+        """"
         Returns: Variance of the Logit Normal distribution.
-        '''
+        """"
 
         return "no analytical solution"
 
 
     def entropy(self):
-        '''
+        """"
         Returns: differential entropy of Logit Normal distribution.
 
         Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
         link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
-        '''
+        """"
         return "unsupported"
 
     def print_summary(self):
-        '''
+        """"
         Returns: Summary statistic regarding the Logit Normal distribution
-        '''
+        """"
         mean = self.mean()
         median = self.median()
         mode = self.mode()
@@ -2677,7 +2686,7 @@ class Logit_normal(Base):
 
 
 class Weibull(Base):
-    '''
+    """"
     This class contains methods concerning Weibull Distirbution. Also known as Fréchet distribution.
     Args:
     
@@ -2702,7 +2711,7 @@ class Weibull(Base):
     Reference:
     - Wikipedia contributors. (2020, December 13). Weibull distribution. In Wikipedia, The Free Encyclopedia. 
     Retrieved 11:32, December 28, 2020, from https://en.wikipedia.org/w/index.php?title=Weibull_distribution&oldid=993879185
-    '''
+    """"
     def __init__(self, shape, scale, randvar):
         if shape<0 or scale<0 or randvar<0:
             raise Exception('Parameters should not be less than 0. Entered values: shape: {0}, scale{1}, randvar{2}'.format(shape, scale, randvar))
@@ -2718,7 +2727,7 @@ class Weibull(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -2732,7 +2741,7 @@ class Weibull(Base):
         
         Returns: 
             either probability density evaluation for some point or plot of Weibull distribution.
-        '''
+        """"
         def generator(_lamnda, k, x):
             if x<0:
                 return 0
@@ -2752,7 +2761,7 @@ class Weibull(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -2766,7 +2775,7 @@ class Weibull(Base):
         
         Returns: 
             either cumulative distribution evaluation for some point or plot of Weibull distribution.
-        '''
+        """"
         def generator(_lamnda, k, x):
             if x<0:
                 return 0
@@ -2779,7 +2788,7 @@ class Weibull(Base):
         return generator(self.scale, self.shape, self.randvar)
 
     def p_value(self, x_lower=0, x_upper=None):
-        '''
+        """"
         Args:
 
             x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
@@ -2790,7 +2799,7 @@ class Weibull(Base):
 
         Returns:
             p-value of the Weilbull distribution evaluated at some random variable.
-        '''
+        """"
         if x_lower<0:
             raise Exception('x_lower should not be less than 0. X_lower:{}'.format(x_lower))
         if x_upper == None:
@@ -2805,50 +2814,50 @@ class Weibull(Base):
         return cdf_func(self.location, self.shape, x_upper)-cdf_func(self.location, self.shape, x_lower)
 
     def mean(self):
-        '''
+        """"
         Returns: Mean of the Weibull distribution.
-        '''
+        """"
         return self.scale*ss.gamma(1+(1/self.shape)
 
     def median(self):
-        '''
+        """"
         Returns: Median of the Weibull distribution.
-        '''
+        """"
         return self.scale*np.power(np.log(2), 1/self.shape)
 
     def mode(self):
-        '''
+        """"
         Returns: Mode of the Weibull distribution.
-        '''
+        """"
         k = self.shape
         if k>1:
             return self.scale*np.power((k-1)/k, 1/k)
         return 0
 
     def var(self):
-        '''
+        """"
         Returns: Variance of the Weibull distribution.
-        '''
+        """"
         _lambda = self.scale
         k = self.shape
         return _lambda**2*(((ss.gamma(1+2/k)- ss.gamma(1+1/k)))**2)
 
 
     def entropy(self):
-        '''
+        """"
         Returns: differential entropy of the Weilbull distribution.
 
         Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
         link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
-        '''
+        """"
         _lambda = self.shape
         k = self.scale
         return (k+1)*np.euler_gamma/k+np.log(_lambda/k)+1
 
     def print_summary(self):
-        '''
+        """"
         Returns: summary statistics of the Weilbull distribution.
-        '''
+        """"
         mean = self.mean()
         median = self.median()
         mode = self.mode()
@@ -2861,7 +2870,7 @@ class Weibull(Base):
 
 
 class Weilbull_inv(Base):
-    '''
+    """"
     This class contains methods concerning inverse Weilbull or the Fréchet Distirbution. 
     Args:
     
@@ -2886,7 +2895,7 @@ class Weilbull_inv(Base):
     Reference:
     - Wikipedia contributors. (2020, December 7). Fréchet distribution. In Wikipedia, The Free Encyclopedia. 
     Retrieved 07:28, December 30, 2020, from https://en.wikipedia.org/w/index.php?title=Fr%C3%A9chet_distribution&oldid=992938143
-    '''
+    """"
     def __init__(self,  shape, scale, location, randvar):
         if shape<0 or scale<0:
             raise Exception('the value of scale and shape should be greater than 0. Entered values scale was:{0}, shape:{1}'.format(scale, shape))
@@ -2906,7 +2915,7 @@ class Weilbull_inv(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -2920,7 +2929,7 @@ class Weilbull_inv(Base):
         
         Returns: 
             either probability density evaluation for some point or plot of Fréchet distribution.
-        '''
+        """"
         generator = lambda a,s,m,x: (a/s)*np.power((x-m)/s, -1-a)*np.exp(-((x-m)/s)**-a)
 
         if plot == True:
@@ -2937,7 +2946,7 @@ class Weilbull_inv(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -2951,7 +2960,7 @@ class Weilbull_inv(Base):
         
         Returns: 
             either cumulative distribution evaluation for some point or plot of Fréchet distribution.
-        '''
+        """"
         generator =  lambda a,s,m,x: np.exp(-((x-m)/s)**-a)
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
@@ -2960,7 +2969,7 @@ class Weilbull_inv(Base):
         return generator(self.shape, self.scale, self.location, self.randvar)
 
     def p_value(self, x_lower=0, x_upper=None):
-        '''
+        """"
         Args:
 
             x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
@@ -2971,7 +2980,7 @@ class Weilbull_inv(Base):
 
         Returns:
             p-value of the Logit distribution evaluated at some random variable.
-        '''
+        """"
         if x_lower<0:
             raise Exception('x_lower should not be less than 0. X_lower:{}'.format(x_lower))
         if x_upper == None:
@@ -2982,29 +2991,29 @@ class Weilbull_inv(Base):
         return cdf_func(self.shape, self.scale, self.location, x_upper)-cdf_func(self.shape, self.scale, self.location, x_lower)
 
     def mean(self):
-        '''
+        """"
         Returns: Mean of the Fréchet distribution.
-        '''
+        """"
         if self.shape>1:
             return self.location + (self.scale*ss.gamma(1-1/self.shape))
         return np.inf
 
     def median(self):
-        '''
+        """"
         Returns: Median of the Fréchet distribution.
-        '''
+        """"
         return self.location+(self.scale/(np.power(np.log(2), 1/self.shape)))
 
     def mode(self):
-        '''
+        """"
         Returns: Mode of the Fréchet distribution.
-        '''
+        """"
         return self.location+self.scale*(self.shape/(1+self.shape))**(1/self.shape)
 
     def var(self):
-        '''
+        """"
         Returns: Variance of the Fréchet distribution.
-        '''
+        """"
         a = self.shape
         s = self.scale
         if a>2:
@@ -3012,27 +3021,27 @@ class Weilbull_inv(Base):
         return np.inf
 
     def skewness(self):
-        '''
+        """"
         Returns: Skewness of the Fréchet distribution. 
-        '''
+        """"
         a = self.shape
         if a>3:
             return (ss.gamma(1-3/a)-3*ss.gamma(1-2/a)*ss.gamma(1-1/a)+2*ss.gamma(1-1/a)**3)/(np.sqrt((ss.gamma(1-2/a)-ss.gamma(1-1/a)**2)**3))
         return np.inf
 
     def kurtosis(self):
-        '''
+        """"
         Returns: Kurtosis of the Fréchet distribution. 
-        '''
+        """"
         a = self.shape
         if a>4:
             return -6+((ss.gamma(1-4/a)-4*ss.gamma(1-3/a)*ss.gamma(1-1/a)+3*ss.gamma(1-2/a)**2)/(ss.gamma(1-2/a)-ss.gamma(1-1/a)**2)**2)
         return np.inf
 
     def print_summary(self):
-        '''
+        """"
         Returns: Summary statistic regarding the Fréchet distribution
-        '''
+        """"
         mean = self.mean()
         median = self.median()
         mode = self.mode()
@@ -3045,7 +3054,7 @@ class Weilbull_inv(Base):
 
 
 class Gumbell(Base):
-    '''
+    """"
     This class contains methods concerning Gumbell Distirbution. 
     Args:
     
@@ -3069,7 +3078,7 @@ class Gumbell(Base):
     Reference:
     - Wikipedia contributors. (2020, November 26). Gumbel distribution. In Wikipedia, The Free Encyclopedia. 
     Retrieved 09:22, December 29, 2020, from https://en.wikipedia.org/w/index.php?title=Gumbel_distribution&oldid=990718796
-    '''
+    """"
     def __init__(self, location, scale, randvar):
         if scale<0:
             raise Exception('scale parameter should be greater than 0. The value of the scale parameter is: {}'.format(scale))
@@ -3086,7 +3095,7 @@ class Gumbell(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -3100,7 +3109,7 @@ class Gumbell(Base):
         
         Returns: 
             either probability density evaluation for some point or plot of Gumbell distribution.
-        '''
+        """"
         def generator(mu, beta, x):
             z = (x-mu)/beta
             return (1/beta)*np.exp(-(z+np.exp(-z)))
@@ -3119,7 +3128,7 @@ class Gumbell(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -3133,7 +3142,7 @@ class Gumbell(Base):
         
         Returns: 
             either cumulative distribution evaluation for some point or plot of Gumbell distribution.
-        '''
+        """"
         def generator(mu, beta, x):
             return np.exp(-np.exp(-(x-mu)/beta))
         if plot == True:
@@ -3143,7 +3152,7 @@ class Gumbell(Base):
         return generator(self.location, self.scale, self.randvar)
 
     def p_value(self):
-        '''
+        """"
         Args:
 
             x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
@@ -3154,49 +3163,49 @@ class Gumbell(Base):
 
         Returns:
             p-value of the Gumbell distribution evaluated at some random variable.
-        '''
+        """"
         return "currently unsupported"
 
     def mean(self):
-        '''
+        """"
         Returns: Mean of the Gumbell distribution.
-        '''
+        """"
         return self.location+(self.scale*np.euler_gamma)
 
     def median(self):
-        '''
+        """"
         Returns: Median of the Gumbell distribution.
-        '''
+        """"
         return self.location - (self.scale*np.log(np.log(2)))
 
     def mode(self):
-        '''
+        """"
         Returns: Mode of the Gumbell distribution.
-        '''
+        """"
         return self.location
 
     def var(self):
-        '''
+        """"
         Returns: Variance of the Gumbell distribution.
-        '''
+        """"
         return (np.pi**2/6)*self.scale**2
 
     def skewness(self):
-        '''
+        """"
         Returns: Skewness of the Gumbell distribution. 
-        '''
+        """"
         return 1.14
 
     def kurtosis(self):
-        '''
+        """"
         Returns: Kurtosis of the Gumbell distribution. 
-        '''
+        """"
         return 12/5
 
     def print_summary(self):
-        '''
+        """"
         Returns: Summary statistic regarding the Gumbell distribution
-        '''
+        """"
         mean = self.mean()
         median = self.median()
         mode = self.mode()
@@ -3209,7 +3218,7 @@ class Gumbell(Base):
 
 
 class Arcsine(Base):
-    '''
+    """"
     This class contains methods concerning Arcsine Distirbution. 
     Args:
     
@@ -3231,7 +3240,7 @@ class Arcsine(Base):
     Reference:
     - Wikipedia contributors. (2020, October 30). Arcsine distribution. In Wikipedia, The Free Encyclopedia. 
     Retrieved 05:19, December 30, 2020, from https://en.wikipedia.org/w/index.php?title=Arcsine_distribution&oldid=986131091
-    '''
+    """"
     def __init__(self, randvar):
         if randvar>0 or randvar>1:
             raise Exception('random variable should have values between [0,1]. The value of randvar was: {}'.format(randvar))
@@ -3245,7 +3254,7 @@ class Arcsine(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -3259,7 +3268,7 @@ class Arcsine(Base):
         
         Returns: 
             either probability density evaluation for some point or plot of Arcsine distribution.
-        '''
+        """"
         generator = lambda x: 1/(np.pi*np.sqrt(x*(1-x)))
 
         if plot == True:
@@ -3276,7 +3285,7 @@ class Arcsine(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -3290,7 +3299,7 @@ class Arcsine(Base):
         
         Returns: 
             either cumulative distribution evaluation for some point or plot of Arcsine distribution.
-        '''
+        """"
         generator = lambda x: (2/np.pi)*np.arcsin(np.sqrt(x))
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
@@ -3299,7 +3308,7 @@ class Arcsine(Base):
         return generator(self.location, self.scale, self.randvar)
 
     def p_value(self, x_lower=0, x_upper=None):
-        '''
+        """"
         Args:
 
             x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
@@ -3310,7 +3319,7 @@ class Arcsine(Base):
 
         Returns:
             p-value of the Arcsine distribution evaluated at some random variable.
-        '''
+        """"
         if x_lower<0 or x>1:
             raise Exception('x_lower should not be less than 0 or greater than 1. X_lower:{}'.format(x_lower))
         if x_upper == None:
@@ -3321,43 +3330,43 @@ class Arcsine(Base):
         return cdf_func(self.location, self.scale, x_upper)-cdf_func(self.location, self.scale, x_lower)
 
     def mean(self):
-        '''
+        """"
         Returns: Mean of the Arcsine distribution.
-        '''
+        """"
         return 1/2
 
     def median(self):
-        '''
+        """"
         Returns: Median of the Arcsine distribution.
-        '''
+        """"
         return 1/2
 
     def mode(self):
-        '''
+        """"
         Returns: Mode of the Arcsine distribution. Mode is within the set {0,1}
-        '''
+        """"
         return {0,1}
     def var(self):
-        '''
+        """"
         Returns: Variance of the Arcsine distribution.
-        '''
+        """"
         return 1/8
     def skewness(self):
-        '''
+        """"
         Returns: Skewness of the Arcsine distribution. 
-        '''
+        """"
         return 0
 
     def kurtosis(self):
-        '''
+        """"
         Returns: Kurtosis of the Arcsine distribution. 
-        '''
+        """"
         return 3/2
 
     def print_summary(self):
-        '''
+        """"
         Returns: Summary statistic regarding the Arcsine distribution
-        '''
+        """"
         mean = self.mean()
         median = self.median()
         mode = self.mode()
@@ -3370,7 +3379,7 @@ class Arcsine(Base):
 
 
 class Triangular(Base):
-    '''
+    """"
     This class contains methods concerning Triangular Distirbution. 
     Args:
     
@@ -3396,7 +3405,7 @@ class Triangular(Base):
     Reference:
     - Wikipedia contributors. (2020, December 19). Triangular distribution. In Wikipedia, The Free Encyclopedia. 
     Retrieved 05:41, December 30, 2020, from https://en.wikipedia.org/w/index.php?title=Triangular_distribution&oldid=995101682
-    '''
+    """"
     def __init__(self, a,b,c, randvar):
         if a>b:
             raise Exception('lower limit(a) should be less than upper limit(b).')
@@ -3415,7 +3424,7 @@ class Triangular(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -3429,7 +3438,7 @@ class Triangular(Base):
         
         Returns: 
             either probability density evaluation for some point or plot of Triangular distribution.
-        '''
+        """"
         def generator(a,b,c,x):
             if x<a:
                 return 0
@@ -3456,7 +3465,7 @@ class Triangular(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -3470,7 +3479,7 @@ class Triangular(Base):
         
         Returns: 
             either cumulative distribution evaluation for some point or plot of Triangular distribution.
-        '''
+        """"
         def generator(a,b,c,x):
             if x<=a:
                 return 0
@@ -3488,7 +3497,7 @@ class Triangular(Base):
         return generator(self.a, self.b, self.c, self.randvar)
 
     def p_value(self, x_lower=0, x_upper=None):
-        '''
+        """"
         Args:
 
             x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
@@ -3499,7 +3508,7 @@ class Triangular(Base):
 
         Returns:
             p-value of the Triangular distribution evaluated at some random variable.
-        '''
+        """"
         if x_upper == None:
             x_upper = self.randvar
         if x_lower>x_upper:
@@ -3516,15 +3525,15 @@ class Triangular(Base):
         return cdf_func(self.a, self.b, self.c, x_upper)-cdf_func(self.a, self.b, self.c, x_lower)
 
     def mean(self):
-        '''
+        """"
         Returns: Mean of the Triangular distribution.
-        '''
+        """"
         return (self.a+self.b+self.c)/3
 
     def median(self):
-        '''
+        """"
         Returns: Median of the Triangular distribution.
-        '''
+        """"
         a = self.a
         b = self.b
         c = self.c
@@ -3534,48 +3543,48 @@ class Triangular(Base):
             return b + np.sqrt((b-a)*(b-c)/2)
 
     def mode(self):
-        '''
+        """"
         Returns: Mode of the Triangular distribution.
-        '''
+        """"
         return self.c
 
     def var(self):
-        '''
+        """"
         Returns: Variance of the Triangular distribution.
-        '''
+        """"
         a = self.a
         b = self.b
         c = self.c
         return (1/18)*(a**2+b**2+c**2-a*b-a*c-b*c)
 
     def skewness(self):
-        '''
+        """"
         Returns: Skewness of the Triangular distribution. 
-        '''
+        """"
         a = self.a
         b = self.b
         c = self.c
         return (np.sqrt(2)*(a+b-2*c)((2*a-b-c)*(a-2*b+c)))/(5*(a**2+b**2+c**2-a*b-a*c-b*c)**(3/2))
 
     def kurtosis(self):
-        '''
+        """"
         Returns: Kurtosis of the Triangular distribution. 
-        '''
+        """"
         return -3/5
 
     def entropy(self):
-        '''
+        """"
         Returns: differential entropy of the Triangular distribution.
 
         Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
         link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
-        '''
+        """"
         return 0.5+np.log((self.b-self.a)*0.5)
 
     def print_summary(self):
-        '''
+        """"
         Returns: Summary statistic regarding the Triangular distribution
-        '''
+        """"
         mean = self.mean()
         median = self.median()
         mode = self.mode()
@@ -3588,7 +3597,7 @@ class Triangular(Base):
 
 
 class Trapezoidal(Base):
-    '''
+    """"
     This class contains methods concerning Trapezoidal Distirbution. 
     Args:
     
@@ -3614,7 +3623,7 @@ class Trapezoidal(Base):
     Reference:
     - Wikipedia contributors. (2020, April 11). Trapezoidal distribution. In Wikipedia, The Free Encyclopedia. 
     Retrieved 06:06, December 30, 2020, from https://en.wikipedia.org/w/index.php?title=Trapezoidal_distribution&oldid=950241388
-    '''
+    """"
     def __init__(self, a,b,c,d, randvar):
         if a>d:
             raise Exception('lower bound(a) should be less than upper bound(d).')
@@ -3639,7 +3648,7 @@ class Trapezoidal(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -3653,7 +3662,7 @@ class Trapezoidal(Base):
         
         Returns: 
             either probability density evaluation for some point or plot of Trapezoidal distribution.
-        '''
+        """"
         def generator(a,b,c,d,x):
             if a<=x and x<b:
                 return (2/(d+c-a-b))*(x-a)/(b-a)
@@ -3676,7 +3685,7 @@ class Trapezoidal(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -3690,7 +3699,7 @@ class Trapezoidal(Base):
         
         Returns: 
             either cumulative distribution evaluation for some point or plot of Trapezoidal distribution.
-        '''
+        """"
         def generator(a,b,c,d,x):
             if a<=x and x<b:
                 return (x-a)**2/((b-a)*(d+c-a-b))
@@ -3706,7 +3715,7 @@ class Trapezoidal(Base):
         return generator(self.a, self.b, self.c, self.d, self.randvar)
 
     def p_value(self):
-        '''
+        """"
         Args:
 
             x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
@@ -3717,49 +3726,49 @@ class Trapezoidal(Base):
 
         Returns:
             p-value of the Trapezoidal distribution evaluated at some random variable.
-        '''
+        """"
         return "currently unsupported"
 
     def mean(self):
-        '''
+        """"
         Returns: Mean of the Trapezoidal distribution.
-        '''
+        """"
         return (self.a+self.b+self.c)/3
 
     # def median(self):
-    #     '''
+    #     """"
     #     Returns: Median of the Trapezoidal distribution. Currently Unsupported.
-    #     '''
+    #     """"
     #     return "currently unssuported."
 
     # def mode(self):
-    #     '''
+    #     """"
     #     Returns: Mode of the Trapezoidal distribution. Currently Unsupported.
-    #     '''
+    #     """"
     #     return "currently unssuported."
 
     # def var(self):
-    #     '''
+    #     """"
     #     Returns: Variance of the Trapezoidal distribution. Currently Unsupported. 
-    #     '''
+    #     """"
     #     return "currently unssuported."
 
     # def skewness(self):
-    #     '''
+    #     """"
     #     Returns: Skewness of the Trapezoidal distribution. Currently Unsupported.
-    #     '''
+    #     """"
     #     return "currently unssuported."
 
     # def kurtosis(self):
-    #     '''
+    #     """"
     #     Returns: Kurtosis of the Trapezoidal distribution. Currently Unsupported.
-    #     '''
+    #     """"
     #     return "currently unssuported."
 
     def print_summary(self):
-        '''
+        """"
         Returns: Summary statistic regarding the Trapezoidal distribution
-        '''
+        """"
         mean = self.mean()
         median = self.median()
         mode = self.mode()
@@ -3772,7 +3781,7 @@ class Trapezoidal(Base):
 
 
 # class ARGUS(Base):
-#     '''
+#     """"
 #     This class contains methods concerning ARGUS Distirbution. 
 #     Args:
     
@@ -3796,7 +3805,7 @@ class Trapezoidal(Base):
 #     Reference:
 #     - Wikipedia contributors. (2020, April 11). Trapezoidal distribution. In Wikipedia, The Free Encyclopedia. 
 #     Retrieved 06:06, December 30, 2020, from https://en.wikipedia.org/w/index.php?title=Trapezoidal_distribution&oldid=950241388
-#     '''
+#     """"
 #     def __init__(self, a,b, randvar):
 #         if a>b:
 #             raise Exception('lower bound(a) should be less than upper bound(b).')
@@ -3812,7 +3821,7 @@ class Trapezoidal(Base):
 #             ylim=None,
 #             xlabel=None,
 #             ylabel=None):
-#         '''
+#         """"
 #         Args:
         
 #             interval(int): defaults to none. Only necessary for defining plot.
@@ -3826,7 +3835,7 @@ class Trapezoidal(Base):
         
 #         Returns: 
 #             either probability density evaluation for some point or plot of ARGUS distribution.
-#         '''
+#         """"
 #         def generator(a,b,c,d,x):
 #             if a<=x and x<b:
 #                 return (2/(d+c-a-b))*(x-a)/(b-a)
@@ -3849,7 +3858,7 @@ class Trapezoidal(Base):
 #             ylim=None,
 #             xlabel=None,
 #             ylabel=None):
-#         '''
+#         """"
 #         Args:
         
 #             interval(int): defaults to none. Only necessary for defining plot.
@@ -3863,7 +3872,7 @@ class Trapezoidal(Base):
         
 #         Returns: 
 #             either cumulative distribution evaluation for some point or plot of ARGUS distribution.
-#         '''
+#         """"
 #         def generator(a,b,c,d,x):
 #             if a<=x and x<b:
 #                 return (x-a)**2/((b-a)*(d+c-a-b))
@@ -3879,7 +3888,7 @@ class Trapezoidal(Base):
 #         return generator(self.a, self.b, self.c, self.d, self.randvar)
 
 #     def p_value(self):
-#         '''
+#         """"
 #         Args:
 
 #             x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
@@ -3890,49 +3899,49 @@ class Trapezoidal(Base):
 
 #         Returns:
 #             p-value of the Pareto distribution evaluated at some random variable.
-#         '''
+#         """"
 #         return "currently unsupported"
 
 #     def mean(self):
-#         '''
+#         """"
 #         Returns: Mean of the ARGUS distribution.
-#         '''
+#         """"
 #         return (self.a+self.b+self.c)/3
 
 #     def median(self):
-#         '''
+#         """"
 #         Returns: Median of the ARGUS distribution. Currently Unsupported.
-#         '''
+#         """"
 #         return "currently unssuported."
 
 #     def mode(self):
-#         '''
+#         """"
 #         Returns: Mode of the ARGUS distribution. Currently Unsupported.
-#         '''
+#         """"
 #         return "currently unssuported."
 
 #     def var(self):
-#         '''
+#         """"
 #         Returns: Variance of the ARGUS distribution. Currently Unsupported. 
-#         '''
+#         """"
 #         return "currently unssuported."
 
 #     def skewness(self):
-#         '''
+#         """"
 #         Returns: Skewness of the ARGUS distribution. 
-#         '''
+#         """"
 #         # return 
 
 #     def kurtosis(self):
-#         '''
+#         """"
 #         Returns: Kurtosis of the ARGUS distribution. Currently Unsupported.
-#         '''
+#         """"
 #         return "currently unssuported."
 
 #     def print_summary(self):
-#         '''
+#         """"
 #         Returns: Summary statistic regarding the ARGUS distribution
-#         '''
+#         """"
 #         mean = self.mean()
 #         median = self.median()
 #         mode = self.mode()
@@ -3945,7 +3954,7 @@ class Trapezoidal(Base):
 
 # to be reviewed
 class Beta(Base):
-    '''
+    """"
     This class contains methods concerning Beta Distirbution. 
     Args:
     
@@ -3970,7 +3979,7 @@ class Beta(Base):
     Reference:
     - Wikipedia contributors. (2021, January 8). Beta distribution. In Wikipedia, The Free Encyclopedia. 
     Retrieved 07:21, January 8, 2021, from https://en.wikipedia.org/w/index.php?title=Beta_distribution&oldid=999043368
-    '''
+    """"
     def __init__(self, alpha, beta, randvar):
         if randvar<0 | randvar>1:
             raise ValueError('random variable should only be in between 0 and 1. Entered value: {}'.format(randvar))
@@ -3990,7 +3999,7 @@ class Beta(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -4004,7 +4013,7 @@ class Beta(Base):
         
         Returns: 
             either probability density evaluation for some point or plot of Beta distribution.
-        '''
+        """"
         generator = lambda a,b,x: (np.power(x,a-1)*np.power(1-x, b-1))/ss.beta(a,b)
 
         if plot == True:
@@ -4020,7 +4029,7 @@ class Beta(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -4034,7 +4043,7 @@ class Beta(Base):
         
         Returns: 
             either cumulative distribution evaluation for some point or plot of Beta distribution.
-        '''
+        """"
         generator = lambda a,b,x: ss.betainc(a,b,x)
         if plot == True:
             x = np.linspace(0, 1, int(threshold))
@@ -4043,7 +4052,7 @@ class Beta(Base):
         return generator(self.a, self.b, self.c, self.randvar)
 
     def p_value(self, x_lower=0, x_upper=None):
-        '''
+        """"
         Args:
 
             x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
@@ -4054,7 +4063,7 @@ class Beta(Base):
 
         Returns:
             p-value of the Beta distribution evaluated at some random variable.
-        '''
+        """"
         if x_upper == None:
             x_upper = self.randvar
         if x_lower>x_upper:
@@ -4064,59 +4073,59 @@ class Beta(Base):
         return cdf_func(self.alpha, self.beta, x_upper)-cdf_func(self.alpha, self.beta, x_lower)
 
     def mean(self):
-        '''
+        """"
         Returns: Mean of the Beta distribution.
-        '''
+        """"
         return "currently unsupported."
 
     def median(self):
-        '''
+        """"
         Returns: Median of the Beta distribution.
-        '''
+        """"
         # warning: not yet validated.
         return ss.betainc(self.alpha, self.beta, 0.5)
 
     def mode(self):
-        '''
+        """"
         Returns: Mode of the Beta distribution.
-        '''
+        """"
         return "currently unsupported"
 
     def var(self):
-        '''
+        """"
         Returns: Variance of the Beta distribution.
-        '''
+        """"
         return "currently unsupported"
 
     def skewness(self):
-        '''
+        """"
         Returns: Skewness of the Beta distribution. 
-        '''
+        """"
         alpha = self.alpha; beta = self.beta
         return (2*(beta-alpha)*sqrt(alpha+beta+1))/((alpha+beta+2)*sqrt(alpha*beta))
 
     def kurtosis(self):
-        '''
+        """"
         Returns: Kurtosis of the Beta distribution. 
-        '''
+        """"
         alpha = self.alpha; beta = self.beta
         temp_up = 6*((alpha-beta)**2*(alpha+beta+1)-alpha*beta*(alpha+beta+2))
         return temp_up/(alpha*beta*(alpha+beta+2)*(alpha+beta+3))
 
     def entropy(self):
-        '''
+        """"
         Returns: differential entropy of the Beta distribution.
 
         Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
         link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
-        '''
+        """"
         alpha = self.alpha; beta = self.beta 
         return np.log(ss.beta(alpha, beta))-(alpha-1)*(ss.digamma(alpha)-ss.digamma(alpha+beta))-(beta-1)*(ss.digamma(beta)-ss.digamma(alpha+beta))
 
     def print_summary(self):
-        '''
+        """"
         Returns: Summary statistic regarding the Beta distribution
-        '''
+        """"
         mean = self.mean()
         median = self.median()
         mode = self.mode()
@@ -4129,7 +4138,7 @@ class Beta(Base):
 
 # to be reviewed
 class Beta_prime(Base):
-    '''
+    """"
     This class contains methods concerning Beta prime Distirbution. 
     Args:
     
@@ -4154,7 +4163,7 @@ class Beta_prime(Base):
     Reference:
     - Wikipedia contributors. (2020, October 8). Beta prime distribution. In Wikipedia, The Free Encyclopedia. 
     Retrieved 09:40, January 8, 2021, from https://en.wikipedia.org/w/index.php?title=Beta_prime_distribution&oldid=982458594
-    '''
+    """"
     def __init__(self, alpha, beta, randvar):
         if randvar<0:
             raise ValueError('random variable should not be less then 0. Entered value: {}'.format(randvar))
@@ -4175,7 +4184,7 @@ class Beta_prime(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -4189,7 +4198,7 @@ class Beta_prime(Base):
         
         Returns: 
             either probability density evaluation for some point or plot of Beta prime distribution.
-        '''
+        """"
         generator = lambda a,b,x: (np.power(x,a-1)*np.power(1+x, -a-b))/ss.beta(a,b)
 
         if plot == True:
@@ -4207,7 +4216,7 @@ class Beta_prime(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -4221,7 +4230,7 @@ class Beta_prime(Base):
         
         Returns: 
             either cumulative distribution evaluation for some point or plot of Beta prime distribution.
-        '''
+        """"
         generator = lambda a,b,x: ss.betainc(a,b,x/(1+x))
         if plot == True:
             x = np.linspace(0, 1, int(threshold))
@@ -4230,7 +4239,7 @@ class Beta_prime(Base):
         return generator(self.alpha, self.beta, self.randvar)
 
     def p_value(self, x_lower=0, x_upper=None):
-        '''
+        """"
         Args:
 
             x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
@@ -4241,7 +4250,7 @@ class Beta_prime(Base):
 
         Returns:
             p-value of the Beta prime distribution evaluated at some random variable.
-        '''
+        """"
         if x_upper == None:
             x_upper = self.randvar
         if x_lower>x_upper:
@@ -4251,32 +4260,32 @@ class Beta_prime(Base):
         return cdf_func(self.alpha, self.beta, x_upper)-cdf_func(self.alpha, self.beta, x_lower)
 
     def mean(self):
-        '''
+        """"
         Returns: Mean of the Beta prime distribution.
-        '''
+        """"
         if self.beta>1:
             return self.alpha/(self.beta-1)
         return "currently unsupported."
 
     def median(self):
-        '''
+        """"
         Returns: Median of the Beta prime distribution.
-        '''
+        """"
         # warning: not yet validated.
         return "unsupported"
 
     def mode(self):
-        '''
+        """"
         Returns: Mode of the Beta prime distribution.
-        '''
+        """"
         if self.alpha>=1:
             return (self.alpha+1)/(self.beta+1)
         return 0
 
     def var(self):
-        '''
+        """"
         Returns: Variance of the Beta prime distribution.
-        '''
+        """"
         alpha = self.alpha
         beta = self.beta
         if beta>2:
@@ -4284,9 +4293,9 @@ class Beta_prime(Base):
         return "currently unsupported"
 
     def skewness(self):
-        '''
+        """"
         Returns: Skewness of the Beta prime distribution. 
-        '''
+        """"
         alpha = self.alpha; beta = self.beta
         if beta>3:
             scale = (2*(2*alpha+beta-1))/(beta-3)
@@ -4294,24 +4303,24 @@ class Beta_prime(Base):
         return "undefined"
 
     def kurtosis(self):
-        '''
+        """"
         Returns: Kurtosis of the Beta prime distribution. 
-        '''
+        """"
         return "currently unsupported"
 
     def entropy(self):
-        '''
+        """"
         Returns: differential entropy of the Beta prime distribution.
 
         Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
         link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
-        '''
+        """"
         return "currently unsupported"
 
     def print_summary(self):
-        '''
+        """"
         Returns: Summary statistic regarding the Beta prime distribution
-        '''
+        """"
         mean = self.mean()
         median = self.median()
         mode = self.mode()
@@ -4323,7 +4332,7 @@ class Beta_prime(Base):
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
 class Bates(Base):
-    '''
+    """"
     This class contains methods concerning Bates Distirbution. Also referred to as the regular mean distribution.
 
     Note that the Bates distribution is a probability distribution of the mean of a number of statistically indipendent uniformly
@@ -4354,7 +4363,7 @@ class Bates(Base):
     Reference:
     - Wikipedia contributors. (2021, January 8). Bates distribution. In Wikipedia, The Free Encyclopedia. 
     Retrieved 08:27, January 8, 2021, from https://en.wikipedia.org/w/index.php?title=Bates_distribution&oldid=999042206
-    '''
+    """"
     def __init__(self, a, b, n, randvar):
         if randvar<0 | randvar>1:
             raise ValueError('random variable should only be in between 0 and 1. Entered value: {}'.format(randvar))
@@ -4375,7 +4384,7 @@ class Bates(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -4389,7 +4398,7 @@ class Bates(Base):
         
         Returns: 
             either probability density evaluation for some point or plot of Bates distribution.
-        '''
+        """"
         def generator(a,b,n, x):
             if a<x | x<b:
                 bincoef = lambda n,k: np.math.factorial(n)/(np.math.factorial(k)*(np.math.factorial(n-k)))
@@ -4409,7 +4418,7 @@ class Bates(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -4423,11 +4432,11 @@ class Bates(Base):
         
         Returns: 
             either cumulative distribution evaluation for some point or plot of Bates distribution.
-        '''
+        """"
         return "currently unsupported"
 
     def p_value(self, x_lower=0, x_upper=None):
-        '''
+        """"
         Args:
 
             x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
@@ -4438,38 +4447,38 @@ class Bates(Base):
 
         Returns:
             p-value of the Bates distribution evaluated at some random variable.
-        '''
+        """"
 
         return "currently unsupported"
 
     def mean(self):
-        '''
+        """"
         Returns: Mean of the Bates distribution.
-        '''
+        """"
         return 0.5*(self.a+self.b)
 
     def var(self):
-        '''
+        """"
         Returns: Variance of the Bates distribution.
-        '''
+        """"
         return 1/(12*self.n)*(self.b-self.a)**2
 
     def skewness(self):
-        '''
+        """"
         Returns: Skewness of the Bates distribution. 
-        '''
+        """"
         return -6/(5*self.n)
 
     def kurtosis(self):
-        '''
+        """"
         Returns: Kurtosis of the Bates distribution. 
-        '''
+        """"
         return 0
 
     def print_summary(self):
-        '''
+        """"
         Returns: Summary statistic regarding the Bates distribution
-        '''
+        """"
         mean = self.mean()
         median = self.median()
         mode = self.mode()
@@ -4482,7 +4491,7 @@ class Bates(Base):
 
 # to be reviewed
 class Erlang(Base):
-    '''
+    """"
     This class contains methods concerning Erlang Distirbution. 
     Args:
     
@@ -4509,7 +4518,7 @@ class Erlang(Base):
     Retrieved 09:38, January 8, 2021, from https://en.wikipedia.org/w/index.php?title=Erlang_distribution&oldid=998655107
     - Weisstein, Eric W. "Erlang Distribution." From MathWorld--A Wolfram Web Resource. 
     https://mathworld.wolfram.com/ErlangDistribution.html
-    '''
+    """"
     def __init__(self, shape, rate, randvar):
         if randvar<0:
             raise ValueError('random variable should only be in between 0 and 1. Entered value: {}'.format(randvar))
@@ -4529,7 +4538,7 @@ class Erlang(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -4543,7 +4552,7 @@ class Erlang(Base):
         
         Returns: 
             either probability density evaluation for some point or plot of Erlang distribution.
-        '''
+        """"
         generator = lambda shape, rate, x: (np.power(rate, shape)*np.power(x,shape-1)*np.exp(-rate*x))/np.math.factorial((shape-1))
 
         if plot == True:
@@ -4561,7 +4570,7 @@ class Erlang(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -4575,7 +4584,7 @@ class Erlang(Base):
         
         Returns: 
             either cumulative distribution evaluation for some point or plot of Erlang distribution.
-        '''
+        """"
         generator = lambda shape, rate, x: ss.gammainc(shape, rate*x)/np.math.factorial(shape-1)
         if plot == True:
             x = np.linspace(0, 1, int(threshold))
@@ -4584,7 +4593,7 @@ class Erlang(Base):
         return generator(self.shape, self.rate, self.randvar)
 
     def p_value(self, x_lower=0, x_upper=None):
-        '''
+        """"
         Args:
 
             x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
@@ -4595,7 +4604,7 @@ class Erlang(Base):
 
         Returns:
             p-value of the Erlang distribution evaluated at some random variable.
-        '''
+        """"
         if x_upper == None:
             x_upper = self.randvar
         if x_lower>x_upper:
@@ -4605,55 +4614,55 @@ class Erlang(Base):
         return cdf_func(self.shape, self.rate, x_upper)-cdf_func(self.shape, self.rate, x_lower)
 
     def mean(self):
-        '''
+        """"
         Returns: Mean of the Erlang distribution.
-        '''
+        """"
         return self.shape/self.rate
 
     def median(self):
-        '''
+        """"
         Returns: Median of the Erlang distribution.
-        '''
+        """"
         return "no simple closed form"
 
     def mode(self):
-        '''
+        """"
         Returns: Mode of the Erlang distribution.
-        '''
+        """"
         return (1/self.rate)*(self.shape-1)
 
     def var(self):
-        '''
+        """"
         Returns: Variance of the Erlang distribution.
-        '''
+        """"
         return self.shape/(self.rate**2)
 
     def skewness(self):
-        '''
+        """"
         Returns: Skewness of the Erlang distribution. 
-        '''
+        """"
         return 2/sqrt(self.shape)
 
     def kurtosis(self):
-        '''
+        """"
         Returns: Kurtosis of the Erlang distribution. 
-        '''
+        """"
         return 6/self.shape
 
     def entropy(self):
-        '''
+        """"
         Returns: differential entropy of the Erlang distribution.
 
         Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
         link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
-        '''
+        """"
         k= self.shape; _lambda = self.rate
         return (1-k)*ss.digamma(k)+np.log(ss.gamma(k)/_lambda)+k
 
     def print_summary(self):
-        '''
+        """"
         Returns: Summary statistic regarding the Erlang distribution
-        '''
+        """"
         mean = self.mean()
         median = self.median()
         mode = self.mode()
@@ -4666,7 +4675,7 @@ class Erlang(Base):
 
 # to be reviewed
 class Rayleigh(Base):
-    '''
+    """"
     This class contains methods concerning Rayleigh Distirbution. 
     Args:
     
@@ -4693,7 +4702,7 @@ class Rayleigh(Base):
 
     - Weisstein, Eric W. "Rayleigh Distribution." From MathWorld--A Wolfram Web Resource. 
     https://mathworld.wolfram.com/RayleighDistribution.html
-    '''
+    """"
     def __init__(self, scale, randvar):
         if randvar<0:
             raise ValueError('random variable should not be less than 0. Entered value: {}'.format(randvar))
@@ -4711,7 +4720,7 @@ class Rayleigh(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -4725,7 +4734,7 @@ class Rayleigh(Base):
         
         Returns: 
             either probability density evaluation for some point or plot of Rayleigh distribution.
-        '''
+        """"
         generator = lambda sig,x: (x/sig**2)*np.exp(-x**2/(2*sig**2))
 
         if plot == True:
@@ -4744,7 +4753,7 @@ class Rayleigh(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -4758,7 +4767,7 @@ class Rayleigh(Base):
         
         Returns: 
             either cumulative distribution evaluation for some point or plot of Rayleigh distribution.
-        '''
+        """"
         generator = lambda sig,x: 1-np.exp(-x**2/(2*sig**2))
         if plot == True:
             x = np.linspace(0, interval, int(threshold))
@@ -4767,7 +4776,7 @@ class Rayleigh(Base):
         return generator(self.scale, self.randvar)
 
     def p_value(self, x_lower=0, x_upper=None):
-        '''
+        """"
         Args:
 
             x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
@@ -4778,7 +4787,7 @@ class Rayleigh(Base):
 
         Returns:
             p-value of the Erlang distribution evaluated at some random variable.
-        '''
+        """"
         if x_upper == None:
             x_upper = self.randvar
         if x_lower>x_upper:
@@ -4788,54 +4797,54 @@ class Rayleigh(Base):
         return cdf_func(self.scale, x_upper)-cdf_func(self.scale, x_lower)
 
     def mean(self):
-        '''
+        """"
         Returns: Mean of the Rayleigh distribution.
-        '''
+        """"
         return self.scale*sqrt(np.pi/2)
 
     def median(self):
-        '''
+        """"
         Returns: Median of the Rayleigh distribution.
-        '''
+        """"
         return self.scale*sqrt(2*np.log(2))
 
     def mode(self):
-        '''
+        """"
         Returns: Mode of the Rayleigh distribution.
-        '''
+        """"
         return self.scale
 
     def var(self):
-        '''
+        """"
         Returns: Variance of the Rayleigh distribution.
-        '''
+        """"
         return  (4-np.pi)/2*np.scale**2
 
     def skewness(self):
-        '''
+        """"
         Returns: Skewness of the Rayleigh distribution. 
-        '''
+        """"
         return (2*sqrt(np.pi)*(np.pi-3))/np.power((4-np.pi), 3/2)
 
     def kurtosis(self):
-        '''
+        """"
         Returns: Kurtosis of the Rayleigh distribution. 
-        '''
+        """"
         return -(6*np.pi**2-24*np.pi+16)/(4-np.pi)**2
 
     def entropy(self):
-        '''
+        """"
         Returns: differential entropy of the Rayleigh distribution.
 
         Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
         link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
-        '''
+        """"
         return 1+np.log(self.scale/sqrt(2))+(np.euler_gamma/2)
 
     def print_summary(self):
-        '''
+        """"
         Returns: Summary statistic regarding the Rayleigh distribution
-        '''
+        """"
         mean = self.mean()
         median = self.median()
         mode = self.mode()
@@ -4848,7 +4857,7 @@ class Rayleigh(Base):
 
 # to be reviewed
 class Maxweel_Boltzmann(Base):
-    '''
+    """"
     This class contains methods concerning Maxwell-Boltzmann Distirbution. 
     Args:
     
@@ -4872,7 +4881,7 @@ class Maxweel_Boltzmann(Base):
     Reference:
     - Wikipedia contributors. (2021, January 12). Maxwell–Boltzmann distribution. In Wikipedia, The Free Encyclopedia. 
     Retrieved 01:02, January 14, 2021, from https://en.wikipedia.org/w/index.php?title=Maxwell%E2%80%93Boltzmann_distribution&oldid=999883013
-    '''
+    """"
     def __init__(self, a, randvar):
         if randvar<0:
             raise ValueError('random variable should only be in between 0 and 1. Entered value: {}'.format(randvar))
@@ -4890,7 +4899,7 @@ class Maxweel_Boltzmann(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -4904,7 +4913,7 @@ class Maxweel_Boltzmann(Base):
         
         Returns: 
             either probability density evaluation for some point or plot of Maxwell-Boltzmann distribution.
-        '''
+        """"
         generator = lambda a, x: sqrt(2/np.pi)*(x**2*np.exp(-x**2/(2*a**2)))/(a**3)
 
         if plot == True:
@@ -4923,7 +4932,7 @@ class Maxweel_Boltzmann(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -4937,7 +4946,7 @@ class Maxweel_Boltzmann(Base):
         
         Returns: 
             either cumulative distribution evaluation for some point or plot of Maxwell-Boltzmann distribution.
-        '''
+        """"
         generator = lambda a, x: ss.erf(x/(sqrt(2)*a))-sqrt(2/np.pi)*(x**2*np.exp(-x**2/(2*a**2)))/(a)
         if plot == True:
             if interval<0:
@@ -4948,7 +4957,7 @@ class Maxweel_Boltzmann(Base):
         return generator(self.a, self.randvar)
 
     def p_value(self, x_lower=0, x_upper=None):
-        '''
+        """"
         Args:
 
             x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
@@ -4959,7 +4968,7 @@ class Maxweel_Boltzmann(Base):
 
         Returns:
             p-value of the Maxwell-Boltzmann distribution evaluated at some random variable.
-        '''
+        """"
         if x_upper == None:
             x_upper = self.randvar
         if x_lower>x_upper:
@@ -4969,55 +4978,55 @@ class Maxweel_Boltzmann(Base):
         return cdf_func(self.a, x_upper)-cdf_func(self.a, x_lower)
 
     def mean(self):
-        '''
+        """"
         Returns: Mean of the Maxwell-Boltzmann distribution.
-        '''
+        """"
         return 2*self.a*sqrt(2/np.pi)
 
     def median(self):
-        '''
+        """"
         Returns: Median of the Maxwell-Boltzmann distribution.
-        '''
+        """"
         return "currently unsupported"
 
     def mode(self):
-        '''
+        """"
         Returns: Mode of the Maxwell-Boltzmann distribution.
-        '''
+        """"
         return sqrt(2)*self.a
 
     def var(self):
-        '''
+        """"
         Returns: Variance of the Maxwell-Boltzmann distribution.
-        '''
+        """"
         return (self.a**2*(3*np.pi-8))/np.pi
 
     def skewness(self):
-        '''
+        """"
         Returns: Skewness of the Maxwell-Boltzmann distribution. 
-        '''
+        """"
         return (2*sqrt(2)*(16-5*np.pi))/np.power((3*np.pi-8), 3/2)
 
     def kurtosis(self):
-        '''
+        """"
         Returns: Kurtosis of the Maxwell-Boltzmann distribution. 
-        '''
+        """"
         return 4*((-96+40*np.pi-3*np.pi**2)/(3*np.pi-8)**2)
 
     def entropy(self):
-        '''
+        """"
         Returns: differential entropy of the Maxwell-Boltzmann distribution.
 
         Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
         link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
-        '''
+        """"
         a= self.a
         return np.log(a*sqrt(2*np.pi)+np.euler_gamma-0.5)
 
     def print_summary(self):
-        '''
+        """"
         Returns: Summary statistic regarding the Maxwell-Boltzmann distribution
-        '''
+        """"
         mean = self.mean()
         median = self.median()
         mode = self.mode()
@@ -5029,7 +5038,7 @@ class Maxweel_Boltzmann(Base):
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
 class Beta_rectangular(Base):
-    '''
+    """"
     This class contains methods concerning Beta-rectangular Distirbution. 
     Thus it is a bounded distribution that allows for outliers to have a greater chance of occurring than does the beta distribution.
 
@@ -5059,7 +5068,7 @@ class Beta_rectangular(Base):
     Reference:
     - Wikipedia contributors. (2020, December 7). Beta rectangular distribution. In Wikipedia, The Free Encyclopedia. 
     Retrieved 01:05, January 14, 2021, from https://en.wikipedia.org/w/index.php?title=Beta_rectangular_distribution&oldid=992814814
-    '''
+    """"
     def __init__(self, alpha, beta, theta, min, max, randvar):
         if alpha<0 or beta<0:
             raise ValueError('alpha and beta parameter should not be less that 0. Entered values: alpha: {}, beta: {}'.format(alpha, beta))
@@ -5083,7 +5092,7 @@ class Beta_rectangular(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -5097,7 +5106,7 @@ class Beta_rectangular(Base):
         
         Returns: 
             either probability density evaluation for some point or plot of Beta-rectangular distribution.
-        '''
+        """"
         def generator(a,b, alpha, beta, theta, x):
             if x>a or x<b:
                 return (theta*ss.gamma(alpha+beta)/(ss.gamma(alpha)*ss.gamma(beta))*(np.power(x-a, alpha-1)*np.power(b-x, beta-1))/(np.power(b-a, alpha+beta+1)))+(1-theta)/(b-a)
@@ -5119,7 +5128,7 @@ class Beta_rectangular(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -5133,7 +5142,7 @@ class Beta_rectangular(Base):
         
         Returns: 
             either cumulative distribution evaluation for some point or plot of Beta-rectangular distribution.
-        '''
+        """"
         def generator(a,b,alpha, beta, theta, x):
             if x<=a:
                 return 0
@@ -5152,7 +5161,7 @@ class Beta_rectangular(Base):
         return generator(self.min, self.max, self.alpha, self.beta, self.theta, self.randvar)
 
     def p_value(self, x_lower=0, x_upper=None):
-        '''
+        """"
         Args:
 
             x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
@@ -5163,7 +5172,7 @@ class Beta_rectangular(Base):
 
         Returns:
             p-value of the Beta-rectangular distribution evaluated at some random variable.
-        '''
+        """"
         
         if x_upper == None:
             x_upper = self.randvar
@@ -5182,17 +5191,17 @@ class Beta_rectangular(Base):
         return cdf_func(self.min, self.max, self.alpha, self.beta, self.theta, x_upper)-cdf_func(self.min, self.max, self.alpha, self.beta, self.theta, x_lower)
 
     def mean(self):
-        '''
+        """"
         Returns: Mean of the Beta-rectangular distribution.
-        '''
+        """"
         alpha = self.alpha; beta =self.beta; theta=self.theta
         a = self.min; b=self.max
         return a+(b-a)*((theta*alpha)/(alpha+beta)+(1-theta)/2)
 
     def var(self):
-        '''
+        """"
         Returns: Variance of the Beta-rectangular distribution.
-        '''
+        """"
         alpha = self.alpha; beta =self.beta; theta=self.theta
         a = self.min; b=self.max
         k = alpha+beta
@@ -5200,9 +5209,9 @@ class Beta_rectangular(Base):
 
 
     def print_summary(self):
-        '''
+        """"
         Returns: Summary statistic regarding the Beta-rectangular distribution
-        '''
+        """"
         mean = self.mean()
         median = self.median()
         mode = self.mode()
@@ -5214,7 +5223,7 @@ class Beta_rectangular(Base):
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
 class Bernoulli(Base):
-    '''
+    """"
     This class contains methods concerning Continuous Bernoulli Distirbution. 
     The continuous Bernoulli distribution arises in deep learning and computer vision, 
     specifically in the context of variational autoencoders, for modeling the 
@@ -5245,7 +5254,7 @@ class Bernoulli(Base):
     - Kingma, D. P., & Welling, M. (2013). Auto-encoding variational bayes. arXiv preprint arXiv:1312.6114.
     - Kingma, D. P., & Welling, M. (2014, April). Stochastic gradient VB and the variational auto-encoder. 
     In Second International Conference on Learning Representations, ICLR (Vol. 19).
-    '''
+    """"
     def __init__(self, shape, randvar):
         if randvar<0 or randvar>1:
             raise ValueError('random variable should only be in between 0 and 1. Entered value: {}'.format(randvar))
@@ -5263,7 +5272,7 @@ class Bernoulli(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -5277,7 +5286,7 @@ class Bernoulli(Base):
         
         Returns: 
             either probability density evaluation for some point or plot of Continuous Bernoulli distribution.
-        '''
+        """"
         C = lambda shape: (2*np.arctanh(1-2*shape))/(1-2*shape) if shape != 0.5 else 2
         def generator(shape, x):
             return C(shape)*np.power(shape, x)*np.power(1-shape, 1-x)
@@ -5298,7 +5307,7 @@ class Bernoulli(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -5312,7 +5321,7 @@ class Bernoulli(Base):
         
         Returns: 
             either cumulative distribution evaluation for some point or plot of Continuous Bernoulli distribution.
-        '''
+        """"
         generator = lambda shape, x: (shape**x*np.power(1-shape, 1-x)+shape-1)/(2*shape-1) if shape != 0.5 else x
 
         if plot == True:
@@ -5324,7 +5333,7 @@ class Bernoulli(Base):
         return generator(self.shape, self.randvar)
 
     def p_value(self, x_lower=0, x_upper=None):
-        '''
+        """"
         Args:
 
             x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
@@ -5335,7 +5344,7 @@ class Bernoulli(Base):
 
         Returns:
             p-value of the Continuous Bernoulli distribution evaluated at some random variable.
-        '''
+        """"
         if x_upper == None:
             x_upper = self.randvar
         if x_lower>x_upper:
@@ -5345,9 +5354,9 @@ class Bernoulli(Base):
         return cdf_func(self.shape, x_upper)-cdf_func(self.shape, x_lower)
 
     def mean(self):
-        '''
+        """"
         Returns: Mean of the Continuous Bernoulli distribution.
-        '''
+        """"
         shape = self.shape
         if shape == 0.5:
             return 0.5
@@ -5355,18 +5364,18 @@ class Bernoulli(Base):
 
 
     def var(self):
-        '''
+        """"
         Returns: Variance of the Continuous Bernoulli distribution.
-        '''
+        """"
         shape = self.shape
         if shape == 0.5:
             return 1/12
         return shape/((2*shape-1)**2)+1/(2*np.arctanh(1-2*shape))**2
 
     def print_summary(self):
-        '''
+        """"
         Returns: Summary statistic regarding the Continuous Bernoulli distribution
-        '''
+        """"
         mean = self.mean()
         median = self.median()
         mode = self.mode()
@@ -5378,7 +5387,7 @@ class Bernoulli(Base):
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
 # class Beta_noncentral(Base):
-#     '''
+#     """"
 #     This class contains methods concerning noncentral beta Distirbution (type 1). 
 
 #     Args:
@@ -5408,7 +5417,7 @@ class Bernoulli(Base):
 #     - Kingma, D. P., & Welling, M. (2013). Auto-encoding variational bayes. arXiv preprint arXiv:1312.6114.
 #     - Kingma, D. P., & Welling, M. (2014, April). Stochastic gradient VB and the variational auto-encoder. 
 #     In Second International Conference on Learning Representations, ICLR (Vol. 19).
-#     '''
+#     """"
 #     def __init__(self, alpha, beta, noncentral, randvar):
 #         if randvar<0 or randvar>1:
 #             raise ValueError('random variable should only be in between 0 and 1. Entered value: {}'.format(randvar))
@@ -5426,7 +5435,7 @@ class Bernoulli(Base):
 #             ylim=None,
 #             xlabel=None,
 #             ylabel=None):
-#         '''
+#         """"
 #         Args:
         
 #             interval(int): defaults to none. Only necessary for defining plot.
@@ -5440,7 +5449,7 @@ class Bernoulli(Base):
         
 #         Returns: 
 #             either probability density evaluation for some point or plot of noncentral beta distribution.
-#         '''
+#         """"
         
 #         generator = lambda a,b, _lambda: np.sum([np.exp(-_lambda/2)])
             
@@ -5460,7 +5469,7 @@ class Bernoulli(Base):
 #             ylim=None,
 #             xlabel=None,
 #             ylabel=None):
-#         '''
+#         """"
 #         Args:
         
 #             interval(int): defaults to none. Only necessary for defining plot.
@@ -5474,7 +5483,7 @@ class Bernoulli(Base):
         
 #         Returns: 
 #             either cumulative distribution evaluation for some point or plot of noncentral beta distribution.
-#         '''
+#         """"
 #         generator = lambda shape, x: (shape**x*np.power(1-shape, 1-x)+shape-1)/(2*shape-1) if shape != 0.5 else x
 
 #         if plot == True:
@@ -5486,7 +5495,7 @@ class Bernoulli(Base):
 #         return generator(self.shape, self.randvar)
 
 #     def p_value(self, x_lower=0, x_upper=None):
-#         '''
+#         """"
 #         Args:
 
 #             x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
@@ -5497,7 +5506,7 @@ class Bernoulli(Base):
 
 #         Returns:
 #             p-value of the non-central distribution evaluated at some random variable.
-#         '''
+#         """"
 #         if x_upper == None:
 #             x_upper = self.randvar
 #         if x_lower>x_upper:
@@ -5507,9 +5516,9 @@ class Bernoulli(Base):
 #         return cdf_func(self.shape, x_upper)-cdf_func(self.shape, x_lower)
 
 #     def mean(self):
-#         '''
+#         """"
 #         Returns: Mean of the noncentral beta distribution.
-#         '''
+#         """"
 #         shape = self.shape
 #         if shape == 0.5:
 #             return 0.5
@@ -5517,18 +5526,18 @@ class Bernoulli(Base):
 
 
 #     def var(self):
-#         '''
+#         """"
 #         Returns: Variance of the noncentral beta distribution.
-#         '''
+#         """"
 #         shape = self.shape
 #         if shape == 0.5:
 #             return 1/12
 #         return shape/((2*shape-1)**2)+1/(2*np.arctanh(1-2*shape))**2
 
 #     def print_summary(self):
-#         '''
+#         """"
 #         Returns: Summary statistic regarding the noncentral beta distribution
-#         '''
+#         """"
 #         mean = self.mean()
 #         median = self.median()
 #         mode = self.mode()
@@ -5540,7 +5549,7 @@ class Bernoulli(Base):
 #         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
 class Wigner(Base):
-    '''
+    """"
     This class contains methods concerning Wigner semicricle Distirbution. 
     Args:
     
@@ -5564,7 +5573,7 @@ class Wigner(Base):
     Reference:
     - Wikipedia contributors. (2020, December 14). Wigner semicircle distribution. In Wikipedia, The Free Encyclopedia. 
     Retrieved 03:41, January 14, 2021, from https://en.wikipedia.org/w/index.php?title=Wigner_semicircle_distribution&oldid=994143777
-    '''
+    """"
     def __init__(self, radius, randvar):
         if radius<0:
             raise ValueError('parameter a shoould not be less than 0. Entered value:{}'.format(radius))
@@ -5582,7 +5591,7 @@ class Wigner(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -5596,7 +5605,7 @@ class Wigner(Base):
         
         Returns: 
             either probability density evaluation for some point or plot of Wigner semicricle distribution.
-        '''
+        """"
         generator = lambda r, x: 2/(np.pi*r**2)*sqrt(r**2-x**2)
 
         if plot == True:
@@ -5615,7 +5624,7 @@ class Wigner(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -5629,7 +5638,7 @@ class Wigner(Base):
         
         Returns: 
             either cumulative distribution evaluation for some point or plot of Wigner semicricle distribution.
-        '''
+        """"
         generator = lambda r,x: 0.5+(x*sqrt(r**2-x**2))/(np.pi*r**2)+(np.arcsin(x/r))/np.pi
         if plot == True:
             if interval<0:
@@ -5640,7 +5649,7 @@ class Wigner(Base):
         return generator(self.radius, self.randvar)
 
     def p_value(self, x_lower=0, x_upper=None):
-        '''
+        """"
         Args:
 
             x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
@@ -5651,7 +5660,7 @@ class Wigner(Base):
 
         Returns:
             p-value of the Wigner semicricle distribution evaluated at some random variable.
-        '''
+        """"
         if x_upper == None:
             x_upper = self.randvar
         if x_lower>x_upper:
@@ -5661,51 +5670,51 @@ class Wigner(Base):
         return cdf_func(self.radius, x_upper)-cdf_func(self.radius, x_lower)
 
     def mean(self):
-        '''
+        """"
         Returns: Mean of the Wigner semicricle distribution.
-        '''
+        """"
         return 0
 
     def median(self):
-        '''
+        """"
         Returns: Median of the Wigner semicricle distribution.
-        '''
+        """"
         return 0
 
     def mode(self):
-        '''
+        """"
         Returns: Mode of the Wigner semicricle distribution.
-        '''
+        """"
         return 0
 
     def var(self):
-        '''
+        """"
         Returns: Variance of the Wigner semicricle distribution.
-        '''
+        """"
         return self.radius**2/4
 
     def skewness(self):
-        '''
+        """"
         Returns: Skewness of the Wigner semicricle distribution. 
-        '''
+        """"
         return 0
 
     def kurtosis(self):
-        '''
+        """"
         Returns: Kurtosis of the Wigner semicricle distribution. 
-        '''
+        """"
         return -1
 
     def entropy(self):
-        '''
+        """"
         Returns: differential entropy of the Wigner semicricle distribution.
-        '''
+        """"
         return np.log(np.pi*self.raduis)-0.5
 
     def print_summary(self):
-        '''
+        """"
         Returns: Summary statistic regarding the Wigner semicricle distribution
-        '''
+        """"
         mean = self.mean()
         median = self.median()
         mode = self.mode()
@@ -5717,7 +5726,7 @@ class Wigner(Base):
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
 class Balding_Nichols(Base):
-    '''
+    """"
     This class contains methods concerning Balding Nichols Distirbution. 
     Args:
     
@@ -5742,7 +5751,7 @@ class Balding_Nichols(Base):
     Reference:
     - Wikipedia contributors. (2020, December 14). Wigner semicircle distribution. In Wikipedia, The Free Encyclopedia. 
     Retrieved 03:41, January 14, 2021, from https://en.wikipedia.org/w/index.php?title=Wigner_semicircle_distribution&oldid=994143777
-    '''
+    """"
     def __init__(self, F, p, randvar):
         if radius<0 | randvar>1:
             raise ValueError('random variable shoould only be in between 0 and 1. Entered value:{}'.format(randvar))
@@ -5765,7 +5774,7 @@ class Balding_Nichols(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -5779,7 +5788,7 @@ class Balding_Nichols(Base):
         
         Returns: 
             either probability density evaluation for some point or plot of Balding Nichols distribution.
-        '''
+        """"
         generator = lambda alpha, beta, x: (x**(alpha-1)*np.power(1-x, beta-1))/ss.beta(alpha, beta)
         if plot == True:
             if interval<0:
@@ -5797,7 +5806,7 @@ class Balding_Nichols(Base):
             ylim=None,
             xlabel=None,
             ylabel=None):
-        '''
+        """"
         Args:
         
             interval(int): defaults to none. Only necessary for defining plot.
@@ -5811,7 +5820,7 @@ class Balding_Nichols(Base):
         
         Returns: 
             either cumulative distribution evaluation for some point or plot of Balding Nichols distribution.
-        '''
+        """"
         generator = lambda alpha, beta, x: ss.betainc(alpha, beta, x)
         if plot == True:
             if interval<0:
@@ -5822,7 +5831,7 @@ class Balding_Nichols(Base):
         return generator(self.alpha, self.beta, self.randvar)
 
     def p_value(self, x_lower=0, x_upper=None):
-        '''
+        """"
         Args:
 
             x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
@@ -5833,7 +5842,7 @@ class Balding_Nichols(Base):
 
         Returns:
             p-value of the Balding Nichols distribution evaluated at some random variable.
-        '''
+        """"
         if x_upper == None:
             x_upper = self.randvar
         if x_lower>x_upper:
@@ -5843,41 +5852,41 @@ class Balding_Nichols(Base):
         return cdf_func(self.alpha, self.beta, x_upper)-cdf_func(self.alpha, self.beta, x_lower)
 
     def mean(self):
-        '''
+        """"
         Returns: Mean of the Balding Nichols distribution.
-        '''
+        """"
         return self.p
 
     def median(self):
-        '''
+        """"
         Returns: Median of the Balding Nichols distribution.
-        '''
+        """"
         return "no simple closed form"
 
     def mode(self):
-        '''
+        """"
         Returns: Mode of the Balding Nichols distribution.
-        '''
+        """"
         return (self.F-(1-self.F)*self.p)/(3*(self.F-1))
 
     def var(self):
-        '''
+        """"
         Returns: Variance of the Balding Nichols distribution.
-        '''
+        """"
         return self.F*self.p*(1-self.p)
 
     def skewness(self):
-        '''
+        """"
         Returns: Skewness of the Balding Nichols distribution. 
-        '''
+        """"
         F = self.f
         p = self.p
         return (2*F*(1-2*p))/((1+F)*sqrt(F*(1-p)*p))
 
     def print_summary(self):
-        '''
+        """"
         Returns: Summary statistic regarding the Balding Nichols distribution
-        '''
+        """"
         mean = self.mean()
         median = self.median()
         mode = self.mode()
