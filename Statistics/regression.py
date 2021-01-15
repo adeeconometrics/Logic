@@ -3,9 +3,9 @@ import scipy.special as ss
 from math import sqrt
 from distributions import univariate
 class generalMethods:
-    '''
+    """
     Base class architecture of generalMethods Data structure: Dictionaries of independent and dependent variables.
-    '''
+    """
     def __init__(self,
                  independent=None,
                  dependent=None,
@@ -88,7 +88,7 @@ class generalMethods:
                     self.covariance.update([(self.keys_cov[var], update_cov)])
 
     def t_statistic(self, cv, df, ci=None):
-        '''
+        """
         Args:
 
             - cv(float): critical vaue
@@ -96,12 +96,12 @@ class generalMethods:
             - ci(int | [0,100]): Optional. confidence interval
         
         Returns: p-value drawn from student's T distribution
-        ''' # check this code 
+        """ # check this code 
         p_value = univariate.T_distribution(df, cv).p_value()
         return p_value
 
     def f_statistic(self, cv, df1, df2, ci=None):
-        '''
+        """
         Args:
 
             - cv(float): critical vaue
@@ -110,14 +110,14 @@ class generalMethods:
             - ci(int | [0,100]): Optional. confidence interval
         
         Returns: p-value drawn from F distribution
-        '''# check this code 
+        """# check this code 
         p_value = univariate.F_distribution(cv,df1,df2).p_value()
         return p_value
 
     def wrap_data(self, on=**kwargs):
-        '''
+        """
         read csv file, excel, and convert to numpy array
-        '''
+        """
         pass
 
     def least_squares(self):
@@ -151,9 +151,9 @@ class generalMethods:
         pass
 
     def correlation(self):
-        '''
+        """
         Returns: Pearson's correlation coefficient
-        '''
+        """
         pass
 
 
@@ -192,7 +192,7 @@ class OLS(generalMethods):
 
 
 class correlation:
-    '''
+    """
     This class contains implementation concerning correlation analysis which is used to measure the
     strength and direction between two variables. This class offers two methods of correlation:
     the Pearson product moment correlation and the Spearman rank order correlation. 
@@ -205,7 +205,7 @@ class correlation:
     Reference: 
     - Minitab (2019) Correlation Analysis. Retrieved at: 
     https://support.minitab.com/en-us/minitab-express/1/help-and-how-to/modeling-statistics/regression/how-to/correlation/methods-and-formulas/
-    '''
+    """
 
     def __init__(self):
         pass
@@ -230,9 +230,9 @@ class simpleLinearRegression(generalMethods):
         super().__init__(independent=data_x, dependent=data_y)
 
     def correlation(self):
-        '''
+        """
         Returns: Pearson's correlation coefficient
-        '''
+        """
         key_x = self.keys_ind[0]
         key_y = self.keys_d[0]
         mean_x = sum(self.independent[key_x])/len(self.independent[key_x])
@@ -242,39 +242,39 @@ class simpleLinearRegression(generalMethods):
         return temp_u/temp_l
 
     def r_square(self, adjusted=False):
-        '''
+        """
         Args:
 
             - adjusted(bool): defaults to False. If true, returns adjusted r-square.
         Returns: r-square or adjusted r-square.
-        '''
+        """
         sample_mean = sum(self.dependent[self.keys_d[0]])/len(self.dependent[self.keys_d[0]])
         # rss = sum([])
         # tss = sum([])
         pass
 
     def std_err(self):
-        '''
+        """
         Returns: standard error estimate
-        '''
+        """
         pass
 
     def a_coef(self):
-        '''
+        """
         Returns: a coefficient
-        '''
+        """
         pass
 
     def b_coef(self):
-        '''
+        """
         Returns: b coefficient 
-        '''
+        """
         pass
 
     def print_summary(self):
-        '''
+        """
         Returns: prints summary statistic. 
-        '''
+        """
         pass
     pass
 

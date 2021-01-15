@@ -26,14 +26,17 @@ class Base:
             plt.ylabel(ylabel)
         plt.plot(x, y, "black", alpha=0.5)
 
-    def logpdf(self):
-        pass
+    def logpdf(self, pdf):
+        return np.log(pdf)
 
-    def logcdf(self):
-        pass
+    def logcdf(self, cdf):
+        return np.log(cdf)
 
     def p_value(self):
         return "unsupported"
+
+    def confidence_interval(self):
+        return "currently unsupported"
 
     def rvs(self): # (adaptive) rejection sampling implementation
         """"

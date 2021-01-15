@@ -6,16 +6,16 @@ except Exception as e:
     print("some modules are missing {}".format(e))
 
 # RENAME THIS FILE SOON
-'''
+"""
 test statistic is used in hypotheses tests. This module contains a collection of
 test statistic implementations. The modules for distirbutions shall interact with 
 this module for computing p-values. Functions must be independent of their own, while
 classes can interact with their subroutines, avoid unnecessary dependencies.
-'''
+"""
 
 
 def z_transformation(samp_mean, pop_mean, std):
-    '''
+    """
     a function for transforming all normally distributed variables to standard distribution of variables (mean=0, std=1).
     
     Args:
@@ -23,12 +23,12 @@ def z_transformation(samp_mean, pop_mean, std):
         samp_mean(float): sample mean
         pop_mean(float): population mean
         std (float): standard deviation
-    '''
+    """
     return (samp_mean - pop_mean) / std
 
 
 def z_score(samp_mean, pop_mean, std):
-    '''
+    """
     Args:
 
         samp_mean (float): sample mean 
@@ -42,12 +42,12 @@ def z_score(samp_mean, pop_mean, std):
     
     Returns:
         z-score
-    '''
+    """
     return (samp_mean - pop_mean) / std
 
 
 def z_score_smean(samp_mean, pop_mean, std, n):
-    '''
+    """
     Args:
 
         n (int): sample size
@@ -64,7 +64,7 @@ def z_score_smean(samp_mean, pop_mean, std, n):
 
     Returns: 
         test value based on z-statistic for single mean
-    '''
+    """
     return (samp_mean - pop_mean) / (std / sqrt(n))
 
 
@@ -76,7 +76,7 @@ def z_score_dmean(samp_mean1,
                   n2,
                   pop_mean1=None,
                   pop_mean2=None):
-    '''
+    """
     Args:
 
         samp_mean1(float): sample mean of the first distirbution.
@@ -97,7 +97,7 @@ def z_score_dmean(samp_mean1,
     
     Returns:
         test value based on z-statistic for two means
-    '''
+    """
     if pop_mean1 is None and pop_mean2 is None:
         return (samp_mean1 - samp_mean2) / (np.power((np.power(std1, 2) / n1) +
                                                      (np.power(std2, 2) / n2)))
@@ -107,7 +107,7 @@ def z_score_dmean(samp_mean1,
 
 
 def t_test(samp_mean, pop_mean, samp_std, n):
-    '''
+    """
     Args:
 
         samp_mean(float): sample mean.
@@ -122,7 +122,7 @@ def t_test(samp_mean, pop_mean, samp_std, n):
 
     Returns:
         test value based on t-statistic
-    '''
+    """
     return (samp_mean - pop_mean) / (samp_std / sqrt(n))
 
 
@@ -134,7 +134,7 @@ def t_test_dmean_uneq(samp_mean1,
                       std2,
                       n1,
                       n2):
-    '''
+    """
     also known as Welch's t-test.
     Args:
 
@@ -154,7 +154,7 @@ def t_test_dmean_uneq(samp_mean1,
     
     Returns: 
         test value based on t-statistic between two means for unequal variance 
-    '''
+    """
     if (pop_mean1 == None and pop_mean2 == None):
         return (samp_mean1 - samp_mean2) / (sqrt((std1**2 / n1) +
                                                  (std2**2 / n2)))
@@ -170,7 +170,7 @@ def t_test_dmean_eq(samp_mean1,
                     std2,
                     n1,
                     n2):
-    '''
+    """
     Args:
 
         samp_mean1(float): sample mean of the first distirbution.
@@ -190,7 +190,7 @@ def t_test_dmean_eq(samp_mean1,
     
     Returns: 
         test value based on t-statistic between two means for equal variance. 
-    '''
+    """
     if (pop_mean1 != None and pop_mean2 !=
             None):  # is there really a case where pop_mean1 is only given?
         return ((samp_mean1 - samp_mean2) - (pop_mean1 - pop_mean2)) / (sqrt((
@@ -201,7 +201,7 @@ def t_test_dmean_eq(samp_mean1,
 
 
 def paired_t_test(data_set1, data_set2):  # test functionality
-    '''
+    """
     this is appropriate for compairing two samples where it is impossible to control important variables.
     Args:
 
@@ -214,7 +214,7 @@ def paired_t_test(data_set1, data_set2):  # test functionality
         -  len(data_set1)==len(data_set2)
     Returns:
         test value based on t-statistic for paired samples. 
-    '''
+    """
     if len(data_set1) != len(data_set2):
         return print("data sets must have equal size.")
     sum_diff = sum([(x - y) for x in data_set1 for y in data_set2])

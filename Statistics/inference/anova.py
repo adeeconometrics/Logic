@@ -11,9 +11,9 @@ except Exception as e:
 
 
 class BaseAnova:
-    '''
+    """
     Base class architecture of ANOVA Data structure: Dictionaries of independent and dependent variables.
-    '''
+    """
     def __init__(self,
                  independent=None,
                  dependent=None,
@@ -96,13 +96,13 @@ class BaseAnova:
                     self.covariance.update([(self.keys_cov[var], update_cov)])
 
     def p_value(self, df1, df2, x):
-        '''
+        """
         Args:
 
             - df1(int) - degress of freedom.
             - df2(int) - degress of freedom.
         Returns: p-value of F-statistic.
-        '''
+        """
         if isinstance(df1, int) and isinstance(df2, int) == False:
             raise TypeError('df1 and df2 should be integers.')
         p = lambda x, df1, df2: lambda x, df1, df2: 1 - ss.betainc(
@@ -111,14 +111,14 @@ class BaseAnova:
 
 
 class PostHoc(BaseAnova):
-    '''
+    """
     This class covers the methods for post hoc analyses with ANOVA.
-    '''
+    """
     pass
 
 
 class Anova1(BaseAnova):
-    '''
+    """
     This class contains methods concerning One-way ANOVA which concerns itself to determine
     whether data from several groups(levels) have a common mean.
 
@@ -172,72 +172,72 @@ class Anova1(BaseAnova):
         (3) Matlab & Simulink (n.d.). One-Way ANOVA. https://www.mathworks.com/help/stats/one-way-anova.html
 
         (4) Shewart, W. & Wilks, S.S. (1986). Introductory Engineering Statistics. Second Ed., Wiley Series in Probability and Mathematical Statistics.
-    '''
+    """
     def __init__(self, independent, adjust=True):
         super(Anova1, self).__init__(independent=independent, adjust=adjust)
 
     def sum_squares(self):
-        '''
+        """
         Also refered to as sum of squares between treatments. 
         Returns: sum of squares. 
-        '''
+        """
         mean_obs = [np.mean(self.independent[i]) for i in self.keys_ind]
         mean_all = np.mean(mean_obs)
         n_i = self.factor * len(self.independent[self.keys_ind[0]])
         return sum([n * (mean_obs - mean_all)**2 for n in n_i])
 
     def sum_squares_err(self):
-        '''
+        """
         Also referred to as erorr within treatments.
         Returns: the sum of squares error. 
-        '''
+        """
         return sum([
             sum(self.independent[i] - np.mean(self.independent[i]))
             for i in self.keys_ind
         ])
 
     def ss_total(self):
-        '''
+        """
         Sum of suqared distances.
         Returns: total sum of squares.
-        '''
+        """
         # from Shewart, W. & Wilks, S.S. (1986). Introductory Engineering Statistics. Second Ed., Wiley Series in Probability and Mathematical Statistics
         return self.sum_squares() + self.sum_squares()
 
     def mean_sq(self):
-        '''
+        """
         Also referred to as mean squares between groups.
         Returns: mean squares for One-way ANOVA.
-        '''
+        """
         return self.sum_squares() / (self.factor - 1)
 
     def mean_sq_err(self):
-        '''
+        """
         Also referred to as mean squares within groups. 
         Returns: mean square error for One-way ANOVA.
-        '''
+        """
         return self.sum_squares_err() / (
             len(self.independent[self.keys_ind[0]]) - self.factor)
 
     def f_value(self):
-        '''
+        """
         Returns: f-value for One-way ANOVA.
-        '''
+        """
         return self.mean_sq() / self.mean_sq_err()
 
     def p_value(self):
-        '''
+        """
         Returns: p value for One-way ANOVA.
-        '''
+        """
         f_val = self.f_value()
         df1 = self.factor
         df2 = len(self.independent[self.keys_ind[0]])
         return 1 - super().p_value(df1, df2, f_val)
 
     def residuals(self):  # this can be improved
-        '''
+        """
         Returns: residuals for One-way ANOVA.
-        '''
+        """
         return [
             self.independent[i[j]] - np.mean(self.independent[i])
             for i in self.keys_ind
@@ -245,28 +245,28 @@ class Anova1(BaseAnova):
         ]
 
     def r_square(self):
-        '''
+        """
         Returns: r square for One-way ANOVA.
-        '''
+        """
         return 1 - (self.sum_squares_err() / self.sum_squares())
 
     def adjusted_r_sq(self):
-        '''
+        """
         Returns: adjusted r square for One-way ANOVA.
-        '''
+        """
         df_total = len(self.independent[self.keys_ind[0]]) + self.factor
         return 1 - (self.mean_sq_err() / (self.ss_total() / (df_total)))
 
     def std(self):
-        '''
+        """
         Returns: Standard Deviation per factor.
-        '''
+        """
         return [np.std(self.independent[i]) for i in self.keys_ind]
 
     def print_summary(self):
-        '''
+        """
         Prints summary statistics for One-way ANOVA.
-        '''
+        """
         sum_squares = self.sum_squares()
         mean_sq = self.mean_sq()
         mean_sq_err = self.mean_sq_err()
@@ -285,9 +285,9 @@ class Anova1(BaseAnova):
         pass
 
     def means(self):
-        '''
+        """
         Returns: summary of means. 
-        '''
+        """
         # factor, N, Mean, stdDev, CI
         factor = self.factor - 1
         pass
@@ -297,7 +297,7 @@ class Anova1(BaseAnova):
 
 class Anova2(BaseAnova):
     # include model assumptions, when is it appropriately used.
-    '''
+    """
     This class contains methods concerning two-way ANOVA which concerns itself to determine
     whether data from several groups(levels) have a common mean.
 
@@ -339,71 +339,71 @@ class Anova2(BaseAnova):
         https://www.mathworks.com/help/stats/two-way-anova.html?searchHighlight=two%20way%20anova&s_tid=srchtitle
         (3) Minitab (2019). Overview for Two-Way ANOVA. Retrieved at: 
         https://support.minitab.com/en-us/minitab-express/1/help-and-how-to/modeling-statistics/anova/how-to/two-way-anova/before-you-start/overview/
-    '''
+    """
     def __init__(self, independent, dependent, adjust=True):
         super(Anova2, self).__init__(independent=independent,
                                      dependent=dependent,
                                      adjust=adjust)
 
     def sum_squares(self):
-        '''
+        """
         it is the sum of squares of the deviations from the means.
-        '''
+        """
         mean_obs = np.mean(self.data, axis=0)
         mean_all = np.mean(self.data)
         n_i = [len(self.data[i] for i in range(0, len(self.data)))]
         return sum([n * (mean_obs - mean_all)**2 for n in n_i])
 
     def mean_sq(self):
-        '''
+        """
         Also referred to as mean squares between groups.
         Returns: mean squares for Two-way ANOVA.
-        '''
+        """
         ss_factor = self.sum_squares()
 
         # return ms_factor
 
     def mean_sq_err(self):
-        '''
+        """
         Also referred to as mean squares within groups. 
         Returns: mean square error for Two-way ANOVA.
-        '''
+        """
         pass
 
     def f_value(self):
-        '''
+        """
         Returns: f-value for Two-way ANOVA.
-        '''
+        """
         pass
 
     def p_value(self):
-        '''
+        """
         Returns: p value for Two-way ANOVA.
-        '''
+        """
         pass
 
     def residuals(self):
-        '''
+        """
         Returns: sum of squares residuals for Two-way ANOVA.
-        '''
+        """
         pass
 
     def r_square(self):
-        '''
+        """
         Returns: r square for Two-way ANOVA.
-        '''
+        """
         pass
 
     def adjusted_r_sq(self):
-        '''
+        """
         Returns: adjusted r square for Two-way ANOVA.
-        '''
+        """
         pass
 
     def print_summary(self):
-        '''
+        """
         Prints summary statistics for Two-way ANOVA.
-        '''
+        """
         sum_squares = self.sum_squares()
         mean_sq = self.mean_sq()
         mean_sq_err = self.mean_sq_err()
