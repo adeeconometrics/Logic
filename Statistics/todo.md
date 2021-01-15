@@ -10,7 +10,7 @@
             - Fisher
             - Dunnett
             - HSU's MCB
-    - Two-way ANOVA (think of a data structure for two factor analysis)
+    - Two-way ANOVA (think of a data structure for two-factor analysis)
     - MANOVA
         - assumption, use-cases and data structure
         - functions 

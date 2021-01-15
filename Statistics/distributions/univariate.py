@@ -7095,3 +7095,337 @@ class Gamma_inverse(Base):
 #         cstr = "summary statistic"
 #         print(cstr.center(40, "="))
 #         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
+
+class Dagum(Base):
+    """
+    This class contains methods concerning Dagum Distirbution. 
+    Args:
+    
+        p_shape(float | x>0): shape parameter
+        a_shape(float | x>0): shape parameter
+        scale(float | x>0): scale parameter
+        randvar(float | x>0): random variable
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - print_summary for printing the summary statistics of the distribution. 
+
+    Reference:
+    - Wikipedia contributors. (2019, March 14). Dagum distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 23:09, January 15, 2021, from https://en.wikipedia.org/w/index.php?title=Dagum_distribution&oldid=887692271
+    """
+    def __init__(self, p_shape, a_shape, scale, randvar):
+        if randvar<0:
+            raise ValueError('random variable shoould not be less than 0. Entered value:{}'.format(randvar))
+         if p_shape<0 | a_shape<0 | scale<0:
+            raise ValueError('shape and scale parameters should not be less than 0. Entered value: p_shape={}, a_shape={}, scale={}'.format(p_shape, a_shape, scale))
+
+        self.p_shape = p_shape
+        self.a_shape = a_shape
+        self.scale = scale
+        self.randvar = randvar
+
+    def pdf(self,
+            plot=False,
+            threshold=1000,
+            interval = 1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability density evaluation for some point or plot of Benini distribution.
+        """
+        generator = lambda p,a,b,x: (a*p/x)*(np.power(x/b,a*p)/np.power((x/b)**a+1,p+1)
+        if plot == True:
+            if interval<0:
+                raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
+            x = np.linspace(0, 1, int(threshold))
+            y = np.array([generator(self.p_shape,self.a_shape, self.scale,  i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.p_shape,self.a_shape, self.scale,  self.randvar)
+
+    def cdf(self,
+            plot=False,
+            threshold=1000,
+            interval = 1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or plot of Dagum distribution.
+        """
+        generator = lambda p,a,b,x: np.power((1+np.power(x/b,-a)),-p)
+        if plot == True:
+            if interval<0:b,x:
+                raise ValueError('interval parameter should not be less than 0. Entered Value {}'.format(interval))
+            x = np.linspace(0, interval, int(threshold))
+            y = np.array([generator(self.p_shape, self.a_shape,self.scale, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.p_shape, self.a_shape,self.scale, self.randvar)
+
+    def p_value(self, x_lower=0, x_upper=None):
+        """
+        Args:
+
+            x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+            x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+            Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+            Otherwise, the default random variable is x.
+
+        Returns:
+            p-value of the Dagum distribution evaluated at some random variable.
+        """
+        if x_upper == None:
+            x_upper = self.randvar
+        if x_lower>x_upper:
+            raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        
+        cdf_func  = lambda p,a,b,x: np.power((1+np.power(x/b,-a)),-p)
+        return cdf_func(self.p_shape, self.a_shape, self.scale x_upper)-cdf_func(self.p_shape, self.a_shape, self.scale x_lower)
+
+    def mean(self):
+        """
+        Returns: Mean of the Dagum distribution.
+        """
+        a = self.a_shape
+        p = self.p_shape
+        b = self.scale
+        if a>1:
+            return (-b/a)*(ss.gamma(1/a)*ss.gamma(1/a+p))/ss.gamma(p)
+        return "indeterminate"
+
+    def median(self):
+        """
+        Returns: Median of the Dagum distribution.
+        """
+        a = self.a_shape
+        p = self.p_shape
+        b = self.scale
+        return b*(-1+2**(1/p))**(-1/a)
+
+    def mode(self):
+        """
+        Returns: Mode of the Dagum distribution.
+        """
+        a = self.a_shape
+        p = self.p_shape
+        b = self.scale
+        return b*np.power((a*p-1)/(a+1), 1/a)
+
+    def var(self):
+        """
+        Returns: Variance of the Dagum distribution.
+        """
+        a = self.a_shape
+        p = self.p_shape
+        b = self.scale
+        if a>2:
+            return (b**2/a**2)*(2*a*(ss.gamma(-2/a)*ss.gamma(2/a+p))/ss.gamma(p)+np.power(ss.gamma(-1/a)*ss.gamma(1/a+p)/ss.gamma(p),2)) 
+        return 
+
+
+    def print_summary(self):
+        """
+        Returns: Summary statistic regarding the Dagum distribution
+        """
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = "summary statistic"
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
+
+class Burr(Base):
+    """
+    This class contains methods concerning Burr Distirbution. 
+    Args:
+    
+        shape(float | x>0): shape parameter
+        scale(float | x>0): scale parameter
+        loc(float | x>0): location parameter
+        randvar(float | x>loc): random variable
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - print_summary for printing the summary statistics of the distribution. 
+
+    Reference:
+    - Wikipedia contributors. (2019, November 19). Davis distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 23:20, January 15, 2021, from https://en.wikipedia.org/w/index.php?title=Davis_distribution&oldid=927002685
+    """
+    def __init__(self, scale, shape, loc, randvar):
+        if randvar>loc:
+            raise ValueError('random variable should be greater than loc parameter')
+         if scale<0 | shape<0 | loc<0:
+            raise ValueError('shape, scale, and location parameters should not be less than 0. Entered value: scale={}, shape={}, loc={}'.format(scale, shape, loc)
+
+        self.scale = scale
+        self.shape = shape
+        self.loc = loc
+        self.randvar = randvar
+
+    def pdf(self,
+            plot=False,
+            threshold=1000,
+            interval = 1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability density evaluation for some point or plot of Benini distribution.
+        """
+        generator = lambda b,n,mu, x: b**n*np.power(x-mu,-1-n)/((np.exp(b/(x-mu))-1)*ss.gamma(n)*ss.zeta(n))
+        if plot == True:
+            if interval<0:
+                raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
+            x = np.linspace(0, 1, int(threshold))
+            y = np.array([generator(self.scale, self.shape, self.loc, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.scale, self.shape, self.loc, self.randvar)
+
+    # def cdf(self,
+    #         plot=False,
+    #         threshold=1000,
+    #         interval = 1,
+    #         xlim=None,
+    #         ylim=None,
+    #         xlabel=None,
+    #         ylabel=None):
+    #     """
+    #     Args:
+        
+    #         interval(int): defaults to none. Only necessary for defining plot.
+    #         threshold(int): defaults to 1000. Defines the sample points in plot.
+    #         plot(bool): if true, returns plot.
+    #         xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+    #         ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+    #         xlabel(string): sets label in x axis. Only relevant when plot is true. 
+    #         ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+    #     Returns: 
+    #         either cumulative distribution evaluation for some point or plot of Burr distribution.
+    #     """
+    #     generator = lambda a,b,o,x: 1- np.exp(-a*np.log10(x/a)-b*(np.log10(x/o))**2)
+    #     if plot == True:
+    #         if interval<0:
+    #             raise ValueError('interval parameter should not be less than 0. Entered Value {}'.format(interval))
+    #         x = np.linspace(0, interval, int(threshold))
+    #         y = np.array([generator(self.alpha, self.sigma, self.beta, i) for i in x])
+    #         return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+    #     return generator(self.alpha, self.beta, self.sigma, self.randvar)
+
+    # def p_value(self, x_lower=0, x_upper=None):
+    #     """
+    #     Args:
+
+    #         x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+    #         x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+    #         Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+    #         Otherwise, the default random variable is x.
+
+    #     Returns:
+    #         p-value of the Burr distribution evaluated at some random variable.
+    #     """
+    #     if x_upper == None:
+    #         x_upper = self.randvar
+    #     if x_lower>x_upper:
+    #         raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        
+    #     cdf_func  = lambda a,b,o,x: 1- np.exp(-a*np.log10(x/a)-b*(np.log10(x/o))**2)
+    #     return cdf_func(self.alpha, self.beta, self.sigma, x_upper)-cdf_func(self.alpha, self.beta, self.sigma, x_lower)
+
+    def mean(self):
+        """
+        Returns: Mean of the Burr distribution.
+        """
+        alpha = self.alpha; beta = self.beta; sigma = self.sigma
+        return sigma+(sigma/(sqrt(2*beta)))*ss.hermite(-1, (1+alpha)/(sqrt(2*beta)))
+
+    def var(self):
+        """
+        Returns: Variance of the Burr distribution.
+        """
+        mean = self.mean()
+        alpha = self.alpha; beta = self.beta; sigma = self.sigma
+        return (sigma**2+(2*sigma**2)/sqrt(2*beta)*ss.hermite(-1,(2+alpha)/sqrt(2*beta)))-mean**2
+
+    def print_summary(self):
+        """
+        Returns: Summary statistic regarding the Burr distribution
+        """
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = "summary statistic"
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)

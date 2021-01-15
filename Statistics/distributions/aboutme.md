@@ -78,6 +78,8 @@ Semi-infinite class
 - Half Normal distribution
 - Inverse Gaussian distribution
 - Inverse Gamma distribution
+- Dagum distribution
+- Davis distribution
 
 ----
 in progress
@@ -101,8 +103,8 @@ in progress
         <!-- - Burr -->
         <!-- - chi-squared -->
         <!-- - chi -->
-        - Dagum
-        - Davis
+        <!-- - Dagum -->
+        <!-- - Davis -->
         - Exponential-logarithmic
         <!-- - Erlang -->
         - exponential F

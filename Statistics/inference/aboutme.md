@@ -28,6 +28,7 @@ features in progress
 - pairwise multiple comparison
 - post-hoc analyses 
 
+----
 ## inferentialStat module
 currently supported features:
 - z-transformation
@@ -45,3 +46,5 @@ features in progress
 - chi-squared t-test
 - chi-squared test for independence
 - chi-squared test for goodness of fit
+- confidence interval in z
+- confidence interval in t
