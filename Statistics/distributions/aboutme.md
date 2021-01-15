@@ -71,6 +71,14 @@ in progress
 - continuous bernoulli distribution
 - Balding-Nichols distribution
 
+Semi-infinite class
+- Benini distribution
+- Folded Normal distribution
+- Half Logistic distribution
+- Half Normal distribution
+- Inverse Gaussian distribution
+- Inverse Gamma distribution
+
 ----
 in progress
 - Continuous univariate 
@@ -86,10 +94,11 @@ in progress
         <!-- - uniform -->
         <!-- - Wigner semicircle -->
     - semi-infinite interval
-        - Benini
-        - Benkatender 
+        <!-- - Benini -->
+        - Benktander Type 1
+        - Benktander Type 2
         <!-- - Beta prime -->
-        - Burr
+        <!-- - Burr -->
         <!-- - chi-squared -->
         <!-- - chi -->
         - Dagum
@@ -97,15 +106,15 @@ in progress
         - Exponential-logarithmic
         <!-- - Erlang -->
         - exponential F
-        - Folded normal
+        <!-- - Folded normal -->
         <!-- - Frechet -->
         <!-- - gamma -->
         - generalized gamma
-        - generalized inverse gamma
-        - generalized inverse Gaussian
+        <!-- - generalized inverse gamma -->
+        <!-- - generalized inverse Gaussian -->
         - Gompertz
-        - half-logistic
-        - half-normal
+        <!-- - half-logistic -->
+        <!-- - half-normal -->
         - Hotelling's T-squared
         - hyper-Erlang
         - hyperexponential
