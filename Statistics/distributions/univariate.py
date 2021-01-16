@@ -7403,3 +7403,412 @@ class Davis(Base):
         cstr = "summary statistic"
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
+class Hypoexponential(Base):
+    """
+    This class contains methods concerning Hypoexponential Distirbution. 
+    Args:
+    
+        rates()
+        randvar(float | x>0): random variable. Optional. Use when cdf and pdf or p value of interest is desired.
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - print_summary for printing the summary statistics of the distribution. 
+
+    Reference:
+    - Wikipedia contributors. (2020, December 13). Hypoexponential distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 12:21, January 16, 2021, from https://en.wikipedia.org/w/index.php?title=Hypoexponential_distribution&oldid=994035019
+    """
+    def __init__(self, randvar=0.5,*args):
+        if randvar<0:
+            raise ValueError('random variable shoould be a positive number. Entered value:{}'.format(randvar))
+        self.args = [i for i in args]
+        self.randvar = randvar
+
+    def pdf(self):
+        return "no other simple form. Currently unsupported"
+
+    def cdf(self):
+        return "no other simple form. Currently unsupported"
+
+    def mean(self):
+        """
+        Returns: Mean of the Hypoexponential distribution.
+        """
+        return sum([1/x for x in self.args])
+
+    def median(self):
+        """
+        Returns: Median of the Hypoexponential distribution.
+        """
+        return "Gneral closed-form does not exist"
+
+    def mode(self):
+        """
+        Returns: Mode of the Hypoexponential distribution.
+        """
+        a = self.a_shape
+        p = self.p_shape
+        b = self.scale
+        return b*np.power((a*p-1)/(a+1), 1/a)
+
+    def var(self):
+        """
+        Returns: Variance of the Hypoexponential distribution.
+        """
+        return "currently unsupported"
+
+    def skewness(self):
+        """
+        Returns: Skewness of the Hypoexponential distribution. 
+        """
+        return 2*sum([1/x**3 for x in self.args])/np.power((sum(1/x**2 for x in self.args), 3/2))
+
+    def kurtosis(self):
+        """
+        Returns: kurtosis of the Hypoexponential distribution
+        """
+        return "no simple closed form"
+
+    def print_summary(self):
+        """
+        Returns: Summary statistic regarding the Hypoexponential distribution
+        """
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = "summary statistic"
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
+class Benktander_T1(Base):
+    """
+    This class contains methods concerning Benktander Type1 Distirbution. 
+    Args:
+    
+        a(float | x>0): shape parameter
+        b(float | x>0): shape parameter
+        randvar(float | x>=1): random variable. Optional. Use when cdf and pdf or p value of interest is desired.
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - print_summary for printing the summary statistics of the distribution. 
+
+    Reference:
+    - Wikipedia contributors. (2018, August 2). Benktander type I distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 12:36, January 16, 2021, from https://en.wikipedia.org/w/index.php?title=Benktander_type_I_distribution&oldid=853042641
+    """
+    def __init__(self, a, b, scale, randvar=1.5):
+        if randvar<1:
+            raise ValueError('random variable shoould be a positive number, not less than 1. Entered value:{}'.format(randvar))
+         if a<0 or b<0:
+            raise ValueError('parameters should be a positive number. Entered value: a={}, b={}'.format(a,b))
+
+        self.a = a
+        self.b = b
+        self.randvar = randvar
+
+    def pdf(self,
+            plot=False,
+            threshold=1000,
+            interval = 1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability density evaluation for some point or plot of Benktander Type1 distribution.
+        """
+        generator = lambda a,b,x: ((1+(2*b*np.log10(x)/a))*(1+a+2*np.log10(x)-2*b/a)*np.power(x, -(2+a+b*np.log10(x))) # log base 10, validate this
+        if plot == True:
+            if interval<0:
+                raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
+            x = np.linspace(0, interval, int(threshold))
+            y = np.array([generator(self.a, self.b, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.a, self.b, self.randvar)
+
+    def cdf(self,
+            plot=False,
+            threshold=1000,
+            interval = 1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or plot of Benktander Type1 distribution.
+        """
+        generator = lambda a,b,x: 1-(1+(2*b/a)*np.log10(x))*np.power(x,-(a+1+b*np.log10(x)))
+        if plot == True:
+            if interval<0:
+                raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
+            x = np.linspace(0, interval, int(threshold))
+            y = np.array([generator(self.a, self.b, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.a, self.b, self.randvar)
+
+    def p_value(self, x_lower=0, x_upper=None):
+        """
+        Args:
+
+            x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+            x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+            Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+            Otherwise, the default random variable is x.
+
+        Returns:
+            p-value of the Benktander Type1 distribution evaluated at some random variable.
+        """
+        if x_upper == None:
+            x_upper = self.randvar
+        if x_lower>x_upper:
+            raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        
+        cdf_func  = lambda a,b,x: 1-(1+(2*b/a)*np.log10(x))*np.power(x,-(a+1+b*np.log10(x))) if x>0 else 0
+        return cdf_func(self.a, self.b, x_upper)-cdf_func(self.a, self.b, x_lower)
+
+    def mean(self):
+        """
+        Returns: Mean of the Benktander Type1 distribution.
+        """
+        return 1+1/self.a
+
+    def var(self):
+        """
+        Returns: Variance of the Benktander Type1 distribution.
+        """
+        a = self.a
+        b = self.b
+        x = self.x
+        return (-sqrt(b)+a*np.exp((a-1)**2/(4*b))*sqrt(np.pi)*ss.erfc((a-1)/(2*sqrt(b))))/(a**2*sqrt(b))
+
+    def print_summary(self):
+        """
+        Returns: Summary statistic regarding the Benktander Type1 distribution
+        """
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = "summary statistic"
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
+class Benktander_T2(Base):
+    """
+    This class contains methods concerning Benktander Type 2 Distirbution. 
+    Args:
+    
+        a(float | x>0): shape parameter
+        b(float | x>0): shape parameter
+        randvar(float | x>=1): random variable. Optional. Use when cdf and pdf or p value of interest is desired.
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - print_summary for printing the summary statistics of the distribution. 
+
+    Reference:
+    - Wikipedia contributors. (2020, June 11). Benktander type II distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 12:43, January 16, 2021, from https://en.wikipedia.org/w/index.php?title=Benktander_type_II_distribution&oldid=962001463
+    """
+    def __init__(self, a, b, scale, randvar=1.5):
+        if randvar<1:
+            raise ValueError('random variable shoould be a positive number, not less than 1. Entered value:{}'.format(randvar))
+         if a<0 or b<0 or b>1:
+            raise ValueError('parameters a amd b should be a positive number where b is not greater than 1. Entered value: a={}, b={}'.format(a,b))
+
+        self.a = a
+        self.b = b
+        self.randvar = randvar
+
+    def pdf(self,
+            plot=False,
+            threshold=1000,
+            interval = 1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability density evaluation for some point or plot of Benktander type 2 distribution.
+        """
+        generator = lambda a,b,x: np.exp(a/b*(1-x**b))*np.power(x,b-2)*(a*x**b-b+1)
+        if plot == True:
+            if interval<0:
+                raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
+            x = np.linspace(0, interval, int(threshold))
+            y = np.array([generator(self.a, self.b, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.a, self.b, self.randvar)
+
+    def cdf(self,
+            plot=False,
+            threshold=1000,
+            interval = 1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or plot of Benktander type 2 distribution.
+        """
+        generator = lambda a,b,x: 1- np.power(x, b-1)*np.exp(a/b*(1-x**b))
+        if plot == True:
+            if interval<0:
+                raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
+            x = np.linspace(0, interval, int(threshold))
+            y = np.array([generator(self.a, self.b, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.a, self.b, self.randvar)
+
+    def p_value(self, x_lower=0, x_upper=None):
+        """
+        Args:
+
+            x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+            x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+            Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+            Otherwise, the default random variable is x.
+
+        Returns:
+            p-value of the Benktander type 2 distribution evaluated at some random variable.
+        """
+        if x_upper == None:
+            x_upper = self.randvar
+        if x_lower>x_upper:
+            raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        
+        cdf_func  = lambda a,b,x: 1- np.power(x, b-1)*np.exp(a/b*(1-x**b)) if x>0 else 0
+        return cdf_func(self.a, self.b, x_upper)-cdf_func(self.a, self.b, x_lower)
+
+    def mean(self):
+        """
+        Returns: Mean of the Benktander type 2 distribution.
+        """
+        return 1+1/self.a
+
+    def median(self):
+        """
+        Returns: Median of the Benktander type 2 distribution.
+        """
+        a = self.a
+        b = self.b
+        if b ==1:
+            return np.log10(2)/a + 1
+        return np.power(((1-b)/a)*ss.lambertw((np.power(2, b/(1-b))*a*np.exp(1/(1-a))/(1-b))), 1/b)
+    
+
+    def mode(self):
+        """
+        Returns: Mode of the Benktander type 2 distribution.
+        """
+        return 1
+
+    def var(self):
+        """
+        Returns: Variance of the Benktander type 2 distribution.
+        """
+        a = self.a
+        p = self.b
+        return (-b+2*a*np.exp(a/b)*ss.expn(1-1/b. a/b))/(a**2*b)
+        
+    def print_summary(self):
+        """
+        Returns: Summary statistic regarding the Benktander type 2 distribution
+        """
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = "summary statistic"
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)

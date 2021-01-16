@@ -58,28 +58,33 @@ in progress
 - weilbull inverse distribution
 - gumbell distribution
 - arcsine distribution
-- triangular distribution
-- trapezoidal distribution
-- beta distribution
-- beta-prime distribution
-- Erlang distribution
-- Rayleigh distribution
-- Maxwell-Boltzmann distribution
-- Wigner semicircle distribution
-- beta rectangular distribution
-- Bates distribution
-- continuous bernoulli distribution
-- Balding-Nichols distribution
+- staged for review
+    - triangular distribution
+    - trapezoidal distribution
+    - beta distribution
+    - beta-prime distribution
+    - Erlang distribution
+    - Rayleigh distribution
+    - Maxwell-Boltzmann distribution
+    - Wigner semicircle distribution
+    - beta rectangular distribution
+    - Bates distribution
+    - continuous bernoulli distribution
+    - Balding-Nichols distribution
 
 Semi-infinite class
-- Benini distribution
-- Folded Normal distribution
-- Half Logistic distribution
-- Half Normal distribution
-- Inverse Gaussian distribution
-- Inverse Gamma distribution
-- Dagum distribution
-- Davis distribution
+- staged for review
+    - Benini distribution
+    - Folded Normal distribution
+    - Half Logistic distribution
+    - Half Normal distribution
+    - Inverse Gaussian distribution
+    - Inverse Gamma distribution
+    - Dagum distribution
+    - Davis distribution
+    - Benktander Type 1 distribution
+    - Benktander Type 2 distribution
+    - hypoexponential distribution
 
 ----
 in progress
@@ -96,39 +101,16 @@ in progress
         <!-- - uniform -->
         <!-- - Wigner semicircle -->
     - semi-infinite interval
-        <!-- - Benini -->
-        - Benktander Type 1
-        - Benktander Type 2
-        <!-- - Beta prime -->
-        <!-- - Burr -->
-        <!-- - chi-squared -->
-        <!-- - chi -->
-        <!-- - Dagum -->
-        <!-- - Davis -->
-        - Exponential-logarithmic
-        <!-- - Erlang -->
-        - exponential F
-        <!-- - Folded normal -->
-        <!-- - Frechet -->
-        <!-- - gamma -->
+        - Exponential-logarithmic*
+        - exponential F**
         - generalized gamma
-        <!-- - generalized inverse gamma -->
-        <!-- - generalized inverse Gaussian -->
-        - Gompertz
-        <!-- - half-logistic -->
-        <!-- - half-normal -->
+        - Gompertz*
         - Hotelling's T-squared
-        - hyper-Erlang
-        - hyperexponential
-        - hypoexponential
+        - hyper-Erlang**
         - inverse chi-squared scaled inverse chi-squared
-        - inverse Gaussian
-        - inverse gamma
         - Kolmogorov
         - Lévylog-Cauchylog-Laplacelog-logistic
-        <!-- - log-normal -->
         - Lomaxmatrix-exponential
-        <!-- - Maxwell–Boltzmann -->
         - Maxwell–Jüttner
         - Mittag-Leffler
         - Nakagaminoncentral chi-squared
@@ -137,7 +119,6 @@ in progress
         - poly-Weibull
         - Rayleighrelativistic
         - Breit–WignerRiceshifted 
-        - Gompertz
         - truncated normal type-2 
         - GumbelWeibull discrete Weibull
         - Wilks's lambda
