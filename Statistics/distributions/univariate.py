@@ -2646,7 +2646,7 @@ class Logit_normal(Base):
             p-value of the Logit distribution evaluated at some random variable.
         """
         if x_lower<0:
-            raise Exception('x_lower should not be less than 0. X_lower:{}'.format(x_lower))
+            raise Exception('x_lower should be a positive number. X_lower:{}'.format(x_lower))
         if x_upper == None:
             x_upper = self.randvar
         if x_lower>x_upper:
@@ -2706,7 +2706,7 @@ class Weibull(Base):
     
         shape(float | [0, infty)): mean parameter
         scale(float | [0, infty)): standard deviation
-        randvar(float | [0, infty)): random variable
+        randvar(float | [0, infty)): random variable. Optional. Use when cdf and pdf or p value of interest is desired.
 
     Methods:
 
@@ -2726,9 +2726,9 @@ class Weibull(Base):
     - Wikipedia contributors. (2020, December 13). Weibull distribution. In Wikipedia, The Free Encyclopedia. 
     Retrieved 11:32, December 28, 2020, from https://en.wikipedia.org/w/index.php?title=Weibull_distribution&oldid=993879185
     """
-    def __init__(self, shape, scale, randvar):
+    def __init__(self, shape, scale, randvar=0.5):
         if shape<0 or scale<0 or randvar<0:
-            raise Exception('Parameters should not be less than 0. Entered values: shape: {0}, scale{1}, randvar{2}'.format(shape, scale, randvar))
+            raise Exception('all parameters should be a positive number. Entered values: shape: {0}, scale{1}, randvar{2}'.format(shape, scale, randvar))
         self.scale = scale
         self.shape = shape
         self.randvar = randvar
@@ -2815,7 +2815,7 @@ class Weibull(Base):
             p-value of the Weilbull distribution evaluated at some random variable.
         """
         if x_lower<0:
-            raise Exception('x_lower should not be less than 0. X_lower:{}'.format(x_lower))
+            raise Exception('x_lower should be a positive number. X_lower:{}'.format(x_lower))
         if x_upper == None:
             x_upper = self.randvar
         if x_lower>x_upper:
@@ -2996,7 +2996,7 @@ class Weilbull_inv(Base):
             p-value of the Logit distribution evaluated at some random variable.
         """
         if x_lower<0:
-            raise Exception('x_lower should not be less than 0. X_lower:{}'.format(x_lower))
+            raise Exception('x_lower should be a positive number. X_lower:{}'.format(x_lower))
         if x_upper == None:
             x_upper = self.randvar
         if x_lower>x_upper:
@@ -3334,8 +3334,8 @@ class Arcsine(Base):
         Returns:
             p-value of the Arcsine distribution evaluated at some random variable.
         """
-        if x_lower<0 or x>1:
-            raise Exception('x_lower should not be less than 0 or greater than 1. X_lower:{}'.format(x_lower))
+        if x_lower<0 or x_lower>1:
+            raise Exception('x_lower should only be in between 0 and 1. X_lower:{}'.format(x_lower))
         if x_upper == None:
             x_upper = self.randvar
         if x_lower>x_upper:
@@ -3998,9 +3998,9 @@ class Beta(Base):
         if randvar<0 | randvar>1:
             raise ValueError('random variable should only be in between 0 and 1. Entered value: {}'.format(randvar))
         if alpha<0:
-            raise ValueError('alpha parameter(shape) should not be less than 0. Entered value:{}'.format(alpha))
+            raise ValueError('alpha parameter(shape) should be a positive number. Entered value:{}'.format(alpha))
         if beta<0:
-            raise ValueError('beta parameter(shape) should not be less than 0. Entered value:{}'.format(beta))
+            raise ValueError('beta parameter(shape) should be a positive number. Entered value:{}'.format(beta))
 
         self.alpha = alpha
         self.beta = beta 
@@ -4182,9 +4182,9 @@ class Beta_prime(Base):
         if randvar<0:
             raise ValueError('random variable should not be less then 0. Entered value: {}'.format(randvar))
         if alpha<0:
-            raise ValueError('alpha parameter(shape) should not be less than 0. Entered value:{}'.format(alpha))
+            raise ValueError('alpha parameter(shape) should be a positive number. Entered value:{}'.format(alpha))
         if beta<0:
-            raise ValueError('beta parameter(shape) should not be less than 0. Entered value:{}'.format(beta))
+            raise ValueError('beta parameter(shape) should be a positive number. Entered value:{}'.format(beta))
 
         self.alpha = alpha
         self.beta = beta 
@@ -4539,7 +4539,7 @@ class Erlang(Base):
         if isinstance(shape,int)==False and shape>0:
             raise Exception('shape parameter should be an integer greater than 0.')
         if rate<0:
-            raise ValueError('beta parameter(rate) should not be less than 0. Entered value:{}'.formatrate))
+            raise ValueError('beta parameter(rate) should be a positive number. Entered value:{}'.formatrate))
         
         self.shape = shape
         self.rate = rate
@@ -4693,7 +4693,7 @@ class Rayleigh(Base):
     This class contains methods concerning Rayleigh Distirbution. 
     Args:
     
-        scale(float | x>0): shape
+        scale(float | x>0): scale
         randvar(float | x>=0): random variable
 
     Methods:
@@ -4719,9 +4719,9 @@ class Rayleigh(Base):
     """
     def __init__(self, scale, randvar):
         if randvar<0:
-            raise ValueError('random variable should not be less than 0. Entered value: {}'.format(randvar))
+            raise ValueError('random variable should be a positive number. Entered value: {}'.format(randvar))
         if scale<0:
-            raise ValueError('shape parameter should be an integer greater than 0.')
+            raise ValueError('scale parameter should be a positive number.')
 
         self.scale = scale
         self.randvar = randvar
@@ -4870,13 +4870,13 @@ class Rayleigh(Base):
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
 # to be reviewed
-class Maxweel_Boltzmann(Base):
+class Maxwell_Boltzmann(Base):
     """
     This class contains methods concerning Maxwell-Boltzmann Distirbution. 
     Args:
     
         a(int | x>0): parameter
-        randvar(float | x>=0): random variable
+        randvar(float | x>=0): random variable. Optional. Use when cdf and pdf or p value of interest is desired.
 
     Methods:
 
@@ -4896,12 +4896,14 @@ class Maxweel_Boltzmann(Base):
     - Wikipedia contributors. (2021, January 12). Maxwell–Boltzmann distribution. In Wikipedia, The Free Encyclopedia. 
     Retrieved 01:02, January 14, 2021, from https://en.wikipedia.org/w/index.php?title=Maxwell%E2%80%93Boltzmann_distribution&oldid=999883013
     """
-    def __init__(self, a, randvar):
+    def __init__(self, a, randvar=0.5):
         if randvar<0:
-            raise ValueError('random variable should only be in between 0 and 1. Entered value: {}'.format(randvar))
+            raise ValueError('random variable should be a positive number. Entered value: {}'.format(randvar))
         if a<0:
-            raise ValueError('parameter a should not be less than 0. Entered value:{}'.format(a))
-        
+            raise ValueError('parameter a should be a positive number. Entered value:{}'.format(a))
+        if isinstance(a,int) == False:
+            raise TypeError('parameter should be in type int')
+
         self.a = a
         self.randvar = randvar
 
@@ -4932,8 +4934,8 @@ class Maxweel_Boltzmann(Base):
 
         if plot == True:
             if interval<0:
-                raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
-            x = np.linspace(0, 1, int(threshold))
+                raise ValueError('interval should be a positive number. Entered value: {}'.format(interval))
+            x = np.linspace(0, interval, int(threshold))
             y = np.array([generator(self.a, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.a, self.randvar)
@@ -4964,7 +4966,7 @@ class Maxweel_Boltzmann(Base):
         generator = lambda a, x: ss.erf(x/(sqrt(2)*a))-sqrt(2/np.pi)*(x**2*np.exp(-x**2/(2*a**2)))/(a)
         if plot == True:
             if interval<0:
-                raise ValueError('interval parameter should not be less than 0. Entered Value {}'.format(interval))
+                raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
             y = np.array([generator(self.a, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -5101,7 +5103,6 @@ class Beta_rectangular(Base):
     def pdf(self,
             plot=False,
             threshold=1000,
-            interval = 1,
             xlim=None,
             ylim=None,
             xlabel=None,
@@ -5127,8 +5128,6 @@ class Beta_rectangular(Base):
             return 0
 
         if plot == True:
-            if interval<0:
-                raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, 1, int(threshold))
             y = np.array([generator(self.min, self.max, self.alpha, self.beta, self.theta, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -5160,7 +5159,7 @@ class Beta_rectangular(Base):
         def generator(a,b,alpha, beta, theta, x):
             if x<=a:
                 return 0
-            elif x>a or x<b:
+            elif x>a | x<b:
                 z = (b)/(b-a)
                 return theta*ss.betainc(alpha,beta,z)+((1-theta)*(x-a))/(b-a)
             else:
@@ -5168,7 +5167,7 @@ class Beta_rectangular(Base):
 
         if plot == True:
             if interval<0:
-                raise ValueError('interval parameter should not be less than 0. Entered Value {}'.format(interval))
+                raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
             y = np.array([generator(self.min, self.max, self.alpha, self.beta, self.theta, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -5268,6 +5267,7 @@ class Bernoulli(Base):
     - Kingma, D. P., & Welling, M. (2013). Auto-encoding variational bayes. arXiv preprint arXiv:1312.6114.
     - Kingma, D. P., & Welling, M. (2014, April). Stochastic gradient VB and the variational auto-encoder. 
     In Second International Conference on Learning Representations, ICLR (Vol. 19).
+    - Ganem, G & Cunningham, J.P. (2019). The continouous Bernoulli: fixing a pervasive error in variational autoencoders. https://arxiv.org/pdf/1907.06845.pdf
     """
     def __init__(self, shape, randvar):
         if randvar<0 or randvar>1:
@@ -5281,7 +5281,6 @@ class Bernoulli(Base):
     def pdf(self,
             plot=False,
             threshold=1000,
-            interval = 1,
             xlim=None,
             ylim=None,
             xlabel=None,
@@ -5306,8 +5305,6 @@ class Bernoulli(Base):
             return C(shape)*np.power(shape, x)*np.power(1-shape, 1-x)
             
         if plot == True:
-            if interval<0:
-                raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, 1, int(threshold))
             y = np.array([generator(self.shape, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -5340,7 +5337,7 @@ class Bernoulli(Base):
 
         if plot == True:
             if interval<0:
-                raise ValueError('interval parameter should not be less than 0. Entered Value {}'.format(interval))
+                raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
             y = np.array([generator(self.shape, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -5502,7 +5499,7 @@ class Bernoulli(Base):
 
 #         if plot == True:
 #             if interval<0:
-#                 raise ValueError('interval parameter should not be less than 0. Entered Value {}'.format(interval))
+#                 raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
 #             x = np.linspace(0, interval, int(threshold))
 #             y = np.array([generator(self.shape, i) for i in x])
 #             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -5568,7 +5565,7 @@ class Wigner(Base):
     Args:
     
         radius(int | x>0): parameter
-        randvar(float | x in [-radius, radius]): random variable
+        randvar(float | x in [-radius, radius]): random variable. Optional. Use when cdf and pdf or p value of interest is desired.
 
     Methods:
 
@@ -5588,10 +5585,10 @@ class Wigner(Base):
     - Wikipedia contributors. (2020, December 14). Wigner semicircle distribution. In Wikipedia, The Free Encyclopedia. 
     Retrieved 03:41, January 14, 2021, from https://en.wikipedia.org/w/index.php?title=Wigner_semicircle_distribution&oldid=994143777
     """
-    def __init__(self, radius, randvar):
+    def __init__(self, radius, randvar=0):
         if radius<0:
-            raise ValueError('parameter a should not be less than 0. Entered value:{}'.format(radius))
-         if randvar<-radius | randvar>radius:
+            raise ValueError('parameter a should be a positive number. Entered value:{}'.format(radius))
+         if randvar<-radius or randvar>radius:
             raise ValueError('random variable should only be in between -radus and radius. Entered value: {}'.format(randvar))
 
         self.radius = radius
@@ -5623,9 +5620,7 @@ class Wigner(Base):
         generator = lambda r, x: 2/(np.pi*r**2)*sqrt(r**2-x**2)
 
         if plot == True:
-            if interval<0:
-                raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
-            x = np.linspace(0, 1, int(threshold))
+            x = np.linspace(-interval, interval, int(threshold))
             y = np.array([generator(self.radius, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.radius, self.randvar)
@@ -5655,9 +5650,7 @@ class Wigner(Base):
         """
         generator = lambda r,x: 0.5+(x*sqrt(r**2-x**2))/(np.pi*r**2)+(np.arcsin(x/r))/np.pi
         if plot == True:
-            if interval<0:
-                raise ValueError('interval parameter should not be less than 0. Entered Value {}'.format(interval))
-            x = np.linspace(0, interval, int(threshold))
+            x = np.linspace(-interval, interval, int(threshold))
             y = np.array([generator(self.radius, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.radius, self.randvar)
@@ -5746,7 +5739,7 @@ class Balding_Nichols(Base):
     
         F(float | 0<=x<=1): F parameter
         p(float | 0<=x<=1): p parameter
-        randvar(float | 0<=x<=1): random variable
+        randvar(float | 0<=x<=1): random variable. Optional. Use when cdf and pdf or p value of interest is desired.
 
     Methods:
 
@@ -5766,12 +5759,12 @@ class Balding_Nichols(Base):
     - Wikipedia contributors. (2021, January 6). Balding–Nichols model. In Wikipedia, The Free Encyclopedia. 
     Retrieved 04:55, January 15, 2021, from https://en.wikipedia.org/w/index.php?title=Balding%E2%80%93Nichols_model&oldid=998640082
     """
-    def __init__(self, F, p, randvar):
-        if randvar<0 | randvar>1:
+    def __init__(self, F, p, randvar=0.5):
+        if randvar<0 or randvar>1:
             raise ValueError('random variable should only be in between 0 and 1. Entered value:{}'.format(randvar))
-         if p<0 | p>1:
+         if p<0 or p>1:
             raise ValueError('parameter p should only be in between 0 and 1. Entered value: {}'.format(p))
-         if F<0 | F>1:
+         if F<0 or F>1:
             raise ValueError('parameter F should only be in between 0 and 1. Entered value: {}'.format(F))
 
         self.F = F
@@ -5783,7 +5776,6 @@ class Balding_Nichols(Base):
     def pdf(self,
             plot=False,
             threshold=1000,
-            interval = 1,
             xlim=None,
             ylim=None,
             xlabel=None,
@@ -5805,8 +5797,6 @@ class Balding_Nichols(Base):
         """
         generator = lambda alpha, beta, x: (x**(alpha-1)*np.power(1-x, beta-1))/ss.beta(alpha, beta)
         if plot == True:
-            if interval<0:
-                raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, 1, int(threshold))
             y = np.array([generator(self.alpha, self.beta, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -5815,7 +5805,6 @@ class Balding_Nichols(Base):
     def cdf(self,
             plot=False,
             threshold=1000,
-            interval = 1,
             xlim=None,
             ylim=None,
             xlabel=None,
@@ -5837,9 +5826,7 @@ class Balding_Nichols(Base):
         """
         generator = lambda alpha, beta, x: ss.betainc(alpha, beta, x)
         if plot == True:
-            if interval<0:
-                raise ValueError('interval parameter should not be less than 0. Entered Value {}'.format(interval))
-            x = np.linspace(0, interval, int(threshold))
+            x = np.linspace(0, 1, int(threshold))
             y = np.array([generator(self.alpha, self.beta, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.alpha, self.beta, self.randvar)
@@ -5943,9 +5930,9 @@ class Benini(Base):
     """
     def __init__(self, alpha, beta, sigma, randvar):
         if randvar<sigma:
-            raise ValueError('random variable should not be less than 0. Entered value:{}'.format(randvar))
-         if alpha<0 | beta<0 | sigma<0:
-            raise ValueError('shape and scale parameters should not be less than 0. Entered value: {}'.format(alpha, beta, sigma))
+            raise ValueError('random variable should be less than sigma. radvar={}, sigma={}'.format(randvar, sigma))
+         if alpha<0 or beta<0 or sigma<0:
+            raise ValueError('shape and scale parameters should be a positive number. Entered value: {}'.format(alpha, beta, sigma))
 
         self.alpha = alpha
         self.beta = beta
@@ -5975,11 +5962,11 @@ class Benini(Base):
         Returns: 
             either probability density evaluation for some point or plot of Benini distribution.
         """
-        generator = lambda a,b,o,x:np.exp(-a*np.log10(x/o)-b*(np.log10(x/o)**2))*(a/x+(2*b*np.log10(x/o))/x) 
+        generator = lambda a,b,o,x:np.exp(-a*np.log10(x/o)-b*(np.log10(x/o)**2))*(a/x+(2*b*np.log10(x/o))/x) if x>0 else 0
         if plot == True:
             if interval<0:
-                raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
-            x = np.linspace(0, 1, int(threshold))
+                raise ValueError('interval should be a positive number. Entered value: {}'.format(interval))
+            x = np.linspace(0, interval, int(threshold))
             y = np.array([generator(self.alpha, self.beta, self.sigma, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.alpha, self.beta, self.sigma, self.randvar)
@@ -6010,7 +5997,7 @@ class Benini(Base):
         generator = lambda a,b,o,x: 1- np.exp(-a*np.log10(x/a)-b*(np.log10(x/o))**2)
         if plot == True:
             if interval<0:
-                raise ValueError('interval parameter should not be less than 0. Entered Value {}'.format(interval))
+                raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
             y = np.array([generator(self.alpha, self.sigma, self.beta, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -6034,7 +6021,7 @@ class Benini(Base):
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-        cdf_func  = lambda a,b,o,x: 1- np.exp(-a*np.log10(x/a)-b*(np.log10(x/o))**2)
+        cdf_func  = lambda a,b,o,x: 1- np.exp(-a*np.log10(x/a)-b*(np.log10(x/o))**2) if x>0 else 0
         return cdf_func(self.alpha, self.beta, self.sigma, x_upper)-cdf_func(self.alpha, self.beta, self.sigma, x_lower)
 
     def mean(self):
@@ -6081,7 +6068,7 @@ class Normal_folded(Base):
     
         loc(float): location parameter
         scale(float | x>0): scale parameter. Note that this is not the squared value of scale.
-        randvar(float | x>0): random variable
+        randvar(float | x>0): random variable. Optional. Use when cdf and pdf or p value of interest is desired.
 
     Methods:
 
@@ -6102,11 +6089,11 @@ class Normal_folded(Base):
     Retrieved 06:18, January 15, 2021, from https://en.wikipedia.org/w/index.php?title=Folded_normal_distribution&oldid=984315189
     - Tsagris, M.; Beneki, C.; Hassani, H. (2014). "On the folded normal distribution". Mathematics. 2 (1): 12–28. arXiv:1402.3559
     """
-    def __init__(self, loc, scale, randvar):
+    def __init__(self, loc, scale, randvar=0.5):
         if randvar<0:
-            raise ValueError('random variable should not be less than 0. Entered value:{}'.format(randvar))
+            raise ValueError('random variable should be a positive number. Entered value:{}'.format(randvar))
         if scale<0:
-            raise ValueError('scale should not be less than 0. Entered value:{}'.format(scale))
+            raise ValueError('scale should be a positive number. Entered value:{}'.format(scale))
         
         self.loc = loc
         self.scale = scale
@@ -6135,12 +6122,9 @@ class Normal_folded(Base):
         Returns: 
             either probability density evaluation for some point or plot of Folded Normal distribution.
         """
-        generator = lambda mu, sig, x: 1/(sig*sqrt(2*np.pi))*np.exp(-(x-mu)**2/(2*sig**2))+1/(sig*sqrt(2*np.pi))*np.exp(-(x+mu)**2/(2*sig**2))
+        generator = lambda mu, sig, x: 1/(sig*sqrt(2*np.pi))*np.exp(-(x-mu)**2/(2*sig**2))+1/(sig*sqrt(2*np.pi))*np.exp(-(x+mu)**2/(2*sig**2)) if x<0 else 0
         if plot == True:
-            if interval<0:
-                # EDIT!
-                raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
-            x = np.linspace(0, 1, int(threshold))
+            x = np.linspace(-interval, interval, int(threshold))
             y = np.array([generator(self.loc, self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.loc, self.scale, self.randvar)
@@ -6168,11 +6152,9 @@ class Normal_folded(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Folded Normal distribution.
         """
-        generator = lambda mu, sig, x: 0.5*(ss.erf((x+mu)/(sig*sqrt(2)))+ss.erf((x-mu)/(sig*sqrt(2))))
+        generator = lambda mu, sig, x: 0.5*(ss.erf((x+mu)/(sig*sqrt(2)))+ss.erf((x-mu)/(sig*sqrt(2)))) if x>0 else 0
         if plot == True:
-            if interval<0:
-                raise ValueError('interval parameter should not be less than 0. Entered Value {}'.format(interval))
-            x = np.linspace(0, interval, int(threshold))
+            x = np.linspace(-interval, interval, int(threshold))
             y = np.array([generator(self.loc, self.scale,  i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.loc, self.scale, self.randvar)
@@ -6195,7 +6177,7 @@ class Normal_folded(Base):
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-        cdf_func  = lambda mu, sig, x: 0.5*(ss.erf((x+mu)/(sig*sqrt(2)))+ss.erf((x-mu)/(sig*sqrt(2))))
+        cdf_func  = lambda mu, sig, x: 0.5*(ss.erf((x+mu)/(sig*sqrt(2)))+ss.erf((x-mu)/(sig*sqrt(2)))) if x>0 else 0
         return cdf_func(self.loc, self.scale, x_upper)-cdf_func(self.loc, self.scale, x_lower)
 
     def mean(self):
@@ -6231,7 +6213,7 @@ class Logistic_half(Base):
     Args:
     
         k(float | x>0): parameter
-        randvar(float | x>0): random variable
+        randvar(float | x>0): random variable. Optional. Use when cdf and pdf or p value of interest is desired.
 
     Methods:
 
@@ -6251,11 +6233,10 @@ class Logistic_half(Base):
     - Wikipedia contributors. (2019, November 8). Half-logistic distribution. In Wikipedia, The Free Encyclopedia. 
     Retrieved 06:27, January 15, 2021, from https://en.wikipedia.org/w/index.php?title=Half-logistic_distribution&oldid=925231753
     """
-    def __init__(self, k, randvar):
-        if randvar<0 | k<0:
-            raise ValueError('random variable and parameter k not be less than 0. Entered value: k = {}, randvar = {}'.format(k,randvar))
+    def __init__(self, k, randvar=0.5):
+        if randvar<0 or k<0:
+            raise ValueError('random variable and parameter k be a positive number. Entered value: k = {}, randvar = {}'.format(k,randvar))
  
-
         self.k = k
         self.randvar = randvar
 
@@ -6282,11 +6263,9 @@ class Logistic_half(Base):
         Returns: 
             either probability density evaluation for some point or plot of half logistic distribution.
         """
-        generator = lambda k,x: 2*np.exp(-k)/(1+np.exp(-k))**2
+        generator = lambda k,x: 2*np.exp(-k)/(1+np.exp(-k))**2 if x>0 else 0
         if plot == True:
-            if interval<0:
-                raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
-            x = np.linspace(0, 1, int(threshold))
+            x = np.linspace(0, interval, int(threshold))
             y = np.array([generator(self.k i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.k self.randvar)
@@ -6314,10 +6293,8 @@ class Logistic_half(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of half logistic distribution.
         """
-        generator = lambda k,x: (1-np.exp(-k))/(1+np.exp(-k))
+        generator = lambda k,x: (1-np.exp(-k))/(1+np.exp(-k)) if x>0 else 0
         if plot == True:
-            if interval<0:
-                raise ValueError('interval parameter should not be less than 0. Entered Value {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
             y = np.array([generator(self.k, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -6341,7 +6318,7 @@ class Logistic_half(Base):
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-        cdf_func  = lambda k,x: (1-np.exp(-k))/(1+np.exp(-k))
+        cdf_func  = lambda k,x: (1-np.exp(-k))/(1+np.exp(-k)) if x>0 else 0
         return cdf_func(self.k, x_upper)-cdf_func(self.k, x_lower)
 
     def mean(self):
@@ -6382,13 +6359,13 @@ class Logistic_half(Base):
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
-class Balding_Nichols(Base):
+class Normal_half(Base):
     """
     This class contains methods concerning Half Normal Distirbution. 
     Args:
     
         scale(float | x>0): scale parameter
-        randvar(float | x>0): random variable
+        randvar(float | x>0): random variable. Optional. Use when cdf and pdf or p value of interest is desired.
 
     Methods:
 
@@ -6409,9 +6386,9 @@ class Balding_Nichols(Base):
     Retrieved 06:42, January 15, 2021, from https://en.wikipedia.org/w/index.php?title=Half-normal_distribution&oldid=997191556
     - Weisstein, Eric W. "Half-Normal Distribution." From MathWorld--A Wolfram Web Resource. https://mathworld.wolfram.com/Half-NormalDistribution.html
     """
-    def __init__(self, scale, randvar):
-        if scale<0 | randvar<0:
-            raise ValueError('random variable and scale parameter should not be less than 0. Entered value: scale = {}, randvar={}'.format(scale, randvar))
+    def __init__(self, scale, randvar=0.5):
+        if scale<0 or randvar<0:
+            raise ValueError('random variable and scale parameter should be a positive number. Entered value: scale = {}, randvar={}'.format(scale, randvar))
 
         self. scale = scale
         self.randvar = randvar
@@ -6439,11 +6416,9 @@ class Balding_Nichols(Base):
         Returns: 
             either probability density evaluation for some point or plot of Half Normal distribution.
         """
-        generator = lambda sig, x: sqrt(2)/(sig*sqrt(np.pi))*np.exp(-x**2/(2*sig**2))
+        generator = lambda sig, x: sqrt(2)/(sig*sqrt(np.pi))*np.exp(-x**2/(2*sig**2)) if x>0 else 0
         if plot == True:
-            if interval<0:
-                raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
-            x = np.linspace(0, 1, int(threshold))
+            x = np.linspace(-interval, interval, int(threshold))
             y = np.array([generator(self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.scale, self.randvar)
@@ -6471,11 +6446,9 @@ class Balding_Nichols(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Half Normal distribution.
         """
-        generator = lambda sig, x: ss.erf(x/(sig*sqrt(2)))
+        generator = lambda sig, x: ss.erf(x/(sig*sqrt(2))) if x>0 else 0
         if plot == True:
-            if interval<0:
-                raise ValueError('interval parameter should not be less than 0. Entered Value {}'.format(interval))
-            x = np.linspace(0, interval, int(threshold))
+            x = np.linspace(-interval, interval, int(threshold))
             y = np.array([generator(self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.scale, self.randvar)
@@ -6498,7 +6471,7 @@ class Balding_Nichols(Base):
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-        cdf_func  = lambda sig, x: ss.erf(x/(sig*sqrt(2)))
+        cdf_func  = lambda sig, x: ss.erf(x/(sig*sqrt(2))) if x>0 else 0
         return cdf_func(self.scale, x_upper)-cdf_func(self.scale, x_lower)
 
     def mean(self):
@@ -6557,6 +6530,7 @@ class Balding_Nichols(Base):
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
+# asses cdf and pdf
 class Gassuian_inverse(Base):
     """
     This class contains methods concerning Inverse Gaussian Distirbution. 
@@ -6564,7 +6538,7 @@ class Gassuian_inverse(Base):
     
         mean(float | x>0): mean parameter
         scale(float | x>0): scale parameter
-        randvar(float | x>0): random variable
+        randvar(float | x>0): random variable. Optional. Use when cdf and pdf or p value of interest is desired.
 
     Methods:
 
@@ -6586,11 +6560,11 @@ class Gassuian_inverse(Base):
     - Weisstein, Eric W. "Inverse Gaussian Distribution." From MathWorld--A Wolfram Web Resource. 
     https://mathworld.wolfram.com/InverseGaussianDistribution.html
     """
-    def __init__(self, mean, scale, randvar):
+    def __init__(self, mean, scale, randvar=0.5):
         if randvar<0:
-            raise ValueError('random variable should not be less than 0. Entered value:{}'.format(randvar))
-         if scale<0 | mean<0:
-            raise ValueError('mean and scale parameter should not be less than 0. Entered value: mean = {}, scale = {}'.format(mean, scale))
+            raise ValueError('random variable should be a positive number. Entered value:{}'.format(randvar))
+         if scale<0 or mean<0:
+            raise ValueError('mean and scale parameter should be a positive number. Entered value: mean = {}, scale = {}'.format(mean, scale))
 
         self.mean = mean
         self.scale = scale
@@ -6623,7 +6597,7 @@ class Gassuian_inverse(Base):
         if plot == True:
             if interval<0:
                 raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
-            x = np.linspace(0, 1, int(threshold))
+            x = np.linspace(0, interval, int(threshold))
             y = np.array([generator(self.scale, self.mean, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.scale, self.mean, self.randvar)
@@ -6656,7 +6630,7 @@ class Gassuian_inverse(Base):
     #         normal_cdf()
     #     if plot == True:
     #         if interval<0:
-    #             raise ValueError('interval parameter should not be less than 0. Entered Value {}'.format(interval))
+    #             raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
     #         x = np.linspace(0, interval, int(threshold))
     #         y = np.array([generator(self.alpha, self.beta, i) for i in x])
     #         return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -6758,11 +6732,11 @@ class Gamma_inverse(Base):
     Retrieved 10:18, January 15, 2021, from https://en.wikipedia.org/w/index.php?title=Inverse-gamma_distribution&oldid=996362763
     - Mathematica (2021). InverseGammaDistribution. Retrieved from: https://reference.wolfram.com/language/ref/InverseGammaDistribution.html
     """
-    def __init__(self, alpha, beta, randvar):
+    def __init__(self, alpha, beta, randvar=0.5):
         if randvar<0:
-            raise ValueError('random variable should not be less than 0. Entered value:{}'.format(randvar))
-         if alpha<0 | beta<0:
-            raise ValueError('shape and scale parameter should not be less than 0. Entered value: shape= {}, scale ={}'.format(alpha, beta))
+            raise ValueError('random variable should be a positive number. Entered value:{}'.format(randvar))
+         if alpha<0 or beta<0:
+            raise ValueError('shape and scale parameter should be a positive number. Entered value: shape= {}, scale ={}'.format(alpha, beta))
 
         self.alpha = alpha
         self.beta = beta
@@ -6794,8 +6768,8 @@ class Gamma_inverse(Base):
         generator = lambda alpha, beta, x: (beta**alpha)/ss.gamma(alpha)*np.power(x, -alpha-1)*np.exp(-beta/x)
         if plot == True:
             if interval<0:
-                raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
-            x = np.linspace(0, 1, int(threshold))
+                raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
+            x = np.linspace(0, interval, int(threshold))
             y = np.array([generator(self.alpha, self.beta, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.alpha, self.beta, self.randvar)
@@ -6826,7 +6800,7 @@ class Gamma_inverse(Base):
         generator = lambda alpha, beta, x: ss.gammainc(alpha, beta/x)/ss.gamma(alpha)
         if plot == True:
             if interval<0:
-                raise ValueError('interval parameter should not be less than 0. Entered Value {}'.format(interval))
+                raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
             y = np.array([generator(self.alpha, self.beta, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -6850,7 +6824,7 @@ class Gamma_inverse(Base):
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-        cdf_func  = lambda alpha, beta, x: ss.gammainc(alpha, beta/x)/ss.gamma(alpha)
+        cdf_func  = lambda alpha, beta, x: ss.gammainc(alpha, beta/x)/ss.gamma(alpha) if x>0 else 0
         return cdf_func(self.alpha, self.beta, x_upper)-cdf_func(self.alpha, self.beta, x_lower)
 
     def mean(self):
@@ -6943,9 +6917,9 @@ class Gamma_inverse(Base):
 #     """
 #     def __init__(self, alpha, beta, sigma, randvar):
 #         if randvar<0:
-#             raise ValueError('random variable shoould not be less than 0. Entered value:{}'.format(randvar))
-#          if alpha<0 | beta<0 | sigma<0:
-#             raise ValueError('shape and scale parameters should not be less than 0. Entered value: {}'.format(alpha, beta, sigma))
+#             raise ValueError('random variable shoould be a positive number. Entered value:{}'.format(randvar))
+#          if alpha<0 or beta<0 or sigma<0:
+#             raise ValueError('shape and scale parameters should be a positive number. Entered value: {}'.format(alpha, beta, sigma))
 
 #         self.alpha = alpha
 #         self.beta = beta
@@ -6973,7 +6947,7 @@ class Gamma_inverse(Base):
 
         
 #         Returns: 
-#             either probability density evaluation for some point or plot of Benini distribution.
+#             either probability density evaluation for some point or plot of Burr distribution.
 #         """
 #         generator = lambda a,b,o,x:np.exp(-a*np.log10(x/o)-b*(np.log10(x/o)**2))*(a/x+(2*b*np.log10(x/o))/x) 
 #         if plot == True:
@@ -7010,7 +6984,7 @@ class Gamma_inverse(Base):
 #         generator = lambda a,b,o,x: 1- np.exp(-a*np.log10(x/a)-b*(np.log10(x/o))**2)
 #         if plot == True:
 #             if interval<0:
-#                 raise ValueError('interval parameter should not be less than 0. Entered Value {}'.format(interval))
+#                 raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
 #             x = np.linspace(0, interval, int(threshold))
 #             y = np.array([generator(self.alpha, self.sigma, self.beta, i) for i in x])
 #             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -7105,7 +7079,7 @@ class Dagum(Base):
         p_shape(float | x>0): shape parameter
         a_shape(float | x>0): shape parameter
         scale(float | x>0): scale parameter
-        randvar(float | x>0): random variable
+        randvar(float | x>0): random variable. Optional. Use when cdf and pdf or p value of interest is desired.
 
     Methods:
 
@@ -7125,11 +7099,11 @@ class Dagum(Base):
     - Wikipedia contributors. (2019, March 14). Dagum distribution. In Wikipedia, The Free Encyclopedia. 
     Retrieved 23:09, January 15, 2021, from https://en.wikipedia.org/w/index.php?title=Dagum_distribution&oldid=887692271
     """
-    def __init__(self, p_shape, a_shape, scale, randvar):
+    def __init__(self, p_shape, a_shape, scale, randvar=0.5):
         if randvar<0:
-            raise ValueError('random variable shoould not be less than 0. Entered value:{}'.format(randvar))
-         if p_shape<0 | a_shape<0 | scale<0:
-            raise ValueError('shape and scale parameters should not be less than 0. Entered value: p_shape={}, a_shape={}, scale={}'.format(p_shape, a_shape, scale))
+            raise ValueError('random variable shoould be a positive number. Entered value:{}'.format(randvar))
+         if p_shape<0 or a_shape<0 or scale<0:
+            raise ValueError('shape and scale parameters should be a positive number. Entered value: p_shape={}, a_shape={}, scale={}'.format(p_shape, a_shape, scale))
 
         self.p_shape = p_shape
         self.a_shape = a_shape
@@ -7157,16 +7131,16 @@ class Dagum(Base):
 
         
         Returns: 
-            either probability density evaluation for some point or plot of Benini distribution.
+            either probability density evaluation for some point or plot of Dagum distribution.
         """
         generator = lambda p,a,b,x: (a*p/x)*(np.power(x/b,a*p)/np.power((x/b)**a+1,p+1)
         if plot == True:
             if interval<0:
-                raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
-            x = np.linspace(0, 1, int(threshold))
-            y = np.array([generator(self.p_shape,self.a_shape, self.scale,  i) for i in x])
+                raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
+            x = np.linspace(0, interval, int(threshold))
+            y = np.array([generator(self.p_shape, self.a_shape, self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.p_shape,self.a_shape, self.scale,  self.randvar)
+        return generator(self.p_shape, self.a_shape, self.scale, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -7193,8 +7167,8 @@ class Dagum(Base):
         """
         generator = lambda p,a,b,x: np.power((1+np.power(x/b,-a)),-p)
         if plot == True:
-            if interval<0:b,x:
-                raise ValueError('interval parameter should not be less than 0. Entered Value {}'.format(interval))
+            if interval<0:
+                raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
             y = np.array([generator(self.p_shape, self.a_shape,self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -7218,8 +7192,8 @@ class Dagum(Base):
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-        cdf_func  = lambda p,a,b,x: np.power((1+np.power(x/b,-a)),-p)
-        return cdf_func(self.p_shape, self.a_shape, self.scale x_upper)-cdf_func(self.p_shape, self.a_shape, self.scale x_lower)
+        cdf_func  = lambda p,a,b,x: np.power((1+np.power(x/b,-a)),-p) if x>0 else 0
+        return cdf_func(self.p_shape, self.a_shape, self.scale, x_upper)-cdf_func(self.p_shape, self.a_shape, self.scale, x_lower)
 
     def mean(self):
         """
@@ -7277,9 +7251,9 @@ class Dagum(Base):
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
 
-class Burr(Base):
+class Davis(Base):
     """
-    This class contains methods concerning Burr Distirbution. 
+    This class contains methods concerning Davis Distirbution. 
     Args:
     
         shape(float | x>0): shape parameter
@@ -7308,8 +7282,8 @@ class Burr(Base):
     def __init__(self, scale, shape, loc, randvar):
         if randvar>loc:
             raise ValueError('random variable should be greater than loc parameter')
-         if scale<0 | shape<0 | loc<0:
-            raise ValueError('shape, scale, and location parameters should not be less than 0. Entered value: scale={}, shape={}, loc={}'.format(scale, shape, loc)
+         if scale<0 or shape<0 or loc<0:
+            raise ValueError('shape, scale, and location parameters should be a positive number. Entered value: scale={}, shape={}, loc={}'.format(scale, shape, loc)
 
         self.scale = scale
         self.shape = shape
@@ -7337,7 +7311,7 @@ class Burr(Base):
 
         
         Returns: 
-            either probability density evaluation for some point or plot of Benini distribution.
+            either probability density evaluation for some point or plot of Davis distribution.
         """
         generator = lambda b,n,mu, x: b**n*np.power(x-mu,-1-n)/((np.exp(b/(x-mu))-1)*ss.gamma(n)*ss.zeta(n))
         if plot == True:
@@ -7374,7 +7348,7 @@ class Burr(Base):
     #     generator = lambda a,b,o,x: 1- np.exp(-a*np.log10(x/a)-b*(np.log10(x/o))**2)
     #     if plot == True:
     #         if interval<0:
-    #             raise ValueError('interval parameter should not be less than 0. Entered Value {}'.format(interval))
+    #             raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
     #         x = np.linspace(0, interval, int(threshold))
     #         y = np.array([generator(self.alpha, self.sigma, self.beta, i) for i in x])
     #         return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -7403,14 +7377,14 @@ class Burr(Base):
 
     def mean(self):
         """
-        Returns: Mean of the Burr distribution.
+        Returns: Mean of the Davis distribution.
         """
         alpha = self.alpha; beta = self.beta; sigma = self.sigma
         return sigma+(sigma/(sqrt(2*beta)))*ss.hermite(-1, (1+alpha)/(sqrt(2*beta)))
 
     def var(self):
         """
-        Returns: Variance of the Burr distribution.
+        Returns: Variance of the Davis distribution.
         """
         mean = self.mean()
         alpha = self.alpha; beta = self.beta; sigma = self.sigma
@@ -7418,7 +7392,7 @@ class Burr(Base):
 
     def print_summary(self):
         """
-        Returns: Summary statistic regarding the Burr distribution
+        Returns: Summary statistic regarding the Davis distribution
         """
         mean = self.mean()
         median = self.median()
