@@ -7335,7 +7335,7 @@ class Rayleigh(Base):
             Otherwise, the default random variable is x.
 
         Returns:
-            p-value of the Erlang distribution evaluated at some random variable.
+            p-value of the Rayleigh distribution evaluated at some random variable.
         """
         if x_upper == None:
             x_upper = self.randvar
@@ -8260,6 +8260,371 @@ class Logistic_log(Base):
     def print_summary(self):
         """
         Returns: Summary statistic regarding the Log logistic distribution
+        """
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = "summary statistic"
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
+class Chisq_inverse(Base):
+    """
+    This class contains methods concerning Inverse Chi-squared Distirbution. 
+    Args:
+    
+        df(int | x>0): degrees of freedom
+        randvar(float | x>=0): random variable
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - print_summary for printing the summary statistics of the distribution. 
+
+    Reference:
+    - Wikipedia contributors. (2020, October 6). Inverse-chi-squared distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 16:21, January 16, 2021, from https://en.wikipedia.org/w/index.php?title=Inverse-chi-squared_distribution&oldid=982193912
+
+    - Mathematica (2021): InverseChiSquareDistribution. Retrieved from: https://reference.wolfram.com/language/ref/InverseChiSquareDistribution.html
+    """
+    def __init__(self, df, randvar):
+        if randvar<0:
+            raise ValueError('random variable should be a positive number. Entered value: {}'.format(randvar))
+        if df<0:
+            raise ValueError('df parameter should be a positive number.')
+
+        self.df = df
+        self.randvar = randvar
+
+    def pdf(self,
+            plot=False,
+            interval = 0,
+            threshold=1000,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability density evaluation for some point or plot of Inverse Chi-squared distribution.
+        """
+        generator = lambda df, x: np.power(2,-df/2)/ss.gamma(df/2)*np.power(x,-df/2-1)*np.exp(-1/(2*x))
+
+        if plot == True:
+            if interval<0:
+                raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
+            x = np.linspace(0, interval, int(threshold))
+            y = np.array([generator(self.df, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.df, self.randvar)
+
+    def cdf(self,
+            plot=False,
+            threshold=1000,
+            interval=1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None): 
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or plot of Rayleigh distribution.
+        """
+        generator = lambda df, x: ss.gammainc(df/2,1/(2*x))/ss.gamma(df/2)
+        if plot == True:
+            x = np.linspace(0, interval, int(threshold))
+            y = np.array([generator(self.df, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.df, self.randvar)
+
+    def p_value(self, x_lower=0, x_upper=None):
+        """
+        Args:
+
+            x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+            x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+            Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+            Otherwise, the default random variable is x.
+
+        Returns:
+            p-value of the Inverse Chi-squared distribution evaluated at some random variable.
+        """
+        if x_upper == None:
+            x_upper = self.randvar
+        if x_lower>x_upper:
+            raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        
+        cdf_func  = lambda df, x: ss.gammainc(df/2,1/(2*x))/ss.gamma(df/2)
+        return cdf_func(self.df, x_upper)-cdf_func(self.df, x_lower)
+
+    def mean(self):
+        """
+        Returns: Mean of the Inverse Chi-squared distribution.
+        """
+        if self.df>2:
+            return 1/(df-2)
+        return "undefined"
+
+    def median(self):
+        """
+        Returns: Approximation of the Median of the Inverse Chi-squared distribution.
+        """
+        return 1/(self.df*(1-2/(9*self.df))**3)
+
+    def mode(self):
+        """
+        Returns: Mode of the Rayleigh distribution.
+        """
+        return 1/(self.df+2)
+
+    def var(self):
+        """
+        Returns: Variance of the Inverse Chi-squared distribution.
+        """
+        df = self.df
+        if df>4:
+            return 2/((df-2)**2*(df-4))
+        return "undefined"
+
+    def skewness(self):
+        """
+        Returns: Skewness of the Inverse Chi-squared distribution. 
+        """
+        df = self.df
+        if df>6:
+            return 1/(df-6)*sqrt(2*(df-4))
+        return "undefined"
+
+    def kurtosis(self):
+        """
+        Returns: Kurtosis of the Inverse Chi-squared distribution. 
+        """
+        df = self.df
+        if df>8:
+            (12*(5*df-22))/((df-6)*(df-8))
+
+    def entropy(self):
+        """
+        Returns: differential entropy of the Inverse Chi-squared distribution.
+        """
+        df = self.df
+        return df/2+np.log((df/2)*ss.gamma(df/2))-(1+df/2)*ss.digamma(df/2)
+
+    def print_summary(self):
+        """
+        Returns: Summary statistic regarding the Inverse Chi-squared distribution
+        """
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = "summary statistic"
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
+class Levy(Base):
+    """
+    This class contains methods concerning Levy Distirbution. 
+    Args:
+    
+        scale(float | x>0): scale parameter
+        loc (float | x>0): location parameter
+        randvar(float | x>=0): random variable
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - print_summary for printing the summary statistics of the distribution. 
+
+    Reference:
+    - Wikipedia contributors. (2021, January 9). Lévy distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 16:35, January 16, 2021, from https://en.wikipedia.org/w/index.php?title=L%C3%A9vy_distribution&oldid=999292486
+    """
+    def __init__(self, scale, loc, randvar):
+        if randvar<scale:
+            raise ValueError('random variable should be not be less than the location parameter. Entered value: {}'.format(randvar))
+        if scale<0:
+            raise ValueError('scale parameter should be a positive number. Enetered value for scale =  {}'.format(scale))
+
+        self.scale = scale
+        self.loc = loc
+        self.randvar = randvar
+
+    def pdf(self,
+            plot=False,
+            interval = 0,
+            threshold=1000,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability density evaluation for some point or plot of Levy distribution.
+        """
+        generator = lambda mu, c ,x: sqrt(c/(2*np.pi))*np.exp(-c/(2*(x-mu)))/np.power(x-mu, 3/2)
+
+        if plot == True:
+            if interval<0:
+                raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
+            x = np.linspace(0, interval, int(threshold))
+            y = np.array([generator(self.loc, self.scale, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.loc, self.scale, self.randvar)
+
+    def cdf(self,
+            plot=False,
+            threshold=1000,
+            interval=1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or plot of Levy distribution.
+        """
+        generator = lambda mu, c, x: ss.erfc(sqrt(c/(2*(x-mu))))
+        if plot == True:
+            x = np.linspace(0, interval, int(threshold))
+            y = np.array([generator(self.loc, self.scale, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.loc, self.scale, self.randvar)
+
+    def p_value(self, x_lower=0, x_upper=None):
+        """
+        Args:
+
+            x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+            x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+            Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+            Otherwise, the default random variable is x.
+
+        Returns:
+            p-value of the Erlang distribution evaluated at some random variable.
+        """
+        if x_upper == None:
+            x_upper = self.randvar
+        if x_lower>x_upper:
+            raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        
+        cdf_func  = lambda mu, c, x: ss.erfc(sqrt(c/(2*(x-mu))))
+        return cdf_func(self.loc, self.scale, x_upper)-cdf_func(self.loc, self.scale, x_lower)
+
+    def mean(self):
+        """
+        Returns: Mean of the Levy distribution.
+        """
+        return np.inf
+
+    def median(self):
+        """
+        Returns: Median of the Levy distribution.
+        """
+        return self.loc+self.scale/2*ss.erfcinv(0.5)**2
+
+    def mode(self):
+        """
+        Returns: Mode of the Levy distribution.
+        """
+        return self.loc+self.scale/3
+
+    def var(self):
+        """
+        Returns: Variance of the Levy distribution.
+        """
+        return np.inf
+
+    def skewness(self):
+        """
+        Returns: Skewness of the Levy distribution. 
+        """
+        return "undefined"
+
+    def kurtosis(self):
+        """
+        Returns: Kurtosis of the Levy distribution. 
+        """
+        return "undefined"
+
+    def entropy(self):
+        """
+        Returns: differential entropy of the Levy distribution.
+        """
+        return (1+3*np.euler_gamma+np.log(16*np.pi*self.scale**2))/2
+
+    def print_summary(self):
+        """
+        Returns: Summary statistic regarding the Levy distribution
         """
         mean = self.mean()
         median = self.median()

@@ -86,6 +86,11 @@ Semi-infinite class
     - Benktander Type 1 distribution
     - Benktander Type 2 distribution
     - hypoexponential distribution
+    - log-Cauchy distribution
+    - log-Laplace distribution
+    - log-Logistic distribution
+    - Inverse chi-squared distribution
+    - Lévy distribution
 
 ----
 in progress
@@ -109,12 +114,7 @@ in progress
         - Hotelling's T-squared
         - hyper-Erlang**
         - inverse chi-squared scaled 
-        - inverse chi-squared
         - Kolmogorov
-        - Lévy
-        - log-Cauchy
-        - log-Laplace
-        - log-logistic
         - Lomaxmatrix-exponential
         - Maxwell–Jüttner
         - Mittag-Leffler
