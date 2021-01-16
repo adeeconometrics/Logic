@@ -82,6 +82,7 @@ Semi-infinite class
     - Inverse Gamma distribution
     - Dagum distribution
     - Davis distribution
+    - Rayleigh distribution
     - Benktander Type 1 distribution
     - Benktander Type 2 distribution
     - hypoexponential distribution
@@ -107,17 +108,22 @@ in progress
         - Gompertz*
         - Hotelling's T-squared
         - hyper-Erlang**
-        - inverse chi-squared scaled inverse chi-squared
+        - inverse chi-squared scaled 
+        - inverse chi-squared
         - Kolmogorov
-        - Lévylog-Cauchylog-Laplacelog-logistic
+        - Lévy
+        - log-Cauchy
+        - log-Laplace
+        - log-logistic
         - Lomaxmatrix-exponential
         - Maxwell–Jüttner
         - Mittag-Leffler
-        - Nakagaminoncentral chi-squared
+        - Nakagami
+        - noncentral chi-squared
         - noncentral F
         - Paretophase-type
         - poly-Weibull
-        - Rayleighrelativistic
+        - relativistic
         - Breit–WignerRiceshifted 
         - truncated normal type-2 
         - GumbelWeibull discrete Weibull

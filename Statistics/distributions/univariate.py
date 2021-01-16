@@ -4688,188 +4688,7 @@ class Erlang(Base):
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
 # to be reviewed
-class Rayleigh(Base):
-    """
-    This class contains methods concerning Rayleigh Distirbution. 
-    Args:
-    
-        scale(float | x>0): scale
-        randvar(float | x>=0): random variable
 
-    Methods:
-
-        - pdf for probability density function.
-        - cdf for cumulative distribution function.
-        - p_value for p-values.
-        - mean for evaluating the mean of the distribution.
-        - median for evaluating the median of the distribution.
-        - mode for evaluating the mode of the distribution.
-        - var for evaluating the variance of the distribution.
-        - skewness for evaluating the skewness of the distribution.
-        - kurtosis for evaluating the kurtosis of the distribution.
-        - entropy for differential entropy of the distribution.
-        - print_summary for printing the summary statistics of the distribution. 
-
-    Reference:
-    - Wikipedia contributors. (2020, December 30). Rayleigh distribution. In Wikipedia, The Free Encyclopedia. 
-    Retrieved 09:37, January 8, 2021, from https://en.wikipedia.org/w/index.php?title=Rayleigh_distribution&oldid=997166230
-
-    - Weisstein, Eric W. "Rayleigh Distribution." From MathWorld--A Wolfram Web Resource. 
-    https://mathworld.wolfram.com/RayleighDistribution.html
-    """
-    def __init__(self, scale, randvar):
-        if randvar<0:
-            raise ValueError('random variable should be a positive number. Entered value: {}'.format(randvar))
-        if scale<0:
-            raise ValueError('scale parameter should be a positive number.')
-
-        self.scale = scale
-        self.randvar = randvar
-
-    def pdf(self,
-            plot=False,
-            interval = 0,
-            threshold=1000,
-            xlim=None,
-            ylim=None,
-            xlabel=None,
-            ylabel=None):
-        """
-        Args:
-        
-            interval(int): defaults to none. Only necessary for defining plot.
-            threshold(int): defaults to 1000. Defines the sample points in plot.
-            plot(bool): if true, returns plot.
-            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
-            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
-            xlabel(string): sets label in x axis. Only relevant when plot is true. 
-            ylabel(string): sets label in y axis. Only relevant when plot is true. 
-
-        
-        Returns: 
-            either probability density evaluation for some point or plot of Rayleigh distribution.
-        """
-        generator = lambda sig,x: (x/sig**2)*np.exp(-x**2/(2*sig**2))
-
-        if plot == True:
-            if interval<0:
-                raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
-            x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.scale, i) for i in x])
-            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.scale, self.randvar)
-
-    def cdf(self,
-            plot=False,
-            threshold=1000,
-            interval=1,
-            xlim=None,
-            ylim=None,
-            xlabel=None,
-            ylabel=None):
-        """
-        Args:
-        
-            interval(int): defaults to none. Only necessary for defining plot.
-            threshold(int): defaults to 1000. Defines the sample points in plot.
-            plot(bool): if true, returns plot.
-            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
-            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
-            xlabel(string): sets label in x axis. Only relevant when plot is true. 
-            ylabel(string): sets label in y axis. Only relevant when plot is true. 
-
-        
-        Returns: 
-            either cumulative distribution evaluation for some point or plot of Rayleigh distribution.
-        """
-        generator = lambda sig,x: 1-np.exp(-x**2/(2*sig**2))
-        if plot == True:
-            x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.scale, i) for i in x])
-            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.scale, self.randvar)
-
-    def p_value(self, x_lower=0, x_upper=None):
-        """
-        Args:
-
-            x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
-            x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
-
-            Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
-            Otherwise, the default random variable is x.
-
-        Returns:
-            p-value of the Erlang distribution evaluated at some random variable.
-        """
-        if x_upper == None:
-            x_upper = self.randvar
-        if x_lower>x_upper:
-            raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
-        
-        cdf_func  = lambda sig,x: 1-np.exp(-x**2/(2*sig**2))
-        return cdf_func(self.scale, x_upper)-cdf_func(self.scale, x_lower)
-
-    def mean(self):
-        """
-        Returns: Mean of the Rayleigh distribution.
-        """
-        return self.scale*sqrt(np.pi/2)
-
-    def median(self):
-        """
-        Returns: Median of the Rayleigh distribution.
-        """
-        return self.scale*sqrt(2*np.log(2))
-
-    def mode(self):
-        """
-        Returns: Mode of the Rayleigh distribution.
-        """
-        return self.scale
-
-    def var(self):
-        """
-        Returns: Variance of the Rayleigh distribution.
-        """
-        return  (4-np.pi)/2*np.scale**2
-
-    def skewness(self):
-        """
-        Returns: Skewness of the Rayleigh distribution. 
-        """
-        return (2*sqrt(np.pi)*(np.pi-3))/np.power((4-np.pi), 3/2)
-
-    def kurtosis(self):
-        """
-        Returns: Kurtosis of the Rayleigh distribution. 
-        """
-        return -(6*np.pi**2-24*np.pi+16)/(4-np.pi)**2
-
-    def entropy(self):
-        """
-        Returns: differential entropy of the Rayleigh distribution.
-
-        Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
-        link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
-        """
-        return 1+np.log(self.scale/sqrt(2))+(np.euler_gamma/2)
-
-    def print_summary(self):
-        """
-        Returns: Summary statistic regarding the Rayleigh distribution
-        """
-        mean = self.mean()
-        median = self.median()
-        mode = self.mode()
-        var = self.var()
-        skewness = self.skewness()
-        kurtosis = self.kurtosis()
-        cstr = "summary statistic"
-        print(cstr.center(40, "="))
-        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
-
-# to be reviewed
 class Maxwell_Boltzmann(Base):
     """
     This class contains methods concerning Maxwell-Boltzmann Distirbution. 
@@ -7250,7 +7069,6 @@ class Dagum(Base):
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
-
 class Davis(Base):
     """
     This class contains methods concerning Davis Distirbution. 
@@ -7393,6 +7211,188 @@ class Davis(Base):
     def print_summary(self):
         """
         Returns: Summary statistic regarding the Davis distribution
+        """
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = "summary statistic"
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
+
+class Rayleigh(Base):
+    """
+    This class contains methods concerning Rayleigh Distirbution. 
+    Args:
+    
+        scale(float | x>0): scale
+        randvar(float | x>=0): random variable
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - print_summary for printing the summary statistics of the distribution. 
+
+    Reference:
+    - Wikipedia contributors. (2020, December 30). Rayleigh distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 09:37, January 8, 2021, from https://en.wikipedia.org/w/index.php?title=Rayleigh_distribution&oldid=997166230
+
+    - Weisstein, Eric W. "Rayleigh Distribution." From MathWorld--A Wolfram Web Resource. 
+    https://mathworld.wolfram.com/RayleighDistribution.html
+    """
+    def __init__(self, scale, randvar):
+        if randvar<0:
+            raise ValueError('random variable should be a positive number. Entered value: {}'.format(randvar))
+        if scale<0:
+            raise ValueError('scale parameter should be a positive number.')
+
+        self.scale = scale
+        self.randvar = randvar
+
+    def pdf(self,
+            plot=False,
+            interval = 0,
+            threshold=1000,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability density evaluation for some point or plot of Rayleigh distribution.
+        """
+        generator = lambda sig,x: (x/sig**2)*np.exp(-x**2/(2*sig**2))
+
+        if plot == True:
+            if interval<0:
+                raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
+            x = np.linspace(0, interval, int(threshold))
+            y = np.array([generator(self.scale, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.scale, self.randvar)
+
+    def cdf(self,
+            plot=False,
+            threshold=1000,
+            interval=1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or plot of Rayleigh distribution.
+        """
+        generator = lambda sig,x: 1-np.exp(-x**2/(2*sig**2))
+        if plot == True:
+            x = np.linspace(0, interval, int(threshold))
+            y = np.array([generator(self.scale, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.scale, self.randvar)
+
+    def p_value(self, x_lower=0, x_upper=None):
+        """
+        Args:
+
+            x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+            x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+            Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+            Otherwise, the default random variable is x.
+
+        Returns:
+            p-value of the Erlang distribution evaluated at some random variable.
+        """
+        if x_upper == None:
+            x_upper = self.randvar
+        if x_lower>x_upper:
+            raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        
+        cdf_func  = lambda sig,x: 1-np.exp(-x**2/(2*sig**2))
+        return cdf_func(self.scale, x_upper)-cdf_func(self.scale, x_lower)
+
+    def mean(self):
+        """
+        Returns: Mean of the Rayleigh distribution.
+        """
+        return self.scale*sqrt(np.pi/2)
+
+    def median(self):
+        """
+        Returns: Median of the Rayleigh distribution.
+        """
+        return self.scale*sqrt(2*np.log(2))
+
+    def mode(self):
+        """
+        Returns: Mode of the Rayleigh distribution.
+        """
+        return self.scale
+
+    def var(self):
+        """
+        Returns: Variance of the Rayleigh distribution.
+        """
+        return  (4-np.pi)/2*np.scale**2
+
+    def skewness(self):
+        """
+        Returns: Skewness of the Rayleigh distribution. 
+        """
+        return (2*sqrt(np.pi)*(np.pi-3))/np.power((4-np.pi), 3/2)
+
+    def kurtosis(self):
+        """
+        Returns: Kurtosis of the Rayleigh distribution. 
+        """
+        return -(6*np.pi**2-24*np.pi+16)/(4-np.pi)**2
+
+    def entropy(self):
+        """
+        Returns: differential entropy of the Rayleigh distribution.
+
+        Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
+        link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
+        """
+        return 1+np.log(self.scale/sqrt(2))+(np.euler_gamma/2)
+
+    def print_summary(self):
+        """
+        Returns: Summary statistic regarding the Rayleigh distribution
         """
         mean = self.mean()
         median = self.median()
@@ -7802,6 +7802,464 @@ class Benktander_T2(Base):
     def print_summary(self):
         """
         Returns: Summary statistic regarding the Benktander type 2 distribution
+        """
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = "summary statistic"
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
+class Cauchy_log(Base):
+    """
+    This class contains methods concerning log-Cauchy Distirbution. 
+    Args:
+    
+        mu(float | x>0): shape parameter
+        scale(float | x>0): scale parameter
+        randvar(float | x>loc): random variable
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - print_summary for printing the summary statistics of the distribution. 
+
+    Reference:
+    - Wikipedia contributors. (2020, December 7). Log-Cauchy distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 14:15, January 16, 2021, from https://en.wikipedia.org/w/index.php?title=Log-Cauchy_distribution&oldid=992914094
+    """
+    def __init__(self, mu, scale, randvar):
+        if randvar<0:
+            raise ValueError('random variable should be a positive number')
+         if mu<0 or scale<0:
+            raise ValueError('mu and scale parameters should be a positive number. Entered value: mu={}, scale={}'.format(mu, scale)
+
+        self.mu = mu
+        self.scale = scale
+        self.randvar = randvar
+
+    def pdf(self,
+            plot=False,
+            threshold=1000,
+            interval = 1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability density evaluation for some point or plot of log-Cauchy distribution.
+        """
+        generator = lambda mu, sig, x: (1/(x*np.pi))*(sig/((np.log(x)-mu)**2+sig**2))
+        if plot == True:
+            if interval<0:
+                raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
+            x = np.linspace(0, interval, int(threshold))
+            y = np.array([generator(self.mu, self.scale, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.mu, self.scale, self.randvar)
+
+    def cdf(self,
+            plot=False,
+            threshold=1000,
+            interval = 1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or plot of log-Cauchy distribution.
+        """
+        generator = lambda mu, sig, x: (1/np.pi)*np.arctan((np.log(x)-mu)/sig)+0.5 if x>0 else 0
+        if plot == True:
+            if interval<0:
+                raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
+            x = np.linspace(0, interval, int(threshold))
+            y = np.array([generator(self.mu, self.scale, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.mu, self.scale, self.randvar)
+
+    def p_value(self, x_lower=0, x_upper=None):
+        """
+        Args:
+
+            x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+            x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+            Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+            Otherwise, the default random variable is x.
+
+        Returns:
+            p-value of the log-Cauchy distribution evaluated at some random variable.
+        """
+        if x_upper == None:
+            x_upper = self.randvar
+        if x_lower>x_upper:
+            raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        
+        cdf_func  = lambda mu, sig, x: (1/np.pi)*np.arctan((np.log(x)-mu)/sig)+0.5 if x>0 else 0
+        return cdf_func(self.mu, self.scale, x_upper)-cdf_func(self.mu, self.scale, x_lower)
+
+    def mean(self):
+        """
+        Returns: Mean of the log-Cauchy distribution.
+        """
+        return "infinite"
+
+    def median(self):
+        """
+        Returns: Median of the Dagum distribution.
+        """
+        return np.exp(self.mu)
+
+    def var(self):
+        """
+        Returns: Variance of the log-Cauchy distribution.
+        """
+        return "infinite"  
+
+    def skewness(self):
+        """
+        Returns: Skewness of the log-Cauchy distribution. 
+        """
+        return "does not exist"
+
+    def kurtosis(self):
+        """
+        Returns: kurtosis of the log-Cauchy distribution
+        """
+        return "does not exist"
+
+    def print_summary(self):
+        """
+        Returns: Summary statistic regarding the log-Cauchy distribution
+        """
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = "summary statistic"
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
+class Laplace_log(Base):
+    """
+    This class contains methods concerning log-Laplace Distirbution. 
+    Args:
+    
+        loc(float | x>0): location parameter
+        scale(float | x>0): scale parameter
+        randvar(float | x>loc): random variable
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - print_summary for printing the summary statistics of the distribution. 
+
+    Reference:
+    - Wikipedia contributors. (2020, October 19). Log-Laplace distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 14:24, January 16, 2021, from https://en.wikipedia.org/w/index.php?title=Log-Laplace_distribution&oldid=984391227
+    """
+    def __init__(self, loc, scale, randvar):
+        # if randvar<0:
+        #     raise ValueError('random variable should be a positive number')
+         if scale<0:
+            raise ValueError('scale parameters should be a positive number. Entered value: scale={}'.format(scale)
+
+        self.mu = mu
+        self.scale = scale
+        self.randvar = randvar
+
+    def pdf(self,
+            plot=False,
+            threshold=1000,
+            interval = 1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability density evaluation for some point or plot of log-Laplace distribution.
+        """
+        generator = lambda mu, b, x: 1/(2*b*x)*np.exp(-abs(np.log(x)-mu)/b)
+        if plot == True:
+            if interval<0:
+                raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
+            x = np.linspace(0, interval, int(threshold))
+            y = np.array([generator(self.loc, self.scale, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.loc, self.scale, self.randvar)
+
+    def cdf(self,
+            plot=False,
+            threshold=1000,
+            interval = 1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or plot of log-Laplace distribution.
+        """
+        generator = lambda mu, b, x:0.5*(1+np.sign(np.log(x)-mu)*(1-np.exp(-abs(np.log(x)-mu)/b))) if x>0 else 0
+        if plot == True:
+            if interval<0:
+                raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
+            x = np.linspace(0, interval, int(threshold))
+            y = np.array([generator(self.loc, self.scale, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.loc, self.scale, self.randvar)
+
+    def p_value(self, x_lower=0, x_upper=None):
+        """
+        Args:
+
+            x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+            x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+            Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+            Otherwise, the default random variable is x.
+
+        Returns:
+            p-value of the log-Laplace distribution evaluated at some random variable.
+        """
+        if x_upper == None:
+            x_upper = self.randvar
+        if x_lower>x_upper:
+            raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        
+        cdf_func  = lambda mu, b, x:0.5*(1+np.sign(np.log(x)-mu)*(1-np.exp(-abs(np.log(x)-mu)/b))) if x>0 else 0
+        return cdf_func(self.loc, self.scale, x_upper)-cdf_func(self.loc, self.scale, x_lower)
+
+class Logistic_log(Base):
+    """
+    This class contains methods concerning Log logistic Distirbution. 
+    Args:
+    
+        shape(float | x>0): shape parameter
+        scale(float | x>0): scale parameter
+        randvar(float | x>loc): random variable
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - print_summary for printing the summary statistics of the distribution. 
+
+    Reference:
+    - Wikipedia contributors. (2019, November 19). Davis distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 23:20, January 15, 2021, from https://en.wikipedia.org/w/index.php?title=Davis_distribution&oldid=927002685
+    """
+    def __init__(self, scale, shape, randvar=0.5):
+        if randvar<0:
+            raise ValueError('random variable should be a positive number')
+         if scale<0 or shape<0:
+            raise ValueError('shape, scale, and location parameters should be a positive number. Entered value: scale={}, shape={}'.format(scale, shape)
+
+        self.scale = scale
+        self.shape = shape
+        self.randvar = randvar
+
+    def pdf(self,
+            plot=False,
+            threshold=1000,
+            interval = 1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability density evaluation for some point or plot of Log logistic distribution.
+        """
+        generator = lambda a,b,x: (b/a)*np.power(x/a, b-1)/(1+(x/a)**b)**2
+        if plot == True:
+            if interval<0:
+                raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
+            x = np.linspace(0, 1, int(threshold))
+            y = np.array([generator(self.scale, self.shape, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.scale, self.shape, self.randvar)
+
+    def cdf(self,
+            plot=False,
+            threshold=1000,
+            interval = 1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or plot of Log logistic distribution.
+        """
+        generator = lambda a,b,x: 1/(1+np.power(x/a, -b))
+        if plot == True:
+            if interval<0:
+                raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
+            x = np.linspace(0, interval, int(threshold))
+            y = np.array([generator(self.scale, self.shape, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.scale, self.shape, self.randvar)
+
+    def p_value(self, x_lower=0, x_upper=None):
+        """
+        Args:
+
+            x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+            x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+            Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+            Otherwise, the default random variable is x.
+
+        Returns:
+            p-value of the Log logistic distribution evaluated at some random variable.
+        """
+        if x_upper == None:
+            x_upper = self.randvar
+        if x_lower>x_upper:
+            raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        
+        cdf_func  = lambda a,b,x: 1/(1+np.power(x/a, -b))
+        return cdf_func(self.scale, self.shape, x_upper)-cdf_func(self.scale, self.shape, x_lower)
+
+    def mean(self):
+        """
+        Returns: Mean of the Log logistic distribution.
+        """
+        if self.shape>1:
+            return (self.scale*np.pi/self.shape)/np.sin(np.pi/self.shape)
+        return "undefined"
+
+    def median(self):
+        """
+        Returns: Median of the log Logistic distribution.
+        """
+        return self.scale
+
+    def mode(self):
+        """
+        Returns: Mode of the log Logistic distribution.
+        """
+        a = self.scale
+        b = self.shape
+        if b>1:
+            return a*np.power((b-1)/(b+1), 1/b)
+        return 0
+
+    def var(self):
+        """
+        Returns: Variance of the Log logistic distribution.
+        """
+        a = self.scale
+        b = self.shape
+        if b>2:
+            return a**2*(2*b/np.sin(2*b)-b**2/np.sin(b)**2)
+        return "undefined"
+
+    def print_summary(self):
+        """
+        Returns: Summary statistic regarding the Log logistic distribution
         """
         mean = self.mean()
         median = self.median()
