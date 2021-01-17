@@ -92,7 +92,11 @@ Semi-infinite class
     - Inverse chi-squared distribution
     - Lévy distribution
     - pareto
-
+    - nakagami
+    - Rice
+    - lomax
+    - Gumbel 
+    - Weibull
 ----
 in progress
 - Continuous univariate 
@@ -108,12 +112,7 @@ in progress
         <!-- - uniform -->
         <!-- - Wigner semicircle -->
     - semi-infinite interval
-        - nakagami
-        - Rice
-        - lomax
         - truncated normal type 2
-        - Gumbel 
-        - Weibull
         - relativistic Breit–Wigner 
         - Exponential-logarithmic*
         - exponential F**

@@ -1,6 +1,6 @@
 try:
     import numpy as np
-    from math import sqrt
+    from math import sqrt, pow
     import scipy as sci
     import scipy.special as ss
     import matplotlib.pyplot as plt
@@ -304,14 +304,14 @@ class Normal(Base):
         """
         mean = self.mean
         std = self.std
-        generator = lambda x, mean, std: np.power(
+        generator = lambda mean, std, x: np.power(
             1 / (std * np.sqrt(2 * np.pi)), np.exp(((x - mean) / 2 * std)**2))
         if plot == True:
             x = np.linspace(-interval, interval, threshold)
-            y = np.array([generator(x_temp, mean, std) for x_temp in x])
+            y = np.array([generator(mean, std, x_temp) for x_temp in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
 
-        return generator(self.randvar, mean, std)
+        return generator(mean, std, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -1773,7 +1773,7 @@ class Gamma_distribution(Base):
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
-
+# semi-infinite
 class Pareto(Base):
     """
     This class contains methods concerning the Pareto Distribution Type 1. 
@@ -2699,6 +2699,7 @@ class Logit_normal(Base):
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
 
+# semi-infinite
 class Weibull(Base):
     """
     This class contains methods concerning Weibull Distirbution. Also known as Fréchet distribution.
@@ -7134,7 +7135,7 @@ class Davis(Base):
         generator = lambda b,n,mu, x: b**n*np.power(x-mu,-1-n)/((np.exp(b/(x-mu))-1)*ss.gamma(n)*ss.zeta(n))
         if plot == True:
             if interval<0:
-                raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
+                raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, 1, int(threshold))
             y = np.array([generator(self.scale, self.shape, self.loc, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -7288,7 +7289,7 @@ class Rayleigh(Base):
 
         if plot == True:
             if interval<0:
-                raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
+                raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
             y = np.array([generator(self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -8164,7 +8165,7 @@ class Logistic_log(Base):
         generator = lambda a,b,x: (b/a)*np.power(x/a, b-1)/(1+(x/a)**b)**2
         if plot == True:
             if interval<0:
-                raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
+                raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, 1, int(threshold))
             y = np.array([generator(self.scale, self.shape, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -8335,7 +8336,7 @@ class Chisq_inverse(Base):
 
         if plot == True:
             if interval<0:
-                raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
+                raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
             y = np.array([generator(self.df, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -8523,7 +8524,7 @@ class Levy(Base):
 
         if plot == True:
             if interval<0:
-                raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
+                raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
             y = np.array([generator(self.loc, self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -8625,6 +8626,532 @@ class Levy(Base):
     def print_summary(self):
         """
         Returns: Summary statistic regarding the Levy distribution
+        """
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = "summary statistic"
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
+class Nakagami(Base):
+    """
+    This class contains methods concerning Nakagami Distirbution. 
+    Args:
+    
+        shape(float | x>0): shape parameter
+        spread(float | x>0): spread parameter
+        randvar(float | x>=0): random variable
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - print_summary for printing the summary statistics of the distribution. 
+
+    Reference:
+    - Wikipedia contributors. (2021, January 11). Nakagami distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 09:29, January 17, 2021, from https://en.wikipedia.org/w/index.php?title=Nakagami_distribution&oldid=999782097
+    """
+    def __init__(self, shape, spread, randvar):
+        if randvar<=0:
+            raise ValueError('random variable should be a positive number. Entered value: {}'.format(randvar))
+        if shape<0.5:
+            raise ValueError('shape parameter should not be less then 0.5. Enetered value for shape =  {}'.format(shape))
+        if spread<=0:
+            raise ValueError('spread should be a positive number. Entered value: {}'.format(spread))
+
+        self.shape = shape
+        self.spread = spread
+        self.randvar = randvar
+
+    def pdf(self,
+            plot=False,
+            interval = 0,
+            threshold=1000,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability density evaluation for some point or plot of Nakagami distribution.
+        """
+        generator = lambda m, omega, x: (2*pow(m,m))/(ss.gamma(m)*pow(omega,m))*pow(x, 2*m-1)*np.exp(-m/omega*pow(x,2))
+
+        if plot == True:
+            if interval<0:
+                raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
+            x = np.linspace(0, interval, int(threshold))
+            y = np.array([generator(self.shape, self.spread, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.shape, self.spread, self.randvar)
+
+    def cdf(self,
+            plot=False,
+            threshold=1000,
+            interval=1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or plot of Nakagami distribution.
+        """
+        generator = lambda m, omega, x: ss.gammainc(m, (m/omega)*pow(x,2))/ss.gamma(m)
+        if plot == True:
+            x = np.linspace(0, interval, int(threshold))
+            y = np.array([generator(self.shape, self.spread, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.shape, self.spread, self.randvar)
+
+    def p_value(self, x_lower=0, x_upper=None):
+        """
+        Args:
+
+            x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+            x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+            Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+            Otherwise, the default random variable is x.
+
+        Returns:
+            p-value of the Erlang distribution evaluated at some random variable.
+        """
+        if x_upper == None:
+            x_upper = self.randvar
+        if x_lower>x_upper:
+            raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        
+        cdf_func  = lambda m, omega, x: ss.gammainc(m, (m/omega)*pow(x,2))/ss.gamma(m)
+        return cdf_func(self.shape, self.spread, x_upper)-cdf_func(self.shape, self.spread, x_lower)
+
+    def mean(self):
+        """
+        Returns: Mean of the Nakagami distribution.
+        """
+        m, omega = self.shape, self.spread
+        return (ss.gamma(m+0.5)/ss.gamma(m))*sqrt(omega/m)
+
+    def median(self):
+        """
+        Returns: Median of the Nakagami distribution.
+        """
+        return "no simple closed form"
+
+    def mode(self):
+        """
+        Returns: Mode of the Nakagami distribution.
+        """
+        m, omega = self.shape, self.spread
+        return sqrt(2)/2*sqrt((2*m-1)*omega/m)
+
+    def var(self):
+        """
+        Returns: Variance of the Nakagami distribution.
+        """
+        m, omega = self.shape, self.spread
+        return omega*(1-(1/m)*pow(ss.gamma(m+0.5)/ss.gamma(m),2))
+
+    def print_summary(self):
+        """
+        Returns: Summary statistic regarding the Nakagami distribution
+        """
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = "summary statistic"
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
+class Lomax(Base):
+    """
+    This class contains methods concerning Lomax Distirbution. 
+    Args:
+    
+        shape(float | x>0): shape parameter
+        scale(float | x>0): scale parameter
+        randvar(float | x>=0): random variable
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - print_summary for printing the summary statistics of the distribution. 
+
+    Reference:
+    - Wikipedia contributors. (2021, January 11). Lomax distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 09:29, January 17, 2021, from https://en.wikipedia.org/w/index.php?title=Nakagami_distribution&oldid=999782097
+    """
+    def __init__(self, shape, scale, randvar):
+        if randvar<=0:
+            raise ValueError('random variable should be a positive number. Entered value: {}'.format(randvar))
+        if scale<=0 or shape<=0:
+            raise ValueError('shape and scale parameters should be a positive number.')
+
+        self.shape = shape
+        self.scale = scale
+        self.randvar = randvar
+
+    def pdf(self,
+            plot=False,
+            interval = 0,
+            threshold=1000,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability density evaluation for some point or plot of Lomax distribution.
+        """
+        generator = lambda _lambda, alpha, x: alpha/_lambda*pow(1+x/_lambda, -(alpha+1))
+
+        if plot == True:
+            if interval<0:
+                raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
+            x = np.linspace(0, interval, int(threshold))
+            y = np.array([generator(self.scale, self.shape, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.scale, self.shape, self.randvar)
+
+    def cdf(self,
+            plot=False,
+            threshold=1000,
+            interval=1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or plot of Nakagami distribution.
+        """
+        generator = lambda _lambda, alpha, x: 1 - pow(1+x/_lambda, -alpha)
+        if plot == True:
+            x = np.linspace(0, interval, int(threshold))
+            y = np.array([generator(self.scale, self.shape, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.scale, self.shape, self.randvar)
+
+    def p_value(self, x_lower=0, x_upper=None):
+        """
+        Args:
+
+            x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+            x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+            Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+            Otherwise, the default random variable is x.
+
+        Returns:
+            p-value of the Erlang distribution evaluated at some random variable.
+        """
+        if x_upper == None:
+            x_upper = self.randvar
+        if x_lower>x_upper:
+            raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        
+        cdf_func  = lambda _lambda, alpha, x: 1 - pow(1+x/_lambda, -alpha) if x>=0 else 0
+        return cdf_func(self.scale, self.shape, x_upper)-cdf_func(self.scale, self.shape, x_lower)
+
+    def mean(self):
+        """
+        Returns: Mean of the Lomax distribution.
+        """
+        if self.shape>1:
+            return self.scale/(self.shape+1)
+        return "undefined"
+
+    def median(self):
+        """
+        Returns: Median of the Lomax distribution.
+        """
+        return self.scale*(pow(2,1/self.shape)-1)
+
+    def mode(self):
+        """
+        Returns: Mode of the Lomax distribution.
+        """
+        return 0
+
+    def var(self):
+        """
+        Returns: Variance of the Lomax distribution.
+        """
+        alpha, _lambda = self.shape, self.scale
+        if alpha>2:
+            return (pow(_lambda, 2)*alpha)/(pow(alpha-1,2)*(alpha-2))
+        elif alpha>1 and alpha <=2:
+            return np.inf
+        else:
+            return "undefined"
+
+    def skewness(self):
+        """
+        Returns: Skewness of the Lomax distribution. 
+        """
+        alpha, _lambda = self.shape, self.scale
+        if alpha >3:
+            return (2*(1+alpha))/(alpha-3)*sqrt((alpha-2)/alpha)
+        return "undefined"
+
+    def kurtosis(self):
+        """
+        Returns: Kurtosis of the Lomax distribution. 
+        """
+        alpha, _lambda = self.shape, self.scale
+        if alpha>4:
+            return (6*(pow(alpha, 3)+pow(alpha,2)-6*alpha-2))/(alpha*(alpha-3)*(alpha-4))
+        return "undefined"
+
+    def print_summary(self):
+        """
+        Returns: Summary statistic regarding the Lomax distribution
+        """
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = "summary statistic"
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
+class Gumbell(Base):
+    """
+    This class contains methods concerning Gumbell Distirbution. 
+    Args:
+    
+        loc(float): loc parameter
+        scale(float | x>0): scale parameter
+        randvar(float): random variable
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - print_summary for printing the summary statistics of the distribution. 
+
+    Reference:
+    - Wikipedia contributors. (2020, November 26). Gumbel distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 10:02, January 17, 2021, from https://en.wikipedia.org/w/index.php?title=Gumbel_distribution&oldid=990718796
+    """
+    def __init__(self, loc, scale, randvar):
+        if scale<=0:
+            raise ValueError('scale parameters should be a positive number.')
+
+        self.loc = loc
+        self.scale = scale
+        self.randvar = randvar
+
+    def pdf(self,
+            plot=False,
+            interval = 0,
+            threshold=1000,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability density evaluation for some point or plot of Gumbell distribution.
+        """
+        def generator(mu, beta, x):
+            z = (x-mu)/beta
+            return (1/beta)*np.exp(-z*np.exp(-z))
+
+        if plot == True:
+            if interval<0:
+                raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
+            x = np.linspace(0, interval, int(threshold))
+            y = np.array([generator(self.loc, self.mu, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.loc, self.mu, self.randvar)
+
+    def cdf(self,
+            plot=False,
+            threshold=1000,
+            interval=1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or plot of Nakagami distribution.
+        """
+        generator = lambda mu, beta, x: np.exp(-np.exp(-(x-mu)/beta))
+        if plot == True:
+            x = np.linspace(0, interval, int(threshold))
+            y = np.array([generator(self.loc, self.mu, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.loc, self.mu, self.randvar)
+
+    def p_value(self, x_lower=0, x_upper=None):
+        """
+        Args:
+
+            x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+            x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+            Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+            Otherwise, the default random variable is x.
+
+        Returns:
+            p-value of the Erlang distribution evaluated at some random variable.
+        """
+        if x_upper == None:
+            x_upper = self.randvar
+        if x_lower>x_upper:
+            raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        
+        cdf_func  = lambda mu, beta, x: np.exp(-np.exp(-(x-mu)/beta))
+        return cdf_func(self.loc, self.mu, x_upper)-cdf_func(self.loc, self.mu, x_lower)
+
+    def mean(self):
+        """
+        Returns: Mean of the Gumbell distribution.
+        """
+        return self.loc+self.scale*np.euler_gamma
+    
+    def median(self):
+        """
+        Returns: Median of the Gumbell distribution.
+        """
+        return self.loc - self.scale*np.log(np.log(2))
+
+    def mode(self):
+        """
+        Returns: Mode of the Gumbell distribution.
+        """
+        return self.loc
+
+    def var(self):
+        """
+        Returns: Variance of the Gumbell distribution.
+        """
+        return (pow(np.pi,2)/6)*pow(self.scale,2)
+
+    def skewness(self):
+        """
+        Returns: Approximation of the Skewness of the Gumbell distribution. 
+        """
+        return 1.14
+
+    def kurtosis(self):
+        """
+        Returns: Kurtosis of the Gumbell distribution. 
+        """
+        return 12/5
+    
+    def entropy(self):
+        """
+        Returns: differential entropy of the Gumbell distribution.
+        """
+        return np.log(self.scale)+np.euler_gamma+1
+
+    def print_summary(self):
+        """
+        Returns: Summary statistic regarding the Gumbell distribution
         """
         mean = self.mean()
         median = self.median()
