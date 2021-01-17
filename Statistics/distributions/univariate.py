@@ -6769,7 +6769,7 @@ class Gamma_inverse(Base):
 #         Returns: 
 #             either probability density evaluation for some point or plot of Burr distribution.
 #         """
-#         generator = lambda a,b,o,x:np.exp(-a*np.log10(x/o)-b*(np.log10(x/o)**2))*(a/x+(2*b*np.log10(x/o))/x) 
+        # generator = lambda a,b,o,x:np.exp(-a*np.log10(x/o)-b*pow(np.log10(x/o),2))*(a/x+(2*b*np.log10(x/o))/x) 
 #         if plot == True:
 #             if interval<0:
 #                 raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
@@ -6828,7 +6828,7 @@ class Gamma_inverse(Base):
 #         if x_lower>x_upper:
 #             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-#         cdf_func  = lambda a,b,o,x: 1- np.exp(-a*np.log10(x/a)-b*(np.log10(x/o))**2)
+#             cdf_func  = lambda a,b,o,x: 1- np.exp(-a*np.log10(x/a)-b*pow((np.log10(x/o)),2))
 #         return cdf_func(self.alpha, self.beta, self.sigma, x_upper)-cdf_func(self.alpha, self.beta, self.sigma, x_lower)
 
 #     def mean(self):
@@ -6843,7 +6843,7 @@ class Gamma_inverse(Base):
 #         Returns: Median of the Burr distribution.
 #         """
 #         alpha = self.alpha; beta = self.beta; sigma = self.sigma
-#         return sigma*np.exp((-alpha+sqrt(alpha**2+beta*np.log(16)))/(2*beta))
+#         return sigma*np.exp((-alpha+sqrt(pow(alpha,2)+beta*np.log(16)))/(2*beta))
 
 #     def mode(self):
 #         """
@@ -6953,7 +6953,7 @@ class Dagum(Base):
         Returns: 
             either probability density evaluation for some point or plot of Dagum distribution.
         """
-        generator = lambda p,a,b,x: (a*p/x)*(np.power(x/b,a*p)/np.power((x/b)**a+1,p+1)
+        generator = lambda p,a,b,x: (a*p/x)*(np.power(x/b,a*p)/(np.power(pow((x/b),a)+1,p+1)
         if plot == True:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
@@ -7033,7 +7033,7 @@ class Dagum(Base):
         a = self.a_shape
         p = self.p_shape
         b = self.scale
-        return b*(-1+2**(1/p))**(-1/a)
+        return b*pow(-1+pow(2,1/p),-1/a)
 
     def mode(self):
         """
@@ -7052,7 +7052,7 @@ class Dagum(Base):
         p = self.p_shape
         b = self.scale
         if a>2:
-            return (b**2/a**2)*(2*a*(ss.gamma(-2/a)*ss.gamma(2/a+p))/ss.gamma(p)+np.power(ss.gamma(-1/a)*ss.gamma(1/a+p)/ss.gamma(p),2)) 
+            return (-pow(b,2)/pow(a,2))*(2*a*(ss.gamma(-2/a)*ss.gamma(2/a+p))/ss.gamma(p)+pow(ss.gamma(-1/a)*ss.gamma(1/a+p)/ss.gamma(p),2)) 
         return 
 
 
@@ -7132,7 +7132,7 @@ class Davis(Base):
         Returns: 
             either probability density evaluation for some point or plot of Davis distribution.
         """
-        generator = lambda b,n,mu, x: b**n*np.power(x-mu,-1-n)/((np.exp(b/(x-mu))-1)*ss.gamma(n)*ss.zeta(n))
+        generator = lambda b,n,mu, x: (pow(b,n)*pow(x-mu,-1-n))/((np.exp(b/(x-mu))-1)*ss.gamma(n)*ss.zeta(n))
         if plot == True:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
@@ -7198,16 +7198,19 @@ class Davis(Base):
         """
         Returns: Mean of the Davis distribution.
         """
-        alpha = self.alpha; beta = self.beta; sigma = self.sigma
-        return sigma+(sigma/(sqrt(2*beta)))*ss.hermite(-1, (1+alpha)/(sqrt(2*beta)))
+        b,n,mu = self.scale, self.shape, self.loc
+        if n>2:
+            return mu+(b*ss.zeta(n-1))/((n-1)*ss.zeta(n))
+        return "indeterminate"
 
     def var(self):
         """
         Returns: Variance of the Davis distribution.
         """
-        mean = self.mean()
-        alpha = self.alpha; beta = self.beta; sigma = self.sigma
-        return (sigma**2+(2*sigma**2)/sqrt(2*beta)*ss.hermite(-1,(2+alpha)/sqrt(2*beta)))-mean**2
+        b,n,mu = self.scale, self.shape, self.loc
+        if n>3:
+            return (pow(b,2)*(-(n-2)*pow(ss.zeta(n-1),2)+(n-1)*ss.zeta(n-2)*ss.zeta(n)))/((n-2)*pow(n-1,2)*pow(ss.zeta(n),2))
+        return "indeterminate"
 
     def print_summary(self):
         """
@@ -7285,7 +7288,7 @@ class Rayleigh(Base):
         Returns: 
             either probability density evaluation for some point or plot of Rayleigh distribution.
         """
-        generator = lambda sig,x: (x/sig**2)*np.exp(-x**2/(2*sig**2))
+        generator = lambda sig,x: (x/pow(sig,2))*np.exp(pow(-x,2)/(2*pow(sig,2)))
 
         if plot == True:
             if interval<0:
@@ -7368,19 +7371,19 @@ class Rayleigh(Base):
         """
         Returns: Variance of the Rayleigh distribution.
         """
-        return  (4-np.pi)/2*np.scale**2
+        return  (4-np.pi)/2*pow(self.scale, 2)
 
     def skewness(self):
         """
         Returns: Skewness of the Rayleigh distribution. 
         """
-        return (2*sqrt(np.pi)*(np.pi-3))/np.power((4-np.pi), 3/2)
+        return (2*sqrt(np.pi)*(np.pi-3))/pow((4-np.pi), 3/2)
 
     def kurtosis(self):
         """
         Returns: Kurtosis of the Rayleigh distribution. 
         """
-        return -(6*np.pi**2-24*np.pi+16)/(4-np.pi)**2
+        return -(6*pow(np.pi,2)-24*np.pi+16)/pow(4-np.pi,*2)
 
     def entropy(self):
         """
@@ -7462,7 +7465,7 @@ class Hypoexponential(Base):
         a = self.a_shape
         p = self.p_shape
         b = self.scale
-        return b*np.power((a*p-1)/(a+1), 1/a)
+        return b*pow((a*p-1)/(a+1), 1/a)
 
     def var(self):
         """
@@ -7474,7 +7477,7 @@ class Hypoexponential(Base):
         """
         Returns: Skewness of the Hypoexponential distribution. 
         """
-        return 2*sum([1/x**3 for x in self.args])/np.power((sum(1/x**2 for x in self.args), 3/2))
+        return 2*sum([1/pow(x,3) for x in self.args])/pow(sum([1/pow(x,2) for x in self.args]), 3/2)
 
     def kurtosis(self):
         """
@@ -7631,7 +7634,7 @@ class Benktander_T1(Base):
         a = self.a
         b = self.b
         x = self.x
-        return (-sqrt(b)+a*np.exp((a-1)**2/(4*b))*sqrt(np.pi)*ss.erfc((a-1)/(2*sqrt(b))))/(a**2*sqrt(b))
+        return (-sqrt(b)+a*np.exp(pow(a-1,2)/(4*b))*sqrt(np.pi)*ss.erfc((a-1)/(2*sqrt(b))))/(pow(a,2)*sqrt(b))
 
     def print_summary(self):
         """
@@ -7783,7 +7786,7 @@ class Benktander_T2(Base):
         b = self.b
         if b ==1:
             return np.log10(2)/a + 1
-        return np.power(((1-b)/a)*ss.lambertw((np.power(2, b/(1-b))*a*np.exp(1/(1-a))/(1-b))), 1/b)
+        return pow(((1-b)/a)*ss.lambertw((pow(2, b/(1-b))*a*np.exp(1/(1-b))/(1-b))), 1/b)
     
 
     def mode(self):
@@ -7798,7 +7801,7 @@ class Benktander_T2(Base):
         """
         a = self.a
         p = self.b
-        return (-b+2*a*np.exp(a/b)*ss.expn(1-1/b. a/b))/(a**2*b)
+        return (-b+2*a*np.exp(a/b)*ss.expn(1-1/b. a/b))/(pow(a,2)*b)
         
     def print_summary(self):
         """
@@ -8008,8 +8011,6 @@ class Laplace_log(Base):
     Retrieved 14:24, January 16, 2021, from https://en.wikipedia.org/w/index.php?title=Log-Laplace_distribution&oldid=984391227
     """
     def __init__(self, loc, scale, randvar):
-        # if randvar<0:
-        #     raise ValueError('random variable should be a positive number')
          if scale<0:
             raise ValueError('scale parameters should be a positive number. Entered value: scale={}'.format(scale)
 
@@ -8255,7 +8256,7 @@ class Logistic_log(Base):
         a = self.scale
         b = self.shape
         if b>2:
-            return a**2*(2*b/np.sin(2*b)-b**2/np.sin(b)**2)
+            return pow(a,2)*(2*b/np.sin(2*b)-pow(b,2)/pow(np.sin(b),2))
         return "undefined"
 
     def print_summary(self):

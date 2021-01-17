@@ -93,7 +93,7 @@ Semi-infinite class
     - Lévy distribution
     - pareto
     - nakagami
-    - Rice
+    <!-- - Rice -->
     - lomax
     - Gumbel 
     - Weibull
