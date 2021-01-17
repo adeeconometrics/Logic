@@ -91,6 +91,7 @@ Semi-infinite class
     - log-Logistic distribution
     - Inverse chi-squared distribution
     - Lévy distribution
+    - pareto
 
 ----
 in progress
@@ -107,26 +108,28 @@ in progress
         <!-- - uniform -->
         <!-- - Wigner semicircle -->
     - semi-infinite interval
+        - nakagami
+        - Rice
+        - lomax
+        - truncated normal type 2
+        - Gumbel 
+        - Weibull
+        - relativistic Breit–Wigner 
         - Exponential-logarithmic*
         - exponential F**
         - generalized gamma
         - Gompertz*
-        - Hotelling's T-squared
+        - Hotelling's T-squared - needs further reading
         - hyper-Erlang**
         - inverse chi-squared scaled 
-        - Kolmogorov
-        - Lomaxmatrix-exponential
+        - Kolmogorov - needs further reading
+        - matrix-exponential - needs further reading
         - Maxwell–Jüttner
-        - Mittag-Leffler
-        - Nakagami
+        - Mittag-Leffler - needs further reading
         - noncentral chi-squared
         - noncentral F
-        - Paretophase-type
-        - poly-Weibull
-        - relativistic
-        - Breit–WignerRiceshifted 
-        - truncated normal type-2 
-        - GumbelWeibull discrete Weibull
+        - phase-type - needs further reading
+        - poly-Weibull - needs further reading
         - Wilks's lambda
 
     - supported on the whole real line 
