@@ -14,12 +14,25 @@ features to be developed:
 - plotting probability distribution
     - plain
     - fill-in between gradient 
+    - vlines
+    - annotation 
+- likelihood function
+- log-likelihood function
+- logcdf
+- logpdf
+- maximum-likelihood function
 - random variable generator 
+- standard deviation
 - moment generating functions 
 - entropy
 - fisher information
 - point-percentage function 
 
+----
+to clean:
+- comments
+- replace " ** " to pow(x,y)
+- replace `np.log(x)` to `math.log(x,y)`
 # List of supported distributions 
 ---
 ## Discrete 
