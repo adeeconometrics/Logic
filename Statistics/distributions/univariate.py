@@ -240,7 +240,7 @@ class Uniform:
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -421,12 +421,12 @@ class Normal(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
 
-class T_distribution(Base):
+class T(Base):
     """
     This class contains implementation of the Student's Distribution for calculating the
     probablity density function and cumulative distirbution function. Additionally, 
@@ -635,7 +635,7 @@ class T_distribution(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -824,12 +824,12 @@ class Cauchy(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
 
-class F_distribution(Base):
+class F(Base):
     """
     This class contains methods concerning the F-distribution. 
 
@@ -1025,12 +1025,12 @@ class F_distribution(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
 
-class Chisq_distribution(Base):
+class Chisq(Base):
     """
     This class contains methods concerning the Chi-square distribution.
 
@@ -1201,12 +1201,12 @@ class Chisq_distribution(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
 
-class Chi_distribution(Base):
+class Chi(Base):
     """
     This class contains methods concerning the Chi distribution.
 
@@ -1389,12 +1389,12 @@ class Chi_distribution(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
 # check plotting function
-class Explonential_distribution(Base):
+class Explonential(Base):
     """
     This class contans methods for evaluating Exponential Distirbution. 
 
@@ -1586,12 +1586,12 @@ class Explonential_distribution(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
 # check. add p_value method.
-class Gamma_distribution(Base):
+class Gamma(Base):
     """
     This class contains methods concerning a variant of Gamma distribution. 
 
@@ -1769,7 +1769,7 @@ class Gamma_distribution(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -1990,7 +1990,7 @@ class Pareto(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -2180,7 +2180,7 @@ class Log_normal(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -2356,7 +2356,7 @@ class Laplace(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -2531,7 +2531,7 @@ class Logistic(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -2694,7 +2694,7 @@ class Logit_normal(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -2881,7 +2881,7 @@ class Weibull(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -3065,7 +3065,7 @@ class Weilbull_inv(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -3229,7 +3229,7 @@ class Gumbell(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -3390,7 +3390,7 @@ class Arcsine(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -3608,7 +3608,7 @@ class Triangular(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -3792,7 +3792,7 @@ class Trapezoidal(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -3965,7 +3965,7 @@ class Trapezoidal(Base):
 #         var = self.var()
 #         skewness = self.skewness()
 #         kurtosis = self.kurtosis()
-#         cstr = " summary statistic "
+#         cstr = " summary statistics "
 #         print(cstr.center(40, "="))
 #         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -4149,7 +4149,7 @@ class Beta(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -4344,7 +4344,7 @@ class Beta_prime(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -4502,7 +4502,7 @@ class Bates(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -4684,7 +4684,7 @@ class Erlang(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -4869,7 +4869,7 @@ class Maxwell_Boltzmann(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -5051,7 +5051,7 @@ class Beta_rectangular(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -5213,7 +5213,7 @@ class Bernoulli(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -5375,7 +5375,7 @@ class Bernoulli(Base):
 #         var = self.var()
 #         skewness = self.skewness()
 #         kurtosis = self.kurtosis()
-#         cstr = " summary statistic "
+#         cstr = " summary statistics "
 #         print(cstr.center(40, "="))
 #         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -5548,7 +5548,7 @@ class Wigner(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -5714,7 +5714,7 @@ class Balding_Nichols(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -5880,7 +5880,7 @@ class Benini(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -6026,7 +6026,7 @@ class Normal_folded(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -6178,7 +6178,7 @@ class Logistic_half(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -6349,7 +6349,7 @@ class Normal_half(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -6523,7 +6523,7 @@ class Gassuian_inverse(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -6705,7 +6705,7 @@ class Gamma_inverse(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -6889,7 +6889,7 @@ class Gamma_inverse(Base):
 #         var = self.var()
 #         skewness = self.skewness()
 #         kurtosis = self.kurtosis()
-#         cstr = " summary statistic "
+#         cstr = " summary statistics "
 #         print(cstr.center(40, "="))
 #         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -7069,7 +7069,7 @@ class Dagum(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
         
@@ -7225,7 +7225,7 @@ class Davis(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -7407,7 +7407,7 @@ class Rayleigh(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -7498,7 +7498,7 @@ class Rayleigh(Base):
 #         var = self.var()
 #         skewness = self.skewness()
 #         kurtosis = self.kurtosis()
-#         cstr = " summary statistic "
+#         cstr = " summary statistics "
 #         print(cstr.center(40, "="))
 #         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -7649,7 +7649,7 @@ class Benktander_T1(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -7816,7 +7816,7 @@ class Benktander_T2(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -7982,7 +7982,7 @@ class Cauchy_log(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -8272,7 +8272,7 @@ class Logistic_log(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -8460,7 +8460,7 @@ class Chisq_inverse(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -8637,7 +8637,7 @@ class Levy(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -8801,7 +8801,7 @@ class Nakagami(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -8986,7 +8986,7 @@ class Lomax(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -9163,7 +9163,7 @@ class Gumbell_T1(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -9305,7 +9305,7 @@ class Gumbell_T2(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = " summary statistic "
+        cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
