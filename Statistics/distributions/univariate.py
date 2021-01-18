@@ -113,19 +113,20 @@ class Uniform:
         a(int): lower limit of the distribution
         b(int): upper limit of the distribution
 
-    Methods
+    Methods:
 
-        - pmf for probability density function
-        - cdf for cumulative distribution function
-        - mean for evaluating the mean of the Uniform distribution.
-        - median for evaluating the median of the Uniform distribution.
-        - mode for evaluating the mode of the Uniform distribution.
-        - var for evaluating the variance of the Uniform distribution.
-        - std for evaluating the standard deviation of the Uniform distribution.
-        - skewness for evaluating the skewness of the Uniform distribution.
-        - kurtosis for evaluating the kurtosis of the Uniform distribution.
-        - entropy for differential entropy of the Uniform distribution.
-        - summary for printing summary statistic of the distribution.
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
 
     Referene:
     - Weisstein, Eric W. "Uniform Distribution." From MathWorld--A Wolfram Web Resource. 
@@ -270,17 +271,17 @@ class Normal(Base):
 
     Methods:
 
-        - pdf for evaluating or plotting probability density function
-        - cdf for evaluating or plotting cumulative distribution function
-        - p_value returns p-value at randvar.
-        - mean for evaluating the mean of the Normal distribution.
-        - median for evaluating the median of the Normal distribution.
-        - mode for evaluating the mode of the Normal distribution.
-        - var for evaluating the variance of the Normal distribution.
-        - std for evaluating the standard deviation of the Normal distribution.
-        - skewness for evaluating the skewness of the Normal distribution.
-        - kurtosis for evaluating the kurtosis of the Normal distribution.
-        - entropy for differential entropy of the Normal distribution.
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
         - summary for printing the summary statistics of the distribution. 
 
     References:
@@ -460,18 +461,18 @@ class T(Base):
     
     Methods:
 
-        - pdf for plotting or evaluating probability density function.
-        - cdf for plotting or evaluating cumulative distirbution function.
-        - p_value for p value given a random variable x.
-        - mean for evaluating the mean of the T (Student's) distribution.
-        - median for evaluating the median of the T (Student's) distribution.
-        - mode for evaluating the mode of the T (Student's) distribution.
-        - var for evaluating the variance of the T (Student's) distribution.
-        - std for evaluating the standard deviation of the T (Student's) distribution.
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
         - skewness for evaluating the skewness of the distribution.
-        - kurtosis for evaluating the kurtosis of the T (Student's) distribution.
-        - entropy for differential entropy of the T (Student's) distribution.
-        - summary for printing the summary statistics of the T (Student's) distribution. 
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
 
     References: 
 
@@ -621,6 +622,8 @@ class T(Base):
         """
         Returns: Standard Deviation of the T-distribution
         """
+        if self.var()=="undefined":
+            return "undefined"
         return sqrt(self.var())
 
     def skewness(self):
@@ -680,18 +683,18 @@ class Cauchy(Base):
 
     Methods:
 
-        - pdf for plotting or evaluating probability density function
-        - cdf for plotting or evaluating cumulative distribution function
-        - p_value for p value
-        - mean for evaluating the mean of the Cauchy distribution.
-        - median for evaluating the median of the Cauchy distribution.
-        - mode for evaluating the mode of the Cauchy distribution.
-        - var for evaluating the variance of the Cauchy distribution.
-        - std for evaluating the standard deviation of the Cauchy distribution.
-        - skewness for evaluating the skewness of the Cauchy distribution.
-        - kurtosis for evaluating the kurtosis of the Cauchy distribution.
-        - entropy for differential entropy of the Cauchy distribution.
-        - summary for printing the summary statistics of the Cauchy distribution. 
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
 
     References:
     - Wikipedia contributors. (2020, November 29). Cauchy distribution. In Wikipedia, The Free Encyclopedia. 
@@ -818,19 +821,19 @@ class Cauchy(Base):
 
     def var(self):
         """
-        Returns: Variance of the Cauchy distribution. Undefined.
+        Returns: Variance of the Cauchy distribution. 
         """
         return "undefined"
     
     def std(self):
         """
-        Returns: Standard Deviation of the Cauchy Distribution. Undefined
+        Returns: Standard Deviation of the Cauchy Distribution.
         """
         return "undefined"
 
     def skewness(self):
         """
-        Returns: Skewness of the Cauchy distribution. Undefined.
+        Returns: Skewness of the Cauchy distribution. 
         """
         return "undefined"
 
@@ -878,18 +881,18 @@ class F(Base):
 
     Methods:
 
-        - pdf for plotting or evaluating probability density function
-        - cdf for plotting or evaluating cumulative distribution function
-        - p_value for p value
-        - mean for evaluating the mean of the F-distribution.
-        - median for evaluating the median of the F-distribution.
-        - mode for evaluating the mode of the F-distribution.
-        - var for evaluating the variance of the F-distribution.
-         - std for evaluating the standard deviation of the F-distribution.
-        - skewness for evaluating the skewness of the F-distribution.
-        - kurtosis for evaluating the kurtosis of the F-distribution.
-        - entropy for differential entropy of the F-distribution.
-        - summary for printing the summary statistics of the F-distribution. 
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
 
     References:
     - Mood, Alexander; Franklin A. Graybill; Duane C. Boes (1974). 
@@ -1037,6 +1040,9 @@ class F(Base):
         """
         Returns: Standard deviation of the F-distribution.
         """
+        if self.var()=="undefined":
+            return "undefined"
+        return sqrt(self.var())
 
     def skewness(self):
         """
@@ -1085,19 +1091,19 @@ class Chisq(Base):
         df(int): degrees of freedom.
 
     Methods:
-    
-        - pdf for evaluating or plotting probability density function.
-        - cdf for evaluating or plotting cumulative distribution function.
-        - p_value for p value.
-        - mean for evaluating the mean of the Chi-square distribution.
-        - median for evaluating the median of the Chi-square distribution.
-        - mode for evaluating the mode of the Chi-square distribution.
-        - var for evaluating the variance of the Chi-square distribution.
-        - std for evaluating the standard deviation of the Chi-square distribution.
-        - skewness for evaluating the skewness of the Chi-square distribution.
-        - kurtosis for evaluating the kurtosis of the Chi-square distribution.
-        - entropy for differential entropy of the Chi-square distribution.
-        - summary for printing the summary statistics of the Chi-square distribution. 
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
 
     References:
     - Weisstein, Eric W. "Chi-Squared Distribution." From MathWorld--A Wolfram Web Resource. 
@@ -1270,19 +1276,19 @@ class Chi(Base):
         df(int | x>0): degrees of freedom.
 
     Methods:
-    
-        - pdf for evaluating or plotting probability density function.
-        - cdf for evaluating or plotting cumulative distribution function.
-        - p_value for p value.
-        - mean for evaluating the mean of the Chi-distribution.
-        - median for evaluating the median of the Chi-distribution.
-        - mode for evaluating the mode of the Chi-distribution.
-        - var for evaluating the variance of the Chi-distribution.
-        - std for evaluating the standard deviation of the Chi-distribution.
-        - skewness for evaluating the skewness of the Chi-distribution.
-        - kurtosis for evaluating the kurtosis of the Chi-distribution.
-        - entropy for differential entropy of the Chi-distribution.
-        - summary for printing the summary statistics of the Chi-distribution. 
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
 
     References:
     - Weisstein, Eric W. "Chi Distribution." From MathWorld--A Wolfram Web Resource. 
@@ -1468,18 +1474,18 @@ class Explonential(Base):
 
     Methods:
 
-        - pdf for proability density function.
+        - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p value.
-        - mean for evaluating the mean of the Exponential distribution.
-        - median for evaluating the median of the Exponential distribution.
-        - mode for evaluating the mode of the Exponential distribution.
-        - var for evaluating the variance of the Exponential distribution.
-        - std for evaluating the standard deviation of the Exponential distribution.
-        - skewness for evaluating the skewness of the Exponential distribution.
-        - kurtosis for evaluating the kurtosis of the Exponential distribution.
-        - entropy for differential entropy of the Exponential distribution.
-        - summary for printing the summary statistics of the Exponential distribution. 
+        - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
 
     References:
     - Weisstein, Eric W. "Exponential Distribution." From MathWorld--A Wolfram Web Resource. 
@@ -1675,17 +1681,18 @@ class Gamma(Base):
 
     Methods:
 
-        - pdf for proability density function.
+        - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p value.
-        - mean for evaluating the mean of the Gamma distribution.
-        - median for evaluating the median of the Gamma distribution.
-        - mode for evaluating the mode of the Gamma distribution.
-        - var for evaluating the variance of the Gamma distribution.
-        - std for evaluating the standard deviation of the Gamma distribution.
-        - skewness for evaluating the skewness of the Gamma distribution.
-        - kurtosis for evaluating the kurtosis of the Gamma distribution.
-        - summary for printing the summary statistics of the Gamma distribution. 
+        - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
 
     References:
     - Matlab(2020). Gamma Distribution. 
@@ -1865,20 +1872,20 @@ class Pareto(Base):
         shape(float | x>0): shape parameter.
         x(float | [shape, infty]): random variable.
 
-    Methods
+    Methods:
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p values at some random variable x.
-        - mean for evaluating the mean of the Pareto distribution.
-        - median for evaluating the median of the Pareto distribution.
-        - mode for evaluating the mode of the Pareto distribution.
-        - var for evaluating the variance of the Pareto distribution.
-        - std for evaluating the standard deviation of the Pareto distribution.
-        - skewness for evaluating the skewness of the Pareto distribution.
-        - kurtosis for evaluating the kurtosis of the Pareto distribution.
-        - entropy for differential entropy of the Pareto distribution.
-        - summary for printing the summary statistics of the Pareto distribution. 
+        - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
 
     References:
     - Barry C. Arnold (1983). Pareto Distributions. International Co-operative Publishing House. ISBN 978-0-89974-012-6.
@@ -2100,15 +2107,15 @@ class Log_normal(Base):
         - pdf for probability density function.
         - cdf for cumulative distribution function.
         - p_value for p-values.
-        - mean for evaluating the mean of the Log Normal distribution.
-        - median for evaluating the median of the Log Normal distribution.
-        - mode for evaluating the mode of the Log Normal distribution.
-        - var for evaluating the variance of the Log Normal distribution.
-        - std for evaluating the standard deviation of the Log Normal distribution.
-        - skewness for evaluating the skewness of the Log Normal distribution.
-        - kurtosis for evaluating the kurtosis of the Log Normal distribution.
-        - entropy for differential entropy of the Log Normal distribution.
-        - summary for printing the summary statistics of the Log Normal distribution. 
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
 
     References:
     - Weisstein, Eric W. "Log Normal Distribution." From MathWorld--A Wolfram Web Resource. 
@@ -2297,15 +2304,15 @@ class Laplace(Base):
         - pdf for probability density function.
         - cdf for cumulative distribution function.
         - p_value for p-values.
-        - mean for evaluating the mean of the Laplace distribution.
-        - median for evaluating the median of the Laplace distribution.
-        - mode for evaluating the mode of the Laplace distribution.
-        - var for evaluating the variance of the Laplace distribution.
-        - std for evaluating the standard deviation of the Laplace distribution.
-        - skewness for evaluating the skewness of the Laplace distribution.
-        - kurtosis for evaluating the kurtosis of the Laplace distribution.
-        - entropy for differential entropy of the Laplace distribution.
-        - summary for printing the summary statistics of the Laplace distribution. 
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
 
     Reference:
         - Wikipedia contributors. (2020, December 21). Laplace distribution. In Wikipedia, The Free Encyclopedia. 
@@ -2482,16 +2489,16 @@ class Logistic(Base):
         - pdf for probability density function.
         - cdf for cumulative distribution function.
         - p_value for p-values.
-        - mean for evaluating the mean of the Logistic distribution.
-        - median for evaluating the median of the Logistic distribution.
-        - mode for evaluating the mode of the Logistic distribution.
-        - var for evaluating the variance of the Logistic distribution.
-        - std for evaluating the standard deviation of the Logistic distribution.
-        - skewness for evaluating the skewness of the Logistic distribution.
-        - kurtosis for evaluating the kurtosis of the Logistic distribution.
-        - entropy for differential entropy of the Logistic distribution.
-        - summary for printing the summary statistics of the Logistic distribution. 
-        
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
+
     Reference:
     - Wikipedia contributors. (2020, December 12). Logistic distribution. In Wikipedia, The Free Encyclopedia.
      Retrieved 11:14, December 28, 2020, from https://en.wikipedia.org/w/index.php?title=Logistic_distribution&oldid=993793195
@@ -2666,15 +2673,15 @@ class Logit_normal(Base):
         - pdf for probability density function.
         - cdf for cumulative distribution function.
         - p_value for p-values.
-        - mean for evaluating the mean of the Logit Normal distribution.
-        - median for evaluating the median of the Logit Normal distribution.
-        - mode for evaluating the mode of the Logit Normal distribution.
-        - var for evaluating the variance of the Logit Normal distribution.
-        - std for evaluating the standard deviation of the Logit Normal distribution.
-        - skewness for evaluating the skewness of the Logit Normal distribution.
-        - kurtosis for evaluating the kurtosis of the Logit Normal distribution.
-        - entropy for differential entropy of the Logit Normal distribution.
-        - summary for printing the summary statistics of the Logit Normal distribution. 
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
 
     Reference:
     - Wikipedia contributors. (2020, December 9). Logit-normal distribution. In Wikipedia, The Free Encyclopedia. 
@@ -2788,9 +2795,13 @@ class Logit_normal(Base):
         """
         Returns: Variance of the Logit Normal distribution.
         """
-
         return "no analytical solution"
 
+    def std(self):
+        """
+        Returns: Standard deviation of the Logit Normal distribution.
+        """
+        return "no analytical solution"
 
     def entropy(self):
         """
@@ -2832,15 +2843,15 @@ class Weibull(Base):
         - pdf for probability density function.
         - cdf for cumulative distribution function.
         - p_value for p-values.
-        - mean for evaluating the mean of the Weilbull distribution.
-        - median for evaluating the median of the Weilbull distribution.
-        - mode for evaluating the mode of the Weilbull distribution.
-        - var for evaluating the variance of the Weilbull distribution.
-        - std for evaluating the standard deviation of the Weilbull distribution.
-        - skewness for evaluating the skewness of the Weilbull distribution.
-        - kurtosis for evaluating the kurtosis of the Weilbull distribution.
-        - entropy for differential entropy of the Weilbull distribution.
-        - summary for printing the summary statistics of the Weilbull distribution. 
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
 
     Reference:
     - Wikipedia contributors. (2020, December 13). Weibull distribution. In Wikipedia, The Free Encyclopedia. 
@@ -3026,14 +3037,15 @@ class Weilbull_inv(Base):
         - pdf for probability density function.
         - cdf for cumulative distribution function.
         - p_value for p-values.
-        - mean for evaluating the mean of the Fréchet distribution.
-        - median for evaluating the median of the Fréchet distribution.
-        - mode for evaluating the mode of the Fréchet distribution.
-        - var for evaluating the variance of the Fréchet distribution.
-        - std for evaluating the standard deviation of the Fréchet distribution.
-        - skewness for evaluating the skewness of the Fréchet distribution.
-        - kurtosis for evaluating the kurtosis of the Fréchet distribution.
-        - summary for printing the summary statistics Fréchet of the distribution. 
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
 
     Reference:
     - Wikipedia contributors. (2020, December 7). Fréchet distribution. In Wikipedia, The Free Encyclopedia. 
@@ -3160,12 +3172,14 @@ class Weilbull_inv(Base):
         s = self.scale
         if a>2:
             return pow(s,2)*(ss.gamma(1-2/a)-pow(ss.gamma(1-1/a),2))
-        return np.inf
+        return "infinity"
 
     def std(self):
         """
         Returns: Standard devtiation of the Fréchet distribution.
         """
+        if self.var()=="infinity":
+            return "infinity"
         return sqrt(self.var())
 
     def skewness(self):
@@ -3175,7 +3189,7 @@ class Weilbull_inv(Base):
         a = self.shape
         if a>3:
             return (ss.gamma(1-3/a)-3*ss.gamma(1-2/a)*ss.gamma(1-1/a)+2*ss.gamma(1-1/a)**3)/pow(ss.gamma(1-2/a)-pow(ss.gamma(1-1/a),2),3/2)
-        return np.inf
+        return "infinity"
 
     def kurtosis(self):
         """
@@ -3184,7 +3198,7 @@ class Weilbull_inv(Base):
         a = self.shape
         if a>4:
             return -6+(ss.gamma(1-4/a)-4*ss.gamma(1-3/a)*ss.gamma(1-1/a)+3*pow(ss.gamma(1-2/a),2))/pow(ss.gamma(1-2/a)-pow(ss.gamma(1-1/a),2),2)
-        return np.inf
+        return "infinity"
 
     def summary(self):
         """
@@ -3217,14 +3231,15 @@ class Gumbell(Base):
         - pdf for probability density function.
         - cdf for cumulative distribution function.
         - p_value for p-values.
-        - mean for evaluating the mean of the Gumbell distribution.
-        - median for evaluating the median of the Gumbell distribution.
-        - mode for evaluating the mode of the Gumbell distribution.
-        - var for evaluating the variance of the Gumbell distribution.
-        - std for evaluating the standard deviation of the Gumbell distribution.
-        - skewness for evaluating the skewness of the Gumbell distribution.
-        - kurtosis for evaluating the kurtosis of the Gumbell distribution.
-        - summary for printing the summary statistics of the Gumbell distribution. 
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
 
     Reference:
     - Wikipedia contributors. (2020, November 26). Gumbel distribution. In Wikipedia, The Free Encyclopedia. 
@@ -3387,14 +3402,15 @@ class Arcsine(Base):
         - pdf for probability density function.
         - cdf for cumulative distribution function.
         - p_value for p-values.
-        - mean for evaluating the mean of the Arcsine distribution.
-        - median for evaluating the median of the Arcsine distribution.
-        - mode for evaluating the mode of the Arcsine distribution.
-        - var for evaluating the variance of the Arcsine distribution.
-        - std for evaluating the standard deviation of the Arcsine distribution.
-        - skewness for evaluating the skewness of the Arcsine distribution.
-        - kurtosis for evaluating the kurtosis of the Arcsine distribution.
-        - summary for printing the summary statistics of the Arcsine distribution. 
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution.  
 
     Reference:
     - Wikipedia contributors. (2020, October 30). Arcsine distribution. In Wikipedia, The Free Encyclopedia. 
@@ -3562,15 +3578,15 @@ class Triangular(Base):
         - pdf for probability density function.
         - cdf for cumulative distribution function.
         - p_value for p-values.
-        - mean for evaluating the mean of the Triangular distribution.
-        - median for evaluating the median of the Triangular distribution.
-        - mode for evaluating the mode of the Triangular distribution.
-        - var for evaluating the variance of the Triangular distribution.
-        - std for evaluating the standard deviation of the Triangular distribution.
-        - skewness for evaluating the skewness of the Triangular distribution.
-        - kurtosis for evaluating the kurtosis of the Triangular distribution.
-        - entropy for differential entropy of the Triangular distribution.
-        - summary for printing the summary statistics of the Triangular distribution. 
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution.  
 
     Reference:
     - Wikipedia contributors. (2020, December 19). Triangular distribution. In Wikipedia, The Free Encyclopedia. 
@@ -3790,14 +3806,15 @@ class Trapezoidal(Base):
         - pdf for probability density function.
         - cdf for cumulative distribution function.
         - p_value for p-values.
-        - mean for evaluating the mean of the Trapezoidal distribution.
-        - median for evaluating the median of the Trapezoidal distribution.
-        - mode for evaluating the mode of the Trapezoidal distribution.
-        - var for evaluating the variance of the Trapezoidal distribution.
-        - std for evaluating the standard deviation of the Trapezoidal distribution.
-        - skewness for evaluating the skewness of the Trapezoidal distribution.
-        - kurtosis for evaluating the kurtosis of the Trapezoidal distribution.
-        - summary for printing the summary statistics of the Trapezoidal distribution. 
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
 
     Reference:
     - Wikipedia contributors. (2020, April 11). Trapezoidal distribution. In Wikipedia, The Free Encyclopedia. 
@@ -4137,15 +4154,15 @@ class Beta(Base):
         - pdf for probability density function.
         - cdf for cumulative distribution function.
         - p_value for p-values.
-        - mean for evaluating the mean of the Beta distribution.
-        - median for evaluating the median of the Beta distribution.
-        - mode for evaluating the mode of the Beta distribution.
-        - var for evaluating the variance of the Beta distribution.
-        - std for evaluating the standard deviation of the Beta distribution.
-        - skewness for evaluating the skewness of the Beta distribution.
-        - kurtosis for evaluating the kurtosis of the Beta distribution.
-        - entropy for differential entropy of the Beta distribution.
-        - summary for printing the summary statistics of the Beta distribution. 
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
 
     Reference:
     - Wikipedia contributors. (2021, January 8). Beta distribution. In Wikipedia, The Free Encyclopedia. 
@@ -4324,15 +4341,15 @@ class Beta_prime(Base):
         - pdf for probability density function.
         - cdf for cumulative distribution function.
         - p_value for p-values.
-        - mean for evaluating the mean of the Beta prime distribution.
-        - median for evaluating the median of the Beta prime distribution.
-        - mode for evaluating the mode of the Beta prime distribution.
-        - var for evaluating the variance of the Beta prime distribution.
-        - std for evaluating the standard deviation of the Beta prime distribution.
-        - skewness for evaluating the skewness of the Beta prime distribution.
-        - kurtosis for evaluating the kurtosis of the Beta prime distribution.
-        - entropy for differential entropy of the Beta prime distribution.
-        - summary for printing the summary statistics of the Beta prime distribution. 
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
 
     Reference:
     - Wikipedia contributors. (2020, October 8). Beta prime distribution. In Wikipedia, The Free Encyclopedia. 
@@ -4466,6 +4483,14 @@ class Beta_prime(Base):
             return (alpha*(alpha+beta-1))/((beta-2)*(beta-1)**2)
         return "currently unsupported"
 
+    def std(self):
+        """
+        Returns: Standard deviation of the Log logistic distribution
+        """
+        if self.var() == "currently unsupported":
+            return "currently unsupported"
+        return sqrt(self.var())
+
     def skewness(self):
         """
         Returns: Skewness of the Beta prime distribution. 
@@ -4526,15 +4551,15 @@ class Bates(Base):
         - pdf for probability density function.
         - cdf for cumulative distribution function.
         - p_value for p-values.
-        - mean for evaluating the mean of the Bates distribution.
-        - median for evaluating the median of the Bates distribution.
-        - mode for evaluating the mode of the Bates distribution.
-        - var for evaluating the variance of the Bates distribution.
-        - std for evaluating the standard deviation of the Bates distribution.
-        - skewness for evaluating the skewness of the Bates distribution.
-        - kurtosis for evaluating the kurtosis of the Bates distribution.
-        - entropy for differential entropy of the Bates distribution.
-        - summary for printing the summary statistics of the Bates distribution. 
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
 
     Reference:
     - Wikipedia contributors. (2021, January 8). Bates distribution. In Wikipedia, The Free Encyclopedia. 
@@ -4688,15 +4713,15 @@ class Erlang(Base):
         - pdf for probability density function.
         - cdf for cumulative distribution function.
         - p_value for p-values.
-        - mean for evaluating the mean of the Erlang distribution.
-        - median for evaluating the median of the Erlang distribution.
-        - mode for evaluating the mode of the Erlang distribution.
-        - var for evaluating the variance of the Erlang distribution.
-        - std for evaluating the standard deviation of the Erlang distribution.
-        - skewness for evaluating the skewness of the Erlang distribution.
-        - kurtosis for evaluating the kurtosis of the Erlang distribution.
-        - entropy for differential entropy of the Erlang distribution.
-        - summary for printing the summary statistics of the Erlang distribution. 
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
 
     Reference:
     - Wikipedia contributors. (2021, January 6). Erlang distribution. In Wikipedia, The Free Encyclopedia. 
@@ -4879,15 +4904,15 @@ class Maxwell_Boltzmann(Base):
         - pdf for probability density function.
         - cdf for cumulative distribution function.
         - p_value for p-values.
-        - mean for evaluating the mean of the Maxwell Boltzmann distribution.
-        - median for evaluating the median of the Maxwell Boltzmann distribution.
-        - mode for evaluating the mode of the Maxwell Boltzmann distribution.
-        - var for evaluating the variance of the Maxwell Boltzmann distribution.
-        - std for evaluating the standard deviation of the Maxwell Boltzmann distribution.
-        - skewness for evaluating the skewness of the Maxwell Boltzmann distribution.
-        - kurtosis for evaluating the kurtosis of the Maxwell Boltzmann distribution.
-        - entropy for differential entropy of the Maxwell Boltzmann distribution.
-        - summary for printing the summary statistics of the Maxwell Boltzmann distribution. 
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
 
     Reference:
     - Wikipedia contributors. (2021, January 12). Maxwell–Boltzmann distribution. In Wikipedia, The Free Encyclopedia. 
@@ -5076,15 +5101,15 @@ class Beta_rectangular(Base):
         - pdf for probability density function.
         - cdf for cumulative distribution function.
         - p_value for p-values.
-        - mean for evaluating the mean of the Beta-rectangular distribution.
-        - median for evaluating the median of the Beta-rectangular distribution.
-        - mode for evaluating the mode of the Beta-rectangular distribution.
-        - var for evaluating the variance of the Beta-rectangular distribution.
-        - std for evaluating the standard deviation of the Beta-rectangular distribution.
-        - skewness for evaluating the skewness of the Beta-rectangular distribution.
-        - kurtosis for evaluating the kurtosis of the Beta-rectangular distribution.
-        - entropy for differential entropy of the Beta-rectangular distribution.
-        - summary for printing the summary statistics of the Beta-rectangular distribution. 
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution.  
 
     Reference:
     - Wikipedia contributors. (2020, December 7). Beta rectangular distribution. In Wikipedia, The Free Encyclopedia. 
@@ -5264,15 +5289,15 @@ class Bernoulli(Base):
         - pdf for probability density function.
         - cdf for cumulative distribution function.
         - p_value for p-values.
-        - mean for evaluating the mean of the Continuous Bernoulli distribution.
-        - median for evaluating the median of the Continuous Bernoulli distribution.
-        - mode for evaluating the mode of the Continuous Bernoulli distribution.
-        - var for evaluating the variance of the Continuous Bernoulli distribution.
-        - std for evaluating the standard deviation of the Continuous Bernoulli distribution.
-        - skewness for evaluating the skewness of the Continuous Bernoulli distribution.
-        - kurtosis for evaluating the kurtosis of the Continuous Bernoulli distribution.
-        - entropy for differential entropy of the Continuous Bernoulli distribution.
-        - summary for printing the summary statistics of the Continuous Bernoulli distribution. 
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
 
     Reference:
     - Wikipedia contributors. (2020, November 2). Continuous Bernoulli distribution. In Wikipedia, The Free Encyclopedia. 
@@ -5593,15 +5618,15 @@ class Wigner(Base):
         - pdf for probability density function.
         - cdf for cumulative distribution function.
         - p_value for p-values.
-        - mean for evaluating the mean of the Wigner distribution.
-        - median for evaluating the median of the Wigner distribution.
-        - mode for evaluating the mode of the Wigner distribution.
-        - var for evaluating the variance of the Wigner distribution.
-        - std for evaluating the standard deviation of the Wigner distribution.
-        - skewness for evaluating the skewness of the Wigner distribution.
-        - kurtosis for evaluating the kurtosis of the Wigner distribution.
-        - entropy for differential entropy of the Wigner distribution.
-        - summary for printing the summary statistics of the Wigner distribution. 
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
 
     Reference:
     - Wikipedia contributors. (2020, December 14). Wigner semicircle distribution. In Wikipedia, The Free Encyclopedia. 
@@ -5774,15 +5799,15 @@ class Balding_Nichols(Base):
         - pdf for probability density function.
         - cdf for cumulative distribution function.
         - p_value for p-values.
-        - mean for evaluating the mean of the Balding Nichols distribution.
-        - median for evaluating the median of the Balding Nichols distribution.
-        - mode for evaluating the mode of the Balding Nichols distribution.
-        - var for evaluating the variance of the Balding Nichols distribution.
-        - std for evaluating the standard deviation of the Balding Nichols distribution.
-        - skewness for evaluating the skewness of the Balding Nichols distribution.
-        - kurtosis for evaluating the kurtosis of the Balding Nichols distribution.
-        - entropy for differential entropy of the Balding Nichols distribution.
-        - summary for printing the summary statistics of the Balding Nichols distribution. 
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
 
     Reference:
     - Wikipedia contributors. (2021, January 6). Balding–Nichols model. In Wikipedia, The Free Encyclopedia. 
@@ -5954,15 +5979,15 @@ class Benini(Base):
         - pdf for probability density function.
         - cdf for cumulative distribution function.
         - p_value for p-values.
-        - mean for evaluating the mean of the Benini distribution.
-        - median for evaluating the median of the Benini distribution.
-        - mode for evaluating the mode of the Benini distribution.
-        - var for evaluating the variance of the Benini distribution.
-        - std for evaluating the standard deviation of the Benini distribution.
-        - skewness for evaluating the skewness of the Benini distribution.
-        - kurtosis for evaluating the kurtosis of the Benini distribution.
-        - entropy for differential entropy of the Benini distribution.
-        - summary for printing the summary statistics of the Benini distribution. 
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
 
     Reference:
     - Wikipedia contributors. (2020, August 10). Benini distribution. In Wikipedia, The Free Encyclopedia. 
@@ -6123,15 +6148,15 @@ class Normal_folded(Base):
         - pdf for probability density function.
         - cdf for cumulative distribution function.
         - p_value for p-values.
-        - mean for evaluating the mean of the Folded Normal distribution.
-        - median for evaluating the median of the Folded Normal distribution.
-        - mode for evaluating the mode of the Folded Normal distribution.
-        - var for evaluating the variance of the Folded Normal distribution.
-        - std for evaluating the standard deviation of the Folded Normal distribution.
-        - skewness for evaluating the skewness of the Folded Normal distribution.
-        - kurtosis for evaluating the kurtosis of the Folded Normal distribution.
-        - entropy for differential entropy of the Folded Normal distribution.
-        - summary for printing the summary statistics of the Folded Normal distribution. 
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
 
     Reference:
     - Wikipedia contributors. (2020, October 19). Folded normal distribution. In Wikipedia, The Free Encyclopedia. 
@@ -6277,15 +6302,15 @@ class Logistic_half(Base):
         - pdf for probability density function.
         - cdf for cumulative distribution function.
         - p_value for p-values.
-        - mean for evaluating the mean of the half logistic distribution.
-        - median for evaluating the median of the half logistic distribution.
-        - mode for evaluating the mode of the half logistic distribution.
-        - var for evaluating the variance of the half logistic distribution.
-        - std for evaluating the standard deviation of the half logistic distribution.
-        - skewness for evaluating the skewness of the half logistic distribution.
-        - kurtosis for evaluating the kurtosis of the half logistic distribution.
-        - entropy for differential entropy of the half logistic distribution.
-        - summary for printing the summary statistics of the half logistic distribution. 
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
 
     Reference:
     - Wikipedia contributors. (2019, November 8). Half-logistic distribution. In Wikipedia, The Free Encyclopedia. 
@@ -6436,15 +6461,15 @@ class Normal_half(Base):
         - pdf for probability density function.
         - cdf for cumulative distribution function.
         - p_value for p-values.
-        - mean for evaluating the mean of the Half Normal distribution.
-        - median for evaluating the median of the Half Normal distribution.
-        - mode for evaluating the mode of the Half Normal distribution.
-        - var for evaluating the variance of the Half Normal distribution.
-        - std for evaluating the standard deviation of the Half Normal distribution.
-        - skewness for evaluating the skewness of the Half Normal distribution.
-        - kurtosis for evaluating the kurtosis of the Half Normal distribution.
-        - entropy for differential entropy of the Half Normal distribution.
-        - summary for printing the summary statistics of the Half Normal distribution. 
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
 
     Reference:
     - Wikipedia contributors. (2020, December 30). Half-normal distribution. In Wikipedia, The Free Encyclopedia. 
@@ -6618,15 +6643,15 @@ class Gaussian_inv(Base):
         - pdf for probability density function.
         - cdf for cumulative distribution function.
         - p_value for p-values.
-        - mean for evaluating the mean of the Inverse Gaussian distribution.
-        - median for evaluating the median of the Inverse Gaussian distribution.
-        - mode for evaluating the mode of the Inverse Gaussian distribution.
-        - var for evaluating the variance of the Inverse Gaussian distribution.
-        - std for evaluating the standard deviation of the Inverse Gaussian distribution.
-        - skewness for evaluating the skewness of the Inverse Gaussian distribution.
-        - kurtosis for evaluating the kurtosis of the Inverse Gaussian distribution.
-        - entropy for differential entropy of the Inverse Gaussian distribution.
-        - summary for printing the summary statistics of the Inverse Gaussian distribution. 
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
 
     Reference:
     - Wikipedia contributors. (2020, November 26). Inverse Gaussian distribution. In Wikipedia, The Free Encyclopedia. 
@@ -6786,7 +6811,7 @@ class Gaussian_inv(Base):
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
 
-class Gamma_inverse(Base):
+class Gamma_inv(Base):
     """
     This class contains methods concerning Inverse Gamma Distirbution. 
     Args:
@@ -7331,7 +7356,7 @@ class Dagum(Base):
 
     def std(self):
         """
-        Returns: Variance of the Exponential distribution
+        Returns: Standard deviation of the Dagum distribution
         """
         if self.var() == "indeterminate":
             return "indeterminate"
@@ -7372,6 +7397,7 @@ class Davis(Base):
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
         - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
         - skewness for evaluating the skewness of the distribution.
         - kurtosis for evaluating the kurtosis of the distribution.
         - entropy for differential entropy of the distribution.
@@ -7495,6 +7521,14 @@ class Davis(Base):
             return (pow(b,2)*(-(n-2)*pow(ss.zeta(n-1),2)+(n-1)*ss.zeta(n-2)*ss.zeta(n)))/((n-2)*pow(n-1,2)*pow(ss.zeta(n),2))
         return "indeterminate"
 
+    def std(self):
+        """
+        Returns: Standard deviation of the Davis distribution
+        """
+        if self.var() == "indeterminate":
+            return "indeterminate"
+        return sqrt(self.var())
+
     def summary(self):
         """
         Returns: Summary statistic regarding the Davis distribution
@@ -7503,11 +7537,12 @@ class Davis(Base):
         median = self.median()
         mode = self.mode()
         var = self.var()
+        std = self.std()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
         cstr = " summary statistics "
         print(cstr.center(40, "="))
-        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
 
 class Rayleigh(Base):
@@ -7527,6 +7562,7 @@ class Rayleigh(Base):
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
         - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
         - skewness for evaluating the skewness of the distribution.
         - kurtosis for evaluating the kurtosis of the distribution.
         - entropy for differential entropy of the distribution.
@@ -7656,6 +7692,12 @@ class Rayleigh(Base):
         """
         return  (4-np.pi)/2*pow(self.scale, 2)
 
+    def std(self):
+        """
+        Returns: Standard deviation of the Rayleigh distribution
+        """
+        return sqrt(self.var())
+
     def skewness(self):
         """
         Returns: Skewness of the Rayleigh distribution. 
@@ -7685,11 +7727,13 @@ class Rayleigh(Base):
         median = self.median()
         mode = self.mode()
         var = self.var()
+        std = self.std()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
         cstr = " summary statistics "
         print(cstr.center(40, "="))
-        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
 
 # class Hypoexponential(Base):
 #     """
@@ -7800,6 +7844,7 @@ class Benktander_T1(Base):
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
         - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
         - skewness for evaluating the skewness of the distribution.
         - kurtosis for evaluating the kurtosis of the distribution.
         - entropy for differential entropy of the distribution.
@@ -7919,6 +7964,12 @@ class Benktander_T1(Base):
         x = self.x
         return (-sqrt(b)+a*np.exp(pow(a-1,2)/(4*b))*sqrt(np.pi)*ss.erfc((a-1)/(2*sqrt(b))))/(pow(a,2)*sqrt(b))
 
+    def std(self):
+        """
+        Returns: Standard deviation of the Benktander Type1 distribution
+        """
+        return sqrt(self.var())
+
     def summary(self):
         """
         Returns: Summary statistic regarding the Benktander Type1 distribution
@@ -7927,11 +7978,13 @@ class Benktander_T1(Base):
         median = self.median()
         mode = self.mode()
         var = self.var()
+        std = self.std()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
         cstr = " summary statistics "
         print(cstr.center(40, "="))
-        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
 
 class Benktander_T2(Base):
     """
@@ -7951,6 +8004,7 @@ class Benktander_T2(Base):
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
         - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
         - skewness for evaluating the skewness of the distribution.
         - kurtosis for evaluating the kurtosis of the distribution.
         - entropy for differential entropy of the distribution.
@@ -8085,7 +8139,13 @@ class Benktander_T2(Base):
         a = self.a
         p = self.b
         return (-b+2*a*np.exp(a/b)*ss.expn(1-1/b. a/b))/(pow(a,2)*b)
-        
+
+    def std(self):
+        """
+        Returns: Standard deviation of the Benktander Type 2 distribution
+        """
+        return sqrt(self.var())
+
     def summary(self):
         """
         Returns: Summary statistic regarding the Benktander type 2 distribution
@@ -8118,6 +8178,7 @@ class Cauchy_log(Base):
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
         - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
         - skewness for evaluating the skewness of the distribution.
         - kurtosis for evaluating the kurtosis of the distribution.
         - entropy for differential entropy of the distribution.
@@ -8230,7 +8291,7 @@ class Cauchy_log(Base):
 
     def median(self):
         """
-        Returns: Median of the Dagum distribution.
+        Returns: Median of the log-Cauchy distribution.
         """
         return np.exp(self.mu)
 
@@ -8239,6 +8300,12 @@ class Cauchy_log(Base):
         Returns: Variance of the log-Cauchy distribution.
         """
         return "infinite"  
+
+    def std(self):
+        """
+        Returns: Standard deviation of the log-Cauchy distribution
+        """
+        return "infinite"
 
     def skewness(self):
         """
@@ -8260,11 +8327,13 @@ class Cauchy_log(Base):
         median = self.median()
         mode = self.mode()
         var = self.var()
+        std = self.std()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
         cstr = " summary statistics "
         print(cstr.center(40, "="))
-        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
 
 class Laplace_log(Base):
     """
@@ -8284,6 +8353,7 @@ class Laplace_log(Base):
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
         - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
         - skewness for evaluating the skewness of the distribution.
         - kurtosis for evaluating the kurtosis of the distribution.
         - entropy for differential entropy of the distribution.
@@ -8404,6 +8474,7 @@ class Logistic_log(Base):
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
         - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
         - skewness for evaluating the skewness of the distribution.
         - kurtosis for evaluating the kurtosis of the distribution.
         - entropy for differential entropy of the distribution.
@@ -8542,6 +8613,14 @@ class Logistic_log(Base):
             return pow(a,2)*(2*b/np.sin(2*b)-pow(b,2)/pow(np.sin(b),2))
         return "undefined"
 
+    def std(self):
+        """
+        Returns: Standard deviation of the Log logistic distribution
+        """
+        if self.var() == "undefined":
+            return "undefined"
+        return sqrt(self.var())
+
     def summary(self):
         """
         Returns: Summary statistic regarding the Log logistic distribution
@@ -8550,13 +8629,15 @@ class Logistic_log(Base):
         median = self.median()
         mode = self.mode()
         var = self.var()
+        std = self.std()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
         cstr = " summary statistics "
         print(cstr.center(40, "="))
-        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
-class Chisq_inverse(Base):
+
+class Chisq_inv(Base):
     """
     This class contains methods concerning Inverse Chi-squared Distirbution. 
     Args:
@@ -8573,6 +8654,7 @@ class Chisq_inverse(Base):
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
         - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
         - skewness for evaluating the skewness of the distribution.
         - kurtosis for evaluating the kurtosis of the distribution.
         - entropy for differential entropy of the distribution.
@@ -8706,6 +8788,14 @@ class Chisq_inverse(Base):
             return 2/((df-2)**2*(df-4))
         return "undefined"
 
+    def std(self):
+        """
+        Returns: Standard deviation of the Log logistic distribution
+        """
+        if self.var() == "undefined":
+            return "undefined"
+        return sqrt(self.var())
+
     def skewness(self):
         """
         Returns: Skewness of the Inverse Chi-squared distribution. 
@@ -8738,11 +8828,13 @@ class Chisq_inverse(Base):
         median = self.median()
         mode = self.mode()
         var = self.var()
+        std = self.std()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
         cstr = " summary statistics "
         print(cstr.center(40, "="))
-        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
 
 class Levy(Base):
     """
@@ -8762,6 +8854,7 @@ class Levy(Base):
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
         - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
         - skewness for evaluating the skewness of the distribution.
         - kurtosis for evaluating the kurtosis of the distribution.
         - entropy for differential entropy of the distribution.
@@ -8869,7 +8962,7 @@ class Levy(Base):
         """
         Returns: Mean of the Levy distribution.
         """
-        return np.inf
+        return "infinity"
 
     def median(self):
         """
@@ -8887,7 +8980,13 @@ class Levy(Base):
         """
         Returns: Variance of the Levy distribution.
         """
-        return np.inf
+        return "infinity"
+
+    def std(self):
+        """
+        Returns: Standard deviation of the Levy distribution
+        """
+        return "infinity"
 
     def skewness(self):
         """
@@ -8915,11 +9014,13 @@ class Levy(Base):
         median = self.median()
         mode = self.mode()
         var = self.var()
+        std = self.std()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
         cstr = " summary statistics "
         print(cstr.center(40, "="))
-        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
 
 class Nakagami(Base):
     """
@@ -8939,6 +9040,7 @@ class Nakagami(Base):
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
         - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
         - skewness for evaluating the skewness of the distribution.
         - kurtosis for evaluating the kurtosis of the distribution.
         - entropy for differential entropy of the distribution.
@@ -9071,6 +9173,12 @@ class Nakagami(Base):
         m, omega = self.shape, self.spread
         return omega*(1-(1/m)*pow(ss.gamma(m+0.5)/ss.gamma(m),2))
 
+    def std(self):
+        """
+        Returns: Standard deviation of the Nakagami distribution
+        """
+        return sqrt(self.var())
+
     def summary(self):
         """
         Returns: Summary statistic regarding the Nakagami distribution
@@ -9079,11 +9187,13 @@ class Nakagami(Base):
         median = self.median()
         mode = self.mode()
         var = self.var()
+        std = self.std()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
         cstr = " summary statistics "
         print(cstr.center(40, "="))
-        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
 
 class Lomax(Base):
     """
@@ -9103,6 +9213,7 @@ class Lomax(Base):
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
         - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
         - skewness for evaluating the skewness of the distribution.
         - kurtosis for evaluating the kurtosis of the distribution.
         - entropy for differential entropy of the distribution.
@@ -9238,6 +9349,14 @@ class Lomax(Base):
         else:
             return "undefined"
 
+    def std(self):
+        """
+        Returns: Standard deviation of the Lomax distribution
+        """
+        if self.var() == "undefined":
+            return "undefined"
+        return sqrt(self.var())
+
     def skewness(self):
         """
         Returns: Skewness of the Lomax distribution. 
@@ -9264,11 +9383,13 @@ class Lomax(Base):
         median = self.median()
         mode = self.mode()
         var = self.var()
+        std = self.std()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
         cstr = " summary statistics "
         print(cstr.center(40, "="))
-        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
 
 class Gumbell_T1(Base):
     """
@@ -9288,6 +9409,7 @@ class Gumbell_T1(Base):
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
         - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
         - skewness for evaluating the skewness of the distribution.
         - kurtosis for evaluating the kurtosis of the distribution.
         - entropy for differential entropy of the distribution.
@@ -9415,6 +9537,12 @@ class Gumbell_T1(Base):
         """
         return (pow(np.pi,2)/6)*pow(self.scale,2)
 
+    def std(self):
+        """
+        Returns: Standard deviation of the Gumbell distribution
+        """
+        return sqrt(self.var())
+
     def skewness(self):
         """
         Returns: Approximation of the Skewness of the Gumbell distribution. 
@@ -9441,11 +9569,12 @@ class Gumbell_T1(Base):
         median = self.median()
         mode = self.mode()
         var = self.var()
+        std = self.std()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
         cstr = " summary statistics "
         print(cstr.center(40, "="))
-        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
 class Gumbell_T2(Base):
     """
@@ -9465,6 +9594,7 @@ class Gumbell_T2(Base):
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
         - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
         - skewness for evaluating the skewness of the distribution.
         - kurtosis for evaluating the kurtosis of the distribution.
         - entropy for differential entropy of the distribution.
@@ -9575,6 +9705,12 @@ class Gumbell_T2(Base):
         """
         return pow(self.shape, 2/self.a)*(ss.gamma(1-1/self.a)-pow(ss.gamma(1-1/self.a),2))
 
+    def std(self):
+        """
+        Returns: Standard deviation of the Gumbell Type 2 distribution
+        """
+        return sqrt(self.var())
+
     def summary(self):
         """
         Returns: Summary statistic regarding the Gumbell Type 2 distribution
@@ -9583,9 +9719,11 @@ class Gumbell_T2(Base):
         median = self.median()
         mode = self.mode()
         var = self.var()
+        std = self.std()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
         cstr = " summary statistics "
         print(cstr.center(40, "="))
-        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
 
