@@ -240,7 +240,7 @@ class Uniform:
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -276,7 +276,7 @@ class Normal(Base):
 
     """
     def __init__(self, x, mean=0, std=1):
-        self.mean = mean
+        self.mean_val = mean
         self.std = std
         self.randvar = x
 
@@ -302,7 +302,7 @@ class Normal(Base):
         Returns:
             either plot of the distribution or probability density evaluation at randvar.
         """
-        mean = self.mean
+        mean = self.mean_val
         std = self.std
         generator = lambda mean, std, x: np.power(
             1 / (std * np.sqrt(2 * np.pi)), np.exp(((x - mean) / 2 * std)**2))
@@ -338,9 +338,9 @@ class Normal(Base):
         generator = lambda mu, sig, x: 1/2*(1+ss.erf((x-mu)/(sig*np.sqrt(2))))
         if plot == True:
             x = np.linspace(-interval, interval, threshold)
-            y = np.array([generator(self.mean, self.std, x_temp) for x_temp in x])
+            y = np.array([generator(self.mean_val, self.std, x_temp) for x_temp in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.mean, self.std, self.randvar)
+        return generator(self.mean_val, self.std, self.randvar)
 
     def p_val(self, x_lower=-np.inf, x_upper=None):
         """
@@ -359,8 +359,8 @@ class Normal(Base):
         if x_upper != None:
             if x_lower>x_upper:
                 raise Exception('x_lower should be less than x_upper.')
-            return cdf_func(self.mean, self.std, x_upper) - cdf_func(self.mean, self.std, x_lower)
-        return cdf_func(self.mean, self.std, self.randvar)
+            return cdf_func(self.mean_val, self.std, x_upper) - cdf_func(self.mean, self.std, x_lower)
+        return cdf_func(self.mean_val, self.std, self.randvar)
 
     def confidence_interval(self):
         # find critical values for a given p-value
@@ -370,19 +370,19 @@ class Normal(Base):
         """
         Returns: Mean of the Normal distribution
         """
-        return self.mean
+        return self.mean_val
 
     def median(self):
         """
         Returns: Median of the Normal distribution
         """
-        return self.mean
+        return self.mean_val
 
     def mode(self):
         """
         Returns: Mode of the Normal distribution
         """
-        return self.mean
+        return self.mean_val
 
     def var(self):
         """
@@ -421,7 +421,7 @@ class Normal(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -635,7 +635,7 @@ class T_distribution(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -824,7 +824,7 @@ class Cauchy(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -1025,7 +1025,7 @@ class F_distribution(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -1201,7 +1201,7 @@ class Chisq_distribution(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -1389,7 +1389,7 @@ class Chi_distribution(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -1586,7 +1586,7 @@ class Explonential_distribution(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -1769,7 +1769,7 @@ class Gamma_distribution(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -1990,7 +1990,7 @@ class Pareto(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -2108,7 +2108,7 @@ class Log_normal(Base):
             Otherwise, the default random variable is x.
 
         Returns:
-            p-value of the Pareto distribution evaluated at some random variable.
+            p-value of the Log Normal-distribution evaluated at some random variable.
         """
         cdf_func = lambda mean, std, x:0.5+ 0.5*ss.erfc(-(np.log(x - mean) /
                                                            (std * np.sqrt(2))))
@@ -2180,7 +2180,7 @@ class Log_normal(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -2291,7 +2291,7 @@ class Laplace(Base):
             Otherwise, the default random variable is x.
 
         Returns:
-            p-value of the Pareto distribution evaluated at some random variable.
+            p-value of the Laplace distribution evaluated at some random variable.
         """
         if x_upper == None:
             x_upper = self.randvar
@@ -2356,7 +2356,7 @@ class Laplace(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -2498,7 +2498,7 @@ class Logistic(Base):
         """
         Returns: Variance of the Logistic distribution.
         """
-        return (self.scale**2 * np.pi**2) / 3
+        return pow(self.scale,2) * pow(np.pi,2)/3
 
     def skewness(self):
         """
@@ -2531,7 +2531,7 @@ class Logistic(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -2694,7 +2694,7 @@ class Logit_normal(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -2795,7 +2795,8 @@ class Weibull(Base):
             if x<0:
                 return 0
             if x>=0:
-                return 1-np.exp(-(x/_lambda)**k)
+                return 1-np.exp(-pow(x/_lambda, k))
+
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([generator(self.scale, self.shape, i) for i in x])
@@ -2825,7 +2826,8 @@ class Weibull(Base):
             if x<0:
                 return 0
             if x>=0:
-                return 1-np.exp(-(x/_lambda)**k)
+                return 1-np.exp(-pow(x/_lambda, k))
+
         return cdf_func(self.location, self.shape, x_upper)-cdf_func(self.location, self.shape, x_lower)
 
     def mean(self):
@@ -2879,7 +2881,7 @@ class Weibull(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -3017,13 +3019,13 @@ class Weilbull_inv(Base):
         """
         Returns: Median of the Fréchet distribution.
         """
-        return self.location+(self.scale/(np.power(np.log(2), 1/self.shape)))
+        return self.location + self.scale/(pow(np.log(2), 1/self.shape))
 
     def mode(self):
         """
         Returns: Mode of the Fréchet distribution.
         """
-        return self.location+self.scale*(self.shape/(1+self.shape))**(1/self.shape)
+        return self.location + self.scale*(self.shape/pow(1+self.shape,1/self.shape))
 
     def var(self):
         """
@@ -3032,7 +3034,7 @@ class Weilbull_inv(Base):
         a = self.shape
         s = self.scale
         if a>2:
-            return (s**2)*(ss.gamma(1-2/a)-ss.gamma(1-1/a)**2)
+            return pow(s,2)*(ss.gamma(1-2/a)-pow(ss.gamma(1-1/a),2))
         return np.inf
 
     def skewness(self):
@@ -3041,7 +3043,7 @@ class Weilbull_inv(Base):
         """
         a = self.shape
         if a>3:
-            return (ss.gamma(1-3/a)-3*ss.gamma(1-2/a)*ss.gamma(1-1/a)+2*ss.gamma(1-1/a)**3)/(np.sqrt((ss.gamma(1-2/a)-ss.gamma(1-1/a)**2)**3))
+            return (ss.gamma(1-3/a)-3*ss.gamma(1-2/a)*ss.gamma(1-1/a)+2*ss.gamma(1-1/a)**3)/pow(ss.gamma(1-2/a)-pow(ss.gamma(1-1/a),2),3/2)
         return np.inf
 
     def kurtosis(self):
@@ -3050,7 +3052,7 @@ class Weilbull_inv(Base):
         """
         a = self.shape
         if a>4:
-            return -6+((ss.gamma(1-4/a)-4*ss.gamma(1-3/a)*ss.gamma(1-1/a)+3*ss.gamma(1-2/a)**2)/(ss.gamma(1-2/a)-ss.gamma(1-1/a)**2)**2)
+            return -6+(ss.gamma(1-4/a)-4*ss.gamma(1-3/a)*ss.gamma(1-1/a)+3*pow(ss.gamma(1-2/a),2))/pow(ss.gamma(1-2/a)-pow(ss.gamma(1-1/a),2),2)
         return np.inf
 
     def print_summary(self):
@@ -3063,7 +3065,7 @@ class Weilbull_inv(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -3227,7 +3229,7 @@ class Gumbell(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -3236,7 +3238,7 @@ class Arcsine(Base):
     """
     This class contains methods concerning Arcsine Distirbution. 
     Args:
-    
+
         randvar(float in [0, 1]): random variable
 
     Methods:
@@ -3388,7 +3390,7 @@ class Arcsine(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -3499,9 +3501,9 @@ class Triangular(Base):
             if x<=a:
                 return 0
             if a<x and x<=c:
-                return ((x-a)**2)/((b-a)*(c-a))
+                return pow(x-a,2)/((b-a)*(c-a))
             if c<x and x<b:
-                return 1 - ((b-x)**2)/((b-c)*(b-c))
+                return 1 - pow(b-x,2)/((b-c)*(b-c))
             if b<=x:
                 return 1
                 
@@ -3532,9 +3534,9 @@ class Triangular(Base):
             if x<=a:
                 return 0
             if a<x and x<=c:
-                return ((x-a)**2)/((b-a)*(c-a))
+                return pow(x-a,2)/((b-a)*(c-a))
             if c<x and x<b:
-                return 1 - ((b-x)**2)/((b-c)*(b-c))
+                return 1 - pow(b-x,2)/((b-c)*(b-c))
             if b<=x:
                 return 1
         return cdf_func(self.a, self.b, self.c, x_upper)-cdf_func(self.a, self.b, self.c, x_lower)
@@ -3553,9 +3555,9 @@ class Triangular(Base):
         b = self.b
         c = self.c
         if c >= (a+b)/2:
-            return a + np.sqrt(((b-a)*(c-a))/2)
+            return a + sqrt(((b-a)*(c-a))/2)
         if c <= (a+b)/2:
-            return b + np.sqrt((b-a)*(b-c)/2)
+            return b + sqrt((b-a)*(b-c)/2)
 
     def mode(self):
         """
@@ -3570,7 +3572,7 @@ class Triangular(Base):
         a = self.a
         b = self.b
         c = self.c
-        return (1/18)*(a**2+b**2+c**2-a*b-a*c-b*c)
+        return (1/18)*(pow(a,2)+pow(b,2)+pow(c,2)-a*b-a*c-b*c)
 
     def skewness(self):
         """
@@ -3579,7 +3581,7 @@ class Triangular(Base):
         a = self.a
         b = self.b
         c = self.c
-        return (np.sqrt(2)*(a+b-2*c)((2*a-b-c)*(a-2*b+c)))/(5*(a**2+b**2+c**2-a*b-a*c-b*c)**(3/2))
+        return (sqrt(2)*(a+b-2*c)*((2*a-b-c)*(a-2*b+c)))/(5*pow(a**2+b**2+c**2-a*b-a*c-b*c, 3/2))
 
     def kurtosis(self):
         """
@@ -3606,7 +3608,7 @@ class Triangular(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -3790,7 +3792,7 @@ class Trapezoidal(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -3963,7 +3965,7 @@ class Trapezoidal(Base):
 #         var = self.var()
 #         skewness = self.skewness()
 #         kurtosis = self.kurtosis()
-#         cstr = "summary statistic"
+#         cstr = " summary statistic "
 #         print(cstr.center(40, "="))
 #         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -4147,7 +4149,7 @@ class Beta(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -4342,7 +4344,7 @@ class Beta_prime(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -4417,7 +4419,7 @@ class Bates(Base):
         def generator(a,b,n, x):
             if a<x | x<b:
                 bincoef = lambda n,k: np.math.factorial(n)/(np.math.factorial(k)*(np.math.factorial(n-k)))
-                return np.sum([(-1)**k*bincoef(n,i)*np.power(((x-a)/(b-a)- i/n), n-1)*np.sign((x-a)/(b-1)-i/n) for i in range(0, n)])
+                return np.sum([pow(-1,i)*bincoef(n,i)*np.power(((x-a)/(b-a)- i/n), n-1)*np.sign((x-a)/(b-1)-i/n) for i in range(0, n)])
             return 0
 
         if plot == True:
@@ -4500,7 +4502,7 @@ class Bates(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -4571,8 +4573,6 @@ class Erlang(Base):
         generator = lambda shape, rate, x: (np.power(rate, shape)*np.power(x,shape-1)*np.exp(-rate*x))/np.math.factorial((shape-1))
 
         if plot == True:
-            if interval<0:
-                raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, 1, int(threshold))
             y = np.array([generator(self.shape, self.rate, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -4684,7 +4684,7 @@ class Erlang(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -4869,7 +4869,7 @@ class Maxwell_Boltzmann(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -5051,7 +5051,7 @@ class Beta_rectangular(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -5213,7 +5213,7 @@ class Bernoulli(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -5375,7 +5375,7 @@ class Bernoulli(Base):
 #         var = self.var()
 #         skewness = self.skewness()
 #         kurtosis = self.kurtosis()
-#         cstr = "summary statistic"
+#         cstr = " summary statistic "
 #         print(cstr.center(40, "="))
 #         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -5548,7 +5548,7 @@ class Wigner(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -5714,10 +5714,13 @@ class Balding_Nichols(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
+class PERT(Base):
+    
+    pass
 # semi-infinite
 class Benini(Base):
     """
@@ -5877,7 +5880,7 @@ class Benini(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -6023,7 +6026,7 @@ class Normal_folded(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -6175,7 +6178,7 @@ class Logistic_half(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -6346,7 +6349,7 @@ class Normal_half(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -6380,13 +6383,13 @@ class Gassuian_inverse(Base):
     - Weisstein, Eric W. "Inverse Gaussian Distribution." From MathWorld--A Wolfram Web Resource. 
     https://mathworld.wolfram.com/InverseGaussianDistribution.html
     """
-    def __init__(self, mean, scale, randvar=0.5):
+    def __init__(self, mean_val, scale, randvar=0.5):
         if randvar<0:
             raise ValueError('random variable should be a positive number. Entered value:{}'.format(randvar))
          if scale<0 or mean<0:
             raise ValueError('mean and scale parameter should be a positive number. Entered value: mean = {}, scale = {}'.format(mean, scale))
 
-        self.mean = mean
+        self.mean_val = mean_val
         self.scale = scale
         self.randvar = randvar
 
@@ -6418,9 +6421,9 @@ class Gassuian_inverse(Base):
             if interval<0:
                 raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.scale, self.mean, i) for i in x])
+            y = np.array([generator(self.scale, self.mean_val, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.scale, self.mean, self.randvar)
+        return generator(self.scale, self.mean_val, self.randvar)
 
     # def cdf(self,
     #         plot=False,
@@ -6520,7 +6523,7 @@ class Gassuian_inverse(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -6702,7 +6705,7 @@ class Gamma_inverse(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -6886,7 +6889,7 @@ class Gamma_inverse(Base):
 #         var = self.var()
 #         skewness = self.skewness()
 #         kurtosis = self.kurtosis()
-#         cstr = "summary statistic"
+#         cstr = " summary statistic "
 #         print(cstr.center(40, "="))
 #         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -7066,10 +7069,10 @@ class Dagum(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
-
+        
 class Davis(Base):
     """
     This class contains methods concerning Davis Distirbution. 
@@ -7222,7 +7225,7 @@ class Davis(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -7404,100 +7407,100 @@ class Rayleigh(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
-class Hypoexponential(Base):
-    """
-    This class contains methods concerning Hypoexponential Distirbution. 
-    Args:
+# class Hypoexponential(Base):
+#     """
+#     This class contains methods concerning Hypoexponential Distirbution. 
+#     Args:
     
-        rates()
-        randvar(float | x>0): random variable. Optional. Use when cdf and pdf or p value of interest is desired.
+#         rates()
+#         randvar(float | x>0): random variable. Optional. Use when cdf and pdf or p value of interest is desired.
 
-    Methods:
+#     Methods:
 
-        - pdf for probability density function.
-        - cdf for cumulative distribution function.
-        - p_value for p-values.
-        - mean for evaluating the mean of the distribution.
-        - median for evaluating the median of the distribution.
-        - mode for evaluating the mode of the distribution.
-        - var for evaluating the variance of the distribution.
-        - skewness for evaluating the skewness of the distribution.
-        - kurtosis for evaluating the kurtosis of the distribution.
-        - entropy for differential entropy of the distribution.
-        - print_summary for printing the summary statistics of the distribution. 
+#         - pdf for probability density function.
+#         - cdf for cumulative distribution function.
+#         - p_value for p-values.
+#         - mean for evaluating the mean of the distribution.
+#         - median for evaluating the median of the distribution.
+#         - mode for evaluating the mode of the distribution.
+#         - var for evaluating the variance of the distribution.
+#         - skewness for evaluating the skewness of the distribution.
+#         - kurtosis for evaluating the kurtosis of the distribution.
+#         - entropy for differential entropy of the distribution.
+#         - print_summary for printing the summary statistics of the distribution. 
 
-    Reference:
-    - Wikipedia contributors. (2020, December 13). Hypoexponential distribution. In Wikipedia, The Free Encyclopedia. 
-    Retrieved 12:21, January 16, 2021, from https://en.wikipedia.org/w/index.php?title=Hypoexponential_distribution&oldid=994035019
-    """
-    def __init__(self, randvar=0.5,*args):
-        if randvar<0:
-            raise ValueError('random variable shoould be a positive number. Entered value:{}'.format(randvar))
-        self.args = [i for i in args]
-        self.randvar = randvar
+#     Reference:
+#     - Wikipedia contributors. (2020, December 13). Hypoexponential distribution. In Wikipedia, The Free Encyclopedia. 
+#     Retrieved 12:21, January 16, 2021, from https://en.wikipedia.org/w/index.php?title=Hypoexponential_distribution&oldid=994035019
+#     """
+#     def __init__(self, randvar=0.5,*args):
+#         if randvar<0:
+#             raise ValueError('random variable shoould be a positive number. Entered value:{}'.format(randvar))
+#         self.args = [i for i in args]
+#         self.randvar = randvar
 
-    def pdf(self):
-        return "no other simple form. Currently unsupported"
+#     def pdf(self):
+#         return "no other simple form. Currently unsupported"
 
-    def cdf(self):
-        return "no other simple form. Currently unsupported"
+#     def cdf(self):
+#         return "no other simple form. Currently unsupported"
 
-    def mean(self):
-        """
-        Returns: Mean of the Hypoexponential distribution.
-        """
-        return sum([1/x for x in self.args])
+#     def mean(self):
+#         """
+#         Returns: Mean of the Hypoexponential distribution.
+#         """
+#         return sum([1/x for x in self.args])
 
-    def median(self):
-        """
-        Returns: Median of the Hypoexponential distribution.
-        """
-        return "Gneral closed-form does not exist"
+#     def median(self):
+#         """
+#         Returns: Median of the Hypoexponential distribution.
+#         """
+#         return "Gneral closed-form does not exist"
 
-    def mode(self):
-        """
-        Returns: Mode of the Hypoexponential distribution.
-        """
-        a = self.a_shape
-        p = self.p_shape
-        b = self.scale
-        return b*pow((a*p-1)/(a+1), 1/a)
+#     def mode(self):
+#         """
+#         Returns: Mode of the Hypoexponential distribution.
+#         """
+#         a = self.a_shape
+#         p = self.p_shape
+#         b = self.scale
+#         return b*pow((a*p-1)/(a+1), 1/a)
 
-    def var(self):
-        """
-        Returns: Variance of the Hypoexponential distribution.
-        """
-        return "currently unsupported"
+#     def var(self):
+#         """
+#         Returns: Variance of the Hypoexponential distribution.
+#         """
+#         return "currently unsupported"
 
-    def skewness(self):
-        """
-        Returns: Skewness of the Hypoexponential distribution. 
-        """
-        return 2*sum([1/pow(x,3) for x in self.args])/pow(sum([1/pow(x,2) for x in self.args]), 3/2)
+#     def skewness(self):
+#         """
+#         Returns: Skewness of the Hypoexponential distribution. 
+#         """
+#         return 2*sum([1/pow(x,3) for x in self.args])/pow(sum([1/pow(x,2) for x in self.args]), 3/2)
 
-    def kurtosis(self):
-        """
-        Returns: kurtosis of the Hypoexponential distribution
-        """
-        return "no simple closed form"
+#     def kurtosis(self):
+#         """
+#         Returns: kurtosis of the Hypoexponential distribution
+#         """
+#         return "no simple closed form"
 
-    def print_summary(self):
-        """
-        Returns: Summary statistic regarding the Hypoexponential distribution
-        """
-        mean = self.mean()
-        median = self.median()
-        mode = self.mode()
-        var = self.var()
-        skewness = self.skewness()
-        kurtosis = self.kurtosis()
-        cstr = "summary statistic"
-        print(cstr.center(40, "="))
-        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+#     def print_summary(self):
+#         """
+#         Returns: Summary statistic regarding the Hypoexponential distribution
+#         """
+#         mean = self.mean()
+#         median = self.median()
+#         mode = self.mode()
+#         var = self.var()
+#         skewness = self.skewness()
+#         kurtosis = self.kurtosis()
+#         cstr = " summary statistic "
+#         print(cstr.center(40, "="))
+#         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
 class Benktander_T1(Base):
     """
@@ -7646,7 +7649,7 @@ class Benktander_T1(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -7813,7 +7816,7 @@ class Benktander_T2(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -7979,7 +7982,7 @@ class Cauchy_log(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -8014,7 +8017,7 @@ class Laplace_log(Base):
          if scale<0:
             raise ValueError('scale parameters should be a positive number. Entered value: scale={}'.format(scale)
 
-        self.mu = mu
+        self.loc = loc
         self.scale = scale
         self.randvar = randvar
 
@@ -8269,7 +8272,7 @@ class Logistic_log(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -8457,7 +8460,7 @@ class Chisq_inverse(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -8634,7 +8637,7 @@ class Levy(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -8798,7 +8801,7 @@ class Nakagami(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
@@ -8893,7 +8896,7 @@ class Lomax(Base):
 
         
         Returns: 
-            either cumulative distribution evaluation for some point or plot of Nakagami distribution.
+            either cumulative distribution evaluation for some point or plot of Lomax distribution.
         """
         generator = lambda _lambda, alpha, x: 1 - pow(1+x/_lambda, -alpha)
         if plot == True:
@@ -8983,11 +8986,11 @@ class Lomax(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
-class Gumbell(Base):
+class Gumbell_T1(Base):
     """
     This class contains methods concerning Gumbell Distirbution. 
     Args:
@@ -9078,7 +9081,7 @@ class Gumbell(Base):
 
         
         Returns: 
-            either cumulative distribution evaluation for some point or plot of Nakagami distribution.
+            either cumulative distribution evaluation for some point or plot of Gumbell distribution.
         """
         generator = lambda mu, beta, x: np.exp(-np.exp(-(x-mu)/beta))
         if plot == True:
@@ -9160,6 +9163,149 @@ class Gumbell(Base):
         var = self.var()
         skewness = self.skewness()
         kurtosis = self.kurtosis()
-        cstr = "summary statistic"
+        cstr = " summary statistic "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
+class Gumbell_T2(Base):
+    """
+    This class contains methods concerning Gumbell Type 2 Distirbution. 
+    Args:
+    
+        a(float): parameter
+        shape(float): scale parameter
+        randvar(float): random variable
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - print_summary for printing the summary statistics of the distribution. 
+
+    Reference:
+    - Wikipedia contributors. (2018, April 13). Type-2 Gumbel distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 14:11, January 17, 2021, from https://en.wikipedia.org/w/index.php?title=Type-2_Gumbel_distribution&oldid=836161575
+    """
+    def __init__(self, a, shape, randvar):
+        self.a = a
+        self.shape = shape
+        self.randvar = randvar
+
+    def pdf(self,
+            plot=False,
+            interval = 0,
+            threshold=1000,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability density evaluation for some point or plot of Gumbell Type 2 distribution.
+        """
+        generator = lambda a,b,x: pow(a*b*x, -a-1)*np.exp(-b*pow(x,-a))
+
+        if plot == True:
+            if interval<0:
+                raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
+            x = np.linspace(0, interval, int(threshold))
+            y = np.array([generator(self.a, self.shape, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.a, self.shape, self.randvar)
+
+    def cdf(self,
+            plot=False,
+            threshold=1000,
+            interval=1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or plot of Gumbell Type 2 distribution.
+        """
+        generator = lambda a,b,x: np.exp(-b*pow(x,-a))
+        if plot == True:
+            x = np.linspace(0, interval, int(threshold))
+            y = np.array([generator(self.a, self.shape, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.a, self.shape, self.randvar)
+
+    def p_value(self, x_lower=0, x_upper=None):
+        """
+        Args:
+
+            x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+            x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+            Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+            Otherwise, the default random variable is x.
+
+        Returns:
+            p-value of the Gumell type 2 distribution evaluated at some random variable.
+        """
+        if x_upper == None:
+            x_upper = self.randvar
+        if x_lower>x_upper:
+            raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        
+        cdf_func  = lambda a,b,x: np.exp(-b*pow(x,-a))
+        return cdf_func(self.a, self.shape, x_upper)-cdf_func(self.a, self.shape, x_lower)
+
+    def mean(self):
+        """
+        Returns: Mean of the Gumbell Type 2 distribution.
+        """
+        return pow(self.shape, 1/self.a)*ss.gamma(1-1/self.a)
+
+    def var(self):
+        """
+        Returns: Variance of the Gumbell Type 2 distribution.
+        """
+        return pow(self.shape, 2/self.a)*(ss.gamma(1-1/self.a)-pow(ss.gamma(1-1/self.a),2))
+
+    def print_summary(self):
+        """
+        Returns: Summary statistic regarding the Gumbell Type 2 distribution
+        """
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = " summary statistic "
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
