@@ -32,7 +32,7 @@ class Base:
     def logcdf(self, cdf):
         return np.log(cdf)
 
-    def p_value(self):
+    def pvalue(self):
         return "unsupported"
 
     def confidence_interval(self):
@@ -117,7 +117,7 @@ class Uniform:
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -273,7 +273,7 @@ class Normal(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -463,7 +463,7 @@ class T(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -558,7 +558,7 @@ class T(Base):
 
         return generator(randvar, df)
 
-    def p_value(self, x_lower=-np.inf, x_upper=None):
+    def pvalue(self, x_lower=-np.inf, x_upper=None):
         """
         Args:
 
@@ -685,7 +685,7 @@ class Cauchy(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -778,7 +778,7 @@ class Cauchy(Base):
 
         return generator(x, location, scale)
 
-    def p_value(self, x_lower=-np.inf, x_upper=None):
+    def pvalue(self, x_lower=-np.inf, x_upper=None):
         """
         Args:
 
@@ -883,7 +883,7 @@ class F(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -982,7 +982,7 @@ class F(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(k,self.df1, self.df2)
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -1094,7 +1094,7 @@ class Chisq(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -1188,7 +1188,7 @@ class Chisq(Base):
 
             x_lower(float): defaults to -np.inf. Defines the lower value of the distribution. Optional.
             x_upper(float | x_upper>x_lower): defaults to None. If not defined defaults to random variable x. Optional.
-            args(list of float): p_values of each elements from the list
+            args(list of float): pvalues of each elements from the list
 
             Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
             Otherwise, the default random variable is x.
@@ -1279,7 +1279,7 @@ class Chi(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -1373,7 +1373,7 @@ class Chi(Base):
 
             x_lower(float): defaults to -np.inf. Defines the lower value of the distribution. Optional.
             x_upper(float | x_upper>x_lower): defaults to None. If not defined defaults to random variable x. Optional.
-            args(list of float): p_values of each elements from the list
+            args(list of float): pvalues of each elements from the list
 
             Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
             Otherwise, the default random variable is x.
@@ -1476,7 +1476,7 @@ class Explonential(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -1575,7 +1575,7 @@ class Explonential(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(x, _lambda)
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -1668,7 +1668,7 @@ class Explonential(Base):
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
 
-# check. add p_value method.
+# check. add pvalue method.
 class Gamma(Base):
     """
     This class contains methods concerning a variant of Gamma distribution. 
@@ -1683,7 +1683,7 @@ class Gamma(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -1772,7 +1772,7 @@ class Gamma(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.a, self.b, self.x)    
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -1876,7 +1876,7 @@ class Pareto(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -1978,7 +1978,7 @@ class Pareto(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.x, x_m, alpha)
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -2091,7 +2091,7 @@ class Pareto(Base):
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
 
-# resolve p_value
+# resolve pvalue
 class Log_normal(Base):
     """
     This class contains methods concerning the Log Normal Distribution. 
@@ -2106,7 +2106,7 @@ class Log_normal(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -2194,7 +2194,7 @@ class Log_normal(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.mean_val, self.std_val, self.randvar)
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -2289,7 +2289,7 @@ class Log_normal(Base):
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
 
-# add p_value method, check on ipynb
+# add pvalue method, check on ipynb
 class Laplace(Base):
     """
     This class contains methods concerning Laplace Distirbution. 
@@ -2303,7 +2303,7 @@ class Laplace(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -2386,7 +2386,7 @@ class Laplace(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.location, self.scale, self.randvar)
 
-    def p_value(self, x_lower=-np.inf, x_upper=None):
+    def pvalue(self, x_lower=-np.inf, x_upper=None):
         """
         Args:
 
@@ -2488,7 +2488,7 @@ class Logistic(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -2571,7 +2571,7 @@ class Logistic(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.location, self.scale, self.randvar)
 
-    def p_value(self, x_lower=-np.inf, x_upper=None):
+    def pvalue(self, x_lower=-np.inf, x_upper=None):
         """
         Args:
 
@@ -2672,7 +2672,7 @@ class Logit_normal(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -2756,7 +2756,7 @@ class Logit_normal(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.location, self.sq_scale, self.randvar)
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -2842,7 +2842,7 @@ class Weibull(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -2933,7 +2933,7 @@ class Weibull(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.scale, self.shape, self.randvar)
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -3036,7 +3036,7 @@ class Weilbull_inv(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -3122,7 +3122,7 @@ class Weilbull_inv(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.shape, self.scale, self.location, self.randvar)
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -3217,9 +3217,9 @@ class Weilbull_inv(Base):
 
 
 
-class Gumbell(Base):
+class Gumbel(Base):
     """
-    This class contains methods concerning Gumbell Distirbution. 
+    This class contains methods concerning Gumbel Distirbution. 
     Args:
     
         location(float): location parameter
@@ -3230,7 +3230,7 @@ class Gumbell(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -3274,7 +3274,7 @@ class Gumbell(Base):
 
         
         Returns: 
-            either probability density evaluation for some point or plot of Gumbell distribution.
+            either probability density evaluation for some point or plot of Gumbel distribution.
         """
         def generator(mu, beta, x):
             z = (x-mu)/beta
@@ -3307,7 +3307,7 @@ class Gumbell(Base):
 
         
         Returns: 
-            either cumulative distribution evaluation for some point or plot of Gumbell distribution.
+            either cumulative distribution evaluation for some point or plot of Gumbel distribution.
         """
         def generator(mu, beta, x):
             return np.exp(-np.exp(-(x-mu)/beta))
@@ -3317,7 +3317,7 @@ class Gumbell(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.location, self.scale, self.randvar)
 
-    def p_value(self):
+    def pvalue(self):
         """
         Args:
 
@@ -3328,55 +3328,55 @@ class Gumbell(Base):
             Otherwise, the default random variable is x.
 
         Returns:
-            p-value of the Gumbell distribution evaluated at some random variable.
+            p-value of the Gumbel distribution evaluated at some random variable.
         """
         return "currently unsupported"
 
     def mean(self):
         """
-        Returns: Mean of the Gumbell distribution.
+        Returns: Mean of the Gumbel distribution.
         """
         return self.location+(self.scale*np.euler_gamma)
 
     def median(self):
         """
-        Returns: Median of the Gumbell distribution.
+        Returns: Median of the Gumbel distribution.
         """
         return self.location - (self.scale*np.log(np.log(2)))
 
     def mode(self):
         """
-        Returns: Mode of the Gumbell distribution.
+        Returns: Mode of the Gumbel distribution.
         """
         return self.location
 
     def var(self):
         """
-        Returns: Variance of the Gumbell distribution.
+        Returns: Variance of the Gumbel distribution.
         """
         return (np.pi**2/6)*pow(self.scale,2)
 
     def std(self):
         """
-        Returns: Standard deviation of the Gumbell distribution.
+        Returns: Standard deviation of the Gumbel distribution.
         """
         return sqrt(self.var())
 
     def skewness(self):
         """
-        Returns: Skewness of the Gumbell distribution. 
+        Returns: Skewness of the Gumbel distribution. 
         """
         return 1.14
 
     def kurtosis(self):
         """
-        Returns: Kurtosis of the Gumbell distribution. 
+        Returns: Kurtosis of the Gumbel distribution. 
         """
         return 12/5
 
     def summary(self):
         """
-        Returns: Summary statistic regarding the Gumbell distribution
+        Returns: Summary statistic regarding the Gumbel distribution
         """
         mean = self.mean()
         median = self.median()
@@ -3401,7 +3401,7 @@ class Arcsine(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -3482,7 +3482,7 @@ class Arcsine(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.location, self.scale, self.randvar)
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -3577,7 +3577,7 @@ class Triangular(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -3682,7 +3682,7 @@ class Triangular(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.a, self.b, self.c, self.randvar)
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -3805,7 +3805,7 @@ class Trapezoidal(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -3910,7 +3910,7 @@ class Trapezoidal(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.a, self.b, self.c, self.d, self.randvar)
 
-    def p_value(self):
+    def pvalue(self):
         """
         Args:
 
@@ -3980,7 +3980,7 @@ class Trapezoidal(Base):
 
 #         - pdf for probability density function.
 #         - cdf for cumulative distribution function.
-#         - p_value for p-values.
+#         - pvalue for p-values.
 #         - mean for evaluating the mean of the distribution.
 #         - median for evaluating the median of the distribution.
 #         - mode for evaluating the mode of the distribution.
@@ -4074,7 +4074,7 @@ class Trapezoidal(Base):
 #             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
 #         return generator(self.a, self.b, self.c, self.d, self.randvar)
 
-#     def p_value(self):
+#     def pvalue(self):
 #         """
 #         Args:
 
@@ -4153,7 +4153,7 @@ class Beta(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -4239,7 +4239,7 @@ class Beta(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.a, self.b, self.c, self.randvar)
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -4340,7 +4340,7 @@ class Beta_prime(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -4429,7 +4429,7 @@ class Beta_prime(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.alpha, self.beta, self.randvar)
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -4550,7 +4550,7 @@ class Bates(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -4636,7 +4636,7 @@ class Bates(Base):
         """
         return "currently unsupported"
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -4712,7 +4712,7 @@ class Erlang(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -4800,7 +4800,7 @@ class Erlang(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.shape, self.rate, self.randvar)
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -4903,7 +4903,7 @@ class Maxwell_Boltzmann(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -4994,7 +4994,7 @@ class Maxwell_Boltzmann(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.a, self.randvar)
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -5100,7 +5100,7 @@ class Beta_rectangular(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -5203,7 +5203,7 @@ class Beta_rectangular(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.min, self.max, self.alpha, self.beta, self.theta, self.randvar)
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -5288,7 +5288,7 @@ class Bernoulli(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -5381,7 +5381,7 @@ class Bernoulli(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.shape, self.randvar)
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -5458,7 +5458,7 @@ class Bernoulli(Base):
 
 #         - pdf for probability density function.
 #         - cdf for cumulative distribution function.
-#         - p_value for p-values.
+#         - pvalue for p-values.
 #         - mean for evaluating the mean of the distribution.
 #         - median for evaluating the median of the distribution.
 #         - mode for evaluating the mode of the distribution.
@@ -5551,7 +5551,7 @@ class Bernoulli(Base):
 #             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
 #         return generator(self.shape, self.randvar)
 
-#     def p_value(self, x_lower=0, x_upper=None):
+#     def pvalue(self, x_lower=0, x_upper=None):
 #         """
 #         Args:
 
@@ -5617,7 +5617,7 @@ class Wigner(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -5702,7 +5702,7 @@ class Wigner(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.radius, self.randvar)
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -5798,7 +5798,7 @@ class Balding_Nichols(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -5885,7 +5885,7 @@ class Balding_Nichols(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.alpha, self.beta, self.randvar)
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -5978,7 +5978,7 @@ class Benini(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -6069,7 +6069,7 @@ class Benini(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.alpha, self.beta, self.sigma, self.randvar)
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -6147,7 +6147,7 @@ class Normal_folded(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -6233,7 +6233,7 @@ class Normal_folded(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.loc, self.scale, self.randvar)
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -6301,7 +6301,7 @@ class Logistic_half(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -6383,7 +6383,7 @@ class Logistic_half(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.k, self.randvar)
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -6460,7 +6460,7 @@ class Normal_half(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -6543,7 +6543,7 @@ class Normal_half(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.scale, self.randvar)
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -6642,7 +6642,7 @@ class Gaussian_inv(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -6735,7 +6735,7 @@ class Gaussian_inv(Base):
     #         return super().plot(x, y, xlim, ylim, xlabel, ylabel)
     #     return generator(self.alpha, self.beta, self.randvar)
 
-    # def p_value(self, x_lower=0, x_upper=None):
+    # def pvalue(self, x_lower=0, x_upper=None):
     #     """
     #     Args:
 
@@ -6824,7 +6824,7 @@ class Gamma_inv(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -6914,7 +6914,7 @@ class Gamma_inv(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.alpha, self.beta, self.randvar)
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -7018,7 +7018,7 @@ class Gamma_inv(Base):
 
 #         - pdf for probability density function.
 #         - cdf for cumulative distribution function.
-#         - p_value for p-values.
+#         - pvalue for p-values.
 #         - mean for evaluating the mean of the distribution.
 #         - median for evaluating the median of the distribution.
 #         - mode for evaluating the mode of the distribution.
@@ -7108,7 +7108,7 @@ class Gamma_inv(Base):
 #             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
 #         return generator(self.alpha, self.beta, self.sigma, self.randvar)
 
-#     def p_value(self, x_lower=0, x_upper=None):
+#     def pvalue(self, x_lower=0, x_upper=None):
 #         """
 #         Args:
 
@@ -7203,7 +7203,7 @@ class Dagum(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -7293,7 +7293,7 @@ class Dagum(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.p_shape, self.a_shape,self.scale, self.randvar)
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -7392,7 +7392,7 @@ class Davis(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -7482,7 +7482,7 @@ class Davis(Base):
     #         return super().plot(x, y, xlim, ylim, xlabel, ylabel)
     #     return generator(self.alpha, self.beta, self.sigma, self.randvar)
 
-    # def p_value(self, x_lower=0, x_upper=None):
+    # def pvalue(self, x_lower=0, x_upper=None):
     #     """
     #     Args:
 
@@ -7557,7 +7557,7 @@ class Rayleigh(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -7647,7 +7647,7 @@ class Rayleigh(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.scale, self.randvar)
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -7747,7 +7747,7 @@ class Rayleigh(Base):
 
 #         - pdf for probability density function.
 #         - cdf for cumulative distribution function.
-#         - p_value for p-values.
+#         - pvalue for p-values.
 #         - mean for evaluating the mean of the distribution.
 #         - median for evaluating the median of the distribution.
 #         - mode for evaluating the mode of the distribution.
@@ -7839,7 +7839,7 @@ class Benktander_T1(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -7928,7 +7928,7 @@ class Benktander_T1(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.a, self.b, self.randvar)
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -7999,7 +7999,7 @@ class Benktander_T2(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -8088,7 +8088,7 @@ class Benktander_T2(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.a, self.b, self.randvar)
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -8173,7 +8173,7 @@ class Cauchy_log(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -8262,7 +8262,7 @@ class Cauchy_log(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.mu, self.scale, self.randvar)
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -8348,7 +8348,7 @@ class Laplace_log(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -8435,7 +8435,7 @@ class Laplace_log(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.loc, self.scale, self.randvar)
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -8469,7 +8469,7 @@ class Logistic_log(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -8558,7 +8558,7 @@ class Logistic_log(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.scale, self.shape, self.randvar)
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -8649,7 +8649,7 @@ class Chisq_inv(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -8738,7 +8738,7 @@ class Chisq_inv(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.df, self.randvar)
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -8849,7 +8849,7 @@ class Levy(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -8937,7 +8937,7 @@ class Levy(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.loc, self.scale, self.randvar)
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -9035,7 +9035,7 @@ class Nakagami(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -9125,7 +9125,7 @@ class Nakagami(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.shape, self.spread, self.randvar)
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -9208,7 +9208,7 @@ class Lomax(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -9296,7 +9296,7 @@ class Lomax(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.scale, self.shape, self.randvar)
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -9391,9 +9391,9 @@ class Lomax(Base):
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
 
-class Gumbell_T1(Base):
+class Gumbel_T1(Base):
     """
-    This class contains methods concerning Gumbell Distirbution. 
+    This class contains methods concerning Gumbel Distirbution. 
     Args:
     
         loc(float): loc parameter
@@ -9404,7 +9404,7 @@ class Gumbell_T1(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -9448,7 +9448,7 @@ class Gumbell_T1(Base):
 
         
         Returns: 
-            either probability density evaluation for some point or plot of Gumbell distribution.
+            either probability density evaluation for some point or plot of Gumbel distribution.
         """
         def generator(mu, beta, x):
             z = (x-mu)/beta
@@ -9483,7 +9483,7 @@ class Gumbell_T1(Base):
 
         
         Returns: 
-            either cumulative distribution evaluation for some point or plot of Gumbell distribution.
+            either cumulative distribution evaluation for some point or plot of Gumbel distribution.
         """
         generator = lambda mu, beta, x: np.exp(-np.exp(-(x-mu)/beta))
         if plot == True:
@@ -9492,7 +9492,7 @@ class Gumbell_T1(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.loc, self.mu, self.randvar)
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -9515,55 +9515,55 @@ class Gumbell_T1(Base):
 
     def mean(self):
         """
-        Returns: Mean of the Gumbell distribution.
+        Returns: Mean of the Gumbel distribution.
         """
         return self.loc+self.scale*np.euler_gamma
     
     def median(self):
         """
-        Returns: Median of the Gumbell distribution.
+        Returns: Median of the Gumbel distribution.
         """
         return self.loc - self.scale*np.log(np.log(2))
 
     def mode(self):
         """
-        Returns: Mode of the Gumbell distribution.
+        Returns: Mode of the Gumbel distribution.
         """
         return self.loc
 
     def var(self):
         """
-        Returns: Variance of the Gumbell distribution.
+        Returns: Variance of the Gumbel distribution.
         """
         return (pow(np.pi,2)/6)*pow(self.scale,2)
 
     def std(self):
         """
-        Returns: Standard deviation of the Gumbell distribution
+        Returns: Standard deviation of the Gumbel distribution
         """
         return sqrt(self.var())
 
     def skewness(self):
         """
-        Returns: Approximation of the Skewness of the Gumbell distribution. 
+        Returns: Approximation of the Skewness of the Gumbel distribution. 
         """
         return 1.14
 
     def kurtosis(self):
         """
-        Returns: Kurtosis of the Gumbell distribution. 
+        Returns: Kurtosis of the Gumbel distribution. 
         """
         return 12/5
     
     def entropy(self):
         """
-        Returns: differential entropy of the Gumbell distribution.
+        Returns: differential entropy of the Gumbel distribution.
         """
         return np.log(self.scale)+np.euler_gamma+1
 
     def summary(self):
         """
-        Returns: Summary statistic regarding the Gumbell distribution
+        Returns: Summary statistic regarding the Gumbel distribution
         """
         mean = self.mean()
         median = self.median()
@@ -9576,9 +9576,9 @@ class Gumbell_T1(Base):
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
-class Gumbell_T2(Base):
+class Gumbel_T2(Base):
     """
-    This class contains methods concerning Gumbell Type 2 Distirbution. 
+    This class contains methods concerning Gumbel Type 2 Distirbution. 
     Args:
     
         a(float): parameter
@@ -9589,7 +9589,7 @@ class Gumbell_T2(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -9630,7 +9630,7 @@ class Gumbell_T2(Base):
 
         
         Returns: 
-            either probability density evaluation for some point or plot of Gumbell Type 2 distribution.
+            either probability density evaluation for some point or plot of Gumbel Type 2 distribution.
         """
         generator = lambda a,b,x: pow(a*b*x, -a-1)*np.exp(-b*pow(x,-a))
 
@@ -9663,7 +9663,7 @@ class Gumbell_T2(Base):
 
         
         Returns: 
-            either cumulative distribution evaluation for some point or plot of Gumbell Type 2 distribution.
+            either cumulative distribution evaluation for some point or plot of Gumbel Type 2 distribution.
         """
         generator = lambda a,b,x: np.exp(-b*pow(x,-a))
         if plot == True:
@@ -9672,7 +9672,7 @@ class Gumbell_T2(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.a, self.shape, self.randvar)
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -9683,7 +9683,7 @@ class Gumbell_T2(Base):
             Otherwise, the default random variable is x.
 
         Returns:
-            p-value of the Gumell type 2 distribution evaluated at some random variable.
+            p-value of the Gumbel type 2 distribution evaluated at some random variable.
         """
         if x_upper == None:
             x_upper = self.randvar
@@ -9695,25 +9695,25 @@ class Gumbell_T2(Base):
 
     def mean(self):
         """
-        Returns: Mean of the Gumbell Type 2 distribution.
+        Returns: Mean of the Gumbel Type 2 distribution.
         """
         return pow(self.shape, 1/self.a)*ss.gamma(1-1/self.a)
 
     def var(self):
         """
-        Returns: Variance of the Gumbell Type 2 distribution.
+        Returns: Variance of the Gumbel Type 2 distribution.
         """
         return pow(self.shape, 2/self.a)*(ss.gamma(1-1/self.a)-pow(ss.gamma(1-1/self.a),2))
 
     def std(self):
         """
-        Returns: Standard deviation of the Gumbell Type 2 distribution
+        Returns: Standard deviation of the Gumbel Type 2 distribution
         """
         return sqrt(self.var())
 
     def summary(self):
         """
-        Returns: Summary statistic regarding the Gumbell Type 2 distribution
+        Returns: Summary statistic regarding the Gumbel Type 2 distribution
         """
         mean = self.mean()
         median = self.median()
@@ -9726,4 +9726,347 @@ class Gumbell_T2(Base):
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
+# supported on the whole real line 
+class Fisher_z(Base):
+    """
+    This class contains methods concerning Fisher's z-Distirbution. 
+    Args:
+    
+        df1(float): degrees of freedom
+        df2(float): degrees of freedom
+        randvar(float): random variable
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - pvalue for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
+
+    Note: Fisher's z-distribution is the statistical distribution of half the log of an F-distribution variate:
+    z = 1/2*log(F)
+
+    Reference:
+    - Wikipedia contributors. (2020, December 15). Fisher's z-distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 02:33, January 19, 2021, from https://en.wikipedia.org/w/index.php?title=Fisher%27s_z-distribution&oldid=994427156
+    """
+    def __init__(self, df1, df2, randvar=0):
+        self.df1 = df1
+        self.df2 = df2
+        self.randvar = randvar
+
+    def pdf(self,
+            plot=False,
+            interval = 0,
+            threshold=1000,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability density evaluation for some point or plot of Fisher's z-distribution.
+        """
+        generator = lambda df1, df2, x: pow(2*df1, df1/2)*pow(df2, df2/2)*np.exp(df1*x)/(ss.beta(df1/2,df2/2)*pow(df1*np.exp(2*x)+df2,(df1+df2)/2))
+
+        if plot == True:
+            if interval<0:
+                raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
+            x = np.linspace(-interval, interval, int(threshold))
+            y = np.array([generator(self.a, self.shape, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.a, self.shape, self.randvar)
+
+    def cdf(self,
+            plot=False,
+            threshold=1000,
+            interval=1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or plot of Fisher's z-distribution.
+        """
+        def generator(df1, df2, x,
+            plot=False,
+            threshold=1000,
+            interval=1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None): 
+
+            f = F(df1, df2, np.exp(2*x))
+            if plot == True:
+                return f.cdf(plot, threshold, interval, xlim, ylim, xlabel, ylabel)
+            return f.cdf()
+
+        if plot == True:
+            generator(self.df, self.df2, self.randvar)
+        return generator(self.df, self.df2, self.randvar)
+
+    def pvalue(self, x_lower=0, x_upper=None):
+        """
+        Args:
+
+            x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+            x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+            Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+            Otherwise, the default random variable is x.
+
+        Returns:
+            p-value of the Fisher's z-distribution evaluated at some random variable.
+        """
+        def cdf_func(df1,df2,x):
+            f = F(df1, df2, x)
+            return f.pvalue(x_lower, x_upper)
+
+        return cdf_func(self.df1, self.df2, self.randvar)
+
+    def summary(self):
+        """
+        Returns: Summary statistic regarding the Fisher's z-distribution
+        """
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        std = self.std()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = " summary statistics "
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
+class Laplace_asym(Base):
+    """
+    This class contains methods concerning Asymmetric Laplace Distirbution. 
+    Args:
+    
+        loc(float): location parameter
+        scale(float): scale parameter
+        asym(float): asymmetry parameter
+        randvar(float): random variable
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - p_value for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
+
+    Reference:
+    - Wikipedia contributors. (2018, April 13). Type-2 Gumbel distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 14:11, January 17, 2021, from https://en.wikipedia.org/w/index.php?title=Type-2_Gumbel_distribution&oldid=836161575
+    """
+    def __init__(self, loc, scale, asym, randvar=0):
+        if scale<=0 or asym <=0:
+            raise ValueError('scale and asym parameters should be a positive number. Entered values: scale = {}, asym = {}'.format(scale, asym))
+        self.loc = loc
+        self.scale = scale
+        self.randvar = randvar
+
+    def pdf(self,
+            plot=False,
+            interval = 0,
+            threshold=1000,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability density evaluation for some point or plot of Asymmetric Laplace distribution.
+        """
+        generator = lambda m,l,k,x: 1/(k+1/k)*np.exp(-(x-m)*l*np.sign(x-m)*pow(k,np.sign(x-m)))
+
+        if plot == True:
+            if interval<0:
+                raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
+            x = np.linspace(-interval, interval, int(threshold))
+            y = np.array([generator(self.loc, self.scale, self.asym, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.loc, self.scale, self.asym, self.randvar)
+
+    def cdf(self,
+            plot=False,
+            threshold=1000,
+            interval=1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or plot of Asymmetric Laplace distribution.
+        """
+
+        def generator(loc, scale, asym, x):
+            if x<=loc:
+                return pow(asym,2)/(1+pow(asym,2))*np.exp((scale/asym)*(x-loc))
+            return 1-(1/(1+pow(asym,2)))*np.exp(-scale*asym*(x-loc))
+
+        if plot == True:
+            x = np.linspace(-interval, interval, int(threshold))
+            y = np.array([generator(self.loc, self.scale, self.asym,, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.loc, self.scale, self.asym, self.randvar)
+
+    def p_value(self, x_lower=0, x_upper=None):
+        """
+        Args:
+
+            x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+            x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+            Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+            Otherwise, the default random variable is x.
+
+        Returns:
+            p-value of the Asymmetric Laplace distribution evaluated at some random variable.
+        """
+        if x_upper == None:
+            x_upper = self.randvar
+        if x_lower>x_upper:
+            raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        
+          def cdf_func(loc, scale, asym, x):
+            if x<=loc:
+                return pow(asym,2)/(1+pow(asym,2))*np.exp((scale/asym)*(x-loc))
+            return 1-(1/(1+pow(asym,2)))*np.exp(-scale*asym*(x-loc))
+
+        return cdf_func(self.loc, self.scale, self.asym, x_upper)-cdf_func(self.loc, self.scale, self.asym, x_lower)
+
+    def mean(self):
+        """
+        Returns: Mean of the Asymmetric Laplace distribution.
+        """
+        m = self.loc
+        k = self.asym
+        return m+(1-pow(k,2))/(self.scale*k)
+
+    def median(self):
+        """
+        Returns: Median of the Asymmetric Laplace distribution.
+        """
+        m,k,l = self.loc, self.asym, self.scale
+        if k>1:
+            return m+(k/l)*log(10, (1+pow(k,2))/(2*pow(k,2)))
+        if k<1:
+            return m+(1/(l*k))*log(10, (1+pow(k,2))/2)
+        return "undefined"
+
+    def var(self):
+        """
+        Returns: Variance of the Asymmetric Laplace distribution.
+        """
+        k,l = self.asym, self.scale
+        return (1+pow(k,4))/(pow(l,2)*pow(k,2))
+
+    def std(self):
+        """
+        Returns: Standard deviation of the Asymmetric Laplace distribution
+        """
+        return sqrt(self.var())
+
+    def skewness(self):
+        """
+        Returns: Approximation of the Skewness of the Asymmetric Laplace distribution. 
+        """
+        k = self.asym
+        return (2*(1+pow(k,6)))/pow(pow(k,4)+1, 3/2)
+
+    def kurtosis(self):
+        """
+        Returns: Kurtosis of the Asymmetric Laplacedistribution. 
+        """
+        k = self.asym
+        return (6*(1+pow(k,8)))/pow(1+pow(k,4),2)
+    
+    def entropy(self):
+        """
+        Returns: differential entropy of the Asymmetric Laplace distribution.
+        """
+        k = self.asym
+        l = self.scale
+        return np.log(np.e*(1+pow(k,2)/(k*l)))
+
+
+    def summary(self):
+        """
+        Returns: Summary statistic regarding the Asymmetric Laplace distribution
+        """
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        std = self.std()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = " summary statistics "
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 

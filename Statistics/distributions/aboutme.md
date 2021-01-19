@@ -104,12 +104,18 @@ Semi-infinite class
     - log-Logistic distribution
     - Inverse chi-squared distribution
     - Lévy distribution
-    - pareto
-    - nakagami
+    - Pareto distribution
+    - Nakagami distribution
     <!-- - Rice -->
-    - lomax
-    - Gumbel 
-    - Weibull
+    - Lomax distribution
+    - Gumbel distribution
+    - Weibull distribution
+
+Real line
+- Gumbel  distribution
+- Fisher's z-distribution
+- Asymmetric Laplace distribution
+
 ----
 in progress
 - Continuous univariate 
@@ -147,18 +153,16 @@ in progress
     - supported on the whole real line 
         <!-- - Cauchy -->
         - exponential power
-        - Fisher's z
         - Gaussian q
         - generalized normal
         - generalized hyperbolic
         - geometric stable
-        - Gumbel
-        - Holtsmark
+        <!-- - Gumbel -->
+        - Holtsmark - hypergerometric function
         - hyperbolic secant
         - Johnson's SU
         - Landau
         <!-- - Laplace -->
-        - asymmetric Laplace
         <!-- - logistic -->
         - noncentral t
         <!-- - normal (Gaussian) -->
