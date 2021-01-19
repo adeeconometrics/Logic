@@ -54,6 +54,7 @@ in progress
 ----
 ## Continuous
 ### Univariate 
+
 - uniform continuous
 - gaussian distribution
 - t-distribution
@@ -82,7 +83,7 @@ in progress
     - Wigner semicircle distribution
     - beta rectangular distribution
     - Bates distribution
-    - continuous bernoulli distribution
+    - continuous Bernoulli distribution
     - Balding-Nichols distribution
 
 Semi-infinite class
@@ -112,24 +113,29 @@ Semi-infinite class
     - Weibull distribution
 
 Real line
-- Gumbel  distribution
-- Fisher's z-distribution
-- Asymmetric Laplace distribution
+- Staged for review:
+    - Gumbel  distribution
+    - Fisher's z-distribution
+    - Asymmetric Laplace distribution
+    - Generalized normal v1
+    - Generalized hyperbolic - resolve cdf and pdf
+    - Hyperbolic secant
+
+- change category:
+    - Cauchy
+    - Laplace
+    - Logistic
+    - Normal
+    - T
+    - Gumbel Type 1
 
 ----
 in progress
 - Continuous univariate 
     - bounded interval
         - ARGUS
-        <!-- - Balding-Nichols -->
-        <!-- - Bates
-        <!-- - beta -->
-        <!-- - beta rectangular
-        - continuous bernoulli -->
-        <!-- - logit normal -->
         - non-central beta
-        <!-- - uniform -->
-        <!-- - Wigner semicircle -->
+
     - semi-infinite interval
         - truncated normal type 2
         - relativistic Breit–Wigner 
@@ -151,30 +157,23 @@ in progress
         - Wilks's lambda
 
     - supported on the whole real line 
-        <!-- - Cauchy -->
         - exponential power
         - Gaussian q
         - generalized normal
         - generalized hyperbolic
         - geometric stable
-        <!-- - Gumbel -->
         - Holtsmark - hypergerometric function
-        - hyperbolic secant
         - Johnson's SU
-        - Landau
-        <!-- - Laplace -->
-        <!-- - logistic -->
-        - noncentral t
-        <!-- - normal (Gaussian) -->
+        - Landau - integral form
+        - noncentral t - needs further reading
         - normal-inverse Gaussian
-        - skew normal
+        - skew normal - needs further reading
         - slash
-        - stable
-        <!-- - Student's t -->
-        <!-- - type-1 Gumbel -->
-        - Tracy–Widom
+        - stable - find numerical counterparts, no analytical expression is defined
+        - Tracy–Widom - needs further reading
         - variance-gamma
-        - Voigt
+        - Voigt -  find numerical counterparts, as analytical expression is deemed [complicated](https://en.wikipedia.org/wiki/Voigt_profile)
+        
     - varying types supported
         - generalized chi-squared
         - generalized extreme value

@@ -9885,7 +9885,7 @@ class Laplace_asym(Base):
 
         - pdf for probability density function.
         - cdf for cumulative distribution function.
-        - p_value for p-values.
+        - pvalue for p-values.
         - mean for evaluating the mean of the distribution.
         - median for evaluating the median of the distribution.
         - mode for evaluating the mode of the distribution.
@@ -9905,6 +9905,7 @@ class Laplace_asym(Base):
             raise ValueError('scale and asym parameters should be a positive number. Entered values: scale = {}, asym = {}'.format(scale, asym))
         self.loc = loc
         self.scale = scale
+        self.asym = asym
         self.randvar = randvar
 
     def pdf(self,
@@ -9975,7 +9976,7 @@ class Laplace_asym(Base):
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
         return generator(self.loc, self.scale, self.asym, self.randvar)
 
-    def p_value(self, x_lower=0, x_upper=None):
+    def pvalue(self, x_lower=0, x_upper=None):
         """
         Args:
 
@@ -10041,7 +10042,7 @@ class Laplace_asym(Base):
 
     def kurtosis(self):
         """
-        Returns: Kurtosis of the Asymmetric Laplacedistribution. 
+        Returns: Kurtosis of the Asymmetric Laplace distribution. 
         """
         k = self.asym
         return (6*(1+pow(k,8)))/pow(1+pow(k,4),2)
@@ -10058,6 +10059,194 @@ class Laplace_asym(Base):
     def summary(self):
         """
         Returns: Summary statistic regarding the Asymmetric Laplace distribution
+        """
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        std = self.std()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = " summary statistics "
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
+class GH(Base):
+    """
+    This class contains methods concerning Generalized Hyperbolic Distirbution. 
+    Args:
+    
+        _lambda(float): _lambda parameter
+        alpha(float): alpha parameter
+        asym(float): asymmetry parameter
+        scale (float): scale parameter
+        loc(float): location 
+
+        randvar(float): random variable
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - pvalue for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
+
+    Note:
+    
+        - Related Distributions:
+        
+            - X~GH(-df/2,0,0,sqrt(df), mu) - T distribution with df as degrees of freedom and mu as mean.
+            - X~GH(1,α,β,δ,μ) - Hyperbolic distribution
+            - X~GH(-1/2,α,β,δ,μ) - normal-inverse Gaussian distribution
+            - X~GH(?,?,?,?,?) - normal-inverse chi-squared distirbution
+            - X~GH(?,?,?,?,?) - normal-inverse gamma distirbution
+            - X~GH(λ,α,β,δ,0,γ) - variance-gamma distribution
+            - X~GH(1,1,0,0,μ) - Laplace distribution with location parameter μ and scale parameter 1.
+
+    Reference:
+    - Wikipedia contributors. (2020, December 2). Generalised hyperbolic distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 10:12, January 19, 2021, from https://en.wikipedia.org/w/index.php?title=Generalised_hyperbolic_distribution&oldid=991884528
+    """
+    def __init__(self, _lambda, alpha, loc, scale, asym, randvar=0):
+        self._lamba = _lamba
+        self.alpha = alpha
+        self.loc = loc
+        self.scale = scale
+        self.asym = asym
+        self.randvar = randvar
+        self.gamma = sqrt(pow(alpha,2)-pow(asym,2))
+
+    def pdf(self,
+            plot=False,
+            interval = 0,
+            threshold=1000,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability density evaluation for some point or plot of Generalized Hyperbolic distribution.
+        """
+        generator = lambda λ,α,β,δ,μ,γ,x: pow(γ/δ, λ)/(sqrt(2*np.pi)*ss.kn(λ, δ*γ))*np.exp(β*(x-μ))*(ss.kn(λ-0.5, α*sqrt(δ**2+pow(x-μ, 2))))/pow(sqrt(δ**2+pow(x-μ, 2))/α,0.5-λ)
+
+        if plot == True:
+            if interval<0:
+                raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
+            x = np.linspace(-interval, interval, int(threshold))
+            y = np.array([generator(self._lambda, self.alpha, self.beta, self.scale, self.loc, self.gamma, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self._lambda, self.alpha, self.beta, self.scale, self.loc, self.gamma, self.randvar)
+
+    # def cdf(self,
+    #         plot=False,
+    #         threshold=1000,
+    #         interval=1,
+    #         xlim=None,
+    #         ylim=None,
+    #         xlabel=None,
+    #         ylabel=None):
+    #     """
+    #     Args:
+        
+    #         interval(int): defaults to none. Only necessary for defining plot.
+    #         threshold(int): defaults to 1000. Defines the sample points in plot.
+    #         plot(bool): if true, returns plot.
+    #         xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+    #         ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+    #         xlabel(string): sets label in x axis. Only relevant when plot is true. 
+    #         ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+    #     Returns: 
+    #         either cumulative distribution evaluation for some point or plot of Generalized Hyperbolic distribution.
+    #     """
+
+    #     def generator(loc, scale, asym, x):
+    #         if x<=loc:
+    #             return pow(asym,2)/(1+pow(asym,2))*np.exp((scale/asym)*(x-loc))
+    #         return 1-(1/(1+pow(asym,2)))*np.exp(-scale*asym*(x-loc))
+
+    #     if plot == True:
+    #         x = np.linspace(-interval, interval, int(threshold))
+    #         y = np.array([generator(self.loc, self.scale, self.asym,, i) for i in x])
+    #         return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+    #     return generator(self.loc, self.scale, self.asym, self.randvar)
+
+    # def pvalue(self, x_lower=0, x_upper=None):
+    #     """
+    #     Args:
+
+    #         x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+    #         x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+    #         Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+    #         Otherwise, the default random variable is x.
+
+    #     Returns:
+    #         p-value of the Generalized Hyperbolic distribution evaluated at some random variable.
+    #     """
+    #     if x_upper == None:
+    #         x_upper = self.randvar
+    #     if x_lower>x_upper:
+    #         raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        
+    #       def cdf_func(loc, scale, asym, x):
+    #         if x<=loc:
+    #             return pow(asym,2)/(1+pow(asym,2))*np.exp((scale/asym)*(x-loc))
+    #         return 1-(1/(1+pow(asym,2)))*np.exp(-scale*asym*(x-loc))
+
+    #     return cdf_func(self.loc, self.scale, self.asym, x_upper)-cdf_func(self.loc, self.scale, self.asym, x_lower)
+
+    def mean(self):
+        """
+        Returns: Mean of the Generalized Hyperbolic distribution.
+        """
+        _lambda = self._lambda 
+        mu = self.loc
+        delta = self.scale
+        beta = self.asym
+        gamma = self.gamma
+        return mu+(delta*beta*ss.kn(_lambda+1, delta*gamma))/(gamma*ss.kn(_lambda, delta*gamma))
+
+    def var(self):
+        """
+        Returns: Variance of the Generalized Hyperbolic distribution.
+        """
+        λ = self._lambda 
+        δ = self.scale
+        β = self.asym
+        γ = self.gamma
+        return (δ*ss.kn(λ+1, δ*γ))/(γ*ss.kn(λ, δ*γ))+(pow(β,2)*pow(δ,2))/(pow(γ,2))*(ss.kn(λ+2, δ*γ)/ss.kn(λ, δ*γ)-pow(ss.kn(λ+1, δ*γ), 2)/pow(ss.kn(λ, δ*γ),2))
+
+    def std(self):
+        """
+        Returns: Standard deviation of the Generalized Hyperbolic distribution
+        """
+        return sqrt(self.var())
+
+    def summary(self):
+        """
+        Returns: Summary statistic regarding the Generalized Hyperbolic distribution
         """
         mean = self.mean()
         median = self.median()
