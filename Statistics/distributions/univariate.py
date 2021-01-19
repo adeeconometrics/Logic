@@ -91,6 +91,13 @@ class Base:
         returns entropy default (unsupported)
         """
         return "unsupported"
+    
+    # special functions for ϕ(x), and Φ(x) functions: should this be reorganized?
+    def std_normal_pdf(self, x):
+        return np.exp(-pow(x,2)/2)/sqrt(2*np.pi)
+    
+    def std_normal_cdf(self, x):
+        return sci.integrate.quad(self.std_normal_pdf, -np.inf, x)
 
 # class bounded(Base):
 #     pass
@@ -1469,7 +1476,7 @@ class Explonential(Base):
 
     Args:
 
-        - _lambda(float | x>0): rate parameter. 
+        - lambda_(float | x>0): rate parameter. 
         - x(float | x>0): random variable. 
 
     Methods:
@@ -1493,12 +1500,12 @@ class Explonential(Base):
     - Wikipedia contributors. (2020, December 17). Exponential distribution. In Wikipedia, The Free Encyclopedia. 
     Retrieved 04:38, December 23, 2020, from https://en.wikipedia.org/w/index.php?title=Exponential_distribution&oldid=994779060
     """
-    def __init__(self, _lambda, x):
-        if _lambda<0:
-            raise Exception('lambda parameter should be greater than 0. Entered value for _lambda:{}'.format(_lambda))
+    def __init__(self, lambda_, x):
+        if lambda_<0:
+            raise Exception('lambda parameter should be greater than 0. Entered value for lambda_:{}'.format(lambda_))
         if x<0:
             raise Exception('random variable should be greater than 0. Entered value for x:{}'.format(x))
-        self._lambda = _lambda
+        self.lambda_ = lambda_
         self.x = x
 
     def pdf(self,
@@ -1524,19 +1531,19 @@ class Explonential(Base):
         Returns: 
             either probability density evaluation for some point or plot of exponential-distribution.
         """
-        _lambda = self._lambda
+        lambda_ = self.lambda_
         x = self.x
 
-        def generator(_lambda, x):
+        def generator(lambda_, x):
             if x >= 0:
-                return _lambda * np.exp(-(_lambda * x))
+                return lambda_ * np.exp(-(lambda_ * x))
             return 0
 
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(_lambda, x_i) for x_i in x])
+            y = np.array([generator(lambda_, x_i) for x_i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(_lambda, x)
+        return generator(lambda_, x)
 
     def cdf(self,
             plot=False,
@@ -1561,19 +1568,19 @@ class Explonential(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of  exponential distribution.
         """
-        _lambda = self._lambda
+        lambda_ = self.lambda_
         x = self.x
 
-        def generator(x, _lambda):
+        def generator(x, lambda_):
             if x > 0:
-                return 1 - np.exp(-_lambda * x)
+                return 1 - np.exp(-lambda_ * x)
             return 0
 
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(x_i, _lambda) for x_i in x])
+            y = np.array([generator(x_i, lambda_) for x_i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(x, _lambda)
+        return generator(x, lambda_)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -1588,30 +1595,30 @@ class Explonential(Base):
         Returns:
             p-value of the Exponential distribution evaluated at some random variable.
         """
-        _lambda = self._lambda
+        lambda_ = self.lambda_
         x = self.x
         if x_lower < 0:
             raise Exception('x_lower cannot be lower than 0. Entered value: {}'.format(x_lower))
         if x_upper is None:
             x_upper = x
 
-        def cdf_func(x, _lambda):
+        def cdf_func(x, lambda_):
             if x > 0:
-                return 1 - np.exp(-_lambda * x)
+                return 1 - np.exp(-lambda_ * x)
             return 0
-        return cdf_func(x_upper, _lambda) - cdf_func(x_lower, _lambda)
+        return cdf_func(x_upper, lambda_) - cdf_func(x_lower, lambda_)
 
     def mean(self):
         """
         Returns: Mean of the Exponential distribution
         """
-        return 1 / self._lambda
+        return 1 / self.lambda_
 
     def median(self):
         """
         Returns: Median of the Exponential distribution
         """
-        return np.log(2) / self._lambda
+        return np.log(2) / self.lambda_
 
     def mode(self):
         """
@@ -1623,7 +1630,7 @@ class Explonential(Base):
         """
         Returns: Variance of the Exponential distribution
         """
-        return 1 / pow(self._lambda,2)
+        return 1 / pow(self.lambda_,2)
     
     def std(self):
         """
@@ -1650,7 +1657,7 @@ class Explonential(Base):
         Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
         link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
         """
-        return 1-np.log(self._lambda)
+        return 1-np.log(self.lambda_)
 
     def summary(self):
         """
@@ -1791,7 +1798,7 @@ class Gamma(Base):
             x_upper = self.x
         cdf_func = lambda a, b, x: 1 - ss.gammainc(a, x / b) 
 
-        return cdf_func(self.a, self.b, x_upper, self._lambda) - cdf_func(self.a, self.b, x_lower, self._lambda)
+        return cdf_func(self.a, self.b, x_upper, self.lambda_) - cdf_func(self.a, self.b, x_lower, self.lambda_)
 
     def mean(self):
         """
@@ -2891,7 +2898,7 @@ class Weibull(Base):
             if x<0:
                 return 0
             if x>=0:
-                return (k/_lambda)*(x/_lambda)**(k-1)*np.exp(-(x/_lambda)**k)
+                return (k/lambda_)*(x/lambda_)**(k-1)*np.exp(-(x/lambda_)**k)
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([generator(self.scale, self.shape, i) for i in x])
@@ -2925,7 +2932,7 @@ class Weibull(Base):
             if x<0:
                 return 0
             if x>=0:
-                return 1-np.exp(-pow(x/_lambda, k))
+                return 1-np.exp(-pow(x/lambda_, k))
 
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
@@ -2956,7 +2963,7 @@ class Weibull(Base):
             if x<0:
                 return 0
             if x>=0:
-                return 1-np.exp(-pow(x/_lambda, k))
+                return 1-np.exp(-pow(x/lambda_, k))
 
         return cdf_func(self.location, self.shape, x_upper)-cdf_func(self.location, self.shape, x_lower)
 
@@ -2985,9 +2992,9 @@ class Weibull(Base):
         """
         Returns: Variance of the Weibull distribution.
         """
-        _lambda = self.scale
+        lambda_ = self.scale
         k = self.shape
-        return _lambda**2*(((ss.gamma(1+2/k)- ss.gamma(1+1/k)))**2)
+        return lambda_**2*(((ss.gamma(1+2/k)- ss.gamma(1+1/k)))**2)
 
     def std(self):
         """
@@ -3002,9 +3009,9 @@ class Weibull(Base):
         Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
         link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
         """
-        _lambda = self.shape
+        lambda_ = self.shape
         k = self.scale
-        return (k+1)*np.euler_gamma/k+np.log(_lambda/k)+1
+        return (k+1)*np.euler_gamma/k+np.log(lambda_/k)+1
 
     def summary(self):
         """
@@ -4870,8 +4877,8 @@ class Erlang(Base):
         Reference: Park, S.Y. & Bera, A.K.(2009). Maximum entropy autoregressive conditional heteroskedasticity model. Elsivier. 
         link: http://wise.xmu.edu.cn/uploadfiles/paper-masterdownload/2009519932327055475115776.pdf
         """
-        k= self.shape; _lambda = self.rate
-        return (1-k)*ss.digamma(k)+np.log(ss.gamma(k)/_lambda)+k
+        k= self.shape; lambda_ = self.rate
+        return (1-k)*ss.digamma(k)+np.log(ss.gamma(k)/lambda_)+k
 
     def summary(self):
         """
@@ -5508,7 +5515,7 @@ class Bernoulli(Base):
 #             either probability density evaluation for some point or plot of noncentral beta distribution.
 #         """
         
-#         generator = lambda a,b, _lambda: np.sum([np.exp(-_lambda/2)])
+#         generator = lambda a,b, lambda_: np.sum([np.exp(-lambda_/2)])
             
 #         if plot == True:
 #             if interval<0:
@@ -9256,7 +9263,7 @@ class Lomax(Base):
         Returns: 
             either probability density evaluation for some point or plot of Lomax distribution.
         """
-        generator = lambda _lambda, alpha, x: alpha/_lambda*pow(1+x/_lambda, -(alpha+1))
+        generator = lambda lambda_, alpha, x: alpha/lambda_*pow(1+x/lambda_, -(alpha+1))
 
         if plot == True:
             if interval<0:
@@ -9289,7 +9296,7 @@ class Lomax(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Lomax distribution.
         """
-        generator = lambda _lambda, alpha, x: 1 - pow(1+x/_lambda, -alpha)
+        generator = lambda lambda_, alpha, x: 1 - pow(1+x/lambda_, -alpha)
         if plot == True:
             x = np.linspace(0, interval, int(threshold))
             y = np.array([generator(self.scale, self.shape, i) for i in x])
@@ -9314,7 +9321,7 @@ class Lomax(Base):
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-        cdf_func  = lambda _lambda, alpha, x: 1 - pow(1+x/_lambda, -alpha) if x>=0 else 0
+        cdf_func  = lambda lambda_, alpha, x: 1 - pow(1+x/lambda_, -alpha) if x>=0 else 0
         return cdf_func(self.scale, self.shape, x_upper)-cdf_func(self.scale, self.shape, x_lower)
 
     def mean(self):
@@ -9341,9 +9348,9 @@ class Lomax(Base):
         """
         Returns: Variance of the Lomax distribution.
         """
-        alpha, _lambda = self.shape, self.scale
+        alpha, lambda_ = self.shape, self.scale
         if alpha>2:
-            return (pow(_lambda, 2)*alpha)/(pow(alpha-1,2)*(alpha-2))
+            return (pow(lambda_, 2)*alpha)/(pow(alpha-1,2)*(alpha-2))
         elif alpha>1 and alpha <=2:
             return np.inf
         else:
@@ -9361,7 +9368,7 @@ class Lomax(Base):
         """
         Returns: Skewness of the Lomax distribution. 
         """
-        alpha, _lambda = self.shape, self.scale
+        alpha, lambda_ = self.shape, self.scale
         if alpha >3:
             return (2*(1+alpha))/(alpha-3)*sqrt((alpha-2)/alpha)
         return "undefined"
@@ -9370,7 +9377,7 @@ class Lomax(Base):
         """
         Returns: Kurtosis of the Lomax distribution. 
         """
-        alpha, _lambda = self.shape, self.scale
+        alpha, lambda_ = self.shape, self.scale
         if alpha>4:
             return (6*(pow(alpha, 3)+pow(alpha,2)-6*alpha-2))/(alpha*(alpha-3)*(alpha-4))
         return "undefined"
@@ -10071,12 +10078,13 @@ class Laplace_asym(Base):
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
+# add cdf, pvalue, and MGF 
 class GH(Base):
     """
     This class contains methods concerning Generalized Hyperbolic Distirbution. 
     Args:
     
-        _lambda(float): _lambda parameter
+        lambda_(float): lambda_ parameter
         alpha(float): alpha parameter
         asym(float): asymmetry parameter
         scale (float): scale parameter
@@ -10102,7 +10110,7 @@ class GH(Base):
     Note:
     
         - Related Distributions:
-        
+
             - X~GH(-df/2,0,0,sqrt(df), mu) - T distribution with df as degrees of freedom and mu as mean.
             - X~GH(1,α,β,δ,μ) - Hyperbolic distribution
             - X~GH(-1/2,α,β,δ,μ) - normal-inverse Gaussian distribution
@@ -10114,8 +10122,10 @@ class GH(Base):
     Reference:
     - Wikipedia contributors. (2020, December 2). Generalised hyperbolic distribution. In Wikipedia, The Free Encyclopedia. 
     Retrieved 10:12, January 19, 2021, from https://en.wikipedia.org/w/index.php?title=Generalised_hyperbolic_distribution&oldid=991884528
+    - Wolfram (n.d.) https://demonstrations.wolfram.com/GeneralizedHyperbolicDistribution/
+    - 
     """
-    def __init__(self, _lambda, alpha, loc, scale, asym, randvar=0):
+    def __init__(self, lambda_, alpha, loc, scale, asym, randvar=0):
         self._lamba = _lamba
         self.alpha = alpha
         self.loc = loc
@@ -10153,9 +10163,9 @@ class GH(Base):
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(self._lambda, self.alpha, self.beta, self.scale, self.loc, self.gamma, i) for i in x])
+            y = np.array([generator(self.lambda_, self.alpha, self.beta, self.scale, self.loc, self.gamma, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self._lambda, self.alpha, self.beta, self.scale, self.loc, self.gamma, self.randvar)
+        return generator(self.lambda_, self.alpha, self.beta, self.scale, self.loc, self.gamma, self.randvar)
 
     # def cdf(self,
     #         plot=False,
@@ -10221,18 +10231,18 @@ class GH(Base):
         """
         Returns: Mean of the Generalized Hyperbolic distribution.
         """
-        _lambda = self._lambda 
+        lambda_ = self.lambda_ 
         mu = self.loc
         delta = self.scale
         beta = self.asym
         gamma = self.gamma
-        return mu+(delta*beta*ss.kn(_lambda+1, delta*gamma))/(gamma*ss.kn(_lambda, delta*gamma))
+        return mu+(delta*beta*ss.kn(lambda_+1, delta*gamma))/(gamma*ss.kn(lambda_, delta*gamma))
 
     def var(self):
         """
         Returns: Variance of the Generalized Hyperbolic distribution.
         """
-        λ = self._lambda 
+        λ = self.lambda_ 
         δ = self.scale
         β = self.asym
         γ = self.gamma
@@ -10259,3 +10269,742 @@ class GH(Base):
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
+class GN_V1(Base):
+    """
+    This class contains methods concerning Generalized Normal Distirbution V1. 
+    Args:
+    
+        loc(float): location parameter
+        scale(float): scale parameter
+        shape(float): shape parameter
+        randvar(float): random variable
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - pvalue for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
+
+    Reference:
+    - Wikipedia contributors. (2021, January 14). Generalized normal distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 10:50, January 19, 2021, from https://en.wikipedia.org/w/index.php?title=Generalized_normal_distribution&oldid=1000235907
+    """
+    def __init__(self, loc, scale, shape, randvar=0):
+        self.loc = loc
+        self.scale = scale
+        self.shape = shape
+        self.randvar = randvar
+
+    def pdf(self,
+            plot=False,
+            interval = 0,
+            threshold=1000,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability density evaluation for some point or plot of Generalized Normal distribution V1.
+        """
+        generator = lambda u, b, a, x: b/(2*a*ss.gamma(1/b))*np.exp(-pow(abs(x-u)/a,b))
+
+        if plot == True:
+            if interval<0:
+                raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
+            x = np.linspace(-interval, interval, int(threshold))
+            y = np.array([generator(self.loc, self.scale, self.shape, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.loc, self.scale, self.shape, self.randvar)
+
+    def cdf(self,
+            plot=False,
+            threshold=1000,
+            interval=1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or plot of Generalized Normal distribution V1.
+        """
+
+        generator = lambda u, b, a, x: 0.5+(np.sign(x-u)/2)*(1/ss.gamma(1/b))*ss.gammainc(1/b, pow(x*a,b))
+
+        if plot == True:
+            x = np.linspace(-interval, interval, int(threshold))
+            y = np.array([generator(self.loc, self.scale, self.shape, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.loc, self.scale, self.shape, self.randvar)
+
+    def pvalue(self, x_lower=0, x_upper=None):
+        """
+        Args:
+
+            x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+            x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+            Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+            Otherwise, the default random variable is x.
+
+        Returns:
+            p-value of the Generalized Normal distribution V1 evaluated at some random variable.
+        """
+        if x_upper == None:
+            x_upper = self.randvar
+        if x_lower>x_upper:
+            raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        
+          cdf_func = lambda u, b, a, x: 0.5+(np.sign(x-u)/2)*(1/ss.gamma(1/b))*ss.gammainc(1/b, pow(x*a,b))
+
+        return cdf_func(self.loc, self.scale, self.shape, x_upper)-cdf_func(self.loc, self.scale, self.shape, x_lower)
+
+    def mean(self):
+        """
+        Returns: Mean of the Generalized Normal distribution V1.
+        """
+        return self.loc
+
+    def median(self):
+        """
+        Returns: Median of the Generalized Normal distribution V1.
+        """
+        return self.loc
+
+    def mode(self):
+        """
+        Returns: Mode of the Generalized Normal distribution V1.
+        """
+        return self.loc
+
+    def var(self):
+        """
+        Returns: Variance of the Generalized Normal distribution V1.
+        """
+        a = self.scale
+        b = self.shape
+        return (pow(a,2)*ss.gamma(3/b))/ss.gamma(1/b)
+
+    def std(self):
+        """
+        Returns: Standard deviation of the Generalized Normal distribution V1
+        """
+        return sqrt(self.var())
+
+    def skewness(self):
+        """
+        Returns: Skewness of the Generalized Normal distribution V1. 
+        """
+        return 0
+
+    def kurtosis(self):
+        """
+        Returns: Kurtosis of the Generalized Normal distribution V1. 
+        """
+        b = self.shape
+        return (ss.gamma(5/b)*ss.gamma(1/b)/pow(ss.gamma(3/b),2)) - 3
+    
+    def entropy(self):
+        """
+        Returns: differential entropy of the Generalized Normal distribution V1.
+        """
+        a = self.scale
+        b = self.shape
+        return 1/b - np.log(b/(2*a*ss.gamma(1/b)))
+
+
+    def summary(self):
+        """
+        Returns: Summary statistic regarding the Generalized Normal distribution V1
+        """
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        std = self.std()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = " summary statistics "
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
+# function for standard normal pdf and cdf
+# class GN_V2(Base):
+#     """
+#     This class contains methods concerning Generalized Normal Distirbution V1. 
+#     Args:
+    
+#         loc(float): location parameter
+#         scale(float): scale parameter
+#         shape(float): shape parameter
+#         randvar(float): random variable
+
+#     Methods:
+
+#         - pdf for probability density function.
+#         - cdf for cumulative distribution function.
+#         - pvalue for p-values.
+#         - mean for evaluating the mean of the distribution.
+#         - median for evaluating the median of the distribution.
+#         - mode for evaluating the mode of the distribution.
+#         - var for evaluating the variance of the distribution.
+#         - std for evaluating the standard deviation of the distribution.
+#         - skewness for evaluating the skewness of the distribution.
+#         - kurtosis for evaluating the kurtosis of the distribution.
+#         - entropy for differential entropy of the distribution.
+#         - summary for printing the summary statistics of the distribution. 
+
+#     Reference:
+#     - Wikipedia contributors. (2021, January 14). Generalized normal distribution. In Wikipedia, The Free Encyclopedia. 
+#       Retrieved 10:50, January 19, 2021, from https://en.wikipedia.org/w/index.php?title=Generalized_normal_distribution&oldid=1000235907
+#     """
+#     def __init__(self, loc, scale, shape, randvar=0):
+#         self.loc = loc
+#         self.scale = scale
+#         self.shape = shape
+#         self.randvar = randvar
+
+#     def pdf(self,
+#             plot=False,
+#             interval = 0,
+#             threshold=1000,
+#             xlim=None,
+#             ylim=None,
+#             xlabel=None,
+#             ylabel=None):
+#         """
+#         Args:
+        
+#             interval(int): defaults to none. Only necessary for defining plot.
+#             threshold(int): defaults to 1000. Defines the sample points in plot.
+#             plot(bool): if true, returns plot.
+#             xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+#             ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+#             xlabel(string): sets label in x axis. Only relevant when plot is true. 
+#             ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+#         Returns: 
+#             either probability density evaluation for some point or plot of Generalized Normal distribution V1.
+#         """
+#         generator = lambda u, b, a, x: b/(2*a*ss.gamma(1/b))*np.exp(-pow(abs(x-u)/a,b))
+
+#         if plot == True:
+#             if interval<0:
+#                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
+#             x = np.linspace(-interval, interval, int(threshold))
+#             y = np.array([generator(self.loc, self.scale, self.shape, i) for i in x])
+#             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+#         return generator(self.loc, self.scale, self.shape, self.randvar)
+
+#     def cdf(self,
+#             plot=False,
+#             threshold=1000,
+#             interval=1,
+#             xlim=None,
+#             ylim=None,
+#             xlabel=None,
+#             ylabel=None):
+#         """
+#         Args:
+        
+#             interval(int): defaults to none. Only necessary for defining plot.
+#             threshold(int): defaults to 1000. Defines the sample points in plot.
+#             plot(bool): if true, returns plot.
+#             xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+#             ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+#             xlabel(string): sets label in x axis. Only relevant when plot is true. 
+#             ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+#         Returns: 
+#             either cumulative distribution evaluation for some point or plot of Generalized Normal distribution V1.
+#         """
+
+#         generator = lambda u, b, a, x: 0.5+(np.sign(x-u)/2)*(1/ss.gamma(1/b))*ss.gammainc(1/b, pow(x*a,b))
+
+#         if plot == True:
+#             x = np.linspace(-interval, interval, int(threshold))
+#             y = np.array([generator(self.loc, self.scale, self.shape, i) for i in x])
+#             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+#         return generator(self.loc, self.scale, self.shape, self.randvar)
+
+#     def pvalue(self, x_lower=0, x_upper=None):
+#         """
+#         Args:
+
+#             x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+#             x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+#             Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+#             Otherwise, the default random variable is x.
+
+#         Returns:
+#             p-value of the Generalized Normal distribution V1 evaluated at some random variable.
+#         """
+#         if x_upper == None:
+#             x_upper = self.randvar
+#         if x_lower>x_upper:
+#             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        
+#           cdf_func = lambda u, b, a, x: 0.5+(np.sign(x-u)/2)*(1/ss.gamma(1/b))*ss.gammainc(1/b, pow(x*a,b))
+
+#         return cdf_func(self.loc, self.scale, self.shape, x_upper)-cdf_func(self.loc, self.scale, self.shape, x_lower)
+
+#     def mean(self):
+#         """
+#         Returns: Mean of the Generalized Normal distribution V1.
+#         """
+#         return self.loc
+
+#     def median(self):
+#         """
+#         Returns: Median of the Generalized Normal distribution V1.
+#         """
+#         return self.loc
+
+#     def mode(self):
+#         """
+#         Returns: Mode of the Generalized Normal distribution V1.
+#         """
+#         return self.loc
+
+#     def var(self):
+#         """
+#         Returns: Variance of the Generalized Normal distribution V1.
+#         """
+#         a = self.scale
+#         b = self.shape
+#         return (pow(a,2)*ss.gamma(3/b))/ss.gamma(1/b)
+
+#     def std(self):
+#         """
+#         Returns: Standard deviation of the Generalized Normal distribution V1
+#         """
+#         return sqrt(self.var())
+
+#     def skewness(self):
+#         """
+#         Returns: Skewness of the Generalized Normal distribution V1. 
+#         """
+#         return 0
+
+#     def kurtosis(self):
+#         """
+#         Returns: Kurtosis of the Generalized Normal distribution V1. 
+#         """
+#         b = self.shape
+#         return (ss.gamma(5/b)*ss.gamma(1/b)/pow(ss.gamma(3/b),2)) - 3
+    
+#     def entropy(self):
+#         """
+#         Returns: differential entropy of the Generalized Normal distribution V1.
+#         """
+#         a = self.scale
+#         b = self.shape
+#         return 1/b - np.log(b/(2*a*ss.gamma(1/b)))
+
+
+#     def summary(self):
+#         """
+#         Returns: Summary statistic regarding the Generalized Normal distribution V1
+#         """
+#         mean = self.mean()
+#         median = self.median()
+#         mode = self.mode()
+#         var = self.var()
+#         std = self.std()
+#         skewness = self.skewness()
+#         kurtosis = self.kurtosis()
+#         cstr = " summary statistics "
+#         print(cstr.center(40, "="))
+#         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
+class Hyperbolic_secant(Base):
+    """
+    This class contains methods concerning Hyperbolic secant Distirbution. 
+    Args:
+
+        randvar(float): random variable
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - pvalue for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
+
+    Reference:
+    - Wikipedia contributors. (2020, November 17). Hyperbolic secant distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 11:01, January 19, 2021, from https://en.wikipedia.org/w/index.php?title=Hyperbolic_secant_distribution&oldid=989175763
+    """
+    def __init__(self, randvar=0):
+        self.randvar = randvar
+
+    def pdf(self,
+            plot=False,
+            interval = 0,
+            threshold=1000,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability density evaluation for some point or plot of Hyperbolic secant distribution.
+        """
+        generator = lambda x: 0.5*(1/np.cosh(np.pi/2*x)) # sech by the relationship of sech and cosh, verify result!
+
+        if plot == True:
+            if interval<0:
+                raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
+            x = np.linspace(-interval, interval, int(threshold))
+            y = np.array([generator(i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.randvar)
+
+    def cdf(self,
+            plot=False,
+            threshold=1000,
+            interval=1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or plot of Hyperbolic secant distribution.
+        """
+
+        generator = lambda x: (2/np.pi)*np.arctan(np.exp(np.pi/2*x))
+
+        if plot == True:
+            x = np.linspace(-interval, interval, int(threshold))
+            y = np.array([generator( i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.randvar)
+
+    def pvalue(self, x_lower=0, x_upper=None):
+        """
+        Args:
+
+            x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+            x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+            Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+            Otherwise, the default random variable is x.
+
+        Returns:
+            p-value of the Hyperbolic secant distribution evaluated at some random variable.
+        """
+        if x_upper == None:
+            x_upper = self.randvar
+        if x_lower>x_upper:
+            raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        
+          cdf_func = lambda x: (2/np.pi)*np.arctan(np.exp(np.pi/2*x))
+
+        return cdf_func(x_upper)-cdf_func(x_lower)
+
+    def mean(self):
+        """
+        Returns: Mean of the Hyperbolic secant distribution.
+        """
+        return 0
+
+    def median(self):
+        """
+        Returns: Median of the Hyperbolic secant distribution.
+        """
+        return 0
+
+    def mode(self):
+        """
+        Returns: Mode of the Hyperbolic secantl distribution.
+        """
+        return 0
+
+    def var(self):
+        """
+        Returns: Variance of the Hyperbolic secantl distribution.
+        """
+        return 1
+
+    def std(self):
+        """
+        Returns: Standard deviation of the Hyperbolic secant distribution
+        """
+        return sqrt(self.var())
+
+    def skewness(self):
+        """
+        Returns: Skewness of the Hyperbolic secant distribution. 
+        """
+        return 0
+
+    def kurtosis(self):
+        """
+        Returns: Kurtosis of the Hyperbolic secant distribution. 
+        """
+        b = self.shape
+        return 2
+
+    def entropy(self):
+        """
+        Returns: (approximation) differential entropy of the Hyperbolic secant distribution.
+        """
+        a = self.scale
+        b = self.shape
+        return 1.16624
+
+
+    def summary(self):
+        """
+        Returns: Summary statistic regarding the Hyperbolic secant distribution
+        """
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        std = self.std()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = " summary statistics "
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
+class Slash(Base):
+    """
+    This class contains methods concerning Slash Distirbution. 
+    Args:
+
+        randvar(float): random variable
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - pvalue for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
+
+    Reference:
+    - Wikipedia contributors. (2020, February 18). Slash distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 11:30, January 19, 2021, from https://en.wikipedia.org/w/index.php?title=Slash_distribution&oldid=941483761
+    """
+    def __init__(self, randvar=0):
+        self.randvar = randvar
+
+    def pdf(self,
+            plot=False,
+            interval = 0,
+            threshold=1000,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability density evaluation for some point or plot of Slash distribution.
+        """
+        generator = lambda x: (super().std_normal_pdf(0) - super().std_normal_pdf(0))/ pow(x,2) if x!=0 else 1/(2*sqrt(2*np.pi))
+
+        if plot == True:
+            if interval<0:
+                raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
+            x = np.linspace(-interval, interval, int(threshold))
+            y = np.array([generator(i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.randvar)
+
+    def cdf(self,
+            plot=False,
+            threshold=1000,
+            interval=1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or plot of Slash distribution.
+        """
+
+        generator = lambda x: super().std_normal_cdf(x)-(super().std_normal_pdf(0)-super().std_normal_pdf(x))/x if x!=0 else 0.5
+
+        if plot == True:
+            x = np.linspace(-interval, interval, int(threshold))
+            y = np.array([generator( i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return generator(self.randvar)
+
+    def pvalue(self, x_lower=0, x_upper=None):
+        """
+        Args:
+
+            x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+            x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+            Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+            Otherwise, the default random variable is x.
+
+        Returns:
+            p-value of the Slash distribution evaluated at some random variable.
+        """
+        if x_upper == None:
+            x_upper = self.randvar
+        if x_lower>x_upper:
+            raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        
+          cdf_func = lambda x: (2/np.pi)*np.arctan(np.exp(np.pi/2*x))
+
+        return cdf_func(x_upper)-cdf_func(x_lower)
+
+    def mean(self):
+        """
+        Returns: Mean of the Slash distribution.
+        """
+        return "Does not exist."
+
+    def median(self):
+        """
+        Returns: Median of the Slash distribution.
+        """
+        return 0
+
+    def mode(self):
+        """
+        Returns: Mode of the Slash distribution.
+        """
+        return 0
+
+    def var(self):
+        """
+        Returns: Variance of the Slash distribution.
+        """
+        return "Does not exist."
+
+    def std(self):
+        """
+        Returns: Standard deviation of the Slash distribution
+        """
+        return "Does not exist."
+
+    def skewness(self):
+        """
+        Returns: Skewness of the Slash distribution. 
+        """
+        return "Does not exist."
+
+    def kurtosis(self):
+        """
+        Returns: Kurtosis of the Slash distribution. 
+        """
+        return "Does not exist."
+
+
+    def summary(self):
+        """
+        Returns: Summary statistic regarding the Slash distribution
+        """
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        std = self.std()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = " summary statistics "
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)

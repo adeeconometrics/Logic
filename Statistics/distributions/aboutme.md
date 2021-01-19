@@ -118,8 +118,9 @@ Real line
     - Fisher's z-distribution
     - Asymmetric Laplace distribution
     - Generalized normal v1
-    - Generalized hyperbolic - resolve cdf and pdf
+    - Generalized hyperbolic - resolve cdf and pvalue
     - Hyperbolic secant
+    - Slash - does not output the right plot, check new method in Base for std_normal pdf and cdf 
 
 - change category:
     - Cauchy
