@@ -160,12 +160,12 @@ class Uniform:
         b = self.b
         threshold = b - a
 
-        generator = lambda a, b, x: 1 / (b - a) if a <= x and x <= b else 0
+        _generator = lambda a, b, x: 1 / (b - a) if a <= x and x <= b else 0
         if plot == True:
             x = np.linspace(a, b, threshold)
-            y = np.array([generator(a, b, i) for i in x])
+            y = np.array([_generator(a, b, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(a, b, np.abs(b - a))
+        return _generator(a, b, np.abs(b - a))
 
     def cdf(self, plot=False, xlim=None, ylim=None, xlabel=None, ylabel=None):
         """
@@ -184,7 +184,7 @@ class Uniform:
         b = self.b
         threshold = b - a
 
-        def generator(a, b, x):
+        def _generator(a, b, x):
             if x < a:
                 return 0
             if (a <= x and x <= b):
@@ -194,9 +194,9 @@ class Uniform:
 
         if plot == True:
             x = np.linspace(a, b, threshold)
-            y = np.array([generator(a, b, i) for i in x])
+            y = np.array([_generator(a, b, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(a, b, threshold)  # what does it really say?
+        return _generator(a, b, threshold)  # what does it really say?
 
     def mean(self):
         """
@@ -326,14 +326,14 @@ class Normal(Base):
         """
         mean = self.mean_val
         std = self.std_val
-        generator = lambda mean, std, x: np.power(
+        _generator = lambda mean, std, x: np.power(
             1 / (std * np.sqrt(2 * np.pi)), np.exp(((x - mean) / 2 * std)**2))
         if plot == True:
             x = np.linspace(-interval, interval, threshold)
-            y = np.array([generator(mean, std, x_temp) for x_temp in x])
+            y = np.array([_generator(mean, std, x_temp) for x_temp in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
 
-        return generator(mean, std, self.randvar)
+        return _generator(mean, std, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -357,12 +357,12 @@ class Normal(Base):
         Returns:
             either plot of the distirbution or cumulative density evaluation at randvar.
         """
-        generator = lambda mu, sig, x: 1/2*(1+ss.erf((x-mu)/(sig*np.sqrt(2))))
+        _generator = lambda mu, sig, x: 1/2*(1+ss.erf((x-mu)/(sig*np.sqrt(2))))
         if plot == True:
             x = np.linspace(-interval, interval, threshold)
-            y = np.array([generator(self.mean_val, self.std_val, x_temp) for x_temp in x])
+            y = np.array([_generator(self.mean_val, self.std_val, x_temp) for x_temp in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.mean_val, self.std_val, self.randvar)
+        return _generator(self.mean_val, self.std_val, self.randvar)
 
     def p_val(self, x_lower=-np.inf, x_upper=None):
         """
@@ -459,7 +459,7 @@ class T(Base):
     """
     This class contains implementation of the Student's Distribution for calculating the
     probablity density function and cumulative distirbution function. Additionally, 
-    a t-table generator is also provided by p-value method. Note that the implementation
+    a t-table _generator is also provided by p-value method. Note that the implementation
     of T(Student's) distribution is defined by beta-functions. 
 
     Args:
@@ -518,14 +518,14 @@ class T(Base):
         """
         df = self.df
         randvar = self.randvar
-        generator = lambda x, df: (1 / (np.sqrt(df) * ss.beta(
+        _generator = lambda x, df: (1 / (np.sqrt(df) * ss.beta(
             1 / 2, df / 2))) * np.power((1 + (x**2 / df)), -(df + 1) / 2)
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(i, df) for i in x])
+            y = np.array([_generator(i, df) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
 
-        return generator(randvar, df)
+        return _generator(randvar, df)
 
     def cdf(self,
             plot=False,
@@ -553,17 +553,17 @@ class T(Base):
         df = self.df
         randvar = self.randvar
 
-        def generator(x, df):
-            generator = lambda x, df: (1 / (np.sqrt(df) * ss.beta(
+        def _generator(x, df):
+            _generator = lambda x, df: (1 / (np.sqrt(df) * ss.beta(
                 1 / 2, df / 2))) * np.power((1 + (x**2 / df)), -(df + 1) / 2)
-            return sci.integrate.quad(generator, -np.inf, x, args=df)[0]
+            return sci.integrate.quad(_generator, -np.inf, x, args=df)[0]
 
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(i, df) for i in x])
+            y = np.array([_generator(i, df) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
 
-        return generator(randvar, df)
+        return _generator(randvar, df)
 
     def pvalue(self, x_lower=-np.inf, x_upper=None):
         """
@@ -582,10 +582,10 @@ class T(Base):
         if x_upper == None:
             x_upper = self.randvar
 
-        generator = lambda x, df: (1 / (np.sqrt(df) * ss.beta(
+        _generator = lambda x, df: (1 / (np.sqrt(df) * ss.beta(
             1 / 2, df / 2))) * np.power((1 + (x**2 / df)), -(df + 1) / 2)
 
-        return sci.integrate.quad(generator, x_lower, x_upper, args=df)[0]
+        return sci.integrate.quad(_generator, x_lower, x_upper, args=df)[0]
 
     def confidence_interval(self):  # for single means and multiple means
         pass
@@ -741,14 +741,14 @@ class Cauchy(Base):
         x = self.x
         location = self.location
         scale = self.scale
-        generator = lambda x, location, scale: 1 / (np.pi * scale * (1 + (
+        _generator = lambda x, location, scale: 1 / (np.pi * scale * (1 + (
             (x - location) / scale)**2))
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(i, location, scale) for i in x])
+            y = np.array([_generator(i, location, scale) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
 
-        return generator(x, location, scale)
+        return _generator(x, location, scale)
 
     def cdf(self,
             plot=False,
@@ -776,14 +776,14 @@ class Cauchy(Base):
         x = self.x
         location = self.location
         scale = self.scale
-        generator = lambda x, location, scale: (1 / np.pi) * np.arctan(
+        _generator = lambda x, location, scale: (1 / np.pi) * np.arctan(
             (x - location) / scale) + 1 / 2
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(i, location, scale) for i in x])
+            y = np.array([_generator(i, location, scale) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
 
-        return generator(x, location, scale)
+        return _generator(x, location, scale)
 
     def pvalue(self, x_lower=-np.inf, x_upper=None):
         """
@@ -946,16 +946,16 @@ class F(Base):
         df1 = self.df1
         df2 = self.df2
         randvar = self.x
-        generator = lambda x, df1, df2: (1 / ss.beta(
+        _generator = lambda x, df1, df2: (1 / ss.beta(
             df1 / 2, df2 / 2)) * np.power(df1 / df2, df1 / 2) * np.power(
                 x, df1 / 2 - 1) * np.power(1 +
                                            (df1 / df2) * x, -((df1 + df2) / 2))
 
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(i, df1, df2) for i in x])
+            y = np.array([_generator(i, df1, df2) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(randvar, df1, df2)
+        return _generator(randvar, df1, df2)
 
     def cdf(self,
             plot=False,
@@ -981,13 +981,13 @@ class F(Base):
             either cumulative distribution evaluation for some point or plot of F-distribution.
         """
         k = self.df2/(self.df2+self.df1*self.x)
-        generator = lambda x, df1, df2: 1-ss.betainc(df1/2, df2/2, x)
+        _generator = lambda x, df1, df2: 1-ss.betainc(df1/2, df2/2, x)
 
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(i,self.df1, self.df2) for i in x])
+            y = np.array([_generator(i,self.df1, self.df2) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(k,self.df1, self.df2)
+        return _generator(k,self.df1, self.df2)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -1150,14 +1150,14 @@ class Chisq(Base):
         """
         df = self.df
         randvar = self.x
-        generator = lambda x, df: (1 / (np.power(2, (df / 2) - 1) * ss.gamma(
+        _generator = lambda x, df: (1 / (np.power(2, (df / 2) - 1) * ss.gamma(
             df / 2))) * np.power(x, df - 1) * np.exp(-x**2 / 2)
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(i, df) for i in x])
+            y = np.array([_generator(i, df) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
 
-        return generator(randvar, df)
+        return _generator(randvar, df)
 
     def cdf(self,
             plot=False,
@@ -1182,12 +1182,12 @@ class Chisq(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Chi square-distribution.
         """
-        generator = lambda x, df:ss.gammainc(df / 2, x / 2)
+        _generator = lambda x, df:ss.gammainc(df / 2, x / 2)
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(i, self.df) for i in x])
+            y = np.array([_generator(i, self.df) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.randvar, self.df)
+        return _generator(self.randvar, self.df)
 
     def p_val(self, x_lower=-np.inf, x_upper=None):
         """
@@ -1335,14 +1335,14 @@ class Chi(Base):
         """
         df = self.df
         randvar = self.x
-        generator = lambda x, df: (1 / (np.power(2, (df / 2) - 1) * ss.gamma(
+        _generator = lambda x, df: (1 / (np.power(2, (df / 2) - 1) * ss.gamma(
             df / 2))) * np.power(x, df - 1) * np.exp(-x**2 / 2)
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(i, df) for i in x])
+            y = np.array([_generator(i, df) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
 
-        return generator(randvar, df)
+        return _generator(randvar, df)
 
     def cdf(self,
             plot=False,
@@ -1367,12 +1367,12 @@ class Chi(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Chi-distribution.
         """
-        generator = lambda x, df:ss.gammainc(df/2, x**2/2)
+        _generator = lambda x, df:ss.gammainc(df/2, x**2/2)
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(i, self.df) for i in x])
+            y = np.array([_generator(i, self.df) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.randvar, self.df)
+        return _generator(self.randvar, self.df)
 
     def p_val(self, x_lower=-np.inf, x_upper=None):
         """
@@ -1534,16 +1534,16 @@ class Explonential(Base):
         lambda_ = self.lambda_
         x = self.x
 
-        def generator(lambda_, x):
+        def _generator(lambda_, x):
             if x >= 0:
                 return lambda_ * np.exp(-(lambda_ * x))
             return 0
 
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(lambda_, x_i) for x_i in x])
+            y = np.array([_generator(lambda_, x_i) for x_i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(lambda_, x)
+        return _generator(lambda_, x)
 
     def cdf(self,
             plot=False,
@@ -1571,16 +1571,16 @@ class Explonential(Base):
         lambda_ = self.lambda_
         x = self.x
 
-        def generator(x, lambda_):
+        def _generator(x, lambda_):
             if x > 0:
                 return 1 - np.exp(-lambda_ * x)
             return 0
 
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(x_i, lambda_) for x_i in x])
+            y = np.array([_generator(x_i, lambda_) for x_i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(x, lambda_)
+        return _generator(x, lambda_)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -1739,13 +1739,13 @@ class Gamma(Base):
         Returns: 
             either probability density evaluation for some point or plot of Gamma-distribution.
         """
-        generator = lambda a, b, x: (1 / (b**a * ss.gamma(a))) * np.power(
+        _generator = lambda a, b, x: (1 / (b**a * ss.gamma(a))) * np.power(
             x, a - 1) * np.exp(-x / b)
         if plot == True:
             x = np.linspace(-interval, interval, threshold)
-            y = np.array([generator(self.a, self.b, i) for i in x])
+            y = np.array([_generator(self.a, self.b, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.a, self.b, self.x)
+        return _generator(self.a, self.b, self.x)
 
     def cdf(self,
             plot=False,
@@ -1771,13 +1771,13 @@ class Gamma(Base):
             either cumulative distribution evaluation for some point or plot of Gamma-distribution.
         """
         # there is no apparent explanation for reversing gammainc's parameter, but it works quite perfectly in my prototype
-        generator = lambda a, b, x: 1 - ss.gammainc(a, x / b)  
+        _generator = lambda a, b, x: 1 - ss.gammainc(a, x / b)  
         
         if plot == True:
             x = np.linspace(-interval, interval, threshold)
-            y = np.array([generator(self.a, self.b, i) for i in x])
+            y = np.array([_generator(self.a, self.b, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.a, self.b, self.x)    
+        return _generator(self.a, self.b, self.x)    
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -1937,16 +1937,16 @@ class Pareto(Base):
         x_m = self.scale
         alpha = self.shape
 
-        def generator(x, x_m, alpha):
+        def _generator(x, x_m, alpha):
             if x >= x_m:
                 return (alpha * pow(x_m,alpha)) / np.power(x, alpha + 1)
             return 0
 
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(i, x_m, alpha) for i in x])
+            y = np.array([_generator(i, x_m, alpha) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.x, x_m, alpha)
+        return _generator(self.x, x_m, alpha)
 
     def cdf(self,
             plot=False,
@@ -1974,16 +1974,16 @@ class Pareto(Base):
         x_m = self.scale
         alpha = self.shape
 
-        def generator(x, x_m, alpha):
+        def _generator(x, x_m, alpha):
             if x >= x_m:
                 return 1 - np.power(x_m / x, alpha)
             return 0
 
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(i, x_m, alpha) for i in x])
+            y = np.array([_generator(i, x_m, alpha) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.x, x_m, alpha)
+        return _generator(self.x, x_m, alpha)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -2162,13 +2162,13 @@ class Log_normal(Base):
         Returns: 
             either probability density evaluation for some point or plot of Log Normal-distribution.
         """
-        generator = lambda mean, std, x: (1 / (x * std * np.sqrt(
+        _generator = lambda mean, std, x: (1 / (x * std * np.sqrt(
             2 * np.pi))) * np.exp(-(np.log(x - mean)**2) / (2 * std**2))
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(self.mean_val, self.std_val, i) for i in x])
+            y = np.array([_generator(self.mean_val, self.std_val, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.mean_val, self.std_val, self.randvar)
+        return _generator(self.mean_val, self.std_val, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -2193,13 +2193,13 @@ class Log_normal(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Log Normal-distribution.
         """
-        generator = lambda mean, std, x:0.5+ 0.5*ss.erfc(-(np.log(x - mean) /
+        _generator = lambda mean, std, x:0.5+ 0.5*ss.erfc(-(np.log(x - mean) /
                                                            (std * np.sqrt(2))))
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(self.mean_val, self.std_val, i) for i in x])
+            y = np.array([_generator(self.mean_val, self.std_val, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.mean_val, self.std_val, self.randvar)
+        return _generator(self.mean_val, self.std_val, self.randvar)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -2355,12 +2355,12 @@ class Laplace(Base):
         Returns: 
             either probability density evaluation for some point or plot of Laplace distribution.
         """
-        generator = lambda mu, b, x: (1 / (2 * b)) * np.exp(abs(x - mu) / b)
+        _generator = lambda mu, b, x: (1 / (2 * b)) * np.exp(abs(x - mu) / b)
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(self.location, self.scale, i) for i in x])
+            y = np.array([_generator(self.location, self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.location, self.scale, self.randvar)
+        return _generator(self.location, self.scale, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -2385,13 +2385,13 @@ class Laplace(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Laplace distribution.
         """
-        generator = lambda mu, b, x: 1 / 2 + ((1 / 2) * np.sign(x - mu) *
+        _generator = lambda mu, b, x: 1 / 2 + ((1 / 2) * np.sign(x - mu) *
                                               (1 - np.exp(abs(x - mu) / b)))
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(self.location, self.scale, i) for i in x])
+            y = np.array([_generator(self.location, self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.location, self.scale, self.randvar)
+        return _generator(self.location, self.scale, self.randvar)
 
     def pvalue(self, x_lower=-np.inf, x_upper=None):
         """
@@ -2540,13 +2540,13 @@ class Logistic(Base):
         Returns: 
             either probability density evaluation for some point or plot of Logistic distribution.
         """
-        generator = lambda mu, s, x: np.exp(-(x - mu) / s) / (s * (1 + np.exp(
+        _generator = lambda mu, s, x: np.exp(-(x - mu) / s) / (s * (1 + np.exp(
             -(x - mu) / s))**2)
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(self.location, self.scale, i) for i in x])
+            y = np.array([_generator(self.location, self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.location, self.scale, self.randvar)
+        return _generator(self.location, self.scale, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -2571,12 +2571,12 @@ class Logistic(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Logistic distribution.
         """
-        generator = lambda mu, s, x: 1 / (1 + np.exp(-(x - mu) / s))
+        _generator = lambda mu, s, x: 1 / (1 + np.exp(-(x - mu) / s))
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(self.location, self.scale, i) for i in x])
+            y = np.array([_generator(self.location, self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.location, self.scale, self.randvar)
+        return _generator(self.location, self.scale, self.randvar)
 
     def pvalue(self, x_lower=-np.inf, x_upper=None):
         """
@@ -2724,13 +2724,13 @@ class Logit_normal(Base):
         Returns: 
             either probability density evaluation for some point or plot of Logit Normal distribution.
         """
-        generator = lambda mu, sig, x: (1/(sig*np.sqrt(2*np.pi)))*np.exp(-((ss.logit(x)-mu)**2/(2*sig**2)))*(1/(x*(1-x)))
+        _generator = lambda mu, sig, x: (1/(sig*np.sqrt(2*np.pi)))*np.exp(-((ss.logit(x)-mu)**2/(2*sig**2)))*(1/(x*(1-x)))
 
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(self.location, self.sq_scale, i) for i in x])
+            y = np.array([_generator(self.location, self.sq_scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.location, self.sq_scale, self.randvar)
+        return _generator(self.location, self.sq_scale, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -2755,13 +2755,13 @@ class Logit_normal(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Logit Normal distribution.
         """
-        generator = lambda mu, sig, x: 1/2*(1+ss.erf((ss.logit(x)-mu)/(np.sqrt(2*sig**2))))
+        _generator = lambda mu, sig, x: 1/2*(1+ss.erf((ss.logit(x)-mu)/(np.sqrt(2*sig**2))))
                 
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(self.location, self.sq_scale, i) for i in x])
+            y = np.array([_generator(self.location, self.sq_scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.location, self.sq_scale, self.randvar)
+        return _generator(self.location, self.sq_scale, self.randvar)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -2894,16 +2894,16 @@ class Weibull(Base):
         Returns: 
             either probability density evaluation for some point or plot of Weibull distribution.
         """
-        def generator(_lamnda, k, x):
+        def _generator(_lamnda, k, x):
             if x<0:
                 return 0
             if x>=0:
                 return (k/lambda_)*(x/lambda_)**(k-1)*np.exp(-(x/lambda_)**k)
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(self.scale, self.shape, i) for i in x])
+            y = np.array([_generator(self.scale, self.shape, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.scale, self.shape, self.randvar)
+        return _generator(self.scale, self.shape, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -2928,7 +2928,7 @@ class Weibull(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Weibull distribution.
         """
-        def generator(_lamnda, k, x):
+        def _generator(_lamnda, k, x):
             if x<0:
                 return 0
             if x>=0:
@@ -2936,9 +2936,9 @@ class Weibull(Base):
 
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(self.scale, self.shape, i) for i in x])
+            y = np.array([_generator(self.scale, self.shape, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.scale, self.shape, self.randvar)
+        return _generator(self.scale, self.shape, self.randvar)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -3091,13 +3091,13 @@ class Weilbull_inv(Base):
         Returns: 
             either probability density evaluation for some point or plot of Fréchet distribution.
         """
-        generator = lambda a,s,m,x: (a/s)*np.power((x-m)/s, -1-a)*np.exp(-((x-m)/s)**-a)
+        _generator = lambda a,s,m,x: (a/s)*np.power((x-m)/s, -1-a)*np.exp(-((x-m)/s)**-a)
 
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(self.shape, self.scale, self.location, i) for i in x])
+            y = np.array([_generator(self.shape, self.scale, self.location, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.shape, self.scale, self.location, self.randvar)
+        return _generator(self.shape, self.scale, self.location, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -3122,12 +3122,12 @@ class Weilbull_inv(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Fréchet distribution.
         """
-        generator =  lambda a,s,m,x: np.exp(-((x-m)/s)**-a)
+        _generator =  lambda a,s,m,x: np.exp(-((x-m)/s)**-a)
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(self.shape, self.scale, self.location, i) for i in x])
+            y = np.array([_generator(self.shape, self.scale, self.location, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.shape, self.scale, self.location, self.randvar)
+        return _generator(self.shape, self.scale, self.location, self.randvar)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -3283,15 +3283,15 @@ class Gumbel(Base):
         Returns: 
             either probability density evaluation for some point or plot of Gumbel distribution.
         """
-        def generator(mu, beta, x):
+        def _generator(mu, beta, x):
             z = (x-mu)/beta
             return (1/beta)*np.exp(-(z+np.exp(-z)))
 
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(self.location, self.scale, i) for i in x])
+            y = np.array([_generator(self.location, self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.location, self.scale, self.randvar)
+        return _generator(self.location, self.scale, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -3316,13 +3316,13 @@ class Gumbel(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Gumbel distribution.
         """
-        def generator(mu, beta, x):
+        def _generator(mu, beta, x):
             return np.exp(-np.exp(-(x-mu)/beta))
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(self.location, self.scale, i) for i in x])
+            y = np.array([_generator(self.location, self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.location, self.scale, self.randvar)
+        return _generator(self.location, self.scale, self.randvar)
 
     def pvalue(self):
         """
@@ -3451,13 +3451,13 @@ class Arcsine(Base):
         Returns: 
             either probability density evaluation for some point or plot of Arcsine distribution.
         """
-        generator = lambda x: 1/(np.pi*np.sqrt(x*(1-x)))
+        _generator = lambda x: 1/(np.pi*np.sqrt(x*(1-x)))
 
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(i) for i in x])
+            y = np.array([_generator(i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.randvar)
+        return _generator(self.randvar)
 
     def cdf(self,
             plot=False,
@@ -3482,12 +3482,12 @@ class Arcsine(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Arcsine distribution.
         """
-        generator = lambda x: (2/np.pi)*np.arcsin(np.sqrt(x))
+        _generator = lambda x: (2/np.pi)*np.arcsin(np.sqrt(x))
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(self.location, self.scale, i) for i in x])
+            y = np.array([_generator(self.location, self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.location, self.scale, self.randvar)
+        return _generator(self.location, self.scale, self.randvar)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -3632,7 +3632,7 @@ class Triangular(Base):
         Returns: 
             either probability density evaluation for some point or plot of Triangular distribution.
         """
-        def generator(a,b,c,x):
+        def _generator(a,b,c,x):
             if x<a:
                 return 0
             if a<=x and x<c:
@@ -3646,9 +3646,9 @@ class Triangular(Base):
 
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(self.a, self.b, self.c, i) for i in x])
+            y = np.array([_generator(self.a, self.b, self.c, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.a, self.b, self.c, self.randvar)
+        return _generator(self.a, self.b, self.c, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -3673,7 +3673,7 @@ class Triangular(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Triangular distribution.
         """
-        def generator(a,b,c,x):
+        def _generator(a,b,c,x):
             if x<=a:
                 return 0
             if a<x and x<=c:
@@ -3685,9 +3685,9 @@ class Triangular(Base):
                 
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(self.a, self.b, self.c, i) for i in x])
+            y = np.array([_generator(self.a, self.b, self.c, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.a, self.b, self.c, self.randvar)
+        return _generator(self.a, self.b, self.c, self.randvar)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -3866,7 +3866,7 @@ class Trapezoidal(Base):
         Returns: 
             either probability density evaluation for some point or plot of Trapezoidal distribution.
         """
-        def generator(a,b,c,d,x):
+        def _generator(a,b,c,d,x):
             if a<=x and x<b:
                 return (2/(d+c-a-b))*(x-a)/(b-a)
             if b<=x and x<c:
@@ -3876,9 +3876,9 @@ class Trapezoidal(Base):
 
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(self.a, self.b, self.c, self.d, i) for i in x])
+            y = np.array([_generator(self.a, self.b, self.c, self.d, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.a, self.b, self.c, self.d, self.randvar)
+        return _generator(self.a, self.b, self.c, self.d, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -3903,7 +3903,7 @@ class Trapezoidal(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Trapezoidal distribution.
         """
-        def generator(a,b,c,d,x):
+        def _generator(a,b,c,d,x):
             if a<=x and x<b:
                 return (x-a)**2/((b-a)*(d+c-a-b))
             if b<=x and x<c:
@@ -3913,9 +3913,9 @@ class Trapezoidal(Base):
                 
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(self.a, self.b, self.c, self.d, i) for i in x])
+            y = np.array([_generator(self.a, self.b, self.c, self.d, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.a, self.b, self.c, self.d, self.randvar)
+        return _generator(self.a, self.b, self.c, self.d, self.randvar)
 
     def pvalue(self):
         """
@@ -4030,7 +4030,7 @@ class Trapezoidal(Base):
 #         Returns: 
 #             either probability density evaluation for some point or plot of ARGUS distribution.
 #         """
-#         def generator(a,b,c,d,x):
+#         def _generator(a,b,c,d,x):
 #             if a<=x and x<b:
 #                 return (2/(d+c-a-b))*(x-a)/(b-a)
 #             if b<=x and x<c:
@@ -4040,9 +4040,9 @@ class Trapezoidal(Base):
 
 #         if plot == True:
 #             x = np.linspace(-interval, interval, int(threshold))
-#             y = np.array([generator(self.a, self.b, self.c, self.d, i) for i in x])
+#             y = np.array([_generator(self.a, self.b, self.c, self.d, i) for i in x])
 #             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-#         return generator(self.a, self.b, self.c, self.d, self.randvar)
+#         return _generator(self.a, self.b, self.c, self.d, self.randvar)
 
 #     def cdf(self,
 #             plot=False,
@@ -4067,7 +4067,7 @@ class Trapezoidal(Base):
 #         Returns: 
 #             either cumulative distribution evaluation for some point or plot of ARGUS distribution.
 #         """
-#         def generator(a,b,c,d,x):
+#         def _generator(a,b,c,d,x):
 #             if a<=x and x<b:
 #                 return (x-a)**2/((b-a)*(d+c-a-b))
 #             if b<=x and x<c:
@@ -4077,9 +4077,9 @@ class Trapezoidal(Base):
                 
 #         if plot == True:
 #             x = np.linspace(-interval, interval, int(threshold))
-#             y = np.array([generator(self.a, self.b, self.c, self.d, i) for i in x])
+#             y = np.array([_generator(self.a, self.b, self.c, self.d, i) for i in x])
 #             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-#         return generator(self.a, self.b, self.c, self.d, self.randvar)
+#         return _generator(self.a, self.b, self.c, self.d, self.randvar)
 
 #     def pvalue(self):
 #         """
@@ -4209,13 +4209,13 @@ class Beta(Base):
         Returns: 
             either probability density evaluation for some point or plot of Beta distribution.
         """
-        generator = lambda a,b,x: (np.power(x,a-1)*np.power(1-x, b-1))/ss.beta(a,b)
+        _generator = lambda a,b,x: (np.power(x,a-1)*np.power(1-x, b-1))/ss.beta(a,b)
 
         if plot == True:
             x = np.linspace(0, 1, int(threshold))
-            y = np.array([generator(self.alpha, self.beta, i) for i in x])
+            y = np.array([_generator(self.alpha, self.beta, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.alpha, self.beta, self.randvar)
+        return _generator(self.alpha, self.beta, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -4239,12 +4239,12 @@ class Beta(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Beta distribution.
         """
-        generator = lambda a,b,x: ss.betainc(a,b,x)
+        _generator = lambda a,b,x: ss.betainc(a,b,x)
         if plot == True:
             x = np.linspace(0, 1, int(threshold))
-            y = np.array([generator(self.a, self.b, self.c, i) for i in x])
+            y = np.array([_generator(self.a, self.b, self.c, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.a, self.b, self.c, self.randvar)
+        return _generator(self.a, self.b, self.c, self.randvar)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -4397,15 +4397,15 @@ class Beta_prime(Base):
         Returns: 
             either probability density evaluation for some point or plot of Beta prime distribution.
         """
-        generator = lambda a,b,x: (np.power(x,a-1)*np.power(1+x, -a-b))/ss.beta(a,b)
+        _generator = lambda a,b,x: (np.power(x,a-1)*np.power(1+x, -a-b))/ss.beta(a,b)
 
         if plot == True:
             if interval<0:
                 raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.alpha, self.beta, i) for i in x])
+            y = np.array([_generator(self.alpha, self.beta, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.alpha, self.beta, self.randvar)
+        return _generator(self.alpha, self.beta, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -4429,12 +4429,12 @@ class Beta_prime(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Beta prime distribution.
         """
-        generator = lambda a,b,x: ss.betainc(a,b,x/(1+x))
+        _generator = lambda a,b,x: ss.betainc(a,b,x/(1+x))
         if plot == True:
             x = np.linspace(0, 1, int(threshold))
-            y = np.array([generator(self.alpha, self.beta, i) for i in x])
+            y = np.array([_generator(self.alpha, self.beta, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.alpha, self.beta, self.randvar)
+        return _generator(self.alpha, self.beta, self.randvar)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -4607,7 +4607,7 @@ class Bates(Base):
         Returns: 
             either probability density evaluation for some point or plot of Bates distribution.
         """
-        def generator(a,b,n, x):
+        def _generator(a,b,n, x):
             if a<x | x<b:
                 bincoef = lambda n,k: np.math.factorial(n)/(np.math.factorial(k)*(np.math.factorial(n-k)))
                 return np.sum([pow(-1,i)*bincoef(n,i)*np.power(((x-a)/(b-a)- i/n), n-1)*np.sign((x-a)/(b-1)-i/n) for i in range(0, n)])
@@ -4615,9 +4615,9 @@ class Bates(Base):
 
         if plot == True:
             x = np.linspace(0, 1, int(threshold))
-            y = np.array([generator(self.a, self.b, self.n, i) for i in x])
+            y = np.array([_generator(self.a, self.b, self.n, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.a, self.b, self.n, self.randvar)
+        return _generator(self.a, self.b, self.n, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -4770,13 +4770,13 @@ class Erlang(Base):
         Returns: 
             either probability density evaluation for some point or plot of Erlang distribution.
         """
-        generator = lambda shape, rate, x: (np.power(rate, shape)*np.power(x,shape-1)*np.exp(-rate*x))/np.math.factorial((shape-1))
+        _generator = lambda shape, rate, x: (np.power(rate, shape)*np.power(x,shape-1)*np.exp(-rate*x))/np.math.factorial((shape-1))
 
         if plot == True:
             x = np.linspace(0, 1, int(threshold))
-            y = np.array([generator(self.shape, self.rate, i) for i in x])
+            y = np.array([_generator(self.shape, self.rate, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.shape, self.rate, self.randvar)
+        return _generator(self.shape, self.rate, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -4800,12 +4800,12 @@ class Erlang(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Erlang distribution.
         """
-        generator = lambda shape, rate, x: ss.gammainc(shape, rate*x)/np.math.factorial(shape-1)
+        _generator = lambda shape, rate, x: ss.gammainc(shape, rate*x)/np.math.factorial(shape-1)
         if plot == True:
             x = np.linspace(0, 1, int(threshold))
-            y = np.array([generator(self.shape, self.rate, i) for i in x])
+            y = np.array([_generator(self.shape, self.rate, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.shape, self.rate, self.randvar)
+        return _generator(self.shape, self.rate, self.randvar)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -4959,15 +4959,15 @@ class Maxwell_Boltzmann(Base):
         Returns: 
             either probability density evaluation for some point or plot of Maxwell-Boltzmann distribution.
         """
-        generator = lambda a, x: sqrt(2/np.pi)*(x**2*np.exp(-x**2/(2*a**2)))/(a**3)
+        _generator = lambda a, x: sqrt(2/np.pi)*(x**2*np.exp(-x**2/(2*a**2)))/(a**3)
 
         if plot == True:
             if interval<0:
                 raise ValueError('interval should be a positive number. Entered value: {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.a, i) for i in x])
+            y = np.array([_generator(self.a, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.a, self.randvar)
+        return _generator(self.a, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -4992,14 +4992,14 @@ class Maxwell_Boltzmann(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Maxwell-Boltzmann distribution.
         """
-        generator = lambda a, x: ss.erf(x/(sqrt(2)*a))-sqrt(2/np.pi)*(x**2*np.exp(-x**2/(2*a**2)))/(a)
+        _generator = lambda a, x: ss.erf(x/(sqrt(2)*a))-sqrt(2/np.pi)*(x**2*np.exp(-x**2/(2*a**2)))/(a)
         if plot == True:
             if interval<0:
                 raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.a, i) for i in x])
+            y = np.array([_generator(self.a, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.a, self.randvar)
+        return _generator(self.a, self.randvar)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -5159,16 +5159,16 @@ class Beta_rectangular(Base):
         Returns: 
             either probability density evaluation for some point or plot of Beta-rectangular distribution.
         """
-        def generator(a,b, alpha, beta, theta, x):
+        def _generator(a,b, alpha, beta, theta, x):
             if x>a or x<b:
                 return (theta*ss.gamma(alpha+beta)/(ss.gamma(alpha)*ss.gamma(beta))*(np.power(x-a, alpha-1)*np.power(b-x, beta-1))/(np.power(b-a, alpha+beta+1)))+(1-theta)/(b-a)
             return 0
 
         if plot == True:
             x = np.linspace(0, 1, int(threshold))
-            y = np.array([generator(self.min, self.max, self.alpha, self.beta, self.theta, i) for i in x])
+            y = np.array([_generator(self.min, self.max, self.alpha, self.beta, self.theta, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.min, self.max, self.alpha, self.beta, self.theta, self.randvar)
+        return _generator(self.min, self.max, self.alpha, self.beta, self.theta, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -5193,7 +5193,7 @@ class Beta_rectangular(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Beta-rectangular distribution.
         """
-        def generator(a,b,alpha, beta, theta, x):
+        def _generator(a,b,alpha, beta, theta, x):
             if x<=a:
                 return 0
             elif x>a | x<b:
@@ -5206,9 +5206,9 @@ class Beta_rectangular(Base):
             if interval<0:
                 raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.min, self.max, self.alpha, self.beta, self.theta, i) for i in x])
+            y = np.array([_generator(self.min, self.max, self.alpha, self.beta, self.theta, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.min, self.max, self.alpha, self.beta, self.theta, self.randvar)
+        return _generator(self.min, self.max, self.alpha, self.beta, self.theta, self.randvar)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -5346,14 +5346,14 @@ class Bernoulli(Base):
             either probability density evaluation for some point or plot of Continuous Bernoulli distribution.
         """
         C = lambda shape: (2*np.arctanh(1-2*shape))/(1-2*shape) if shape != 0.5 else 2
-        def generator(shape, x):
+        def _generator(shape, x):
             return C(shape)*np.power(shape, x)*np.power(1-shape, 1-x)
             
         if plot == True:
             x = np.linspace(0, 1, int(threshold))
-            y = np.array([generator(self.shape, i) for i in x])
+            y = np.array([_generator(self.shape, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.shape, self.randvar)
+        return _generator(self.shape, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -5378,15 +5378,15 @@ class Bernoulli(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Continuous Bernoulli distribution.
         """
-        generator = lambda shape, x: (shape**x*np.power(1-shape, 1-x)+shape-1)/(2*shape-1) if shape != 0.5 else x
+        _generator = lambda shape, x: (shape**x*np.power(1-shape, 1-x)+shape-1)/(2*shape-1) if shape != 0.5 else x
 
         if plot == True:
             if interval<0:
                 raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.shape, i) for i in x])
+            y = np.array([_generator(self.shape, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.shape, self.randvar)
+        return _generator(self.shape, self.randvar)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -5515,15 +5515,15 @@ class Bernoulli(Base):
 #             either probability density evaluation for some point or plot of noncentral beta distribution.
 #         """
         
-#         generator = lambda a,b, lambda_: np.sum([np.exp(-lambda_/2)])
+#         _generator = lambda a,b, lambda_: np.sum([np.exp(-lambda_/2)])
             
 #         if plot == True:
 #             if interval<0:
 #                 raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
 #             x = np.linspace(0, 1, int(threshold))
-#             y = np.array([generator(self.shape, i) for i in x])
+#             y = np.array([_generator(self.shape, i) for i in x])
 #             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-#         return generator(self.shape, self.randvar)
+#         return _generator(self.shape, self.randvar)
 
 #     def cdf(self,
 #             plot=False,
@@ -5548,15 +5548,15 @@ class Bernoulli(Base):
 #         Returns: 
 #             either cumulative distribution evaluation for some point or plot of noncentral beta distribution.
 #         """
-#         generator = lambda shape, x: (shape**x*np.power(1-shape, 1-x)+shape-1)/(2*shape-1) if shape != 0.5 else x
+#         _generator = lambda shape, x: (shape**x*np.power(1-shape, 1-x)+shape-1)/(2*shape-1) if shape != 0.5 else x
 
 #         if plot == True:
 #             if interval<0:
 #                 raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
 #             x = np.linspace(0, interval, int(threshold))
-#             y = np.array([generator(self.shape, i) for i in x])
+#             y = np.array([_generator(self.shape, i) for i in x])
 #             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-#         return generator(self.shape, self.randvar)
+#         return _generator(self.shape, self.randvar)
 
 #     def pvalue(self, x_lower=0, x_upper=None):
 #         """
@@ -5671,13 +5671,13 @@ class Wigner(Base):
         Returns: 
             either probability density evaluation for some point or plot of Wigner semicricle distribution.
         """
-        generator = lambda r, x: 2/(np.pi*r**2)*sqrt(r**2-x**2)
+        _generator = lambda r, x: 2/(np.pi*r**2)*sqrt(r**2-x**2)
 
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(self.radius, i) for i in x])
+            y = np.array([_generator(self.radius, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.radius, self.randvar)
+        return _generator(self.radius, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -5702,12 +5702,12 @@ class Wigner(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Wigner semicricle distribution.
         """
-        generator = lambda r,x: 0.5+(x*sqrt(r**2-x**2))/(np.pi*r**2)+(np.arcsin(x/r))/np.pi
+        _generator = lambda r,x: 0.5+(x*sqrt(r**2-x**2))/(np.pi*r**2)+(np.arcsin(x/r))/np.pi
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(self.radius, i) for i in x])
+            y = np.array([_generator(self.radius, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.radius, self.randvar)
+        return _generator(self.radius, self.randvar)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -5856,12 +5856,12 @@ class Balding_Nichols(Base):
         Returns: 
             either probability density evaluation for some point or plot of Balding Nichols distribution.
         """
-        generator = lambda alpha, beta, x: (x**(alpha-1)*np.power(1-x, beta-1))/ss.beta(alpha, beta)
+        _generator = lambda alpha, beta, x: (x**(alpha-1)*np.power(1-x, beta-1))/ss.beta(alpha, beta)
         if plot == True:
             x = np.linspace(0, 1, int(threshold))
-            y = np.array([generator(self.alpha, self.beta, i) for i in x])
+            y = np.array([_generator(self.alpha, self.beta, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.alpha, self.beta, self.randvar)
+        return _generator(self.alpha, self.beta, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -5885,12 +5885,12 @@ class Balding_Nichols(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Balding Nichols distribution.
         """
-        generator = lambda alpha, beta, x: ss.betainc(alpha, beta, x)
+        _generator = lambda alpha, beta, x: ss.betainc(alpha, beta, x)
         if plot == True:
             x = np.linspace(0, 1, int(threshold))
-            y = np.array([generator(self.alpha, self.beta, i) for i in x])
+            y = np.array([_generator(self.alpha, self.beta, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.alpha, self.beta, self.randvar)
+        return _generator(self.alpha, self.beta, self.randvar)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -6035,14 +6035,14 @@ class Benini(Base):
         Returns: 
             either probability density evaluation for some point or plot of Benini distribution.
         """
-        generator = lambda a,b,o,x:np.exp(-a*np.log10(x/o)-b*(np.log10(x/o)**2))*(a/x+(2*b*np.log10(x/o))/x) if x>0 else 0
+        _generator = lambda a,b,o,x:np.exp(-a*np.log10(x/o)-b*(np.log10(x/o)**2))*(a/x+(2*b*np.log10(x/o))/x) if x>0 else 0
         if plot == True:
             if interval<0:
                 raise ValueError('interval should be a positive number. Entered value: {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.alpha, self.beta, self.sigma, i) for i in x])
+            y = np.array([_generator(self.alpha, self.beta, self.sigma, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.alpha, self.beta, self.sigma, self.randvar)
+        return _generator(self.alpha, self.beta, self.sigma, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -6067,14 +6067,14 @@ class Benini(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Benini distribution.
         """
-        generator = lambda a,b,o,x: 1- np.exp(-a*np.log10(x/a)-b*(np.log10(x/o))**2)
+        _generator = lambda a,b,o,x: 1- np.exp(-a*np.log10(x/a)-b*(np.log10(x/o))**2)
         if plot == True:
             if interval<0:
                 raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.alpha, self.sigma, self.beta, i) for i in x])
+            y = np.array([_generator(self.alpha, self.sigma, self.beta, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.alpha, self.beta, self.sigma, self.randvar)
+        return _generator(self.alpha, self.beta, self.sigma, self.randvar)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -6203,12 +6203,12 @@ class Normal_folded(Base):
         Returns: 
             either probability density evaluation for some point or plot of Folded Normal distribution.
         """
-        generator = lambda mu, sig, x: 1/(sig*sqrt(2*np.pi))*np.exp(-(x-mu)**2/(2*sig**2))+1/(sig*sqrt(2*np.pi))*np.exp(-(x+mu)**2/(2*sig**2)) if x<0 else 0
+        _generator = lambda mu, sig, x: 1/(sig*sqrt(2*np.pi))*np.exp(-(x-mu)**2/(2*sig**2))+1/(sig*sqrt(2*np.pi))*np.exp(-(x+mu)**2/(2*sig**2)) if x<0 else 0
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(self.loc, self.scale, i) for i in x])
+            y = np.array([_generator(self.loc, self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.loc, self.scale, self.randvar)
+        return _generator(self.loc, self.scale, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -6233,12 +6233,12 @@ class Normal_folded(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Folded Normal distribution.
         """
-        generator = lambda mu, sig, x: 0.5*(ss.erf((x+mu)/(sig*sqrt(2)))+ss.erf((x-mu)/(sig*sqrt(2)))) if x>0 else 0
+        _generator = lambda mu, sig, x: 0.5*(ss.erf((x+mu)/(sig*sqrt(2)))+ss.erf((x-mu)/(sig*sqrt(2)))) if x>0 else 0
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(self.loc, self.scale,  i) for i in x])
+            y = np.array([_generator(self.loc, self.scale,  i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.loc, self.scale, self.randvar)
+        return _generator(self.loc, self.scale, self.randvar)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -6353,12 +6353,12 @@ class Logistic_half(Base):
         Returns: 
             either probability density evaluation for some point or plot of half logistic distribution.
         """
-        generator = lambda k,x: 2*np.exp(-k)/(1+np.exp(-k))**2 if x>0 else 0
+        _generator = lambda k,x: 2*np.exp(-k)/(1+np.exp(-k))**2 if x>0 else 0
         if plot == True:
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.k i) for i in x])
+            y = np.array([_generator(self.k i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.k self.randvar)
+        return _generator(self.k self.randvar)
 
     def cdf(self,
             plot=False,
@@ -6383,12 +6383,12 @@ class Logistic_half(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of half logistic distribution.
         """
-        generator = lambda k,x: (1-np.exp(-k))/(1+np.exp(-k)) if x>0 else 0
+        _generator = lambda k,x: (1-np.exp(-k))/(1+np.exp(-k)) if x>0 else 0
         if plot == True:
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.k, i) for i in x])
+            y = np.array([_generator(self.k, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.k, self.randvar)
+        return _generator(self.k, self.randvar)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -6513,12 +6513,12 @@ class Normal_half(Base):
         Returns: 
             either probability density evaluation for some point or plot of Half Normal distribution.
         """
-        generator = lambda sig, x: sqrt(2)/(sig*sqrt(np.pi))*np.exp(-x**2/(2*sig**2)) if x>0 else 0
+        _generator = lambda sig, x: sqrt(2)/(sig*sqrt(np.pi))*np.exp(-x**2/(2*sig**2)) if x>0 else 0
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(self.scale, i) for i in x])
+            y = np.array([_generator(self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.scale, self.randvar)
+        return _generator(self.scale, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -6543,12 +6543,12 @@ class Normal_half(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Half Normal distribution.
         """
-        generator = lambda sig, x: ss.erf(x/(sig*sqrt(2))) if x>0 else 0
+        _generator = lambda sig, x: ss.erf(x/(sig*sqrt(2))) if x>0 else 0
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(self.scale, i) for i in x])
+            y = np.array([_generator(self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.scale, self.randvar)
+        return _generator(self.scale, self.randvar)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -6699,14 +6699,14 @@ class Gaussian_inv(Base):
         Returns: 
             either probability density evaluation for some point or plot of Inverse Gaussian distribution.
         """
-        generator = lambda scale, mean, x: sqrt(scale/(2*np.pi*x**3))*np.exp(-(scale*(x-mean)**2)/(2*mean**2*x))
+        _generator = lambda scale, mean, x: sqrt(scale/(2*np.pi*x**3))*np.exp(-(scale*(x-mean)**2)/(2*mean**2*x))
         if plot == True:
             if interval<0:
                 raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.scale, self.mean_val, i) for i in x])
+            y = np.array([_generator(self.scale, self.mean_val, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.scale, self.mean_val, self.randvar)
+        return _generator(self.scale, self.mean_val, self.randvar)
 
     # def cdf(self,
     #         plot=False,
@@ -6731,16 +6731,16 @@ class Gaussian_inv(Base):
     #     Returns: 
     #         either cumulative distribution evaluation for some point or plot of Inverse Gaussian distribution.
     #     """
-    #     def generator(mean, scale):
+    #     def _generator(mean, scale):
     #         normal_cdf = lambda mu, sig, x: 0.5*(1+ss.erf((x-mu)/(sig*sqrt(2))))
     #         normal_cdf()
     #     if plot == True:
     #         if interval<0:
     #             raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
     #         x = np.linspace(0, interval, int(threshold))
-    #         y = np.array([generator(self.alpha, self.beta, i) for i in x])
+    #         y = np.array([_generator(self.alpha, self.beta, i) for i in x])
     #         return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-    #     return generator(self.alpha, self.beta, self.randvar)
+    #     return _generator(self.alpha, self.beta, self.randvar)
 
     # def pvalue(self, x_lower=0, x_upper=None):
     #     """
@@ -6880,14 +6880,14 @@ class Gamma_inv(Base):
         Returns: 
             either probability density evaluation for some point or plot of Inverse Gamma distribution.
         """
-        generator = lambda alpha, beta, x: (beta**alpha)/ss.gamma(alpha)*np.power(x, -alpha-1)*np.exp(-beta/x)
+        _generator = lambda alpha, beta, x: (beta**alpha)/ss.gamma(alpha)*np.power(x, -alpha-1)*np.exp(-beta/x)
         if plot == True:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.alpha, self.beta, i) for i in x])
+            y = np.array([_generator(self.alpha, self.beta, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.alpha, self.beta, self.randvar)
+        return _generator(self.alpha, self.beta, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -6912,14 +6912,14 @@ class Gamma_inv(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Inverse Gamma distribution.
         """
-        generator = lambda alpha, beta, x: ss.gammainc(alpha, beta/x)/ss.gamma(alpha)
+        _generator = lambda alpha, beta, x: ss.gammainc(alpha, beta/x)/ss.gamma(alpha)
         if plot == True:
             if interval<0:
                 raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.alpha, self.beta, i) for i in x])
+            y = np.array([_generator(self.alpha, self.beta, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.alpha, self.beta, self.randvar)
+        return _generator(self.alpha, self.beta, self.randvar)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -7074,14 +7074,14 @@ class Gamma_inv(Base):
 #         Returns: 
 #             either probability density evaluation for some point or plot of Burr distribution.
 #         """
-        # generator = lambda a,b,o,x:np.exp(-a*np.log10(x/o)-b*pow(np.log10(x/o),2))*(a/x+(2*b*np.log10(x/o))/x) 
+        # _generator = lambda a,b,o,x:np.exp(-a*np.log10(x/o)-b*pow(np.log10(x/o),2))*(a/x+(2*b*np.log10(x/o))/x) 
 #         if plot == True:
 #             if interval<0:
 #                 raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
 #             x = np.linspace(0, 1, int(threshold))
-#             y = np.array([generator(self.alpha, self.beta, self.sigma, i) for i in x])
+#             y = np.array([_generator(self.alpha, self.beta, self.sigma, i) for i in x])
 #             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-#         return generator(self.alpha, self.beta, self.sigma, self.randvar)
+#         return _generator(self.alpha, self.beta, self.sigma, self.randvar)
 
 #     def cdf(self,
 #             plot=False,
@@ -7106,14 +7106,14 @@ class Gamma_inv(Base):
 #         Returns: 
 #             either cumulative distribution evaluation for some point or plot of Burr distribution.
 #         """
-#         generator = lambda a,b,o,x: 1- np.exp(-a*np.log10(x/a)-b*(np.log10(x/o))**2)
+#         _generator = lambda a,b,o,x: 1- np.exp(-a*np.log10(x/a)-b*(np.log10(x/o))**2)
 #         if plot == True:
 #             if interval<0:
 #                 raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
 #             x = np.linspace(0, interval, int(threshold))
-#             y = np.array([generator(self.alpha, self.sigma, self.beta, i) for i in x])
+#             y = np.array([_generator(self.alpha, self.sigma, self.beta, i) for i in x])
 #             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-#         return generator(self.alpha, self.beta, self.sigma, self.randvar)
+#         return _generator(self.alpha, self.beta, self.sigma, self.randvar)
 
 #     def pvalue(self, x_lower=0, x_upper=None):
 #         """
@@ -7259,14 +7259,14 @@ class Dagum(Base):
         Returns: 
             either probability density evaluation for some point or plot of Dagum distribution.
         """
-        generator = lambda p,a,b,x: (a*p/x)*(np.power(x/b,a*p)/(np.power(pow((x/b),a)+1,p+1)
+        _generator = lambda p,a,b,x: (a*p/x)*(np.power(x/b,a*p)/(np.power(pow((x/b),a)+1,p+1)
         if plot == True:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.p_shape, self.a_shape, self.scale, i) for i in x])
+            y = np.array([_generator(self.p_shape, self.a_shape, self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.p_shape, self.a_shape, self.scale, self.randvar)
+        return _generator(self.p_shape, self.a_shape, self.scale, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -7291,14 +7291,14 @@ class Dagum(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Dagum distribution.
         """
-        generator = lambda p,a,b,x: np.power((1+np.power(x/b,-a)),-p)
+        _generator = lambda p,a,b,x: np.power((1+np.power(x/b,-a)),-p)
         if plot == True:
             if interval<0:
                 raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.p_shape, self.a_shape,self.scale, i) for i in x])
+            y = np.array([_generator(self.p_shape, self.a_shape,self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.p_shape, self.a_shape,self.scale, self.randvar)
+        return _generator(self.p_shape, self.a_shape,self.scale, self.randvar)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -7448,14 +7448,14 @@ class Davis(Base):
         Returns: 
             either probability density evaluation for some point or plot of Davis distribution.
         """
-        generator = lambda b,n,mu, x: (pow(b,n)*pow(x-mu,-1-n))/((np.exp(b/(x-mu))-1)*ss.gamma(n)*ss.zeta(n))
+        _generator = lambda b,n,mu, x: (pow(b,n)*pow(x-mu,-1-n))/((np.exp(b/(x-mu))-1)*ss.gamma(n)*ss.zeta(n))
         if plot == True:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, 1, int(threshold))
-            y = np.array([generator(self.scale, self.shape, self.loc, i) for i in x])
+            y = np.array([_generator(self.scale, self.shape, self.loc, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.scale, self.shape, self.loc, self.randvar)
+        return _generator(self.scale, self.shape, self.loc, self.randvar)
 
     # def cdf(self,
     #         plot=False,
@@ -7480,14 +7480,14 @@ class Davis(Base):
     #     Returns: 
     #         either cumulative distribution evaluation for some point or plot of Burr distribution.
     #     """
-    #     generator = lambda a,b,o,x: 1- np.exp(-a*np.log10(x/a)-b*(np.log10(x/o))**2)
+    #     _generator = lambda a,b,o,x: 1- np.exp(-a*np.log10(x/a)-b*(np.log10(x/o))**2)
     #     if plot == True:
     #         if interval<0:
     #             raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
     #         x = np.linspace(0, interval, int(threshold))
-    #         y = np.array([generator(self.alpha, self.sigma, self.beta, i) for i in x])
+    #         y = np.array([_generator(self.alpha, self.sigma, self.beta, i) for i in x])
     #         return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-    #     return generator(self.alpha, self.beta, self.sigma, self.randvar)
+    #     return _generator(self.alpha, self.beta, self.sigma, self.randvar)
 
     # def pvalue(self, x_lower=0, x_upper=None):
     #     """
@@ -7614,15 +7614,15 @@ class Rayleigh(Base):
         Returns: 
             either probability density evaluation for some point or plot of Rayleigh distribution.
         """
-        generator = lambda sig,x: (x/pow(sig,2))*np.exp(pow(-x,2)/(2*pow(sig,2)))
+        _generator = lambda sig,x: (x/pow(sig,2))*np.exp(pow(-x,2)/(2*pow(sig,2)))
 
         if plot == True:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.scale, i) for i in x])
+            y = np.array([_generator(self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.scale, self.randvar)
+        return _generator(self.scale, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -7647,12 +7647,12 @@ class Rayleigh(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Rayleigh distribution.
         """
-        generator = lambda sig,x: 1-np.exp(-x**2/(2*sig**2))
+        _generator = lambda sig,x: 1-np.exp(-x**2/(2*sig**2))
         if plot == True:
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.scale, i) for i in x])
+            y = np.array([_generator(self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.scale, self.randvar)
+        return _generator(self.scale, self.randvar)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -7894,14 +7894,14 @@ class Benktander_T1(Base):
         Returns: 
             either probability density evaluation for some point or plot of Benktander Type1 distribution.
         """
-        generator = lambda a,b,x: ((1+(2*b*np.log10(x)/a))*(1+a+2*np.log10(x)-2*b/a)*np.power(x, -(2+a+b*np.log10(x))) # log base 10, validate this
+        _generator = lambda a,b,x: ((1+(2*b*np.log10(x)/a))*(1+a+2*np.log10(x)-2*b/a)*np.power(x, -(2+a+b*np.log10(x))) # log base 10, validate this
         if plot == True:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.a, self.b, i) for i in x])
+            y = np.array([_generator(self.a, self.b, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.a, self.b, self.randvar)
+        return _generator(self.a, self.b, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -7926,14 +7926,14 @@ class Benktander_T1(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Benktander Type1 distribution.
         """
-        generator = lambda a,b,x: 1-(1+(2*b/a)*np.log10(x))*np.power(x,-(a+1+b*np.log10(x)))
+        _generator = lambda a,b,x: 1-(1+(2*b/a)*np.log10(x))*np.power(x,-(a+1+b*np.log10(x)))
         if plot == True:
             if interval<0:
                 raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.a, self.b, i) for i in x])
+            y = np.array([_generator(self.a, self.b, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.a, self.b, self.randvar)
+        return _generator(self.a, self.b, self.randvar)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -8054,14 +8054,14 @@ class Benktander_T2(Base):
         Returns: 
             either probability density evaluation for some point or plot of Benktander type 2 distribution.
         """
-        generator = lambda a,b,x: np.exp(a/b*(1-x**b))*np.power(x,b-2)*(a*x**b-b+1)
+        _generator = lambda a,b,x: np.exp(a/b*(1-x**b))*np.power(x,b-2)*(a*x**b-b+1)
         if plot == True:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.a, self.b, i) for i in x])
+            y = np.array([_generator(self.a, self.b, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.a, self.b, self.randvar)
+        return _generator(self.a, self.b, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -8086,14 +8086,14 @@ class Benktander_T2(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Benktander type 2 distribution.
         """
-        generator = lambda a,b,x: 1- np.power(x, b-1)*np.exp(a/b*(1-x**b))
+        _generator = lambda a,b,x: 1- np.power(x, b-1)*np.exp(a/b*(1-x**b))
         if plot == True:
             if interval<0:
                 raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.a, self.b, i) for i in x])
+            y = np.array([_generator(self.a, self.b, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.a, self.b, self.randvar)
+        return _generator(self.a, self.b, self.randvar)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -8228,14 +8228,14 @@ class Cauchy_log(Base):
         Returns: 
             either probability density evaluation for some point or plot of log-Cauchy distribution.
         """
-        generator = lambda mu, sig, x: (1/(x*np.pi))*(sig/((np.log(x)-mu)**2+sig**2))
+        _generator = lambda mu, sig, x: (1/(x*np.pi))*(sig/((np.log(x)-mu)**2+sig**2))
         if plot == True:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.mu, self.scale, i) for i in x])
+            y = np.array([_generator(self.mu, self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.mu, self.scale, self.randvar)
+        return _generator(self.mu, self.scale, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -8260,14 +8260,14 @@ class Cauchy_log(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of log-Cauchy distribution.
         """
-        generator = lambda mu, sig, x: (1/np.pi)*np.arctan((np.log(x)-mu)/sig)+0.5 if x>0 else 0
+        _generator = lambda mu, sig, x: (1/np.pi)*np.arctan((np.log(x)-mu)/sig)+0.5 if x>0 else 0
         if plot == True:
             if interval<0:
                 raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.mu, self.scale, i) for i in x])
+            y = np.array([_generator(self.mu, self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.mu, self.scale, self.randvar)
+        return _generator(self.mu, self.scale, self.randvar)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -8401,14 +8401,14 @@ class Laplace_log(Base):
         Returns: 
             either probability density evaluation for some point or plot of log-Laplace distribution.
         """
-        generator = lambda mu, b, x: 1/(2*b*x)*np.exp(-abs(np.log(x)-mu)/b)
+        _generator = lambda mu, b, x: 1/(2*b*x)*np.exp(-abs(np.log(x)-mu)/b)
         if plot == True:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.loc, self.scale, i) for i in x])
+            y = np.array([_generator(self.loc, self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.loc, self.scale, self.randvar)
+        return _generator(self.loc, self.scale, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -8433,14 +8433,14 @@ class Laplace_log(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of log-Laplace distribution.
         """
-        generator = lambda mu, b, x:0.5*(1+np.sign(np.log(x)-mu)*(1-np.exp(-abs(np.log(x)-mu)/b))) if x>0 else 0
+        _generator = lambda mu, b, x:0.5*(1+np.sign(np.log(x)-mu)*(1-np.exp(-abs(np.log(x)-mu)/b))) if x>0 else 0
         if plot == True:
             if interval<0:
                 raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.loc, self.scale, i) for i in x])
+            y = np.array([_generator(self.loc, self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.loc, self.scale, self.randvar)
+        return _generator(self.loc, self.scale, self.randvar)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -8524,14 +8524,14 @@ class Logistic_log(Base):
         Returns: 
             either probability density evaluation for some point or plot of Log logistic distribution.
         """
-        generator = lambda a,b,x: (b/a)*np.power(x/a, b-1)/(1+(x/a)**b)**2
+        _generator = lambda a,b,x: (b/a)*np.power(x/a, b-1)/(1+(x/a)**b)**2
         if plot == True:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, 1, int(threshold))
-            y = np.array([generator(self.scale, self.shape, i) for i in x])
+            y = np.array([_generator(self.scale, self.shape, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.scale, self.shape, self.randvar)
+        return _generator(self.scale, self.shape, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -8556,14 +8556,14 @@ class Logistic_log(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Log logistic distribution.
         """
-        generator = lambda a,b,x: 1/(1+np.power(x/a, -b))
+        _generator = lambda a,b,x: 1/(1+np.power(x/a, -b))
         if plot == True:
             if interval<0:
                 raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.scale, self.shape, i) for i in x])
+            y = np.array([_generator(self.scale, self.shape, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.scale, self.shape, self.randvar)
+        return _generator(self.scale, self.shape, self.randvar)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -8705,15 +8705,15 @@ class Chisq_inv(Base):
         Returns: 
             either probability density evaluation for some point or plot of Inverse Chi-squared distribution.
         """
-        generator = lambda df, x: np.power(2,-df/2)/ss.gamma(df/2)*np.power(x,-df/2-1)*np.exp(-1/(2*x))
+        _generator = lambda df, x: np.power(2,-df/2)/ss.gamma(df/2)*np.power(x,-df/2-1)*np.exp(-1/(2*x))
 
         if plot == True:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.df, i) for i in x])
+            y = np.array([_generator(self.df, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.df, self.randvar)
+        return _generator(self.df, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -8738,12 +8738,12 @@ class Chisq_inv(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Rayleigh distribution.
         """
-        generator = lambda df, x: ss.gammainc(df/2,1/(2*x))/ss.gamma(df/2)
+        _generator = lambda df, x: ss.gammainc(df/2,1/(2*x))/ss.gamma(df/2)
         if plot == True:
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.df, i) for i in x])
+            y = np.array([_generator(self.df, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.df, self.randvar)
+        return _generator(self.df, self.randvar)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -8904,15 +8904,15 @@ class Levy(Base):
         Returns: 
             either probability density evaluation for some point or plot of Levy distribution.
         """
-        generator = lambda mu, c ,x: sqrt(c/(2*np.pi))*np.exp(-c/(2*(x-mu)))/np.power(x-mu, 3/2)
+        _generator = lambda mu, c ,x: sqrt(c/(2*np.pi))*np.exp(-c/(2*(x-mu)))/np.power(x-mu, 3/2)
 
         if plot == True:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.loc, self.scale, i) for i in x])
+            y = np.array([_generator(self.loc, self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.loc, self.scale, self.randvar)
+        return _generator(self.loc, self.scale, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -8937,12 +8937,12 @@ class Levy(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Levy distribution.
         """
-        generator = lambda mu, c, x: ss.erfc(sqrt(c/(2*(x-mu))))
+        _generator = lambda mu, c, x: ss.erfc(sqrt(c/(2*(x-mu))))
         if plot == True:
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.loc, self.scale, i) for i in x])
+            y = np.array([_generator(self.loc, self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.loc, self.scale, self.randvar)
+        return _generator(self.loc, self.scale, self.randvar)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -9092,15 +9092,15 @@ class Nakagami(Base):
         Returns: 
             either probability density evaluation for some point or plot of Nakagami distribution.
         """
-        generator = lambda m, omega, x: (2*pow(m,m))/(ss.gamma(m)*pow(omega,m))*pow(x, 2*m-1)*np.exp(-m/omega*pow(x,2))
+        _generator = lambda m, omega, x: (2*pow(m,m))/(ss.gamma(m)*pow(omega,m))*pow(x, 2*m-1)*np.exp(-m/omega*pow(x,2))
 
         if plot == True:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.shape, self.spread, i) for i in x])
+            y = np.array([_generator(self.shape, self.spread, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.shape, self.spread, self.randvar)
+        return _generator(self.shape, self.spread, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -9125,12 +9125,12 @@ class Nakagami(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Nakagami distribution.
         """
-        generator = lambda m, omega, x: ss.gammainc(m, (m/omega)*pow(x,2))/ss.gamma(m)
+        _generator = lambda m, omega, x: ss.gammainc(m, (m/omega)*pow(x,2))/ss.gamma(m)
         if plot == True:
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.shape, self.spread, i) for i in x])
+            y = np.array([_generator(self.shape, self.spread, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.shape, self.spread, self.randvar)
+        return _generator(self.shape, self.spread, self.randvar)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -9263,15 +9263,15 @@ class Lomax(Base):
         Returns: 
             either probability density evaluation for some point or plot of Lomax distribution.
         """
-        generator = lambda lambda_, alpha, x: alpha/lambda_*pow(1+x/lambda_, -(alpha+1))
+        _generator = lambda lambda_, alpha, x: alpha/lambda_*pow(1+x/lambda_, -(alpha+1))
 
         if plot == True:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.scale, self.shape, i) for i in x])
+            y = np.array([_generator(self.scale, self.shape, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.scale, self.shape, self.randvar)
+        return _generator(self.scale, self.shape, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -9296,12 +9296,12 @@ class Lomax(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Lomax distribution.
         """
-        generator = lambda lambda_, alpha, x: 1 - pow(1+x/lambda_, -alpha)
+        _generator = lambda lambda_, alpha, x: 1 - pow(1+x/lambda_, -alpha)
         if plot == True:
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.scale, self.shape, i) for i in x])
+            y = np.array([_generator(self.scale, self.shape, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.scale, self.shape, self.randvar)
+        return _generator(self.scale, self.shape, self.randvar)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -9457,7 +9457,7 @@ class Gumbel_T1(Base):
         Returns: 
             either probability density evaluation for some point or plot of Gumbel distribution.
         """
-        def generator(mu, beta, x):
+        def _generator(mu, beta, x):
             z = (x-mu)/beta
             return (1/beta)*np.exp(-z*np.exp(-z))
 
@@ -9465,9 +9465,9 @@ class Gumbel_T1(Base):
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.loc, self.mu, i) for i in x])
+            y = np.array([_generator(self.loc, self.mu, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.loc, self.mu, self.randvar)
+        return _generator(self.loc, self.mu, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -9492,12 +9492,12 @@ class Gumbel_T1(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Gumbel distribution.
         """
-        generator = lambda mu, beta, x: np.exp(-np.exp(-(x-mu)/beta))
+        _generator = lambda mu, beta, x: np.exp(-np.exp(-(x-mu)/beta))
         if plot == True:
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.loc, self.mu, i) for i in x])
+            y = np.array([_generator(self.loc, self.mu, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.loc, self.mu, self.randvar)
+        return _generator(self.loc, self.mu, self.randvar)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -9639,15 +9639,15 @@ class Gumbel_T2(Base):
         Returns: 
             either probability density evaluation for some point or plot of Gumbel Type 2 distribution.
         """
-        generator = lambda a,b,x: pow(a*b*x, -a-1)*np.exp(-b*pow(x,-a))
+        _generator = lambda a,b,x: pow(a*b*x, -a-1)*np.exp(-b*pow(x,-a))
 
         if plot == True:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.a, self.shape, i) for i in x])
+            y = np.array([_generator(self.a, self.shape, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.a, self.shape, self.randvar)
+        return _generator(self.a, self.shape, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -9672,12 +9672,12 @@ class Gumbel_T2(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Gumbel Type 2 distribution.
         """
-        generator = lambda a,b,x: np.exp(-b*pow(x,-a))
+        _generator = lambda a,b,x: np.exp(-b*pow(x,-a))
         if plot == True:
             x = np.linspace(0, interval, int(threshold))
-            y = np.array([generator(self.a, self.shape, i) for i in x])
+            y = np.array([_generator(self.a, self.shape, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.a, self.shape, self.randvar)
+        return _generator(self.a, self.shape, self.randvar)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -9793,15 +9793,15 @@ class Fisher_z(Base):
         Returns: 
             either probability density evaluation for some point or plot of Fisher's z-distribution.
         """
-        generator = lambda df1, df2, x: pow(2*df1, df1/2)*pow(df2, df2/2)*np.exp(df1*x)/(ss.beta(df1/2,df2/2)*pow(df1*np.exp(2*x)+df2,(df1+df2)/2))
+        _generator = lambda df1, df2, x: pow(2*df1, df1/2)*pow(df2, df2/2)*np.exp(df1*x)/(ss.beta(df1/2,df2/2)*pow(df1*np.exp(2*x)+df2,(df1+df2)/2))
 
         if plot == True:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(self.a, self.shape, i) for i in x])
+            y = np.array([_generator(self.a, self.shape, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.a, self.shape, self.randvar)
+        return _generator(self.a, self.shape, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -9826,7 +9826,7 @@ class Fisher_z(Base):
         Returns: 
             either cumulative distribution evaluation for some point or plot of Fisher's z-distribution.
         """
-        def generator(df1, df2, x,
+        def _generator(df1, df2, x,
             plot=False,
             threshold=1000,
             interval=1,
@@ -9841,8 +9841,8 @@ class Fisher_z(Base):
             return f.cdf()
 
         if plot == True:
-            generator(self.df, self.df2, self.randvar)
-        return generator(self.df, self.df2, self.randvar)
+            _generator(self.df, self.df2, self.randvar)
+        return _generator(self.df, self.df2, self.randvar)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -9938,15 +9938,15 @@ class Laplace_asym(Base):
         Returns: 
             either probability density evaluation for some point or plot of Asymmetric Laplace distribution.
         """
-        generator = lambda m,l,k,x: 1/(k+1/k)*np.exp(-(x-m)*l*np.sign(x-m)*pow(k,np.sign(x-m)))
+        _generator = lambda m,l,k,x: 1/(k+1/k)*np.exp(-(x-m)*l*np.sign(x-m)*pow(k,np.sign(x-m)))
 
         if plot == True:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(self.loc, self.scale, self.asym, i) for i in x])
+            y = np.array([_generator(self.loc, self.scale, self.asym, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.loc, self.scale, self.asym, self.randvar)
+        return _generator(self.loc, self.scale, self.asym, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -9972,16 +9972,16 @@ class Laplace_asym(Base):
             either cumulative distribution evaluation for some point or plot of Asymmetric Laplace distribution.
         """
 
-        def generator(loc, scale, asym, x):
+        def _generator(loc, scale, asym, x):
             if x<=loc:
                 return pow(asym,2)/(1+pow(asym,2))*np.exp((scale/asym)*(x-loc))
             return 1-(1/(1+pow(asym,2)))*np.exp(-scale*asym*(x-loc))
 
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(self.loc, self.scale, self.asym,, i) for i in x])
+            y = np.array([_generator(self.loc, self.scale, self.asym,, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.loc, self.scale, self.asym, self.randvar)
+        return _generator(self.loc, self.scale, self.asym, self.randvar)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -10157,15 +10157,15 @@ class GH(Base):
         Returns: 
             either probability density evaluation for some point or plot of Generalized Hyperbolic distribution.
         """
-        generator = lambda λ,α,β,δ,μ,γ,x: pow(γ/δ, λ)/(sqrt(2*np.pi)*ss.kn(λ, δ*γ))*np.exp(β*(x-μ))*(ss.kn(λ-0.5, α*sqrt(δ**2+pow(x-μ, 2))))/pow(sqrt(δ**2+pow(x-μ, 2))/α,0.5-λ)
+        _generator = lambda λ,α,β,δ,μ,γ,x: pow(γ/δ, λ)/(sqrt(2*np.pi)*ss.kn(λ, δ*γ))*np.exp(β*(x-μ))*(ss.kn(λ-0.5, α*sqrt(δ**2+pow(x-μ, 2))))/pow(sqrt(δ**2+pow(x-μ, 2))/α,0.5-λ)
 
         if plot == True:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(self.lambda_, self.alpha, self.beta, self.scale, self.loc, self.gamma, i) for i in x])
+            y = np.array([_generator(self.lambda_, self.alpha, self.beta, self.scale, self.loc, self.gamma, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.lambda_, self.alpha, self.beta, self.scale, self.loc, self.gamma, self.randvar)
+        return _generator(self.lambda_, self.alpha, self.beta, self.scale, self.loc, self.gamma, self.randvar)
 
     # def cdf(self,
     #         plot=False,
@@ -10191,16 +10191,16 @@ class GH(Base):
     #         either cumulative distribution evaluation for some point or plot of Generalized Hyperbolic distribution.
     #     """
 
-    #     def generator(loc, scale, asym, x):
+    #     def _generator(loc, scale, asym, x):
     #         if x<=loc:
     #             return pow(asym,2)/(1+pow(asym,2))*np.exp((scale/asym)*(x-loc))
     #         return 1-(1/(1+pow(asym,2)))*np.exp(-scale*asym*(x-loc))
 
     #     if plot == True:
     #         x = np.linspace(-interval, interval, int(threshold))
-    #         y = np.array([generator(self.loc, self.scale, self.asym,, i) for i in x])
+    #         y = np.array([_generator(self.loc, self.scale, self.asym,, i) for i in x])
     #         return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-    #     return generator(self.loc, self.scale, self.asym, self.randvar)
+    #     return _generator(self.loc, self.scale, self.asym, self.randvar)
 
     # def pvalue(self, x_lower=0, x_upper=None):
     #     """
@@ -10327,15 +10327,15 @@ class GN_V1(Base):
         Returns: 
             either probability density evaluation for some point or plot of Generalized Normal distribution V1.
         """
-        generator = lambda u, b, a, x: b/(2*a*ss.gamma(1/b))*np.exp(-pow(abs(x-u)/a,b))
+        _generator = lambda u, b, a, x: b/(2*a*ss.gamma(1/b))*np.exp(-pow(abs(x-u)/a,b))
 
         if plot == True:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(self.loc, self.scale, self.shape, i) for i in x])
+            y = np.array([_generator(self.loc, self.scale, self.shape, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.loc, self.scale, self.shape, self.randvar)
+        return _generator(self.loc, self.scale, self.shape, self.randvar)
 
     def cdf(self,
             plot=False,
@@ -10361,13 +10361,13 @@ class GN_V1(Base):
             either cumulative distribution evaluation for some point or plot of Generalized Normal distribution V1.
         """
 
-        generator = lambda u, b, a, x: 0.5+(np.sign(x-u)/2)*(1/ss.gamma(1/b))*ss.gammainc(1/b, pow(x*a,b))
+        _generator = lambda u, b, a, x: 0.5+(np.sign(x-u)/2)*(1/ss.gamma(1/b))*ss.gammainc(1/b, pow(x*a,b))
 
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(self.loc, self.scale, self.shape, i) for i in x])
+            y = np.array([_generator(self.loc, self.scale, self.shape, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.loc, self.scale, self.shape, self.randvar)
+        return _generator(self.loc, self.scale, self.shape, self.randvar)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -10519,15 +10519,15 @@ class GN_V1(Base):
 #         Returns: 
 #             either probability density evaluation for some point or plot of Generalized Normal distribution V1.
 #         """
-#         generator = lambda u, b, a, x: b/(2*a*ss.gamma(1/b))*np.exp(-pow(abs(x-u)/a,b))
+#         _generator = lambda u, b, a, x: b/(2*a*ss.gamma(1/b))*np.exp(-pow(abs(x-u)/a,b))
 
 #         if plot == True:
 #             if interval<0:
 #                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
 #             x = np.linspace(-interval, interval, int(threshold))
-#             y = np.array([generator(self.loc, self.scale, self.shape, i) for i in x])
+#             y = np.array([_generator(self.loc, self.scale, self.shape, i) for i in x])
 #             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-#         return generator(self.loc, self.scale, self.shape, self.randvar)
+#         return _generator(self.loc, self.scale, self.shape, self.randvar)
 
 #     def cdf(self,
 #             plot=False,
@@ -10553,13 +10553,13 @@ class GN_V1(Base):
 #             either cumulative distribution evaluation for some point or plot of Generalized Normal distribution V1.
 #         """
 
-#         generator = lambda u, b, a, x: 0.5+(np.sign(x-u)/2)*(1/ss.gamma(1/b))*ss.gammainc(1/b, pow(x*a,b))
+#         _generator = lambda u, b, a, x: 0.5+(np.sign(x-u)/2)*(1/ss.gamma(1/b))*ss.gammainc(1/b, pow(x*a,b))
 
 #         if plot == True:
 #             x = np.linspace(-interval, interval, int(threshold))
-#             y = np.array([generator(self.loc, self.scale, self.shape, i) for i in x])
+#             y = np.array([_generator(self.loc, self.scale, self.shape, i) for i in x])
 #             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-#         return generator(self.loc, self.scale, self.shape, self.randvar)
+#         return _generator(self.loc, self.scale, self.shape, self.randvar)
 
 #     def pvalue(self, x_lower=0, x_upper=None):
 #         """
@@ -10704,15 +10704,15 @@ class Hyperbolic_secant(Base):
         Returns: 
             either probability density evaluation for some point or plot of Hyperbolic secant distribution.
         """
-        generator = lambda x: 0.5*(1/np.cosh(np.pi/2*x)) # sech by the relationship of sech and cosh, verify result!
+        _generator = lambda x: 0.5*(1/np.cosh(np.pi/2*x)) # sech by the relationship of sech and cosh, verify result!
 
         if plot == True:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(i) for i in x])
+            y = np.array([_generator(i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.randvar)
+        return _generator(self.randvar)
 
     def cdf(self,
             plot=False,
@@ -10738,13 +10738,13 @@ class Hyperbolic_secant(Base):
             either cumulative distribution evaluation for some point or plot of Hyperbolic secant distribution.
         """
 
-        generator = lambda x: (2/np.pi)*np.arctan(np.exp(np.pi/2*x))
+        _generator = lambda x: (2/np.pi)*np.arctan(np.exp(np.pi/2*x))
 
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator( i) for i in x])
+            y = np.array([_generator( i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.randvar)
+        return _generator(self.randvar)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
@@ -10887,15 +10887,15 @@ class Slash(Base):
         Returns: 
             either probability density evaluation for some point or plot of Slash distribution.
         """
-        generator = lambda x: (super().std_normal_pdf(0) - super().std_normal_pdf(0))/ pow(x,2) if x!=0 else 1/(2*sqrt(2*np.pi))
+        _generator = lambda x: (super().std_normal_pdf(0) - super().std_normal_pdf(0))/ pow(x,2) if x!=0 else 1/(2*sqrt(2*np.pi))
 
         if plot == True:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator(i) for i in x])
+            y = np.array([_generator(i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.randvar)
+        return _generator(self.randvar)
 
     def cdf(self,
             plot=False,
@@ -10921,13 +10921,13 @@ class Slash(Base):
             either cumulative distribution evaluation for some point or plot of Slash distribution.
         """
 
-        generator = lambda x: super().std_normal_cdf(x)-(super().std_normal_pdf(0)-super().std_normal_pdf(x))/x if x!=0 else 0.5
+        _generator = lambda x: super().std_normal_cdf(x)-(super().std_normal_pdf(0)-super().std_normal_pdf(x))/x if x!=0 else 0.5
 
         if plot == True:
             x = np.linspace(-interval, interval, int(threshold))
-            y = np.array([generator( i) for i in x])
+            y = np.array([_generator( i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
-        return generator(self.randvar)
+        return _generator(self.randvar)
 
     def pvalue(self, x_lower=0, x_upper=None):
         """
