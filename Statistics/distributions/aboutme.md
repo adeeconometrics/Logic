@@ -111,6 +111,9 @@ Semi-infinite class
     - Lomax distribution
     - Gumbel distribution
     - Weibull distribution
+    - truncated normal type 2 
+    - Burr 
+    - Generalized Gamma
 
 Real line
 - Staged for review:
@@ -118,9 +121,14 @@ Real line
     - Fisher's z-distribution
     - Asymmetric Laplace distribution
     - Generalized normal v1
+    - Generalized normal v2
     - Generalized hyperbolic - resolve cdf and pvalue
     - Hyperbolic secant
-    - Slash - does not output the right plot, check new method in Base for std_normal pdf and cdf 
+    - Slash 
+    - Skew Normal
+    - Landau
+    - Johnson's SU
+    - variance-gamma
 
 - change category:
     - Cauchy
@@ -138,11 +146,9 @@ in progress
         - non-central beta
 
     - semi-infinite interval
-        - truncated normal type 2
         - relativistic Breit–Wigner 
         - Exponential-logarithmic*
         - exponential F**
-        - generalized gamma
         - Gompertz*
         - Hotelling's T-squared - needs further reading
         - hyper-Erlang**
@@ -164,15 +170,10 @@ in progress
         - generalized hyperbolic
         - geometric stable
         - Holtsmark - hypergerometric function
-        - Johnson's SU
-        - Landau - integral form
         - noncentral t - needs further reading
         - normal-inverse Gaussian
-        - skew normal - needs further reading
-        - slash
         - stable - find numerical counterparts, no analytical expression is defined
         - Tracy–Widom - needs further reading
-        - variance-gamma
         - Voigt -  find numerical counterparts, as analytical expression is deemed [complicated](https://en.wikipedia.org/wiki/Voigt_profile)
         
     - varying types supported

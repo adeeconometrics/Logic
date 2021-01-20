@@ -14,6 +14,17 @@
     - MANOVA
         - assumption, use-cases and data structure
         - functions 
+    - distributions
+        - Hotelling's T-squared
+        - Kolmogorov
+        - Noncentral chi-squared
+        - Noncentral F
+        - Poly-Weilbulll
+        - Phase type
+        - Matrix exponential
+        - Non-central T
+        - Skew Normal
+        - Holtsmark
 
 ### Feature Engineering 
 - requirement 
