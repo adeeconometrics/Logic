@@ -377,12 +377,12 @@ class Normal(Base):
         Returns:
             p-value of the Normal distribution evaluated at some random variable.
         """
-        cdf_func = lambda mu, sig, x: 1/2*(1+ss.erf((x-mu)/(sig*np.sqrt(2))))
+        _cdf_def = lambda mu, sig, x: 1/2*(1+ss.erf((x-mu)/(sig*np.sqrt(2))))
         if x_upper != None:
             if x_lower>x_upper:
                 raise Exception('x_lower should be less than x_upper.')
-            return cdf_func(self.mean_val, self.std_val, x_upper) - cdf_func(self.mean, self.std_val, x_lower)
-        return cdf_func(self.mean_val, self.std_val, self.randvar)
+            return _cdf_def(self.mean_val, self.std_val, x_upper) - _cdf_def(self.mean, self.std_val, x_lower)
+        return _cdf_def(self.mean_val, self.std_val, self.randvar)
 
     def confidence_interval(self):
         # find critical values for a given p-value
@@ -678,6 +678,7 @@ class T(Base):
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
+
 class Cauchy(Base):
     """
     This class contains methods concerning the Cauchy Distribution.
@@ -798,12 +799,12 @@ class Cauchy(Base):
         Returns:
             p-value of the Cauchy distribution evaluated at some random variable.
         """
-        cdf_func =lambda x, location, scale: (1 / np.pi) * np.arctan((x - location) / scale) + 1 / 2
+        _cdf_def =lambda x, location, scale: (1 / np.pi) * np.arctan((x - location) / scale) + 1 / 2
         if x_upper != None:
             if x_lower>x_upper:
                 raise Exception('x_lower should be less than x_upper.')
-            return cdf_func(x_upper, self.location, self.scale) - cdf_func(x_lower, self.location, self.scale)
-        return cdf_func(self.x, self.location, self.scale)
+            return _cdf_def(x_upper, self.location, self.scale) - _cdf_def(x_lower, self.location, self.scale)
+        return _cdf_def(self.x, self.location, self.scale)
 
     def confidence_interval(self):
         pass
@@ -873,7 +874,6 @@ class Cauchy(Base):
         cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
-
 
 
 class F(Base):
@@ -1007,9 +1007,9 @@ class F(Base):
         if x_upper is None:
             x_upper = self.x
 
-        cdf_func = lambda x, df1, df2: 1-ss.betainc(df1/2, df2/2, df2/(df2+df1*x))
+        _cdf_def = lambda x, df1, df2: 1-ss.betainc(df1/2, df2/2, df2/(df2+df1*x))
 
-        return cdf_func(x_upper, self.df1, self.df2) - cdf_func(x_lower, self.df1, self.df2)
+        return _cdf_def(x_upper, self.df1, self.df2) - _cdf_def(x_lower, self.df1, self.df2)
 
     def confidence_interval(self):
         pass
@@ -1085,7 +1085,6 @@ class F(Base):
         cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
-
 
 
 class Chisq(Base):
@@ -1203,12 +1202,12 @@ class Chisq(Base):
         Returns:
             p-value of the Chi square distribution evaluated at some random variable.
         """
-        cdf_func = lambda x, df:ss.gammainc(df / 2, x / 2)
+        _cdf_def = lambda x, df:ss.gammainc(df / 2, x / 2)
         if x_upper != None:
             if x_lower>x_upper:
                 raise Exception('x_lower should be less than x_upper.')
-            return cdf_func(x_upper, self.df) - cdf_func(x_lower, self.df)
-        return cdf_func(self.randvar, self.df)
+            return _cdf_def(x_upper, self.df) - _cdf_def(x_lower, self.df)
+        return _cdf_def(self.randvar, self.df)
 
     def mean(self):
         """
@@ -1270,7 +1269,6 @@ class Chisq(Base):
         cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
-
 
 
 class Chi(Base):
@@ -1388,12 +1386,12 @@ class Chi(Base):
         Returns:
             p-value of the Chi distribution evaluated at some random variable.
         """
-        cdf_func = lambda x, df:ss.gammainc(df/2, x**2/2)
+        _cdf_def = lambda x, df:ss.gammainc(df/2, x**2/2)
         if x_upper != None:
             if x_lower>x_upper:
                 raise Exception('x_lower should be less than x_upper.')
-            return cdf_func(x_upper, self.df) - cdf_func(x_lower, self.df)
-        return cdf_func(self.randvar, self.df)
+            return _cdf_def(x_upper, self.df) - _cdf_def(x_lower, self.df)
+        return _cdf_def(self.randvar, self.df)
 
     def mean(self):
         """
@@ -1467,7 +1465,6 @@ class Chi(Base):
         cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
-
 
 # check plotting function
 class Explonential(Base):
@@ -1602,11 +1599,11 @@ class Explonential(Base):
         if x_upper is None:
             x_upper = x
 
-        def cdf_func(x, lambda_):
+        def _cdf_def(x, lambda_):
             if x > 0:
                 return 1 - np.exp(-lambda_ * x)
             return 0
-        return cdf_func(x_upper, lambda_) - cdf_func(x_lower, lambda_)
+        return _cdf_def(x_upper, lambda_) - _cdf_def(x_lower, lambda_)
 
     def mean(self):
         """
@@ -1673,7 +1670,6 @@ class Explonential(Base):
         cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
-
 
 # check. add pvalue method.
 class Gamma(Base):
@@ -1796,9 +1792,9 @@ class Gamma(Base):
             raise Exception('x_lower cannot be lower than 0. Entered value: {}'.format(x_lower))
         if x_upper is None:
             x_upper = self.x
-        cdf_func = lambda a, b, x: 1 - ss.gammainc(a, x / b) 
+        _cdf_def = lambda a, b, x: 1 - ss.gammainc(a, x / b) 
 
-        return cdf_func(self.a, self.b, x_upper, self.lambda_) - cdf_func(self.a, self.b, x_lower, self.lambda_)
+        return _cdf_def(self.a, self.b, x_upper, self.lambda_) - _cdf_def(self.a, self.b, x_lower, self.lambda_)
 
     def mean(self):
         """
@@ -1866,7 +1862,6 @@ class Gamma(Base):
         cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
-
 
 # semi-infinite
 class Pareto(Base):
@@ -2003,11 +1998,11 @@ class Pareto(Base):
         if x_upper is None:
             x_upper = self.x
 
-        def cdf_func(x, x_m, alpha):
+        def _cdf_def(x, x_m, alpha):
             if x >= x_m:
                 return 1 - np.power(x_m / x, alpha)
             return 0
-        return cdf_func(x_upper, self.scale, self.alpha)+cdf_func(x_lower, self.scale, self.alpha)
+        return _cdf_def(x_upper, self.scale, self.alpha)+_cdf_def(x_lower, self.scale, self.alpha)
 
     def mean(self):
         """
@@ -2096,7 +2091,6 @@ class Pareto(Base):
         cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
-
 
 # resolve pvalue
 class Log_normal(Base):
@@ -2214,14 +2208,14 @@ class Log_normal(Base):
         Returns:
             p-value of the Log Normal-distribution evaluated at some random variable.
         """
-        cdf_func = lambda mean, std, x:0.5+ 0.5*ss.erfc(-(np.log(x - mean) /
+        _cdf_def = lambda mean, std, x:0.5+ 0.5*ss.erfc(-(np.log(x - mean) /
                                                            (std * np.sqrt(2))))
         if x_lower <0:
             raise Exception('x_lower should not be less then 0. X_lower: {}'.format(x_lower))
         if x_upper == None:
             x_upper = self.randvar
 
-        return cdf_func(self.mean_val, self.std_val, x_upper)-cdf_func(self.mean_val, self.std_val, x_lower)
+        return _cdf_def(self.mean_val, self.std_val, x_upper)-_cdf_def(self.mean_val, self.std_val, x_lower)
 
     def mean(self):
         """
@@ -2294,7 +2288,6 @@ class Log_normal(Base):
         cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
-
 
 # add pvalue method, check on ipynb
 class Laplace(Base):
@@ -2410,9 +2403,9 @@ class Laplace(Base):
             x_upper = self.randvar
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
-        cdf_func = lambda mu, b, x: 1 / 2 + ((1 / 2) * np.sign(x - mu) * (1 - np.exp(abs(x - mu) / b)))
+        _cdf_def = lambda mu, b, x: 1 / 2 + ((1 / 2) * np.sign(x - mu) * (1 - np.exp(abs(x - mu) / b)))
         
-        return cdf_func(self.location, self.scale, x_upper)-cdf_func(self.location, self.scale, x_lower)
+        return _cdf_def(self.location, self.scale, x_upper)-_cdf_def(self.location, self.scale, x_lower)
 
     def mean(self):
         """
@@ -2479,7 +2472,6 @@ class Laplace(Base):
         cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
-
 
 
 class Logistic(Base):
@@ -2595,8 +2587,8 @@ class Logistic(Base):
             x_upper = self.randvar
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
-        cdf_func = lambda mu, s, x: 1 / (1 + np.exp(-(x - mu) / s))
-        return cdf_func(self.location, self.scale, x_upper)- cdf_func(self.location, self.scale, x_lower)
+        _cdf_def = lambda mu, s, x: 1 / (1 + np.exp(-(x - mu) / s))
+        return _cdf_def(self.location, self.scale, x_upper)- _cdf_def(self.location, self.scale, x_lower)
 
     def mean(self):
         """
@@ -2663,7 +2655,6 @@ class Logistic(Base):
         cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
-
 
 
 class Logit_normal(Base):
@@ -2782,8 +2773,8 @@ class Logit_normal(Base):
             x_upper = self.randvar
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
-        cdf_func = lambda mu, sig, x: 1/2*(1+ss.erf((ss.logit(x)-mu)/(np.sqrt(2*sig**2))))
-        return cdf_func(self.location, self.sq_scale, x_upper)-cdf_func(self.location, self.sq_scale, x_lower)
+        _cdf_def = lambda mu, sig, x: 1/2*(1+ss.erf((ss.logit(x)-mu)/(np.sqrt(2*sig**2))))
+        return _cdf_def(self.location, self.sq_scale, x_upper)-_cdf_def(self.location, self.sq_scale, x_lower)
 
     def mean(self):
         """
@@ -2833,7 +2824,6 @@ class Logit_normal(Base):
         cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
-
 
 # semi-infinite
 class Weibull(Base):
@@ -2959,13 +2949,13 @@ class Weibull(Base):
             x_upper = self.randvar
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
-        def cdf_func(_lamnda, k, x):
+        def _cdf_def(_lamnda, k, x):
             if x<0:
                 return 0
             if x>=0:
                 return 1-np.exp(-pow(x/lambda_, k))
 
-        return cdf_func(self.location, self.shape, x_upper)-cdf_func(self.location, self.shape, x_lower)
+        return _cdf_def(self.location, self.shape, x_upper)-_cdf_def(self.location, self.shape, x_lower)
 
     def mean(self):
         """
@@ -3148,8 +3138,8 @@ class Weilbull_inv(Base):
             x_upper = self.randvar
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
-        cdf_func = lambda a,s,m,x: np.exp(-((x-m)/s)**-a)
-        return cdf_func(self.shape, self.scale, self.location, x_upper)-cdf_func(self.shape, self.scale, self.location, x_lower)
+        _cdf_def = lambda a,s,m,x: np.exp(-((x-m)/s)**-a)
+        return _cdf_def(self.shape, self.scale, self.location, x_upper)-_cdf_def(self.shape, self.scale, self.location, x_lower)
 
     def mean(self):
         """
@@ -3221,7 +3211,6 @@ class Weilbull_inv(Base):
         cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
-
 
 
 class Gumbel(Base):
@@ -3508,8 +3497,8 @@ class Arcsine(Base):
             x_upper = self.randvar
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
-        cdf_func = lambda x: (2/np.pi)*np.arcsin(np.sqrt(x))
-        return cdf_func(self.location, self.scale, x_upper)-cdf_func(self.location, self.scale, x_lower)
+        _cdf_def = lambda x: (2/np.pi)*np.arcsin(np.sqrt(x))
+        return _cdf_def(self.location, self.scale, x_upper)-_cdf_def(self.location, self.scale, x_lower)
 
     def mean(self):
         """
@@ -3567,7 +3556,6 @@ class Arcsine(Base):
         cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
-
 
 
 class Triangular(Base):
@@ -3706,7 +3694,7 @@ class Triangular(Base):
             x_upper = self.randvar
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
-        def cdf_func(a,b,c,x):
+        def _cdf_def(a,b,c,x):
             if x<=a:
                 return 0
             if a<x and x<=c:
@@ -3715,7 +3703,7 @@ class Triangular(Base):
                 return 1 - pow(b-x,2)/((b-c)*(b-c))
             if b<=x:
                 return 1
-        return cdf_func(self.a, self.b, self.c, x_upper)-cdf_func(self.a, self.b, self.c, x_lower)
+        return _cdf_def(self.a, self.b, self.c, x_upper)-_cdf_def(self.a, self.b, self.c, x_lower)
 
     def mean(self):
         """
@@ -3794,7 +3782,6 @@ class Triangular(Base):
         cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
-
 
 
 class Trapezoidal(Base):
@@ -3971,7 +3958,6 @@ class Trapezoidal(Base):
         cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
-
 
 
 # class ARGUS(Base):
@@ -4264,8 +4250,8 @@ class Beta(Base):
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-        cdf_func  = lambda a,b,x: ss.betainc(a,b,x)
-        return cdf_func(self.alpha, self.beta, x_upper)-cdf_func(self.alpha, self.beta, x_lower)
+        _cdf_def  = lambda a,b,x: ss.betainc(a,b,x)
+        return _cdf_def(self.alpha, self.beta, x_upper)-_cdf_def(self.alpha, self.beta, x_lower)
 
     def mean(self):
         """
@@ -4331,7 +4317,6 @@ class Beta(Base):
         cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
-
 
 # to be reviewed: add var and std functions
 class Beta_prime(Base):
@@ -4454,8 +4439,8 @@ class Beta_prime(Base):
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-        cdf_func  = lambda a,b,x: ss.betainc(a,b,x/(1+x))
-        return cdf_func(self.alpha, self.beta, x_upper)-cdf_func(self.alpha, self.beta, x_lower)
+        _cdf_def  = lambda a,b,x: ss.betainc(a,b,x/(1+x))
+        return _cdf_def(self.alpha, self.beta, x_upper)-_cdf_def(self.alpha, self.beta, x_lower)
 
     def mean(self):
         """
@@ -4537,6 +4522,7 @@ class Beta_prime(Base):
         cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
 
 class Bates(Base):
     """
@@ -4704,7 +4690,6 @@ class Bates(Base):
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
-
 # to be reviewed
 class Erlang(Base):
     """
@@ -4825,8 +4810,8 @@ class Erlang(Base):
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-        cdf_func  = lambda shape, rate, x: ss.gammainc(shape, rate*x)/np.math.factorial(shape-1)
-        return cdf_func(self.shape, self.rate, x_upper)-cdf_func(self.shape, self.rate, x_lower)
+        _cdf_def  = lambda shape, rate, x: ss.gammainc(shape, rate*x)/np.math.factorial(shape-1)
+        return _cdf_def(self.shape, self.rate, x_upper)-_cdf_def(self.shape, self.rate, x_lower)
 
     def mean(self):
         """
@@ -4895,9 +4880,7 @@ class Erlang(Base):
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
-
 # to be reviewed
-
 class Maxwell_Boltzmann(Base):
     """
     This class contains methods concerning Maxwell-Boltzmann Distirbution. 
@@ -5019,8 +5002,8 @@ class Maxwell_Boltzmann(Base):
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-        cdf_func  = lambda a, x: ss.erf(x/(sqrt(2)*a))-sqrt(2/np.pi)*(x**2*np.exp(-x**2/(2*a**2)))/(a)
-        return cdf_func(self.a, x_upper)-cdf_func(self.a, x_lower)
+        _cdf_def  = lambda a, x: ss.erf(x/(sqrt(2)*a))-sqrt(2/np.pi)*(x**2*np.exp(-x**2/(2*a**2)))/(a)
+        return _cdf_def(self.a, x_upper)-_cdf_def(self.a, x_lower)
 
     def mean(self):
         """
@@ -5088,6 +5071,7 @@ class Maxwell_Boltzmann(Base):
         cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
 
 class Beta_rectangular(Base):
     """
@@ -5229,7 +5213,7 @@ class Beta_rectangular(Base):
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-        def cdf_func(a,b,alpha, beta, theta, x):
+        def _cdf_def(a,b,alpha, beta, theta, x):
             if x<=a:
                 return 0
             elif x>a or x<b:
@@ -5238,7 +5222,7 @@ class Beta_rectangular(Base):
             else:
                 return 1
 
-        return cdf_func(self.min, self.max, self.alpha, self.beta, self.theta, x_upper)-cdf_func(self.min, self.max, self.alpha, self.beta, self.theta, x_lower)
+        return _cdf_def(self.min, self.max, self.alpha, self.beta, self.theta, x_upper)-_cdf_def(self.min, self.max, self.alpha, self.beta, self.theta, x_lower)
 
     def mean(self):
         """
@@ -5406,8 +5390,8 @@ class Bernoulli(Base):
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-        cdf_func  = lambda shape, x: (shape**x*np.power(1-shape, 1-x)+shape-1)/(2*shape-1) if shape != 0.5 else x
-        return cdf_func(self.shape, x_upper)-cdf_func(self.shape, x_lower)
+        _cdf_def  = lambda shape, x: (shape**x*np.power(1-shape, 1-x)+shape-1)/(2*shape-1) if shape != 0.5 else x
+        return _cdf_def(self.shape, x_upper)-_cdf_def(self.shape, x_lower)
 
     def mean(self):
         """
@@ -5576,8 +5560,8 @@ class Bernoulli(Base):
 #         if x_lower>x_upper:
 #             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-#         cdf_func  = lambda shape, x: (shape**x*np.power(1-shape, 1-x)+shape-1)/(2*shape-1) if shape != 0.5 else x
-#         return cdf_func(self.shape, x_upper)-cdf_func(self.shape, x_lower)
+#         _cdf_def  = lambda shape, x: (shape**x*np.power(1-shape, 1-x)+shape-1)/(2*shape-1) if shape != 0.5 else x
+#         return _cdf_def(self.shape, x_upper)-_cdf_def(self.shape, x_lower)
 
 #     def mean(self):
 #         """
@@ -5727,8 +5711,8 @@ class Wigner(Base):
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-        cdf_func  = lambda r,x: 0.5+(x*sqrt(r**2-x**2))/(np.pi*r**2)+(np.arcsin(x/r))/np.pi
-        return cdf_func(self.radius, x_upper)-cdf_func(self.radius, x_lower)
+        _cdf_def  = lambda r,x: 0.5+(x*sqrt(r**2-x**2))/(np.pi*r**2)+(np.arcsin(x/r))/np.pi
+        return _cdf_def(self.radius, x_upper)-_cdf_def(self.radius, x_lower)
 
     def mean(self):
         """
@@ -5791,6 +5775,7 @@ class Wigner(Base):
         cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
 
 class Balding_Nichols(Base):
     """
@@ -5910,8 +5895,8 @@ class Balding_Nichols(Base):
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-        cdf_func  = lambda alpha, beta, x: ss.betainc(alpha, beta, x)
-        return cdf_func(self.alpha, self.beta, x_upper)-cdf_func(self.alpha, self.beta, x_lower)
+        _cdf_def  = lambda alpha, beta, x: ss.betainc(alpha, beta, x)
+        return _cdf_def(self.alpha, self.beta, x_upper)-_cdf_def(self.alpha, self.beta, x_lower)
 
     def mean(self):
         """
@@ -6094,8 +6079,8 @@ class Benini(Base):
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-        cdf_func  = lambda a,b,o,x: 1- np.exp(-a*np.log10(x/a)-b*(np.log10(x/o))**2) if x>0 else 0
-        return cdf_func(self.alpha, self.beta, self.sigma, x_upper)-cdf_func(self.alpha, self.beta, self.sigma, x_lower)
+        _cdf_def  = lambda a,b,o,x: 1- np.exp(-a*np.log10(x/a)-b*(np.log10(x/o))**2) if x>0 else 0
+        return _cdf_def(self.alpha, self.beta, self.sigma, x_upper)-_cdf_def(self.alpha, self.beta, self.sigma, x_lower)
 
     def mean(self):
         """
@@ -6140,6 +6125,7 @@ class Benini(Base):
         cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
 
 class Normal_folded(Base):
     """
@@ -6258,8 +6244,8 @@ class Normal_folded(Base):
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-        cdf_func  = lambda mu, sig, x: 0.5*(ss.erf((x+mu)/(sig*sqrt(2)))+ss.erf((x-mu)/(sig*sqrt(2)))) if x>0 else 0
-        return cdf_func(self.loc, self.scale, x_upper)-cdf_func(self.loc, self.scale, x_lower)
+        _cdf_def  = lambda mu, sig, x: 0.5*(ss.erf((x+mu)/(sig*sqrt(2)))+ss.erf((x-mu)/(sig*sqrt(2)))) if x>0 else 0
+        return _cdf_def(self.loc, self.scale, x_upper)-_cdf_def(self.loc, self.scale, x_lower)
 
     def mean(self):
         """
@@ -6408,8 +6394,8 @@ class Logistic_half(Base):
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-        cdf_func  = lambda k,x: (1-np.exp(-k))/(1+np.exp(-k)) if x>0 else 0
-        return cdf_func(self.k, x_upper)-cdf_func(self.k, x_lower)
+        _cdf_def  = lambda k,x: (1-np.exp(-k))/(1+np.exp(-k)) if x>0 else 0
+        return _cdf_def(self.k, x_upper)-_cdf_def(self.k, x_lower)
 
     def mean(self):
         """
@@ -6454,6 +6440,7 @@ class Logistic_half(Base):
         cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
 
 class Normal_half(Base):
     """
@@ -6568,8 +6555,8 @@ class Normal_half(Base):
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-        cdf_func  = lambda sig, x: ss.erf(x/(sig*sqrt(2))) if x>0 else 0
-        return cdf_func(self.scale, x_upper)-cdf_func(self.scale, x_lower)
+        _cdf_def  = lambda sig, x: ss.erf(x/(sig*sqrt(2))) if x>0 else 0
+        return _cdf_def(self.scale, x_upper)-_cdf_def(self.scale, x_lower)
 
     def mean(self):
         """
@@ -6633,7 +6620,6 @@ class Normal_half(Base):
         cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
-
 
 # asses cdf and pdf
 class Gaussian_inv(Base):
@@ -6760,8 +6746,8 @@ class Gaussian_inv(Base):
     #     if x_lower>x_upper:
     #         raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-    #     cdf_func  = lambda alpha, beta, x: ss.betainc(alpha, beta, x)
-    #     return cdf_func(self.alpha, self.beta, x_upper)-cdf_func(self.alpha, self.beta, x_lower)
+    #     _cdf_def  = lambda alpha, beta, x: ss.betainc(alpha, beta, x)
+    #     return _cdf_def(self.alpha, self.beta, x_upper)-_cdf_def(self.alpha, self.beta, x_lower)
 
     def mean(self):
         """
@@ -6939,8 +6925,8 @@ class Gamma_inv(Base):
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-        cdf_func  = lambda alpha, beta, x: ss.gammainc(alpha, beta/x)/ss.gamma(alpha) if x>0 else 0
-        return cdf_func(self.alpha, self.beta, x_upper)-cdf_func(self.alpha, self.beta, x_lower)
+        _cdf_def  = lambda alpha, beta, x: ss.gammainc(alpha, beta/x)/ss.gamma(alpha) if x>0 else 0
+        return _cdf_def(self.alpha, self.beta, x_upper)-_cdf_def(self.alpha, self.beta, x_lower)
 
     def mean(self):
         """
@@ -7133,8 +7119,8 @@ class Gamma_inv(Base):
 #         if x_lower>x_upper:
 #             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-#             cdf_func  = lambda a,b,o,x: 1- np.exp(-a*np.log10(x/a)-b*pow((np.log10(x/o)),2))
-#         return cdf_func(self.alpha, self.beta, self.sigma, x_upper)-cdf_func(self.alpha, self.beta, self.sigma, x_lower)
+#             _cdf_def  = lambda a,b,o,x: 1- np.exp(-a*np.log10(x/a)-b*pow((np.log10(x/o)),2))
+#         return _cdf_def(self.alpha, self.beta, self.sigma, x_upper)-_cdf_def(self.alpha, self.beta, self.sigma, x_lower)
 
 #     def mean(self):
 #         """
@@ -7263,9 +7249,11 @@ class Dagum(Base):
         if plot == True:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
+
             x = np.linspace(0, interval, int(threshold))
             y = np.array([_generator(self.p_shape, self.a_shape, self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+
         return _generator(self.p_shape, self.a_shape, self.scale, self.randvar)
 
     def cdf(self,
@@ -7318,8 +7306,8 @@ class Dagum(Base):
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-        cdf_func  = lambda p,a,b,x: np.power((1+np.power(x/b,-a)),-p) if x>0 else 0
-        return cdf_func(self.p_shape, self.a_shape, self.scale, x_upper)-cdf_func(self.p_shape, self.a_shape, self.scale, x_lower)
+        _cdf_def  = lambda p,a,b,x: np.power((1+np.power(x/b,-a)),-p) if x>0 else 0
+        return _cdf_def(self.p_shape, self.a_shape, self.scale, x_upper)-_cdf_def(self.p_shape, self.a_shape, self.scale, x_lower)
 
     def mean(self):
         """
@@ -7507,8 +7495,8 @@ class Davis(Base):
     #     if x_lower>x_upper:
     #         raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-    #     cdf_func  = lambda a,b,o,x: 1- np.exp(-a*np.log10(x/a)-b*(np.log10(x/o))**2)
-    #     return cdf_func(self.alpha, self.beta, self.sigma, x_upper)-cdf_func(self.alpha, self.beta, self.sigma, x_lower)
+    #     _cdf_def  = lambda a,b,o,x: 1- np.exp(-a*np.log10(x/a)-b*(np.log10(x/o))**2)
+    #     return _cdf_def(self.alpha, self.beta, self.sigma, x_upper)-_cdf_def(self.alpha, self.beta, self.sigma, x_lower)
 
     def mean(self):
         """
@@ -7672,8 +7660,8 @@ class Rayleigh(Base):
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-        cdf_func  = lambda sig,x: 1-np.exp(-x**2/(2*sig**2))
-        return cdf_func(self.scale, x_upper)-cdf_func(self.scale, x_lower)
+        _cdf_def  = lambda sig,x: 1-np.exp(-x**2/(2*sig**2))
+        return _cdf_def(self.scale, x_upper)-_cdf_def(self.scale, x_lower)
 
     def mean(self):
         """
@@ -7833,6 +7821,7 @@ class Rayleigh(Base):
 #         print(cstr.center(40, "="))
 #         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
+
 class Benktander_T1(Base):
     """
     This class contains methods concerning Benktander Type1 Distirbution. 
@@ -7953,8 +7942,8 @@ class Benktander_T1(Base):
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-        cdf_func  = lambda a,b,x: 1-(1+(2*b/a)*np.log10(x))*np.power(x,-(a+1+b*np.log10(x))) if x>0 else 0
-        return cdf_func(self.a, self.b, x_upper)-cdf_func(self.a, self.b, x_lower)
+        _cdf_def  = lambda a,b,x: 1-(1+(2*b/a)*np.log10(x))*np.power(x,-(a+1+b*np.log10(x))) if x>0 else 0
+        return _cdf_def(self.a, self.b, x_upper)-_cdf_def(self.a, self.b, x_lower)
 
     def mean(self):
         """
@@ -8024,7 +8013,7 @@ class Benktander_T2(Base):
     def __init__(self, a, b, scale, randvar=1.5):
         if randvar<1:
             raise ValueError('random variable shoould be a positive number, not less than 1. Entered value:{}'.format(randvar))
-         if a<0 or b<0 or b>1:
+        if a<0 or b<0 or b>1:
             raise ValueError('parameters a amd b should be a positive number where b is not greater than 1. Entered value: a={}, b={}'.format(a,b))
 
         self.a = a
@@ -8113,8 +8102,8 @@ class Benktander_T2(Base):
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-        cdf_func  = lambda a,b,x: 1- np.power(x, b-1)*np.exp(a/b*(1-x**b)) if x>0 else 0
-        return cdf_func(self.a, self.b, x_upper)-cdf_func(self.a, self.b, x_lower)
+        _cdf_def  = lambda a,b,x: 1- np.power(x, b-1)*np.exp(a/b*(1-x**b)) if x>0 else 0
+        return _cdf_def(self.a, self.b, x_upper)-_cdf_def(self.a, self.b, x_lower)
 
     def mean(self):
         """
@@ -8198,7 +8187,7 @@ class Cauchy_log(Base):
     def __init__(self, mu, scale, randvar):
         if randvar<0:
             raise ValueError('random variable should be a positive number')
-         if mu<0 or scale<0:
+        if mu<0 or scale<0:
             raise ValueError('mu and scale parameters should be a positive number. Entered value: mu={}, scale={}'.format(mu, scale)
 
         self.mu = mu
@@ -8287,8 +8276,8 @@ class Cauchy_log(Base):
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-        cdf_func  = lambda mu, sig, x: (1/np.pi)*np.arctan((np.log(x)-mu)/sig)+0.5 if x>0 else 0
-        return cdf_func(self.mu, self.scale, x_upper)-cdf_func(self.mu, self.scale, x_lower)
+        _cdf_def  = lambda mu, sig, x: (1/np.pi)*np.arctan((np.log(x)-mu)/sig)+0.5 if x>0 else 0
+        return _cdf_def(self.mu, self.scale, x_upper)-_cdf_def(self.mu, self.scale, x_lower)
 
     def mean(self):
         """
@@ -8460,8 +8449,9 @@ class Laplace_log(Base):
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-        cdf_func  = lambda mu, b, x:0.5*(1+np.sign(np.log(x)-mu)*(1-np.exp(-abs(np.log(x)-mu)/b))) if x>0 else 0
-        return cdf_func(self.loc, self.scale, x_upper)-cdf_func(self.loc, self.scale, x_lower)
+        _cdf_def  = lambda mu, b, x:0.5*(1+np.sign(np.log(x)-mu)*(1-np.exp(-abs(np.log(x)-mu)/b))) if x>0 else 0
+        return _cdf_def(self.loc, self.scale, x_upper)-_cdf_def(self.loc, self.scale, x_lower)
+
 
 class Logistic_log(Base):
     """
@@ -8494,7 +8484,7 @@ class Logistic_log(Base):
     def __init__(self, scale, shape, randvar=0.5):
         if randvar<0:
             raise ValueError('random variable should be a positive number')
-         if scale<0 or shape<0:
+        if scale<0 or shape<0:
             raise ValueError('shape, scale, and location parameters should be a positive number. Entered value: scale={}, shape={}'.format(scale, shape)
 
         self.scale = scale
@@ -8583,8 +8573,8 @@ class Logistic_log(Base):
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-        cdf_func  = lambda a,b,x: 1/(1+np.power(x/a, -b))
-        return cdf_func(self.scale, self.shape, x_upper)-cdf_func(self.scale, self.shape, x_lower)
+        _cdf_def  = lambda a,b,x: 1/(1+np.power(x/a, -b))
+        return _cdf_def(self.scale, self.shape, x_upper)-_cdf_def(self.scale, self.shape, x_lower)
 
     def mean(self):
         """
@@ -8763,8 +8753,8 @@ class Chisq_inv(Base):
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-        cdf_func  = lambda df, x: ss.gammainc(df/2,1/(2*x))/ss.gamma(df/2)
-        return cdf_func(self.df, x_upper)-cdf_func(self.df, x_lower)
+        _cdf_def  = lambda df, x: ss.gammainc(df/2,1/(2*x))/ss.gamma(df/2)
+        return _cdf_def(self.df, x_upper)-_cdf_def(self.df, x_lower)
 
     def mean(self):
         """
@@ -8962,8 +8952,8 @@ class Levy(Base):
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-        cdf_func  = lambda mu, c, x: ss.erfc(sqrt(c/(2*(x-mu))))
-        return cdf_func(self.loc, self.scale, x_upper)-cdf_func(self.loc, self.scale, x_lower)
+        _cdf_def  = lambda mu, c, x: ss.erfc(sqrt(c/(2*(x-mu))))
+        return _cdf_def(self.loc, self.scale, x_upper)-_cdf_def(self.loc, self.scale, x_lower)
 
     def mean(self):
         """
@@ -9150,8 +9140,8 @@ class Nakagami(Base):
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-        cdf_func  = lambda m, omega, x: ss.gammainc(m, (m/omega)*pow(x,2))/ss.gamma(m)
-        return cdf_func(self.shape, self.spread, x_upper)-cdf_func(self.shape, self.spread, x_lower)
+        _cdf_def  = lambda m, omega, x: ss.gammainc(m, (m/omega)*pow(x,2))/ss.gamma(m)
+        return _cdf_def(self.shape, self.spread, x_upper)-_cdf_def(self.shape, self.spread, x_lower)
 
     def mean(self):
         """
@@ -9321,8 +9311,8 @@ class Lomax(Base):
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-        cdf_func  = lambda lambda_, alpha, x: 1 - pow(1+x/lambda_, -alpha) if x>=0 else 0
-        return cdf_func(self.scale, self.shape, x_upper)-cdf_func(self.scale, self.shape, x_lower)
+        _cdf_def  = lambda lambda_, alpha, x: 1 - pow(1+x/lambda_, -alpha) if x>=0 else 0
+        return _cdf_def(self.scale, self.shape, x_upper)-_cdf_def(self.scale, self.shape, x_lower)
 
     def mean(self):
         """
@@ -9517,8 +9507,8 @@ class Gumbel_T1(Base):
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-        cdf_func  = lambda mu, beta, x: np.exp(-np.exp(-(x-mu)/beta))
-        return cdf_func(self.loc, self.mu, x_upper)-cdf_func(self.loc, self.mu, x_lower)
+        _cdf_def  = lambda mu, beta, x: np.exp(-np.exp(-(x-mu)/beta))
+        return _cdf_def(self.loc, self.mu, x_upper)-_cdf_def(self.loc, self.mu, x_lower)
 
     def mean(self):
         """
@@ -9582,6 +9572,7 @@ class Gumbel_T1(Base):
         cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
 
 class Gumbel_T2(Base):
     """
@@ -9697,8 +9688,8 @@ class Gumbel_T2(Base):
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-        cdf_func  = lambda a,b,x: np.exp(-b*pow(x,-a))
-        return cdf_func(self.a, self.shape, x_upper)-cdf_func(self.a, self.shape, x_lower)
+        _cdf_def  = lambda a,b,x: np.exp(-b*pow(x,-a))
+        return _cdf_def(self.a, self.shape, x_upper)-_cdf_def(self.a, self.shape, x_lower)
 
     def mean(self):
         """
@@ -9857,11 +9848,11 @@ class Fisher_z(Base):
         Returns:
             p-value of the Fisher's z-distribution evaluated at some random variable.
         """
-        def cdf_func(df1,df2,x):
+        def _cdf_def(df1,df2,x):
             f = F(df1, df2, x)
             return f.pvalue(x_lower, x_upper)
 
-        return cdf_func(self.df1, self.df2, self.randvar)
+        return _cdf_def(self.df1, self.df2, self.randvar)
 
     def summary(self):
         """
@@ -9877,6 +9868,7 @@ class Fisher_z(Base):
         cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
 
 class Laplace_asym(Base):
     """
@@ -10001,12 +9993,12 @@ class Laplace_asym(Base):
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-          def cdf_func(loc, scale, asym, x):
+        def _cdf_def(loc, scale, asym, x):
             if x<=loc:
                 return pow(asym,2)/(1+pow(asym,2))*np.exp((scale/asym)*(x-loc))
             return 1-(1/(1+pow(asym,2)))*np.exp(-scale*asym*(x-loc))
 
-        return cdf_func(self.loc, self.scale, self.asym, x_upper)-cdf_func(self.loc, self.scale, self.asym, x_lower)
+        return _cdf_def(self.loc, self.scale, self.asym, x_upper)-_cdf_def(self.loc, self.scale, self.asym, x_lower)
 
     def mean(self):
         """
@@ -10220,12 +10212,12 @@ class GH(Base):
     #     if x_lower>x_upper:
     #         raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-    #       def cdf_func(loc, scale, asym, x):
-    #         if x<=loc:
-    #             return pow(asym,2)/(1+pow(asym,2))*np.exp((scale/asym)*(x-loc))
-    #         return 1-(1/(1+pow(asym,2)))*np.exp(-scale*asym*(x-loc))
+    #     def _cdf_def(loc, scale, asym, x):
+    #       if x<=loc:
+    #           return pow(asym,2)/(1+pow(asym,2))*np.exp((scale/asym)*(x-loc))
+    #       return 1-(1/(1+pow(asym,2)))*np.exp(-scale*asym*(x-loc)
 
-    #     return cdf_func(self.loc, self.scale, self.asym, x_upper)-cdf_func(self.loc, self.scale, self.asym, x_lower)
+    #     return _cdf_def(self.loc, self.scale, self.asym, x_upper)-_cdf_def(self.loc, self.scale, self.asym, x_lower)
 
     def mean(self):
         """
@@ -10268,6 +10260,7 @@ class GH(Base):
         cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
 
 class GN_V1(Base):
     """
@@ -10387,9 +10380,9 @@ class GN_V1(Base):
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-          cdf_func = lambda u, b, a, x: 0.5+(np.sign(x-u)/2)*(1/ss.gamma(1/b))*ss.gammainc(1/b, pow(x*a,b))
+        _cdf_def = lambda u, b, a, x: 0.5+(np.sign(x-u)/2)*(1/ss.gamma(1/b))*ss.gammainc(1/b, pow(x*a,b))
 
-        return cdf_func(self.loc, self.scale, self.shape, x_upper)-cdf_func(self.loc, self.scale, self.shape, x_lower)
+        return _cdf_def(self.loc, self.scale, self.shape, x_upper)-_cdf_def(self.loc, self.scale, self.shape, x_lower)
 
     def mean(self):
         """
@@ -10579,9 +10572,9 @@ class GN_V1(Base):
 #         if x_lower>x_upper:
 #             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-#           cdf_func = lambda u, b, a, x: 0.5+(np.sign(x-u)/2)*(1/ss.gamma(1/b))*ss.gammainc(1/b, pow(x*a,b))
+#         _cdf_def = lambda u, b, a, x: 0.5+(np.sign(x-u)/2)*(1/ss.gamma(1/b))*ss.gammainc(1/b, pow(x*a,b))
 
-#         return cdf_func(self.loc, self.scale, self.shape, x_upper)-cdf_func(self.loc, self.scale, self.shape, x_lower)
+#         return _cdf_def(self.loc, self.scale, self.shape, x_upper)-_cdf_def(self.loc, self.scale, self.shape, x_lower)
 
 #     def mean(self):
 #         """
@@ -10651,6 +10644,7 @@ class GN_V1(Base):
 #         cstr = " summary statistics "
 #         print(cstr.center(40, "="))
 #         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
 
 class Hyperbolic_secant(Base):
     """
@@ -10764,9 +10758,9 @@ class Hyperbolic_secant(Base):
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-          cdf_func = lambda x: (2/np.pi)*np.arctan(np.exp(np.pi/2*x))
+        _cdf_def = lambda x: (2/np.pi)*np.arctan(np.exp(np.pi/2*x))
 
-        return cdf_func(x_upper)-cdf_func(x_lower)
+        return _cdf_def(x_upper)-_cdf_def(x_lower)
 
     def mean(self):
         """
@@ -10834,6 +10828,7 @@ class Hyperbolic_secant(Base):
         cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
 
 class Slash(Base):
     """
@@ -10947,9 +10942,9 @@ class Slash(Base):
         if x_lower>x_upper:
             raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
         
-          cdf_func = lambda x: (2/np.pi)*np.arctan(np.exp(np.pi/2*x))
+        _cdf_def = lambda x: (2/np.pi)*np.arctan(np.exp(np.pi/2*x))
 
-        return cdf_func(x_upper)-cdf_func(x_lower)
+        return _cdf_def(x_upper)-_cdf_def(x_lower)
 
     def mean(self):
         """
