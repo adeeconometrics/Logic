@@ -129,6 +129,7 @@ Real line
     - Landau
     - Johnson's SU
     - variance-gamma
+    - generalized hyperbolic: add support for CDF and pvalue
 
 - change category:
     - Cauchy
@@ -158,7 +159,7 @@ in progress
         - Maxwell–Jüttner
         - Mittag-Leffler - needs further reading
         - noncentral chi-squared
-        - noncentral F
+        - noncentral F - req: infinite summation
         - phase-type - needs further reading
         - poly-Weibull - needs further reading
         - Wilks's lambda
@@ -166,26 +167,24 @@ in progress
     - supported on the whole real line 
         - exponential power
         - Gaussian q
-        - generalized normal
-        - generalized hyperbolic
-        - geometric stable
+        - geometric stable - find numerical algorithms
         - Holtsmark - hypergerometric function
         - noncentral t - needs further reading
-        - normal-inverse Gaussian
+        - normal-inverse Gaussian - req: Bassel function of the third kind
         - stable - find numerical counterparts, no analytical expression is defined
         - Tracy–Widom - needs further reading
         - Voigt -  find numerical counterparts, as analytical expression is deemed [complicated](https://en.wikipedia.org/wiki/Voigt_profile)
         
     - varying types supported
-        - generalized chi-squared
-        - generalized extreme value
-        - generalized Pareto
+        - generalized chi-squared  - needs further reading for numerical counterparts
+        - generalized extreme value - doable
+        - generalized Pareto - doable
         - Marchenko–Pastur
-        - q-exponential
-        - q-Gaussian
-        - q-Weibull
-        - shifted log-logistic
-        - Tukey lambda
+        - q-exponential - doable
+        - q-Gaussian - doable
+        - q-Weibull - doable
+        - shifted log-logistic - doable
+        - Tukey lambda - needs further reading
 
 ----
 ### Multivariate
