@@ -187,7 +187,7 @@ in progress
     - varying types supported
         - generalized chi-squared  - needs further reading for numerical counterparts
         - shifted log-logistic - doable
-        - Tukey lambda - needs further reading
+        - Tukey lambda - doable
 
 ----
 ### Multivariate
