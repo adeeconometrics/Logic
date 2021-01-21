@@ -12378,6 +12378,7 @@ class GEV(Base):
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
 
+
 class GPD(Base):
     """
     This class contains methods concerning Generalized Pareto Distirbution. 
@@ -12549,7 +12550,7 @@ class GPD(Base):
         mu = self.loc
         o = self.scale
 
-        if x<0.5:
+        if xi<0.5:
             return pow(o,2)/(pow(1-xi,2)*(1-2*xi))
         return "undefined"
 
@@ -12605,3 +12606,618 @@ class GPD(Base):
         cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
+
+class Exponential_q(Base):
+    """
+    This class contains methods concerning q-Exponential Distirbution. 
+    Args:
+
+        rate (float | x>0): rate parameter
+        shape (float): shape
+        randvar(float): random variable
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - pvalue for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
+
+    Reference:
+    - Wikipedia contributors. (2021, January 10). Q-exponential distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 10:55, January 21, 2021, from https://en.wikipedia.org/w/index.php?title=Q-exponential_distribution&oldid=999504191
+    """
+    def __init__(self, rate, shape, randvar=0):
+        if rate <=0:
+            raise ValueError('rate paramter should be a positive number.')
+
+        if shape>=2:
+            raise ValueError('shape parameter should be less than 2.')
+
+        if shape>=1 and randvar<0:
+            raise ValueError('random variable should be a positive number.')
+        
+        if shape<1 and (randvar<0 or randvar>= 1/(rate*(1-shape))):
+            raise ValueError('random variable should not exceed to {}, or be less than 0.'.format(1/(rate*(1-shape))))
+
+        self.rate = rate
+        self.shape = shape
+        self.randvar = randvar
+
+    def __eq(self, q, x, c):
+        # internal function
+        return pow(1+(1-q)*x, 1/(c-q))
+        
+    def pdf(self,
+            plot=False,
+            interval = 0,
+            threshold=1000,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability density evaluation for some point or plot of q-Exponential distribution.
+        """
+        _generator = lambda q, l, x: (2-q)*l*pow(self.__eq(q,x,1), -l*x)
+
+        if plot == True:
+            if interval<0:
+                raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
+            x = np.linspace(-interval, interval, int(threshold))
+            y = np.array([_generator(self.shape, self.rate, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return _generator(self.shape, self.rate, self.randvar)
+
+    def cdf(self,
+            plot=False,
+            threshold=1000,
+            interval=1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or plot of q-Exponential distribution.
+        """
+        _generator = lambda q,l,x: 1-pow(self.__eq(q,x,2), l*x/(1/(2-q)))
+
+        if plot == True:
+            x = np.linspace(-interval, interval, int(threshold))
+            y = np.array([_generator(self.shape, self.rate, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return _generator(self.shape, self.rate, self.randvar)
+
+    def pvalue(self, x_lower=0, x_upper=None):
+        """
+        Args:
+
+            x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+            x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+            Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+            Otherwise, the default random variable is x.
+
+        Returns:
+            p-value of the q-Exponential distribution evaluated at some random variable.
+        """
+        if x_upper == None:
+            x_upper = self.randvar
+        if x_lower>x_upper:
+            raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        
+        _cdf_def = lambda q,l,x: 1-pow(self.__eq(q,x,2), l*x/(1/(2-q)))
+
+        return _cdf_def(self.shape, self.rate, x_upper)-_cdf_def(self.shape, self.rate, x_lower)
+
+    def mean(self):
+        """
+        Returns: Mean of the q-Exponential distribution.
+        """
+        if self.shape<3/2:
+            return 1/(self.rate*(3-2*self.shape))
+        return "undefined"
+
+    def median(self):
+        """
+        Returns: Median of the q-Exponential distribution.
+        """ # check the expr
+        return -(1/(2-self.shape)*np.log(1/2))/self.rate
+
+    def mode(self):
+        """
+        Returns: Mode of the q-Exponential distribution.
+        """
+        return 0
+
+    def var(self):
+        """
+        Returns: Variance of the q-Exponential distribution.
+        """
+        q = self.shape
+        l = self.rate
+
+        if q<4/3:
+            return (q-1)/(pow(2*q-3, 2)*(3*q-4)*pow(l,2))
+        return "undefined"
+
+    def std(self):
+        """
+        Returns: Standard deviation of the q-Exponential distribution
+        """
+        if self.var()=="undefined":
+            return "undefined"
+        return sqrt(self.var())
+
+    def skewness(self):
+        """
+        Returns: Skewness of the q-Exponential distribution. 
+        """
+        q = self.shape
+        l = self.rate
+
+        if q<5/4:
+            return (2/(5-4*q))*sqrt((3*q-4)/(q-2))
+        return "undefined"
+
+    def kurtosis(self):
+        """
+        Returns: Kurtosis of the q-Exponential distribution. 
+        """
+        q = self.shape
+        l = self.rate
+        
+        if q<6/5:
+            return 6*(-4*pow(q,3)+17*pow(q,2)-20*q)+6)/((q-2)*(4*q-5)*(5*q-6))
+        return "undefined."
+
+    def summary(self):
+        """
+        Returns: Summary statistic regarding the q-Exponential distribution
+        """
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        std = self.std()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = " summary statistics "
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
+
+class Gaussian_q(Base):
+    """
+    This class contains methods concerning q-Gaussian Distirbution. 
+    Args:
+
+        shape (float | x>0): shape parameter
+        beta (float): beta parameter
+        randvar(float): random variable
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - pvalue for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
+
+    Reference:
+    - Wikipedia contributors. (2021, January 4). Q-Gaussian distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 11:23, January 21, 2021, from https://en.wikipedia.org/w/index.php?title=Q-Gaussian_distribution&oldid=998250424
+    """
+    def __init__(self, shape, beta, randvar=0):
+        if shape>=3:
+            raise ValueError
+        if beta<=0:
+            raise ValueError
+
+        if shape<1 and (randvar < -(1/sqrt(beta*(1-shape))) or randvar > (1/sqrt(beta*(1-shape)))):
+            raise ValueError('random variable should not be less than {0} or greater than {1}'.format(-(1/sqrt(beta*(1-shape))), 1/sqrt(beta*(1-shape))))
+
+
+        self.shape = shape
+        self.beta = beta
+        self.randvar = randvar
+
+    def __q_exponential(self, q):
+        if q<1:
+            return (sqrt(np.pi)*ss.gamma(1/(1-q)))/((3-q)*sqrt(1-q)*ss.gamma((3-q)/(2*(1-q))))
+        if q==1:
+            return sqrt(np.pi)
+        if q>1 and q<3:
+            return (sqrt(np.pi)*ss.gamma((3-q)/(2*(q-1)))) / (sqrt(q-1)*ss.gamma(1/(q-1)))
+
+
+    def pdf(self,
+            plot=False,
+            interval = 0,
+            threshold=1000,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability density evaluation for some point or plot of q-Gaussian distribution.
+        """
+        def _generator(q,b,x):
+            eq = lambda x: pow(1+(1-q)*x, 1/(1-q))
+            return (sqrt(b)/self.__q_exponential(q))*eq(-b*x**2)
+
+        if plot == True:
+            if interval<0:
+                raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
+            x = np.linspace(-interval, interval, int(threshold))
+            y = np.array([_generator(self.shape, self.beta, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return _generator(self.shape, self.beta, self.randvar)
+
+    # def cdf(self,
+    #         plot=False,
+    #         threshold=1000,
+    #         interval=1,
+    #         xlim=None,
+    #         ylim=None,
+    #         xlabel=None,
+    #         ylabel=None):
+    #     """
+    #     Args:
+        
+    #         interval(int): defaults to none. Only necessary for defining plot.
+    #         threshold(int): defaults to 1000. Defines the sample points in plot.
+    #         plot(bool): if true, returns plot.
+    #         xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+    #         ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+    #         xlabel(string): sets label in x axis. Only relevant when plot is true. 
+    #         ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+    #     Returns: 
+    #         either cumulative distribution evaluation for some point or plot of q-Gaussian distribution.
+    #     """
+    #     def _generator(mu, o, xi, x):
+    #         z = (x-mu)/o
+    #         return 1-pow(1+e*z, -1/e)
+
+    #     if plot == True:
+    #         x = np.linspace(-interval, interval, int(threshold))
+    #         y = np.array([_generator(self.loc, self.scale, self.shape, i) for i in x])
+    #         return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+    #     return _generator(self.loc, self.scale, self.shape, self.randvar)
+
+    # def pvalue(self, x_lower=0, x_upper=None):
+    #     """
+    #     Args:
+
+    #         x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+    #         x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+    #         Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+    #         Otherwise, the default random variable is x.
+
+    #     Returns:
+    #         p-value of the q-Gaussian distribution evaluated at some random variable.
+    #     """
+    #     if x_upper == None:
+    #         x_upper = self.randvar
+    #     if x_lower>x_upper:
+    #         raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        
+    #     def _cdf_def(mu, o, xi, x):
+    #         z = (x-mu)/o
+    #         return 1-pow(1+e*z, -1/e)
+
+    #     return _cdf_def(self.loc, self.scale, self.shape, x_upper)-_cdf_def(self.loc, self.scale, self.shape, x_lower)
+
+    def mean(self):
+        """
+        Returns: Mean of the q-Gaussian distribution.
+        """
+        if self.shape<2:
+            return 0
+        return "undefined"
+
+    def median(self):
+        """
+        Returns: Median of the q-Gaussian distribution.
+        """
+        return 0
+
+    def mode(self):
+        """
+        Returns: Mode of the q-Gaussian distribution.
+        """
+        return 0
+
+    def var(self):
+        """
+        Returns: Variance of the q-Gaussian distribution.
+        """
+        xi = self.shape
+        mu = self.loc
+        o = self.scale
+
+        if x<0.5:
+            return pow(o,2)/(pow(1-xi,2)*(1-2*xi))
+        return "undefined"
+
+    def std(self):
+        """
+        Returns: Standard deviation of the q-Gaussian distribution
+        """
+        if self.var()=="undefined":
+            return "undefined"
+        return sqrt(self.var())
+
+    def skewness(self):
+        """
+        Returns: Skewness of the q-Gaussian distribution. 
+        """
+        if self.shape<3/2:
+            return 0
+        return "undefined"
+
+    def kurtosis(self):
+        """
+        Returns: Kurtosis of the q-Gaussian distribution. 
+        """
+        if self.shape<7/5:
+            return 6*(self.shape-1)/(7-5*self.shape)
+        return "undefined."
+
+    def entropy(self):
+        """
+        Returns: Differential entropy of the q-Gaussian distribution. 
+        """
+        return log(self.scale, 10)+self.shape+1
+
+    def summary(self):
+        """
+        Returns: Summary statistic regarding the q-Gaussian distribution
+        """
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        std = self.std()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = " summary statistics "
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
+
+class Weilbull_q(Base):
+    """
+    This class contains methods concerning q-Weilbull Distirbution. 
+    Args:
+
+        shape_q (float): shape (q) parameter
+        rate (float | x>0): rate parameter
+        shape_k (float): shape (kappa) parameter
+        randvar(float): random variable
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - pvalue for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
+
+    Reference:
+    - Wikipedia contributors. (2020, December 24). Q-Weibull distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 11:55, January 21, 2021, from https://en.wikipedia.org/w/index.php?title=Q-Weibull_distribution&oldid=996148552
+    """
+    def __init__(self, shape_q, rate, shape_k, randvar=0):
+        if rate <=0 and shape_k:
+            raise ValueError('ratea and shape_k paramter should be a positive number.')
+
+        if shape_q >= 2:
+            raise ValueError('shape_q parameter should not exceed 2.')
+
+
+        self.shape_q = shape_q
+        self.rate = rate
+        self.shape_k = shape_k
+        self.randvar = randvar
+
+    def __q_exponential(self, x,q):
+        """
+        args: x,q
+        """
+        if q == 1:
+            return np.exp(x)
+        if q!=1 and 1+(1+q)*x > 0:
+            return pow(1+(1-q)*x, 1/(1-q))
+        if q!=1 and 1+(1+q)*x <= 0:
+            return 0
+
+
+    def pdf(self,
+            plot=False,
+            interval = 0,
+            threshold=1000,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability density evaluation for some point or plot of q-Weilbull distribution.
+        """
+        def _generator(q,l,k, x):
+            if x>=0:
+                return (2-q)*(k/l)*pow(x/l, k-1)*pow(self.__q_exponential(x,q), (x/l)**k)
+            return 0
+
+        if plot == True:
+            if interval<0:
+                raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
+            x = np.linspace(-interval, interval, int(threshold))
+            y = np.array([_generator(self.shape_q, self.rate, self.shape_k, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return _generator(self.shape_q, self.rate, self.shape_k, self.randvar)
+
+    def cdf(self,
+            plot=False,
+            threshold=1000,
+            interval=1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or plot of q-Weilbull distribution.
+        """
+        def _generator(q,l,k, x):
+            if x>=0:
+                return 1-pow(self.__q_exponential(x,1/(2-q)), (x/(l/pow(2-q, 1/k)))**k)
+            return 0
+
+        if plot == True:
+            x = np.linspace(-interval, interval, int(threshold))
+            y = np.array([_generator(self.shape_q, self.rate, self.shape_k, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return _generator(self.shape_q, self.rate, self.shape_k, self.randvar)
+
+    def pvalue(self, x_lower=0, x_upper=None):
+        """
+        Args:
+
+            x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+            x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+            Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+            Otherwise, the default random variable is x.
+
+        Returns:
+            p-value of the q-Weilbull distribution evaluated at some random variable.
+        """
+        if x_upper == None:
+            x_upper = self.randvar
+        if x_lower>x_upper:
+            raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        
+        def _cdf_def(q,l,k, x):
+            if x>=0:
+                return 1-pow(self.__q_exponential(x,1/(2-q)), (x/(l/pow(2-q, 1/k)))**k)
+            return 0
+
+        return _cdf_def(self.shape_q, self.rate, self.shape_k, x_upper)-_cdf_def(self.shape_q, self.rate, self.shape_k, x_lower)
+
+    def mean(self):
+        """
+        Returns: Mean of the q-Weilbull distribution.
+        """
+        l = self.rate
+        q = self.shape_q
+        k = self.shape_k
+
+        if q<1:
+            return l*(2+1/(1-q)+1/k)*pow(1-q, -1/k)*ss.beta(1+1/k, 2+1/(1-q))
+        if q==1:
+            return l*ss.gamma(1+1/k)
+        if q>1 and q<(1+(1+2*k)/(1+k)):
+            return l*(2-q)*pow(q-1, -(1+k)/k)*ss.beta(1+1/k, -(1+1/(q-1)+1/k))
+        return np.inf
+
+    def summary(self):
+        """
+        Returns: Summary statistic regarding the q-Weilbull distribution
+        """
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        std = self.std()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = " summary statistics "
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+

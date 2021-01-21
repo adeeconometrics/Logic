@@ -177,12 +177,12 @@ in progress
         
     - varying types supported
         - generalized chi-squared  - needs further reading for numerical counterparts
-        - generalized extreme value - doable
-        - generalized Pareto - doable
+        - generalized extreme value - done
+        - generalized Pareto - done
         - Marchenko–Pastur
-        - q-exponential - doable
-        - q-Gaussian - doable
-        - q-Weibull - doable
+        - q-exponential - done
+        - q-Gaussian - done
+        - q-Weibull - done
         - shifted log-logistic - doable
         - Tukey lambda - needs further reading
 
