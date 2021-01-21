@@ -12104,3 +12104,504 @@ class Landau(Base):
         cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
+
+# varying types supported
+"""
+Varying Types Supported 
+
+- generalized extreme value
+- Generalized Pareto
+- Q-exponential
+- Q-Gaussian
+- Q-Weilbull
+- Shifted log-logistic
+- Tukey Lambda
+"""
+class GEV(Base):
+    """
+    This class contains methods concerning Generalized Extreme Value Distirbution. 
+    Args:
+
+        loc (float): location parameter
+        scale (float | x>0): scale parameter
+        shape (float): shape
+        randvar(float): random variable
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - pvalue for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
+
+    Note:
+    The GEV is a family of continuous probability distribution developed withing the extreme value theory to combine the Gumbel, Frechet, and Weilbull families
+    also known as Type I, Type II and Type III extreme value distributions. 
+
+    Relationships:
+
+    - X~Gumbell(μ, σ) - X~GEV(μ, σ, 0)
+    - X~Weilbull(μ, σ) - μ(1-σ*log(X/σ)~GEV(μ, σ)
+    - X~Exp(1) - μ-σ*log(X)~GEV(μ, σ, 0) 
+
+    Reference:
+    - Wikipedia contributors. (2020, November 17). Generalized extreme value distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 05:26, January 21, 2021, from https://en.wikipedia.org/w/index.php?title=Generalized_extreme_value_distribution&oldid=989172851
+    - Haan, Laurens; Ferreira, Ana (2007). Extreme value theory: an introduction. Springer.
+    """
+    def __init__(self, loc, scale, shape, randvar=0):
+        if scale <=0:
+            raise ValueError('scale paramter should be a positive number.')
+
+        if shape>0:
+            if randvar< loc - scale/shape:
+                raise ValueError('random variable is not satisfied. It should not be less than loc - scale/shape')
+        if shape<0:
+            if randvar> loc - scale/shape:
+                raise ValueError('random variable is not satisfied. It should not be  greater loc - scale/shape')
+
+
+        self.loc = loc
+        self.scale = scale
+        self.shape = shape
+        self.randvar = randvar
+
+    def pdf(self,
+            plot=False,
+            interval = 0,
+            threshold=1000,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability density evaluation for some point or plot of Generalized Extreme Value distribution.
+        """
+        def _generator(mu, o, xi, x):
+            t = lambda _x: pow(1+xi*(_x-mu)/o, -1/xi) if xi != 0 else np.exp(-(_x-mu)/o)
+            return 1/o*pow(t(x), xi+1)*np.exp(-t(x))
+
+        if plot == True:
+            if interval<0:
+                raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
+            x = np.linspace(-interval, interval, int(threshold))
+            y = np.array([_generator(self.loc, self.scale, self.shape, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return _generator(self.loc, self.scale, self.shape, self.randvar)
+
+    def cdf(self,
+            plot=False,
+            threshold=1000,
+            interval=1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or plot of Generalized Extreme Value distribution.
+        """
+        def _generator(mu, o, xi, x):
+            t = lambda _x: pow(1+xi*(_x-mu)/o, -1/xi) if xi != 0 else np.exp(-(_x-mu)/o)
+            return np.exp(-t(x))
+
+        if plot == True:
+            x = np.linspace(-interval, interval, int(threshold))
+            y = np.array([_generator(self.loc, self.scale, self.shape, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return _generator(self.loc, self.scale, self.shape, self.randvar)
+
+    def pvalue(self, x_lower=0, x_upper=None):
+        """
+        Args:
+
+            x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+            x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+            Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+            Otherwise, the default random variable is x.
+
+        Returns:
+            p-value of the Generalized Extreme Value distribution evaluated at some random variable.
+        """
+        if x_upper == None:
+            x_upper = self.randvar
+        if x_lower>x_upper:
+            raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        
+        def _cdf_def(mu, o, xi, x):
+            t = lambda _x: pow(1+xi*(_x-mu)/o, -1/xi) if xi != 0 else np.exp(-(_x-mu)/o)
+            return np.exp(-t(x))
+
+        return _cdf_def(self.loc, self.scale, self.shape, x_upper)-_cdf_def(self.loc, self.scale, self.shape, x_lower)
+
+    def mean(self):
+        """
+        Returns: Mean of the Generalized Extreme Value distribution.
+        """
+        xi = self.shape
+        mu = self.loc
+        o = self.scale
+
+        if xi != 1 and xi<1:
+            return mu+o*(ss.gamma(1-xi)-1)/xi
+        if xi == 0:
+            return mu+o*np.euler_gamma
+        if xi>=1:
+            return np.inf
+
+    def median(self):
+        """
+        Returns: Median of the Generalized Extreme Value distribution.
+        """
+        xi = self.shape
+        mu = self.loc
+        o = self.scale
+
+        if xi != 0:
+            return mu+o*(pow(np.log(2),-xi)-1)/xi
+        return mu - o*np.log(np.log(2))
+
+    def mode(self):
+        """
+        Returns: Mode of the Generalized Extreme Value distribution.
+        """
+        xi = self.shape
+        mu = self.loc
+        o = self.scale
+
+        if xi != 0:
+            return mu+o*(pow(1-xi,-xi)-1)/xi
+        return mu
+
+    def var(self):
+        """
+        Returns: Variance of the Generalized Extreme Value distribution.
+        """
+        xi = self.shape
+        mu = self.loc
+        o = self.scale
+
+        if xi!=0 and xi<0.5:
+            return pow(o,2)*(ss.gamma(1-2*xi)-pow(ss.gamma(1-xi),2))/pow(x,2)
+        if x == 0:
+            return pow(o,2)*pow(np.pi,2)/6
+        if xi>=0.5:
+            return np.inf
+
+    def std(self):
+        """
+        Returns: Standard deviation of the Generalized Extreme Value distribution
+        """
+        return sqrt(self.var())
+
+    def skewness(self):
+        """
+        Returns: Skewness of the Generalized Extreme Value distribution. 
+        """
+        xi = self.shape
+        mu = self.loc
+        o = self.scale
+        g = lambda k: ss.gamma(1-k*xi)
+
+        if xi!=0 and xi<1/3:
+            return np.sign(xi)*(g(3)-3*g(2)*g(1)+2*pow(g(1),3))/pow(g(2)-g(1)**2,3/2)
+        if xi == 0:
+            return 12*sqrt(6)*ss.zeta(3)/pow(np.pi,3)
+        return "Does not exist."
+
+    def kurtosis(self):
+        """
+        Returns: Kurtosis of the Generalized Extreme Value distribution. 
+        """
+        xi = self.shape
+        mu = self.loc
+        o = self.scale
+        g = lambda k: ss.gamma(1-k*xi)
+        
+        if xi!=0 and xi<0.25:
+            return (g(4)-4*g(3)*g(1)-3*pow(g(2),2)+12*g(2)*pow(g(1),2)-6*pow(g(1),4))/pow(g(2)-g(1)**2,2)
+        if xi == 0:
+            return 12/5
+        return "Does not exist."
+
+    def entropy(self):
+        """
+        Returns: Differential entropy of the Generalized Extreme Value distribution. 
+        """
+        return log(self.scale, 10)+np.euler_gamma*self.shape+np.euler_gamma+1
+
+    def summary(self):
+        """
+        Returns: Summary statistic regarding the Generalized Extreme Value distribution
+        """
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        std = self.std()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = " summary statistics "
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
+
+class GPD(Base):
+    """
+    This class contains methods concerning Generalized Pareto Distirbution. 
+    Args:
+
+        loc (float): location parameter
+        scale (float | x>0): scale parameter
+        shape (float): shape
+        randvar(float): random variable
+
+    Methods:
+
+        - pdf for probability density function.
+        - cdf for cumulative distribution function.
+        - pvalue for p-values.
+        - mean for evaluating the mean of the distribution.
+        - median for evaluating the median of the distribution.
+        - mode for evaluating the mode of the distribution.
+        - var for evaluating the variance of the distribution.
+        - std for evaluating the standard deviation of the distribution.
+        - skewness for evaluating the skewness of the distribution.
+        - kurtosis for evaluating the kurtosis of the distribution.
+        - entropy for differential entropy of the distribution.
+        - summary for printing the summary statistics of the distribution. 
+
+    Relationships:
+
+    - X~Exp(x) - X~GEV(0, σ, 0)
+    - similar to Burr distribution
+
+    Reference:
+    - Wikipedia contributors. (2020, December 3). Generalized Pareto distribution. In Wikipedia, The Free Encyclopedia. 
+    Retrieved 05:57, January 21, 2021, from https://en.wikipedia.org/w/index.php?title=Generalized_Pareto_distribution&oldid=992137927
+    """
+    def __init__(self, loc, scale, shape, randvar=0):
+        if scale <=0:
+            raise ValueError('scale paramter should be a positive number.')
+
+        if shape>=0:
+            if randvar<loc:
+                raise ValueError('random variable is not satisfied. It should not be less than loc')
+        if shape<0:
+            if randvar> loc - scale/shape or randvar<loc:
+                raise ValueError('random variable is not satisfied. It should not be greater loc - scale/shape or les than loc')
+
+
+        self.loc = loc
+        self.scale = scale
+        self.shape = shape
+        self.randvar = randvar
+
+    def pdf(self,
+            plot=False,
+            interval = 0,
+            threshold=1000,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either probability density evaluation for some point or plot of Generalized Pareto distribution.
+        """
+        _generator = lambda u, o, e, x: 1/o*pow(1+e*(x-u)/o, -(1/e+1))
+
+        if plot == True:
+            if interval<0:
+                raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
+            x = np.linspace(-interval, interval, int(threshold))
+            y = np.array([_generator(self.loc, self.scale, self.shape, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return _generator(self.loc, self.scale, self.shape, self.randvar)
+
+    def cdf(self,
+            plot=False,
+            threshold=1000,
+            interval=1,
+            xlim=None,
+            ylim=None,
+            xlabel=None,
+            ylabel=None):
+        """
+        Args:
+        
+            interval(int): defaults to none. Only necessary for defining plot.
+            threshold(int): defaults to 1000. Defines the sample points in plot.
+            plot(bool): if true, returns plot.
+            xlim(float): sets x axis ∈ [-xlim, xlim]. Only relevant when plot is true.
+            ylim(float): sets y axis ∈[0,ylim]. Only relevant when plot is true. 
+            xlabel(string): sets label in x axis. Only relevant when plot is true. 
+            ylabel(string): sets label in y axis. Only relevant when plot is true. 
+
+        
+        Returns: 
+            either cumulative distribution evaluation for some point or plot of Generalized Pareto distribution.
+        """
+        def _generator(mu, o, xi, x):
+            z = (x-mu)/o
+            return 1-pow(1+e*z, -1/e)
+
+        if plot == True:
+            x = np.linspace(-interval, interval, int(threshold))
+            y = np.array([_generator(self.loc, self.scale, self.shape, i) for i in x])
+            return super().plot(x, y, xlim, ylim, xlabel, ylabel)
+        return _generator(self.loc, self.scale, self.shape, self.randvar)
+
+    def pvalue(self, x_lower=0, x_upper=None):
+        """
+        Args:
+
+            x_lower(float): defaults to 0. Defines the lower value of the distribution. Optional.
+            x_upper(float): defaults to None. If not defined defaults to random variable x. Optional.
+
+            Note: definition of x_lower and x_upper are only relevant when probability is between two random variables.
+            Otherwise, the default random variable is x.
+
+        Returns:
+            p-value of the Generalized Pareto distribution evaluated at some random variable.
+        """
+        if x_upper == None:
+            x_upper = self.randvar
+        if x_lower>x_upper:
+            raise Exception('lower bound should be less than upper bound. Entered values: x_lower:{} x_upper:{}'.format(x_lower, x_upper))
+        
+        def _cdf_def(mu, o, xi, x):
+            z = (x-mu)/o
+            return 1-pow(1+e*z, -1/e)
+
+        return _cdf_def(self.loc, self.scale, self.shape, x_upper)-_cdf_def(self.loc, self.scale, self.shape, x_lower)
+
+    def mean(self):
+        """
+        Returns: Mean of the Generalized Pareto distribution.
+        """
+        xi = self.shape
+        mu = self.loc
+        o = self.scale
+
+        if xi<1:
+            return mu+o/(1-xi)
+        return "undefined"
+
+    def median(self):
+        """
+        Returns: Median of the Generalized Pareto distribution.
+        """
+        xi = self.shape
+        mu = self.loc
+        o = self.scale
+
+        return mu+(o*(pow(2,xi)-1))/xi 
+
+    def var(self):
+        """
+        Returns: Variance of the Generalized Pareto distribution.
+        """
+        xi = self.shape
+        mu = self.loc
+        o = self.scale
+
+        if x<0.5:
+            return pow(o,2)/(pow(1-xi,2)*(1-2*xi))
+        return "undefined"
+
+    def std(self):
+        """
+        Returns: Standard deviation of the Generalized Pareto distribution
+        """
+        if self.var()=="undefined":
+            return "undefined"
+        return sqrt(self.var())
+
+    def skewness(self):
+        """
+        Returns: Skewness of the Generalized Pareto distribution. 
+        """
+        xi = self.shape
+        mu = self.loc
+        o = self.scale
+
+        if xi<1/3:
+            return 2*(1+xi)*sqrt(1-2*xi)/(1-3*xi)
+        return "undefined"
+
+    def kurtosis(self):
+        """
+        Returns: Kurtosis of the Generalized Pareto distribution. 
+        """
+        xi = self.shape
+        mu = self.loc
+        o = self.scale
+        
+        if xi<0.25:
+            return 3*(1-2*xi)*(2*xi**2+xi+3)/((1-3*xi)*(1-4*xi))
+        return "undefined."
+
+    def entropy(self):
+        """
+        Returns: Differential entropy of the Generalized Pareto distribution. 
+        """
+        return log(self.scale, 10)+self.shape+1
+
+    def summary(self):
+        """
+        Returns: Summary statistic regarding the Generalized Pareto distribution
+        """
+        mean = self.mean()
+        median = self.median()
+        mode = self.mode()
+        var = self.var()
+        std = self.std()
+        skewness = self.skewness()
+        kurtosis = self.kurtosis()
+        cstr = " summary statistics "
+        print(cstr.center(40, "="))
+        return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
