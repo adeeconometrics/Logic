@@ -72,6 +72,7 @@ in progress
 - weilbull inverse distribution
 - gumbell distribution
 - arcsine distribution
+
 - staged for review
     - triangular distribution
     - trapezoidal distribution
@@ -111,33 +112,41 @@ Semi-infinite class
     - Lomax distribution
     - Gumbel distribution
     - Weibull distribution
-    - truncated normal type 2 
-    - Burr 
-    - Generalized Gamma
+    - truncated normal type 2 distribution 
+    - Burr distribution 
+    - Generalized Gamma distribution
 
 Real line
 - Staged for review:
     - Gumbel  distribution
     - Fisher's z-distribution
     - Asymmetric Laplace distribution
-    - Generalized normal v1
-    - Generalized normal v2
+    - Generalized normal v1 distribution
+    - Generalized normal v2 distribution
     - Generalized hyperbolic - resolve cdf and pvalue
-    - Hyperbolic secant
-    - Slash 
-    - Skew Normal
-    - Landau
-    - Johnson's SU
-    - variance-gamma
+    - Hyperbolic secant distribution
+    - Slash distribution
+    - Skew Normal distribution
+    - Landau distribution
+    - Johnson's SU distribution
+    - variance-gamma distribution
     - generalized hyperbolic: add support for CDF and pvalue
 
 - change category:
-    - Cauchy
-    - Laplace
-    - Logistic
-    - Normal
-    - T
-    - Gumbel Type 1
+    - Cauchy distribution
+    - Laplace distribution
+    - Logistic distribution
+    - Normal distribution
+    - T distribution
+    - Gumbel Type 1 distribution
+
+Varying Type Support
+- Staged for review:
+    - q-Gaussian distribution
+    - q-Weibull distribution
+    - generalized extreme value distribution
+    - generalized Pareto distribution
+    - q-exponential distribution
 
 ----
 in progress
@@ -177,12 +186,6 @@ in progress
         
     - varying types supported
         - generalized chi-squared  - needs further reading for numerical counterparts
-        - generalized extreme value - done
-        - generalized Pareto - done
-        - Marchenko–Pastur
-        - q-exponential - done
-        - q-Gaussian - done
-        - q-Weibull - done
         - shifted log-logistic - doable
         - Tukey lambda - needs further reading
 
