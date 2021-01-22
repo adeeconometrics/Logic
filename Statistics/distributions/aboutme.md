@@ -9,20 +9,20 @@ currently supported features:
     - mode 
 - variance, skewness, kurtosis
 - p value
+- standard deviation
 ----
 features to be developed:
 - plotting probability distribution
-    - plain
     - fill-in between gradient 
     - vlines
     - annotation 
 - likelihood function
-- log-likelihood function
+    - log-likelihood function
+    - Maximum likelihood estimate
+    - maximum-likelihood function
 - logcdf
 - logpdf
-- maximum-likelihood function
 - random variable generator 
-- standard deviation
 - moment generating functions 
 - entropy
 - fisher information
@@ -33,6 +33,10 @@ to clean:
 - comments
 - replace " ** " to pow(x,y)
 - replace `np.log(x)` to `math.log(x,y)`
+- add title of printing summary:
+    - title of the distribution
+    - list of parameters used 
+
 # List of supported distributions 
 ---
 ## Discrete 
