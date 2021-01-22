@@ -144,8 +144,9 @@
 
 ### Probability Distirbutions
 ----
-- symmetric probability distribution
-- unimodal probability distribution
+General Feature overview:
+
+
 - components
     - MGF
     - CDF
@@ -154,6 +155,22 @@
     - Dispersion
     - Skewness
     - Kurtosis
+- log PDF
+- log CDF
+- Likelihood
+    - Maximum likelihood
+    - Log likelihood
+    - Likelihood ratio
+    - Maximum Likelihood estimator
+    - likelihood ratio
+ - confidence interval
+    - symmetric probability distribution
+    - unimodal probability distribution
+ - random variate sampling
+    - MCMC
+    - Inverse Transform Sampling
+    - Accept Reject (adaptive) sampling
+    - Ratio of uniforms sampling
 
 #### Supported Probability distributions:
 - Continuous univariate 
@@ -164,16 +181,16 @@
         - beta
         - beta rectangular
         - continuous bernoulli
-        <!-- - logit normal -->
+        - logit normal
         - non-central beta
-        <!-- - uniform -->
+        - uniform
         - Wigner semicircle
     - semi-infinite interval
         - Benini
         - Benkatender 
         - Beta prime
         - Burr
-        <!-- - chi-squared -->
+        - chi-squared 
         - chi
         - Dagum
         - Davis
@@ -182,7 +199,7 @@
         - exponential F
         - Folded normal
         - Frechet
-        <!-- - gamma -->
+        - gamma 
         - generalized gamma
         - generalized inverse gamma
         - generalized inverse Gaussian
