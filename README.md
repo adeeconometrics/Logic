@@ -18,9 +18,3 @@ Main References:
 - https://www.mathworks.com/
 - https://support.minitab.com/en-us/minitab-express/1/
 - https://en.wikipedia.org/wiki/Mathematical_statistics
-
-Inspirations:
-- SPSS
-- Minitab
-- Matlab
-- Mathematica
