@@ -1,6 +1,6 @@
 try:
     import numpy as np
-    import scipy as sci
+    import scipy as sp
     import scipy.special as ss
     # import sympy as sp
     import matplotlib.pyplot as plt

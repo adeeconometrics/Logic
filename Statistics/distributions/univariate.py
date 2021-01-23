@@ -1,14 +1,14 @@
 try:
     import numpy as np
     from math import sqrt, pow, log
-    import scipy as sci
+    import scipy as sp
     import scipy.special as ss
     import matplotlib.pyplot as plt
 
 except Exception as e:
     print("some modules are missing {}".format(e))
 
-# todo = Base: remove unsupported method from class implementation, implement name mangling 
+# todo = Base: remove unsupported method from class implementation
 
 class Base:
     def __init__(self, data):
@@ -72,7 +72,7 @@ class Base:
         """
         returns the std default (undefined)
         """
-        return "undefined"
+        return "unsupported"
     
     def skewness(self):
         """
@@ -97,7 +97,14 @@ class Base:
         return np.exp(-pow(x,2)/2)/sqrt(2*np.pi)
     
     def stdnorm_cdf(self, x):
-        return sci.integrate.quad(self.stdnorm_pdf, -np.inf, x)[0]
+        return sp.integrate.quad(self.stdnorm_pdf, -np.inf, x)[0]
+    
+    def stdnorm_cdf_inv(self, x, p, mean=0, std=1):
+        """
+        qunatile function of the normal cdf. Note thatn p can only have values between (0,1).
+        defaults to standard normal but can be expressed more generally.
+        """
+        return mean+ std*sqrt(2)*ss.erfinv(2*p-1)
 
 # class bounded(Base):
 #     pass
@@ -268,7 +275,7 @@ class Uniform:
 
 class Normal(Base):
     """
-    This class contains methods concerning the Standard Normal Distribution.
+    This class contains methods concerning the Normal Distribution.
 
     Args: 
 
@@ -556,7 +563,7 @@ class T(Base):
         def _generator(x, df):
             _generator = lambda x, df: (1 / (np.sqrt(df) * ss.beta(
                 1 / 2, df / 2))) * np.power((1 + (x**2 / df)), -(df + 1) / 2)
-            return sci.integrate.quad(_generator, -np.inf, x, args=df)[0]
+            return sp.integrate.quad(_generator, -np.inf, x, args=df)[0]
 
         if plot:
             x = np.linspace(-interval, interval, int(threshold))
@@ -585,7 +592,7 @@ class T(Base):
         _generator = lambda x, df: (1 / (np.sqrt(df) * ss.beta(
             1 / 2, df / 2))) * np.power((1 + (x**2 / df)), -(df + 1) / 2)
 
-        return sci.integrate.quad(_generator, x_lower, x_upper, args=df)[0]
+        return sp.integrate.quad(_generator, x_lower, x_upper, args=df)[0]
 
     def confidence_interval(self):  # for single means and multiple means
         pass
@@ -11639,7 +11646,7 @@ class Skew_normal(Base):
             either probability density evaluation for some point or plot of Skew Normal distribution.
         """
         func = lambda t: 1/sqrt(2*np.pi)*np.exp(-pow(t,2)/2)
-        _generator = lambda xi, o, a, x: 2/(o*sqrt(2*np.pi))*np.exp(-pow(x-xi,2)/(2*pow(o,2)))*sci.integrate.quad(func, -np.inf, a*((x-xi)/o))[0]
+        _generator = lambda xi, o, a, x: 2/(o*sqrt(2*np.pi))*np.exp(-pow(x-xi,2)/(2*pow(o,2)))*sp.integrate.quad(func, -np.inf, a*((x-xi)/o))[0]
 
         if plot:
             if interval<0:
@@ -12008,7 +12015,7 @@ class Landau(Base):
         def _generator(c,mu,x):
             f = lambda x, mu, c, t: np.exp(-t)*np.cos(t*(x-mu)/c+(2*t)/np.pi*np.log(t/c))
             _ = 1/(np.pi*c)
-            return _*sci.integrate.quad(f, 0, np.inf, args=(c, mu, x)) 
+            return _*sp.integrate.quad(f, 0, np.inf, args=(c, mu, x)) 
 
         if plot:
             if interval<0:
@@ -13220,4 +13227,4 @@ class Weilbull_q(Base):
         cstr = " summary statistics "
         print(cstr.center(40, "="))
         return print("mean: ", mean, "\nmedian: ", median, "\nmode: ", mode, "\nvar: ", var, "\nstd: ", std, "\nskewness: ", skewness, "\nkurtosis: ", kurtosis)
-
+        
