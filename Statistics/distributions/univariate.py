@@ -161,7 +161,7 @@ class Uniform:
         threshold = b - a
 
         _generator = lambda a, b, x: 1 / (b - a) if a <= x and x <= b else 0
-        if plot == True:
+        if plot:
             x = np.linspace(a, b, threshold)
             y = np.array([_generator(a, b, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -192,7 +192,7 @@ class Uniform:
             if x > b:
                 return 1
 
-        if plot == True:
+        if plot:
             x = np.linspace(a, b, threshold)
             y = np.array([_generator(a, b, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -328,7 +328,7 @@ class Normal(Base):
         std = self.std_val
         _generator = lambda mean, std, x: np.power(
             1 / (std * np.sqrt(2 * np.pi)), np.exp(((x - mean) / 2 * std)**2))
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, threshold)
             y = np.array([_generator(mean, std, x_temp) for x_temp in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -358,7 +358,7 @@ class Normal(Base):
             either plot of the distirbution or cumulative density evaluation at randvar.
         """
         _generator = lambda mu, sig, x: 1/2*(1+ss.erf((x-mu)/(sig*np.sqrt(2))))
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, threshold)
             y = np.array([_generator(self.mean_val, self.std_val, x_temp) for x_temp in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -520,7 +520,7 @@ class T(Base):
         randvar = self.randvar
         _generator = lambda x, df: (1 / (np.sqrt(df) * ss.beta(
             1 / 2, df / 2))) * np.power((1 + (x**2 / df)), -(df + 1) / 2)
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(i, df) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -558,7 +558,7 @@ class T(Base):
                 1 / 2, df / 2))) * np.power((1 + (x**2 / df)), -(df + 1) / 2)
             return sci.integrate.quad(_generator, -np.inf, x, args=df)[0]
 
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(i, df) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -744,7 +744,7 @@ class Cauchy(Base):
         scale = self.scale
         _generator = lambda x, location, scale: 1 / (np.pi * scale * (1 + (
             (x - location) / scale)**2))
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(i, location, scale) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -779,7 +779,7 @@ class Cauchy(Base):
         scale = self.scale
         _generator = lambda x, location, scale: (1 / np.pi) * np.arctan(
             (x - location) / scale) + 1 / 2
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(i, location, scale) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -951,7 +951,7 @@ class F(Base):
                 x, df1 / 2 - 1) * np.power(1 +
                                            (df1 / df2) * x, -((df1 + df2) / 2))
 
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(i, df1, df2) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -983,7 +983,7 @@ class F(Base):
         k = self.df2/(self.df2+self.df1*self.x)
         _generator = lambda x, df1, df2: 1-ss.betainc(df1/2, df2/2, x)
 
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(i,self.df1, self.df2) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -1151,7 +1151,7 @@ class Chisq(Base):
         randvar = self.x
         _generator = lambda x, df: (1 / (np.power(2, (df / 2) - 1) * ss.gamma(
             df / 2))) * np.power(x, df - 1) * np.exp(-x**2 / 2)
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(i, df) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -1182,7 +1182,7 @@ class Chisq(Base):
             either cumulative distribution evaluation for some point or plot of Chi square-distribution.
         """
         _generator = lambda x, df:ss.gammainc(df / 2, x / 2)
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(i, self.df) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -1335,7 +1335,7 @@ class Chi(Base):
         randvar = self.x
         _generator = lambda x, df: (1 / (np.power(2, (df / 2) - 1) * ss.gamma(
             df / 2))) * np.power(x, df - 1) * np.exp(-x**2 / 2)
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(i, df) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -1366,7 +1366,7 @@ class Chi(Base):
             either cumulative distribution evaluation for some point or plot of Chi-distribution.
         """
         _generator = lambda x, df:ss.gammainc(df/2, x**2/2)
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(i, self.df) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -1536,7 +1536,7 @@ class Explonential(Base):
                 return lambda_ * np.exp(-(lambda_ * x))
             return 0
 
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(lambda_, x_i) for x_i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -1573,7 +1573,7 @@ class Explonential(Base):
                 return 1 - np.exp(-lambda_ * x)
             return 0
 
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(x_i, lambda_) for x_i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -1737,7 +1737,7 @@ class Gamma(Base):
         """
         _generator = lambda a, b, x: (1 / (b**a * ss.gamma(a))) * np.power(
             x, a - 1) * np.exp(-x / b)
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, threshold)
             y = np.array([_generator(self.a, self.b, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -1769,7 +1769,7 @@ class Gamma(Base):
         # there is no apparent explanation for reversing gammainc's parameter, but it works quite perfectly in my prototype
         _generator = lambda a, b, x: 1 - ss.gammainc(a, x / b)  
         
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, threshold)
             y = np.array([_generator(self.a, self.b, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -1937,7 +1937,7 @@ class Pareto(Base):
                 return (alpha * pow(x_m,alpha)) / np.power(x, alpha + 1)
             return 0
 
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(i, x_m, alpha) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -1974,7 +1974,7 @@ class Pareto(Base):
                 return 1 - np.power(x_m / x, alpha)
             return 0
 
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(i, x_m, alpha) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -2158,7 +2158,7 @@ class Log_normal(Base):
         """
         _generator = lambda mean, std, x: (1 / (x * std * np.sqrt(
             2 * np.pi))) * np.exp(-(np.log(x - mean)**2) / (2 * std**2))
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(self.mean_val, self.std_val, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -2189,7 +2189,7 @@ class Log_normal(Base):
         """
         _generator = lambda mean, std, x:0.5+ 0.5*ss.erfc(-(np.log(x - mean) /
                                                            (std * np.sqrt(2))))
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(self.mean_val, self.std_val, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -2349,7 +2349,7 @@ class Laplace(Base):
             either probability density evaluation for some point or plot of Laplace distribution.
         """
         _generator = lambda mu, b, x: (1 / (2 * b)) * np.exp(abs(x - mu) / b)
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(self.location, self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -2380,7 +2380,7 @@ class Laplace(Base):
         """
         _generator = lambda mu, b, x: 1 / 2 + ((1 / 2) * np.sign(x - mu) *
                                               (1 - np.exp(abs(x - mu) / b)))
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(self.location, self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -2534,7 +2534,7 @@ class Logistic(Base):
         """
         _generator = lambda mu, s, x: np.exp(-(x - mu) / s) / (s * (1 + np.exp(
             -(x - mu) / s))**2)
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(self.location, self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -2564,7 +2564,7 @@ class Logistic(Base):
             either cumulative distribution evaluation for some point or plot of Logistic distribution.
         """
         _generator = lambda mu, s, x: 1 / (1 + np.exp(-(x - mu) / s))
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(self.location, self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -2717,7 +2717,7 @@ class Logit_normal(Base):
         """
         _generator = lambda mu, sig, x: (1/(sig*np.sqrt(2*np.pi)))*np.exp(-((ss.logit(x)-mu)**2/(2*sig**2)))*(1/(x*(1-x)))
 
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(self.location, self.sq_scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -2748,7 +2748,7 @@ class Logit_normal(Base):
         """
         _generator = lambda mu, sig, x: 1/2*(1+ss.erf((ss.logit(x)-mu)/(np.sqrt(2*sig**2))))
                 
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(self.location, self.sq_scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -2889,7 +2889,7 @@ class Weibull(Base):
                 return 0
             if x>=0:
                 return (k/lambda_)*(x/lambda_)**(k-1)*np.exp(-(x/lambda_)**k)
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(self.scale, self.shape, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -2924,7 +2924,7 @@ class Weibull(Base):
             if x>=0:
                 return 1-np.exp(-pow(x/lambda_, k))
 
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(self.scale, self.shape, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -3083,7 +3083,7 @@ class Weilbull_inv(Base):
         """
         _generator = lambda a,s,m,x: (a/s)*np.power((x-m)/s, -1-a)*np.exp(-((x-m)/s)**-a)
 
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(self.shape, self.scale, self.location, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -3113,7 +3113,7 @@ class Weilbull_inv(Base):
             either cumulative distribution evaluation for some point or plot of Fréchet distribution.
         """
         _generator =  lambda a,s,m,x: np.exp(-((x-m)/s)**-a)
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(self.shape, self.scale, self.location, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -3276,7 +3276,7 @@ class Gumbel(Base):
             z = (x-mu)/beta
             return (1/beta)*np.exp(-(z+np.exp(-z)))
 
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(self.location, self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -3307,7 +3307,7 @@ class Gumbel(Base):
         """
         def _generator(mu, beta, x):
             return np.exp(-np.exp(-(x-mu)/beta))
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(self.location, self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -3442,7 +3442,7 @@ class Arcsine(Base):
         """
         _generator = lambda x: 1/(np.pi*np.sqrt(x*(1-x)))
 
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -3472,7 +3472,7 @@ class Arcsine(Base):
             either cumulative distribution evaluation for some point or plot of Arcsine distribution.
         """
         _generator = lambda x: (2/np.pi)*np.arcsin(np.sqrt(x))
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(self.location, self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -3632,7 +3632,7 @@ class Triangular(Base):
             if b<x:
                 return 0
 
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(self.a, self.b, self.c, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -3671,7 +3671,7 @@ class Triangular(Base):
             if b<=x:
                 return 1
                 
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(self.a, self.b, self.c, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -3861,7 +3861,7 @@ class Trapezoidal(Base):
             if c<=x and x<=d:
                 return (2/(d+c-a-b))*(d-x)/(d-c)
 
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(self.a, self.b, self.c, self.d, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -3898,7 +3898,7 @@ class Trapezoidal(Base):
             if c<=x and x<=d:
                 return 1- (d-x)**2/((d+c-a-b)*(d-c))
                 
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(self.a, self.b, self.c, self.d, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -4032,7 +4032,7 @@ class Normal_trunc(Base):
         _xi = lambda x, mean, std: (x-mean)/std 
         _generator = lambda mean, std, x: self.stdnorm_pdf(_xi(x, mean, std))/(std*self.Z)
 
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(-interval, interval, int(threshold))
@@ -4067,7 +4067,7 @@ class Normal_trunc(Base):
         _xi = lambda x, mean, std: (x-mean)/std 
         _generator = lambda mean, std, x:( self.stdnorm_cdf(_xi(x, mean, std))- self.stdnormal_cdf(self.alpha))/self.Z
 
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(self.mean, self.std, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -4231,7 +4231,7 @@ class Gamma_gen(Base):
         """
         _generator = lambda a,d,p,x: (p/pow(a,d))/ss.gamma(d/p)*pow(x,d-1)*np.exp(-pow(x/a,p))
 
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(-interval, interval, int(threshold))
@@ -4265,7 +4265,7 @@ class Gamma_gen(Base):
 
         _generator = lambda a,d,p,x: ss.gammainc(d/p, pow(x/a,p))/ss.gamma(d/p)
 
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(self.a, self.d, self.p, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -4411,7 +4411,7 @@ class Gamma_gen(Base):
 #             if c<=x and x<=d:
 #                 return (2/(d+c-a-b))*(d-x)/(d-c)
 
-#         if plot == True:
+#         if plot:
 #             x = np.linspace(-interval, interval, int(threshold))
 #             y = np.array([_generator(self.a, self.b, self.c, self.d, i) for i in x])
 #             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -4448,7 +4448,7 @@ class Gamma_gen(Base):
 #             if c<=x and x<=d:
 #                 return 1- (d-x)**2/((d+c-a-b)*(d-c))
                 
-#         if plot == True:
+#         if plot:
 #             x = np.linspace(-interval, interval, int(threshold))
 #             y = np.array([_generator(self.a, self.b, self.c, self.d, i) for i in x])
 #             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -4584,7 +4584,7 @@ class Beta(Base):
         """
         _generator = lambda a,b,x: (np.power(x,a-1)*np.power(1-x, b-1))/ss.beta(a,b)
 
-        if plot == True:
+        if plot:
             x = np.linspace(0, 1, int(threshold))
             y = np.array([_generator(self.alpha, self.beta, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -4613,7 +4613,7 @@ class Beta(Base):
             either cumulative distribution evaluation for some point or plot of Beta distribution.
         """
         _generator = lambda a,b,x: ss.betainc(a,b,x)
-        if plot == True:
+        if plot:
             x = np.linspace(0, 1, int(threshold))
             y = np.array([_generator(self.a, self.b, self.c, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -4771,7 +4771,7 @@ class Beta_prime(Base):
         """
         _generator = lambda a,b,x: (np.power(x,a-1)*np.power(1+x, -a-b))/ss.beta(a,b)
 
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
@@ -4802,7 +4802,7 @@ class Beta_prime(Base):
             either cumulative distribution evaluation for some point or plot of Beta prime distribution.
         """
         _generator = lambda a,b,x: ss.betainc(a,b,x/(1+x))
-        if plot == True:
+        if plot:
             x = np.linspace(0, 1, int(threshold))
             y = np.array([_generator(self.alpha, self.beta, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -4986,7 +4986,7 @@ class Bates(Base):
                 return np.sum([pow(-1,i)*bincoef(n,i)*np.power(((x-a)/(b-a)- i/n), n-1)*np.sign((x-a)/(b-1)-i/n) for i in range(0, n)])
             return 0
 
-        if plot == True:
+        if plot:
             x = np.linspace(0, 1, int(threshold))
             y = np.array([_generator(self.a, self.b, self.n, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -5144,7 +5144,7 @@ class Erlang(Base):
         """
         _generator = lambda shape, rate, x: (np.power(rate, shape)*np.power(x,shape-1)*np.exp(-rate*x))/np.math.factorial((shape-1))
 
-        if plot == True:
+        if plot:
             x = np.linspace(0, 1, int(threshold))
             y = np.array([_generator(self.shape, self.rate, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -5173,7 +5173,7 @@ class Erlang(Base):
             either cumulative distribution evaluation for some point or plot of Erlang distribution.
         """
         _generator = lambda shape, rate, x: ss.gammainc(shape, rate*x)/np.math.factorial(shape-1)
-        if plot == True:
+        if plot:
             x = np.linspace(0, 1, int(threshold))
             y = np.array([_generator(self.shape, self.rate, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -5331,7 +5331,7 @@ class Maxwell_Boltzmann(Base):
         """
         _generator = lambda a, x: sqrt(2/np.pi)*(x**2*np.exp(-x**2/(2*a**2)))/(a**3)
 
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval should be a positive number. Entered value: {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
@@ -5363,7 +5363,7 @@ class Maxwell_Boltzmann(Base):
             either cumulative distribution evaluation for some point or plot of Maxwell-Boltzmann distribution.
         """
         _generator = lambda a, x: ss.erf(x/(sqrt(2)*a))-sqrt(2/np.pi)*(x**2*np.exp(-x**2/(2*a**2)))/(a)
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
@@ -5535,7 +5535,7 @@ class Beta_rectangular(Base):
                 return (theta*ss.gamma(alpha+beta)/(ss.gamma(alpha)*ss.gamma(beta))*(np.power(x-a, alpha-1)*np.power(b-x, beta-1))/(np.power(b-a, alpha+beta+1)))+(1-theta)/(b-a)
             return 0
 
-        if plot == True:
+        if plot:
             x = np.linspace(0, 1, int(threshold))
             y = np.array([_generator(self.min, self.max, self.alpha, self.beta, self.theta, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -5573,7 +5573,7 @@ class Beta_rectangular(Base):
             else:
                 return 1
 
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
@@ -5720,7 +5720,7 @@ class Bernoulli(Base):
         def _generator(shape, x):
             return C(shape)*np.power(shape, x)*np.power(1-shape, 1-x)
             
-        if plot == True:
+        if plot:
             x = np.linspace(0, 1, int(threshold))
             y = np.array([_generator(self.shape, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -5751,7 +5751,7 @@ class Bernoulli(Base):
         """
         _generator = lambda shape, x: (shape**x*np.power(1-shape, 1-x)+shape-1)/(2*shape-1) if shape != 0.5 else x
 
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
@@ -5888,7 +5888,7 @@ class Bernoulli(Base):
         
 #         _generator = lambda a,b, lambda_: np.sum([np.exp(-lambda_/2)])
             
-#         if plot == True:
+#         if plot:
 #             if interval<0:
 #                 raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
 #             x = np.linspace(0, 1, int(threshold))
@@ -5921,7 +5921,7 @@ class Bernoulli(Base):
 #         """
 #         _generator = lambda shape, x: (shape**x*np.power(1-shape, 1-x)+shape-1)/(2*shape-1) if shape != 0.5 else x
 
-#         if plot == True:
+#         if plot:
 #             if interval<0:
 #                 raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
 #             x = np.linspace(0, interval, int(threshold))
@@ -6044,7 +6044,7 @@ class Wigner(Base):
         """
         _generator = lambda r, x: 2/(np.pi*r**2)*sqrt(r**2-x**2)
 
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(self.radius, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -6074,7 +6074,7 @@ class Wigner(Base):
             either cumulative distribution evaluation for some point or plot of Wigner semicricle distribution.
         """
         _generator = lambda r,x: 0.5+(x*sqrt(r**2-x**2))/(np.pi*r**2)+(np.arcsin(x/r))/np.pi
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(self.radius, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -6229,7 +6229,7 @@ class Balding_Nichols(Base):
             either probability density evaluation for some point or plot of Balding Nichols distribution.
         """
         _generator = lambda alpha, beta, x: (x**(alpha-1)*np.power(1-x, beta-1))/ss.beta(alpha, beta)
-        if plot == True:
+        if plot:
             x = np.linspace(0, 1, int(threshold))
             y = np.array([_generator(self.alpha, self.beta, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -6258,7 +6258,7 @@ class Balding_Nichols(Base):
             either cumulative distribution evaluation for some point or plot of Balding Nichols distribution.
         """
         _generator = lambda alpha, beta, x: ss.betainc(alpha, beta, x)
-        if plot == True:
+        if plot:
             x = np.linspace(0, 1, int(threshold))
             y = np.array([_generator(self.alpha, self.beta, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -6408,7 +6408,7 @@ class Benini(Base):
             either probability density evaluation for some point or plot of Benini distribution.
         """
         _generator = lambda a,b,o,x:np.exp(-a*np.log10(x/o)-b*(np.log10(x/o)**2))*(a/x+(2*b*np.log10(x/o))/x) if x>0 else 0
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval should be a positive number. Entered value: {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
@@ -6440,7 +6440,7 @@ class Benini(Base):
             either cumulative distribution evaluation for some point or plot of Benini distribution.
         """
         _generator = lambda a,b,o,x: 1- np.exp(-a*np.log10(x/a)-b*(np.log10(x/o))**2)
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
@@ -6577,7 +6577,7 @@ class Normal_folded(Base):
             either probability density evaluation for some point or plot of Folded Normal distribution.
         """
         _generator = lambda mu, sig, x: 1/(sig*sqrt(2*np.pi))*np.exp(-(x-mu)**2/(2*sig**2))+1/(sig*sqrt(2*np.pi))*np.exp(-(x+mu)**2/(2*sig**2)) if x<0 else 0
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(self.loc, self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -6607,7 +6607,7 @@ class Normal_folded(Base):
             either cumulative distribution evaluation for some point or plot of Folded Normal distribution.
         """
         _generator = lambda mu, sig, x: 0.5*(ss.erf((x+mu)/(sig*sqrt(2)))+ss.erf((x-mu)/(sig*sqrt(2)))) if x>0 else 0
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(self.loc, self.scale,  i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -6727,7 +6727,7 @@ class Logistic_half(Base):
             either probability density evaluation for some point or plot of half logistic distribution.
         """
         _generator = lambda k,x: 2*np.exp(-k)/(1+np.exp(-k))**2 if x>0 else 0
-        if plot == True:
+        if plot:
             x = np.linspace(0, interval, int(threshold))
             y = np.array([_generator(self.k i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -6757,7 +6757,7 @@ class Logistic_half(Base):
             either cumulative distribution evaluation for some point or plot of half logistic distribution.
         """
         _generator = lambda k,x: (1-np.exp(-k))/(1+np.exp(-k)) if x>0 else 0
-        if plot == True:
+        if plot:
             x = np.linspace(0, interval, int(threshold))
             y = np.array([_generator(self.k, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -6888,7 +6888,7 @@ class Normal_half(Base):
             either probability density evaluation for some point or plot of Half Normal distribution.
         """
         _generator = lambda sig, x: sqrt(2)/(sig*sqrt(np.pi))*np.exp(-x**2/(2*sig**2)) if x>0 else 0
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -6918,7 +6918,7 @@ class Normal_half(Base):
             either cumulative distribution evaluation for some point or plot of Half Normal distribution.
         """
         _generator = lambda sig, x: ss.erf(x/(sig*sqrt(2))) if x>0 else 0
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -7073,7 +7073,7 @@ class Gaussian_inv(Base):
             either probability density evaluation for some point or plot of Inverse Gaussian distribution.
         """
         _generator = lambda scale, mean, x: sqrt(scale/(2*np.pi*x**3))*np.exp(-(scale*(x-mean)**2)/(2*mean**2*x))
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
@@ -7107,7 +7107,7 @@ class Gaussian_inv(Base):
     #     def _generator(mean, scale):
     #         normal_cdf = lambda mu, sig, x: 0.5*(1+ss.erf((x-mu)/(sig*sqrt(2))))
     #         normal_cdf()
-    #     if plot == True:
+    #     if plot:
     #         if interval<0:
     #             raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
     #         x = np.linspace(0, interval, int(threshold))
@@ -7254,7 +7254,7 @@ class Gamma_inv(Base):
             either probability density evaluation for some point or plot of Inverse Gamma distribution.
         """
         _generator = lambda alpha, beta, x: (beta**alpha)/ss.gamma(alpha)*np.power(x, -alpha-1)*np.exp(-beta/x)
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
@@ -7286,7 +7286,7 @@ class Gamma_inv(Base):
             either cumulative distribution evaluation for some point or plot of Inverse Gamma distribution.
         """
         _generator = lambda alpha, beta, x: ss.gammainc(alpha, beta/x)/ss.gamma(alpha)
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
@@ -7445,7 +7445,7 @@ class Burr(Base):
             either probability density evaluation for some point or plot of Burr distribution.
         """
         _generator = lambda c,k,x: c*k*(pow(x,c-1)/pow(1+x**c, k+1))
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('random variable should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, 1, int(threshold))
@@ -7477,7 +7477,7 @@ class Burr(Base):
             either cumulative distribution evaluation for some point or plot of Burr distribution.
         """
         _generator = lambda c,k,x: 1-pow(1+x**c, -k)
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
@@ -7631,7 +7631,7 @@ class Dagum(Base):
             either probability density evaluation for some point or plot of Dagum distribution.
         """
         _generator = lambda p,a,b,x: (a*p/x)*(np.power(x/b,a*p)/(np.power(pow((x/b),a)+1,p+1)
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
 
@@ -7665,7 +7665,7 @@ class Dagum(Base):
             either cumulative distribution evaluation for some point or plot of Dagum distribution.
         """
         _generator = lambda p,a,b,x: np.power((1+np.power(x/b,-a)),-p)
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
@@ -7822,7 +7822,7 @@ class Davis(Base):
             either probability density evaluation for some point or plot of Davis distribution.
         """
         _generator = lambda b,n,mu, x: (pow(b,n)*pow(x-mu,-1-n))/((np.exp(b/(x-mu))-1)*ss.gamma(n)*ss.zeta(n))
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, 1, int(threshold))
@@ -7854,7 +7854,7 @@ class Davis(Base):
     #         either cumulative distribution evaluation for some point or plot of Burr distribution.
     #     """
     #     _generator = lambda a,b,o,x: 1- np.exp(-a*np.log10(x/a)-b*(np.log10(x/o))**2)
-    #     if plot == True:
+    #     if plot:
     #         if interval<0:
     #             raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
     #         x = np.linspace(0, interval, int(threshold))
@@ -7989,7 +7989,7 @@ class Rayleigh(Base):
         """
         _generator = lambda sig,x: (x/pow(sig,2))*np.exp(pow(-x,2)/(2*pow(sig,2)))
 
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
@@ -8021,7 +8021,7 @@ class Rayleigh(Base):
             either cumulative distribution evaluation for some point or plot of Rayleigh distribution.
         """
         _generator = lambda sig,x: 1-np.exp(-x**2/(2*sig**2))
-        if plot == True:
+        if plot:
             x = np.linspace(0, interval, int(threshold))
             y = np.array([_generator(self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -8269,7 +8269,7 @@ class Benktander_T1(Base):
             either probability density evaluation for some point or plot of Benktander Type1 distribution.
         """
         _generator = lambda a,b,x: ((1+(2*b*np.log10(x)/a))*(1+a+2*np.log10(x)-2*b/a)*np.power(x, -(2+a+b*np.log10(x))) # log base 10, validate this
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
@@ -8301,7 +8301,7 @@ class Benktander_T1(Base):
             either cumulative distribution evaluation for some point or plot of Benktander Type1 distribution.
         """
         _generator = lambda a,b,x: 1-(1+(2*b/a)*np.log10(x))*np.power(x,-(a+1+b*np.log10(x)))
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
@@ -8429,7 +8429,7 @@ class Benktander_T2(Base):
             either probability density evaluation for some point or plot of Benktander type 2 distribution.
         """
         _generator = lambda a,b,x: np.exp(a/b*(1-x**b))*np.power(x,b-2)*(a*x**b-b+1)
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
@@ -8461,7 +8461,7 @@ class Benktander_T2(Base):
             either cumulative distribution evaluation for some point or plot of Benktander type 2 distribution.
         """
         _generator = lambda a,b,x: 1- np.power(x, b-1)*np.exp(a/b*(1-x**b))
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
@@ -8603,7 +8603,7 @@ class Cauchy_log(Base):
             either probability density evaluation for some point or plot of log-Cauchy distribution.
         """
         _generator = lambda mu, sig, x: (1/(x*np.pi))*(sig/((np.log(x)-mu)**2+sig**2))
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
@@ -8635,7 +8635,7 @@ class Cauchy_log(Base):
             either cumulative distribution evaluation for some point or plot of log-Cauchy distribution.
         """
         _generator = lambda mu, sig, x: (1/np.pi)*np.arctan((np.log(x)-mu)/sig)+0.5 if x>0 else 0
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
@@ -8776,7 +8776,7 @@ class Laplace_log(Base):
             either probability density evaluation for some point or plot of log-Laplace distribution.
         """
         _generator = lambda mu, b, x: 1/(2*b*x)*np.exp(-abs(np.log(x)-mu)/b)
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
@@ -8808,7 +8808,7 @@ class Laplace_log(Base):
             either cumulative distribution evaluation for some point or plot of log-Laplace distribution.
         """
         _generator = lambda mu, b, x:0.5*(1+np.sign(np.log(x)-mu)*(1-np.exp(-abs(np.log(x)-mu)/b))) if x>0 else 0
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
@@ -8900,7 +8900,7 @@ class Logistic_log(Base):
             either probability density evaluation for some point or plot of Log logistic distribution.
         """
         _generator = lambda a,b,x: (b/a)*np.power(x/a, b-1)/(1+(x/a)**b)**2
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, 1, int(threshold))
@@ -8932,7 +8932,7 @@ class Logistic_log(Base):
             either cumulative distribution evaluation for some point or plot of Log logistic distribution.
         """
         _generator = lambda a,b,x: 1/(1+np.power(x/a, -b))
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval parameter should be a positive number. Entered Value {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
@@ -9082,7 +9082,7 @@ class Chisq_inv(Base):
         """
         _generator = lambda df, x: np.power(2,-df/2)/ss.gamma(df/2)*np.power(x,-df/2-1)*np.exp(-1/(2*x))
 
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
@@ -9114,7 +9114,7 @@ class Chisq_inv(Base):
             either cumulative distribution evaluation for some point or plot of Rayleigh distribution.
         """
         _generator = lambda df, x: ss.gammainc(df/2,1/(2*x))/ss.gamma(df/2)
-        if plot == True:
+        if plot:
             x = np.linspace(0, interval, int(threshold))
             y = np.array([_generator(self.df, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -9281,7 +9281,7 @@ class Levy(Base):
         """
         _generator = lambda mu, c ,x: sqrt(c/(2*np.pi))*np.exp(-c/(2*(x-mu)))/np.power(x-mu, 3/2)
 
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
@@ -9313,7 +9313,7 @@ class Levy(Base):
             either cumulative distribution evaluation for some point or plot of Levy distribution.
         """
         _generator = lambda mu, c, x: ss.erfc(sqrt(c/(2*(x-mu))))
-        if plot == True:
+        if plot:
             x = np.linspace(0, interval, int(threshold))
             y = np.array([_generator(self.loc, self.scale, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -9469,7 +9469,7 @@ class Nakagami(Base):
         """
         _generator = lambda m, omega, x: (2*pow(m,m))/(ss.gamma(m)*pow(omega,m))*pow(x, 2*m-1)*np.exp(-m/omega*pow(x,2))
 
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
@@ -9501,7 +9501,7 @@ class Nakagami(Base):
             either cumulative distribution evaluation for some point or plot of Nakagami distribution.
         """
         _generator = lambda m, omega, x: ss.gammainc(m, (m/omega)*pow(x,2))/ss.gamma(m)
-        if plot == True:
+        if plot:
             x = np.linspace(0, interval, int(threshold))
             y = np.array([_generator(self.shape, self.spread, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -9640,7 +9640,7 @@ class Lomax(Base):
         """
         _generator = lambda lambda_, alpha, x: alpha/lambda_*pow(1+x/lambda_, -(alpha+1))
 
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
@@ -9672,7 +9672,7 @@ class Lomax(Base):
             either cumulative distribution evaluation for some point or plot of Lomax distribution.
         """
         _generator = lambda lambda_, alpha, x: 1 - pow(1+x/lambda_, -alpha)
-        if plot == True:
+        if plot:
             x = np.linspace(0, interval, int(threshold))
             y = np.array([_generator(self.scale, self.shape, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -9836,7 +9836,7 @@ class Gumbel_T1(Base):
             z = (x-mu)/beta
             return (1/beta)*np.exp(-z*np.exp(-z))
 
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
@@ -9868,7 +9868,7 @@ class Gumbel_T1(Base):
             either cumulative distribution evaluation for some point or plot of Gumbel distribution.
         """
         _generator = lambda mu, beta, x: np.exp(-np.exp(-(x-mu)/beta))
-        if plot == True:
+        if plot:
             x = np.linspace(0, interval, int(threshold))
             y = np.array([_generator(self.loc, self.mu, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -10017,7 +10017,7 @@ class Gumbel_T2(Base):
         """
         _generator = lambda a,b,x: pow(a*b*x, -a-1)*np.exp(-b*pow(x,-a))
 
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(0, interval, int(threshold))
@@ -10049,7 +10049,7 @@ class Gumbel_T2(Base):
             either cumulative distribution evaluation for some point or plot of Gumbel Type 2 distribution.
         """
         _generator = lambda a,b,x: np.exp(-b*pow(x,-a))
-        if plot == True:
+        if plot:
             x = np.linspace(0, interval, int(threshold))
             y = np.array([_generator(self.a, self.shape, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -10171,7 +10171,7 @@ class Fisher_z(Base):
         """
         _generator = lambda df1, df2, x: pow(2*df1, df1/2)*pow(df2, df2/2)*np.exp(df1*x)/(ss.beta(df1/2,df2/2)*pow(df1*np.exp(2*x)+df2,(df1+df2)/2))
 
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(-interval, interval, int(threshold))
@@ -10212,11 +10212,11 @@ class Fisher_z(Base):
             ylabel=None): 
 
             f = F(df1, df2, np.exp(2*x))
-            if plot == True:
+            if plot:
                 return f.cdf(plot, threshold, interval, xlim, ylim, xlabel, ylabel)
             return f.cdf()
 
-        if plot == True:
+        if plot:
             _generator(self.df, self.df2, self.randvar)
         return _generator(self.df, self.df2, self.randvar)
 
@@ -10317,7 +10317,7 @@ class Laplace_asym(Base):
         """
         _generator = lambda m,l,k,x: 1/(k+1/k)*np.exp(-(x-m)*l*np.sign(x-m)*pow(k,np.sign(x-m)))
 
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(-interval, interval, int(threshold))
@@ -10354,7 +10354,7 @@ class Laplace_asym(Base):
                 return pow(asym,2)/(1+pow(asym,2))*np.exp((scale/asym)*(x-loc))
             return 1-(1/(1+pow(asym,2)))*np.exp(-scale*asym*(x-loc))
 
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(self.loc, self.scale, self.asym,, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -10536,7 +10536,7 @@ class GH(Base):
         """
         _generator = lambda λ,α,β,δ,μ,γ,x: pow(γ/δ, λ)/(sqrt(2*np.pi)*ss.kn(λ, δ*γ))*np.exp(β*(x-μ))*(ss.kn(λ-0.5, α*sqrt(δ**2+pow(x-μ, 2))))/pow(sqrt(δ**2+pow(x-μ, 2))/α,0.5-λ)
 
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(-interval, interval, int(threshold))
@@ -10573,7 +10573,7 @@ class GH(Base):
     #             return pow(asym,2)/(1+pow(asym,2))*np.exp((scale/asym)*(x-loc))
     #         return 1-(1/(1+pow(asym,2)))*np.exp(-scale*asym*(x-loc))
 
-    #     if plot == True:
+    #     if plot:
     #         x = np.linspace(-interval, interval, int(threshold))
     #         y = np.array([_generator(self.loc, self.scale, self.asym,, i) for i in x])
     #         return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -10707,7 +10707,7 @@ class GN_V1(Base):
         """
         _generator = lambda u, b, a, x: b/(2*a*ss.gamma(1/b))*np.exp(-pow(abs(x-u)/a,b))
 
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(-interval, interval, int(threshold))
@@ -10741,7 +10741,7 @@ class GN_V1(Base):
 
         _generator = lambda u, b, a, x: 0.5+(np.sign(x-u)/2)*(1/ss.gamma(1/b))*ss.gammainc(1/b, pow(x*a,b))
 
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(self.loc, self.scale, self.shape, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -10908,7 +10908,7 @@ class GN_V2(Base):
             y = lambda _k: -1/_k*np.log(1-(_k*(x-e))/a) if _k!=0 else (x-e)/a
             return self.stdnormal_pdf(y(k))/(a-k*(x-e))
 
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(-interval, interval, int(threshold))
@@ -10944,7 +10944,7 @@ class GN_V2(Base):
             y = lambda _k: -1/_k*np.log(1-(_k*(x-e))/a) if _k!=0 else (x-e)/a
             return self.stdnorm_cdf(y) 
 
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(self.scale, self.shape, self.loc, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -11093,7 +11093,7 @@ class Hyperbolic_secant(Base):
         """
         _generator = lambda x: 0.5*(1/np.cosh(np.pi/2*x)) # sech by the relationship of sech and cosh, verify result!
 
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(-interval, interval, int(threshold))
@@ -11127,7 +11127,7 @@ class Hyperbolic_secant(Base):
 
         _generator = lambda x: (2/np.pi)*np.arctan(np.exp(np.pi/2*x))
 
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator( i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -11277,7 +11277,7 @@ class Slash(Base):
         """
         _generator = lambda x: (super().stdnorm_pdf(0) - super().stdnorm_pdf(0))/ pow(x,2) if x!=0 else 1/(2*sqrt(2*np.pi))
 
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(-interval, interval, int(threshold))
@@ -11311,7 +11311,7 @@ class Slash(Base):
 
         _generator = lambda x: super().stdnorm_cdf(x)-(super().stdnorm_pdf(0)-super().stdnorm_pdf(x))/x if x!=0 else 0.5
 
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator( i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -11465,7 +11465,7 @@ class Johnson_su(Base):
         """
         _generator = lambda g,d,xi,l,x: d/((l*sqrt(2*np.pi))*sqrt(1+pow((x-xi)/l,2)))*np.exp(-0.5*(pow(g+d*np.arcsinh((x-xi)/l))))
 
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(-interval, interval, int(threshold))
@@ -11499,7 +11499,7 @@ class Johnson_su(Base):
 
         _generator = lambda g,d,xi,l,x: self.stdnorm_cdf(g+d*np.arcsinh((x-xi)/l))
 
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(self.gamma, self.delta, self.xi, self.lambda_, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -11641,7 +11641,7 @@ class Skew_normal(Base):
         func = lambda t: 1/sqrt(2*np.pi)*np.exp(-pow(t,2)/2)
         _generator = lambda xi, o, a, x: 2/(o*sqrt(2*np.pi))*np.exp(-pow(x-xi,2)/(2*pow(o,2)))*sci.integrate.quad(func, -np.inf, a*((x-xi)/o))[0]
 
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(-interval, interval, int(threshold))
@@ -11675,7 +11675,7 @@ class Skew_normal(Base):
 
         _generator = lambda xi, o, a, x: self.stdnorm_cdf((x-xi)/o)-2*ss.owens_t((x-xi)/o, a)
 
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(self.loc, self.scale, self.shape, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -11848,7 +11848,7 @@ class Gamma_variance(Base):
             g = self.gamma
             return pow(g, 2*l)*pow(abs(x-mu), l-0.5)*ss.kv(l-0.5, a*abs(x-mu))/(sqrt(np.pi)*ss.gamma(l)*pow(2*a, l-0.5))*np.exp(b*(x-mu))
 
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(-interval, interval, int(threshold))
@@ -11882,7 +11882,7 @@ class Gamma_variance(Base):
 
     #     _generator = lambda x: super().stdnorm_cdf(x)-(super().stdnorm_pdf(0)-super().stdnorm_pdf(x))/x if x!=0 else 0.5
 
-    #     if plot == True:
+    #     if plot:
     #         x = np.linspace(-interval, interval, int(threshold))
     #         y = np.array([_generator( i) for i in x])
     #         return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -12010,7 +12010,7 @@ class Landau(Base):
             _ = 1/(np.pi*c)
             return _*sci.integrate.quad(f, 0, np.inf, args=(c, mu, x)) 
 
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(-interval, interval, int(threshold))
@@ -12044,7 +12044,7 @@ class Landau(Base):
 
     #     _generator = lambda x: super().stdnorm_cdf(x)-(super().stdnorm_pdf(0)-super().stdnorm_pdf(x))/x if x!=0 else 0.5
 
-    #     if plot == True:
+    #     if plot:
     #         x = np.linspace(-interval, interval, int(threshold))
     #         y = np.array([_generator( i) for i in x])
     #         return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -12202,7 +12202,7 @@ class GEV(Base):
             t = lambda _x: pow(1+xi*(_x-mu)/o, -1/xi) if xi != 0 else np.exp(-(_x-mu)/o)
             return 1/o*pow(t(x), xi+1)*np.exp(-t(x))
 
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(-interval, interval, int(threshold))
@@ -12237,7 +12237,7 @@ class GEV(Base):
             t = lambda _x: pow(1+xi*(_x-mu)/o, -1/xi) if xi != 0 else np.exp(-(_x-mu)/o)
             return np.exp(-t(x))
 
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(self.loc, self.scale, self.shape, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -12455,7 +12455,7 @@ class GPD(Base):
         """
         _generator = lambda u, o, e, x: 1/o*pow(1+e*(x-u)/o, -(1/e+1))
 
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(-interval, interval, int(threshold))
@@ -12490,7 +12490,7 @@ class GPD(Base):
             z = (x-mu)/o
             return 1-pow(1+e*z, -1/e)
 
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(self.loc, self.scale, self.shape, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -12682,7 +12682,7 @@ class Exponential_q(Base):
         """
         _generator = lambda q, l, x: (2-q)*l*pow(self.__eq(q,x,1), -l*x)
 
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(-interval, interval, int(threshold))
@@ -12715,7 +12715,7 @@ class Exponential_q(Base):
         """
         _generator = lambda q,l,x: 1-pow(self.__eq(q,x,2), l*x/(1/(2-q)))
 
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(self.shape, self.rate, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -12898,7 +12898,7 @@ class Gaussian_q(Base):
             eq = lambda x: pow(1+(1-q)*x, 1/(1-q))
             return (sqrt(b)/self.__q_exponential(q))*eq(-b*x**2)
 
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(-interval, interval, int(threshold))
@@ -12933,7 +12933,7 @@ class Gaussian_q(Base):
     #         z = (x-mu)/o
     #         return 1-pow(1+e*z, -1/e)
 
-    #     if plot == True:
+    #     if plot:
     #         x = np.linspace(-interval, interval, int(threshold))
     #         y = np.array([_generator(self.loc, self.scale, self.shape, i) for i in x])
     #         return super().plot(x, y, xlim, ylim, xlabel, ylabel)
@@ -13123,7 +13123,7 @@ class Weilbull_q(Base):
                 return (2-q)*(k/l)*pow(x/l, k-1)*pow(self.__q_exponential(x,q), (x/l)**k)
             return 0
 
-        if plot == True:
+        if plot:
             if interval<0:
                 raise ValueError('interval should not be less then 0. Entered value: {}'.format(interval))
             x = np.linspace(-interval, interval, int(threshold))
@@ -13159,7 +13159,7 @@ class Weilbull_q(Base):
                 return 1-pow(self.__q_exponential(x,1/(2-q)), (x/(l/pow(2-q, 1/k)))**k)
             return 0
 
-        if plot == True:
+        if plot:
             x = np.linspace(-interval, interval, int(threshold))
             y = np.array([_generator(self.shape_q, self.rate, self.shape_k, i) for i in x])
             return super().plot(x, y, xlim, ylim, xlabel, ylabel)
