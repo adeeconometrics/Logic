@@ -135,13 +135,13 @@ Real line
     - Johnson's SU distribution
     - variance-gamma distribution
     - generalized hyperbolic: add support for CDF and pvalue
-
-- change category:
     - Cauchy distribution
     - Laplace distribution
     - Logistic distribution
     - Normal distribution
     - T distribution
+    
+- change category:
     - Gumbel Type 1 distribution
 
 Varying Type Support
